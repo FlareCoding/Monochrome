@@ -15,9 +15,13 @@ namespace mc
 		// Inherited via IDrawable
 		virtual void Draw() override;
 
+		/// Text to be displayed in the label.
 		std::string Text = "Label";
+
+		/// Font and style of the text in the label.
 		TextProperties Properties;
 
+		/// Color of the text.
 		Color color = Color::black;
 	};
 }

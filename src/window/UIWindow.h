@@ -13,43 +13,52 @@ namespace mc
 	class UIWindow
 	{
 	public:
+		/// @returns Raw pointer to the currently active window.
 		static UIWindow* GetCurrentActiveWindow();
 
-		/// <summary> Creates UIWindow instance and returns shared_ptr to it </summary>
-		static Ref<UIWindow> Create(WindowStyle style = WindowStyle::Default, uint32_t width = 1270, uint32_t height = 920, const char* title = "Monochrome 6.0 Window");
+		/// Creates UIWindow instance and returns shared_ptr to it.
+		/// @returns Pointer to the newly created window
+		static Ref<UIWindow> Create(WindowStyle style = WindowStyle::Default, uint32_t width = 1270, uint32_t height = 920, const char* title = "Monochrome 7.2 Window");
 
-		// Returns Win32 handle to the native window
+		/// @returns Win32 handle to the native window
 		inline HWND GetNativeHandle() const { return m_NativeHandle; }
 
-		// Returns width of the window in pixels
+		/// @returns Width of the window in pixels
 		inline uint32_t GetWidth() const { return m_Width; }
 
-		// Returns height of the window in pixels
+		/// @returns Height of the window in pixels
 		inline uint32_t GetHeight() const { return m_Height; }
 
-		// Returns window title
+		/// @returns Title of the window
 		inline const char* const GetTitle() const { return m_Title; }
 
-		// Returns window-specific DPI
+		/// @returns Window-specific DPI
 		inline uint32_t GetDpi() const { return m_Dpi; }
 
-		// Adds a UIView to the window's uiview hierarchy
+		/// Adds a UIView to the window's uiview hierarchy.
 		void AddView(Ref<UIView> view);
 
-		// Processed occured events and updates the screen buffer
+		/// Processes occured events and updates the screen buffer.
 		void Update();
 
-		// Starts the continous window loop which ends when the window closes
+		/// Starts the continous window loop which ends when the window closes
 		void StartWindowLoop();
 
-		// Returns whether or not the window was opened and still exists.
-		// If the window is manually hidden but hasn't been destroyed yet, returned result will still be true.
+		/// Returns whether or not the window was opened and still exists.
+		/// If the window is manually hidden but hasn't been destroyed yet, returned result will still be true.
 		inline bool const IsOpened() const { return m_IsOpened; }
 
+		/// @returns Background color of the window.
 		Color GetBackgroundColor() const		{ return m_Background; }
+
+		/// Sets the window's background color.
+		/// @param color Color to be used
 		void SetBackgroundColor(Color color)	{ m_Background = color; }
 
+		/// @returns Returns the pointer to the close ("x") button if the window was created with modern style, otherwise returns nullptr.
 		Ref<UIButton> GetCloseButtonRef() const { return m_ModernWindowCloseButton; }
+
+		/// @returns Returns the pointer to the window's title label if the window was created with modern style, otherwise returns nullptr.
 		Ref<UILabel> GetWindowTitleLabelRef() const { return m_ModernWindowTitleLabel; }
 
 	private:

@@ -14,9 +14,11 @@ namespace mc
 		Middle
 	};
 
+	/// Event that is fired on every mouse action (clicks, movement, etc.).
 	class MouseEvent : public Event
 	{
 	public:
+		/// Holds the mouse position in the window. 
 		Point location;
 
 		REGISTER_EVT_CATEGORY(EventCategoryMouse | EventCategoryInput)
@@ -26,9 +28,11 @@ namespace mc
 			: location(location) {}
 	};
 
+	/// Event that is fired on every mouse button action (press or release).
 	class MouseButtonEvent : public MouseEvent
 	{
 	public:
+		/// Holds the mouse button that was pressed or released. 
 		MouseButton button;
 
 		REGISTER_EVT_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
@@ -38,6 +42,7 @@ namespace mc
 			: MouseEvent(location), button(button) {}
 	};
 
+	/// Event that is fired on every mouse button press.
 	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
@@ -53,6 +58,7 @@ namespace mc
 		REGISTER_EVT_CLASS_TYPE(MouseButtonPressed)
 	};
 
+	/// Event that is fired on every mouse button release.
 	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
@@ -70,12 +76,16 @@ namespace mc
 
 	using MouseButtonClickedEvent = MouseButtonReleasedEvent;
 
+	/// Event that is fired when the mouse is moved.
 	class MouseMovedEvent : public MouseEvent
 	{
 	public:
 		MouseMovedEvent(Point location, Point distance, MouseButton button) : MouseEvent(location), distance(distance), button(button) {}
 
+		/// Holds the distance in pixels the mouse was moved.
 		Point distance;
+
+		/// Optionally holds a mouse button that is pressed in the process of movement.
 		MouseButton button;
 
 		std::string ToString() const override
@@ -88,6 +98,7 @@ namespace mc
 		REGISTER_EVT_CLASS_TYPE(MouseMoved)
 	};
 
+	/// Event that is fired when the mouse is hovered over an element.
 	class MouseHoverOnEvent : public MouseMovedEvent
 	{
 	public:
@@ -95,6 +106,7 @@ namespace mc
 		REGISTER_EVT_CLASS_TYPE(MouseHoverOn)
 	};
 
+	/// Event that is fired when the mouse is hovered off an element.
 	class MouseHoverOffEvent : public MouseMovedEvent
 	{
 	public:

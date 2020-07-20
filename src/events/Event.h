@@ -34,18 +34,28 @@ namespace mc
 
 #define REGISTER_EVT_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
+	/// Base class for any system event.
 	class Event
 	{
 	public:
+		/// Tells the event handling system if it should drop the event if it's handled.
 		bool Handled = false;
 
+		/// @returns Event type
 		virtual EventType GetEventType() const = 0;
+
+		/// @returns Registered event name
 		virtual const char* GetName() const = 0;
+
+		/// @returns Category flags describing the event
 		virtual int GetCategoryFlags() const = 0;
+
+		/// @returns String representation of the event
 		virtual std::string ToString() const { return GetName(); }
 
 #pragma warning( push )
 #pragma warning( disable : 26812 )
+		/// @returns Whether or not an event belongs to a category
 		inline bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
 #pragma warning( pop ) 
 	};

@@ -21,34 +21,31 @@ namespace mc
 		UIView(const Ref<UIView>& view);
 		UIView(Frame frame);
 
-		// Sets the heirarchical position of the view
+		/// Sets the heirarchical position of the view.
 		void SetZIndex(uint32_t index);
 
-		// Returns the heirarchical position of the view
+		/// @returns Heirarchical position of the view.
 		inline const uint32_t GetZIndex() const { return m_zIndex; }
 
 	public:
-		// Contains position, size, and color of the UIView
+		/// Contains position, size, and color of the UIView.
 		Layer layer = Layer();
 
-		// Returns position relative to the top left corner of the UIWindow it is in
+		/// @returns Position relative to the top left corner of the UIWindow it is in.
 		Position GetAbsolutePosition();
 
 	public:
-		// List of children views
+		/// List of children views.
 		std::vector<Ref<UIView>> subviews;
 
-		// Pointer to the parent view,
-		// nullptr if no parent view exists
+		/// Pointer to the parent view, nullptr if no parent view exists.
 		UIView* parent = nullptr;
 
-
-		// Pointer to the source window,
-		// initially a nullptr
+		/// Pointer to the source window, initially a nullptr.
 		UIWindow* srcwindow = nullptr;
 
-		// Adds a child subview.
-		// Children subviews have position relative to their parent view's position.
+		/// Adds a child subview.
+		/// Children subviews have position relative to their parent view's position.
 		template <typename T>
 		void AddSubview(Ref<T> subview)
 		{
@@ -61,13 +58,13 @@ namespace mc
 		friend class EventValidator;
 
 	private:
-		// Tells whether or not mouse cursor is hovered over the view's frame
+		/// Tells whether or not mouse cursor is hovered over the view's frame.
 		bool m_IsMouseOverFrame = false;
 
-		// Determines heirarchical position of the view in the list
+		/// Determines heirarchical position of the view in the list.
 		uint32_t m_zIndex = 0;
 
-		// Sorts all subviews by their zIndex in increasing order
+		/// Sorts all subviews by their zIndex in increasing order.
 		void SortElements();
 	};
 

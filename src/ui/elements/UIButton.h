@@ -17,7 +17,10 @@ namespace mc
 		bool	Filled = true;
 		float	Stroke = 2;
 
+		/// Color of the button when the mouse hovers over it.
 		Color HoverOnColor = Color::transparent;
+
+		/// Color of the button when the mouse is pressed on it.
 		Color OnMousePressColor = Color::transparent;
 
 		Ref<UILabel> Label;

@@ -20,9 +20,13 @@ namespace mc
 		float	LabelMargins = 16;
 		float	CornerRadius = 2;
 		
+		/// Color of the checkmark that appears when the checkbox is checked.
 		Color	CheckmarkColor = Color::black;
+
+		/// Color of the checkbox when it's checked.
 		Color	CheckedBoxColor = Color::light_blue;
 
+		/// Label with a text next to the checkbox.
 		Ref<UILabel> Label;
 
 		bool Checked = false;
@@ -30,8 +34,10 @@ namespace mc
 	public:
 		using CheckboxValueChangedCallbackFn = std::function<void(bool checked, UICheckbox* sender)>;
 
-		// Adds a callback function that gets called every time the value of the slider changes
+		/// Adds a callback function that gets called every time the value of the checkbox changes.
 		void AddValueChangedEventHandler(CheckboxValueChangedCallbackFn cb) { m_ValueChangedCallbacks.push_back(cb); }
+
+		/// Adds a callback function that gets called every time the value of the checkbox changes.
 		void operator +=(CheckboxValueChangedCallbackFn cb) { m_ValueChangedCallbacks.push_back(cb); }
 
 	private:

@@ -1,0 +1,36 @@
+var annotated_dup =
+[
+    [ "mc", null, [
+      [ "Circle", "d5/d9d/classmc_1_1_circle.html", "d5/d9d/classmc_1_1_circle" ],
+      [ "Color", "d0/d0b/classmc_1_1_color.html", "d0/d0b/classmc_1_1_color" ],
+      [ "CoreResources", "d0/d3a/classmc_1_1_core_resources.html", null ],
+      [ "Event", "de/dfa/classmc_1_1_event.html", "de/dfa/classmc_1_1_event" ],
+      [ "EventValidator", "d4/d56/classmc_1_1_event_validator.html", null ],
+      [ "Frame", "d6/df1/structmc_1_1_frame.html", "d6/df1/structmc_1_1_frame" ],
+      [ "Graphics", "d0/d92/classmc_1_1_graphics.html", null ],
+      [ "IDrawable", "d9/d33/classmc_1_1_i_drawable.html", "d9/d33/classmc_1_1_i_drawable" ],
+      [ "IResponder", "d3/d95/classmc_1_1_i_responder.html", "d3/d95/classmc_1_1_i_responder" ],
+      [ "KeyboardEvent", "dd/de0/classmc_1_1_keyboard_event.html", "dd/de0/classmc_1_1_keyboard_event" ],
+      [ "KeyPressedEvent", "d7/d07/classmc_1_1_key_pressed_event.html", "d7/d07/classmc_1_1_key_pressed_event" ],
+      [ "KeyReleasedEvent", "d1/d3f/classmc_1_1_key_released_event.html", "d1/d3f/classmc_1_1_key_released_event" ],
+      [ "Layer", "db/d3f/classmc_1_1_layer.html", "db/d3f/classmc_1_1_layer" ],
+      [ "MouseButtonEvent", "d1/db7/classmc_1_1_mouse_button_event.html", "d1/db7/classmc_1_1_mouse_button_event" ],
+      [ "MouseButtonPressedEvent", "d0/d53/classmc_1_1_mouse_button_pressed_event.html", "d0/d53/classmc_1_1_mouse_button_pressed_event" ],
+      [ "MouseButtonReleasedEvent", "d8/d3a/classmc_1_1_mouse_button_released_event.html", "d8/d3a/classmc_1_1_mouse_button_released_event" ],
+      [ "MouseEvent", "d0/d10/classmc_1_1_mouse_event.html", "d0/d10/classmc_1_1_mouse_event" ],
+      [ "MouseHoverOffEvent", "d1/d06/classmc_1_1_mouse_hover_off_event.html", "d1/d06/classmc_1_1_mouse_hover_off_event" ],
+      [ "MouseHoverOnEvent", "de/d3d/classmc_1_1_mouse_hover_on_event.html", "de/d3d/classmc_1_1_mouse_hover_on_event" ],
+      [ "MouseMovedEvent", "da/dcc/classmc_1_1_mouse_moved_event.html", "da/dcc/classmc_1_1_mouse_moved_event" ],
+      [ "Point", "df/df5/structmc_1_1_point.html", "df/df5/structmc_1_1_point" ],
+      [ "Rectangle", "d9/d29/classmc_1_1_rectangle.html", "d9/d29/classmc_1_1_rectangle" ],
+      [ "RenderTarget", "d2/da0/classmc_1_1_render_target.html", "d2/da0/classmc_1_1_render_target" ],
+      [ "SceneManager", "de/dc7/classmc_1_1_scene_manager.html", "de/dc7/classmc_1_1_scene_manager" ],
+      [ "TextProperties", "df/d16/structmc_1_1_text_properties.html", "df/d16/structmc_1_1_text_properties" ],
+      [ "UIButton", "dd/dfa/classmc_1_1_u_i_button.html", "dd/dfa/classmc_1_1_u_i_button" ],
+      [ "UICheckbox", "d5/d49/classmc_1_1_u_i_checkbox.html", "d5/d49/classmc_1_1_u_i_checkbox" ],
+      [ "UILabel", "df/ddb/classmc_1_1_u_i_label.html", "df/ddb/classmc_1_1_u_i_label" ],
+      [ "UISlider", "da/d27/classmc_1_1_u_i_slider.html", "da/d27/classmc_1_1_u_i_slider" ],
+      [ "UIView", "d4/dfd/classmc_1_1_u_i_view.html", "d4/dfd/classmc_1_1_u_i_view" ],
+      [ "UIWindow", "d2/d7d/classmc_1_1_u_i_window.html", "d2/d7d/classmc_1_1_u_i_window" ]
+    ] ]
+];

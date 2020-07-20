@@ -30,6 +30,12 @@ namespace mc
 		static void ResizeRenderTarget(HWND hwnd);
 
 	public:
+		/// Draws a straight line.
+		/// @param x1 x-coordinate of the start point
+		/// @param y1 y-coordinate of the start point
+		/// @param x2 x-coordinate of the end point
+		/// @param y2 y-coordinate of the end point
+		///
 		static void DrawLine(
 			float x1,
 			float y1,
@@ -39,6 +45,16 @@ namespace mc
 			float stroke = 2
 		);
 
+		/// Draws a straight line.
+		/// @param x x-coordinate of the location of the top left corner relative to the parent UIView
+		/// @param y y-coordinate of the location of the top left corner relative to the parent UIView
+		/// @param width Width of the rectangle
+		/// @param height Height of the rectangle
+		/// @param color Color to fill the rectangle with
+		/// @param corner_radius Specifies the radius of each corner of the rectangle
+		/// @param filled Specifies if the rectangle should be filled
+		/// @param stroke Specifies the border thickness
+		///
 		static void DrawRectangle(
 			float x,
 			float y,
@@ -50,6 +66,14 @@ namespace mc
 			float stroke = 2
 		);
 
+		/// Draws a straight line.
+		/// @param x x-coordinate of the location of the circle's center relative to the parent UIView
+		/// @param y y-coordinate of the location of the circle's center relative to the parent UIView
+		/// @param radius Radius of the circle
+		/// @param color Color to fill the circle with
+		/// @param filled Specifies if the circle should be filled
+		/// @param stroke Specifies the border thickness
+		///
 		static void DrawCircle(
 			float x,
 			float y,
@@ -59,6 +83,17 @@ namespace mc
 			float stroke = 2
 		);
 
+		/// Draws a straight line.
+		/// @param start_x x-coordinate of the location of the first endpoint
+		/// @param start_y y-coordinate of the location of the first endpoint
+		/// @param end_x x-coordinate of the location of the second endpoint
+		/// @param end_y y-coordinate of the location of the second endpoint
+		/// @param size The x-radius and y-radius of the arc.
+		/// @param color Color to fill the arc with
+		/// @param clockwise Specifies whether the arc should bend in the clockwise direction
+		/// @param large_arc Specifies whether the arc should be calculated using the larger or the smaller angle
+		/// @param stroke Border thickness
+		///
 		static void DrawArc(
 			float start_x,
 			float start_y,
@@ -71,6 +106,15 @@ namespace mc
 			float stroke = 2
 		);
 
+		/// Draws a straight line.
+		/// @param x x-coordinate of the location of the top left corner relative to the parent UIView
+		/// @param y y-coordinate of the location of the top left corner relative to the parent UIView
+		/// @param width Width of the text rectangle
+		/// @param height Height of the text rectangle
+		/// @param text Text to draw
+		/// @param text_props Properties describing the text font and style
+		/// @param color Color to fill the rectangle with
+		///
 		static void DrawTextWideString(
 			float x,
 			float y,
@@ -81,6 +125,15 @@ namespace mc
 			Color color = Color::black
 		);
 
+		/// Draws a straight line.
+		/// @param x x-coordinate of the location of the top left corner relative to the parent UIView
+		/// @param y y-coordinate of the location of the top left corner relative to the parent UIView
+		/// @param width Width of the text rectangle
+		/// @param height Height of the text rectangle
+		/// @param text Text to draw
+		/// @param text_props Properties describing the text font and style
+		/// @param color Color to fill the rectangle with
+		///
 		static void DrawTextString(
 			float x,
 			float y,

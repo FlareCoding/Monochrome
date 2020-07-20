@@ -31,8 +31,10 @@ namespace mc
 	public:
 		using SliderValueChangedCallbackFn = std::function<void(float value, UISlider* sender)>;
 
-		// Adds a callback function that gets called every time the value of the slider changes
+		/// Adds a callback function that gets called every time the value of the slider changes.
 		void AddValueChangedEventHandler(SliderValueChangedCallbackFn cb) { m_ValueChangedCallbacks.push_back(cb); }
+
+		/// Adds a callback function that gets called every time the value of the slider changes.
 		void operator +=(SliderValueChangedCallbackFn cb) { m_ValueChangedCallbacks.push_back(cb); }
 
 	private:

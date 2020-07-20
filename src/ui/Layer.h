@@ -27,7 +27,7 @@ namespace mc
 		Point operator*=(const Point& rhs) { return Point{ x *= rhs.x, y *= rhs.y }; }
 		Point operator/=(const Point& rhs) { return Point{ x /= rhs.x, y /= rhs.y }; }
 
-		// Corrects coordinates match display's dpi settings
+		/// Corrects coordinates match display's dpi settings.
 		inline void AdjustToDpi(uint32_t dpi)
 		{
 			static float default_dpi = 96.0f;
@@ -51,7 +51,7 @@ namespace mc
 		inline const Position GetBottomRightConer()		const { return Position{ position.x + size.width, position.y + size.height }; }
 		inline const Position GetBottomLeftCorner()		const { return Position{ position.x, position.y + size.height }; }
 
-		// Returns whether or not the point is inside the frame's region
+		/// Returns whether or not the point is inside the frame's region.
 		inline const bool DoesContain(Point p) const
 		{
 			if (p.x > position.x&& p.x < position.x + size.width &&
@@ -60,7 +60,7 @@ namespace mc
 			return false;
 		}
 
-		// Corrects frame coordinates and size to match display's dpi settings
+		/// Corrects frame coordinates and size to match display's dpi settings.
 		inline void AdjustToDpi(uint32_t dpi)
 		{
 			static float default_dpi = 96.0f;

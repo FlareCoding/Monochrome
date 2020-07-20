@@ -225,7 +225,43 @@ namespace mc
 		bool large_arc,
 		float stroke)
 	{
-		// TO-DO
+		ID2D1HwndRenderTarget* target = m_RenderTarget->GetNativeHandle();
+
+		D2D1::ColorF norm_color = D2D1::ColorF((float)color.r / 255.0f, (float)color.g / 255.0f, (float)color.b / 255.0f, color.alpha);
+
+		ID2D1SolidColorBrush* brush;
+		target->CreateSolidColorBrush(norm_color, &brush);
+
+		ID2D1PathGeometry* path;
+		D2D1_POINT_2F begin;
+		begin.x = start_x;
+		begin.y = start_y;
+		D2D1_POINT_2F end;
+		end.x = end_x;
+		end.y = end_y;
+
+		D2D1_ARC_SEGMENT arc = {
+			end,
+			{ size, size },
+			0.0f,
+			clockwise ? D2D1_SWEEP_DIRECTION::D2D1_SWEEP_DIRECTION_CLOCKWISE : D2D1_SWEEP_DIRECTION::D2D1_SWEEP_DIRECTION_COUNTER_CLOCKWISE,
+			large_arc ? D2D1_ARC_SIZE::D2D1_ARC_SIZE_LARGE : D2D1_ARC_SIZE::D2D1_ARC_SIZE_SMALL
+		};
+
+		CoreResources::GetFactory()->CreatePathGeometry(&path);
+		
+		ID2D1GeometrySink* sink;
+		path->Open(&sink);
+
+		sink->BeginFigure(begin, D2D1_FIGURE_BEGIN_FILLED);
+		sink->AddArc(arc);
+		sink->EndFigure(D2D1_FIGURE_END_OPEN);
+		sink->Close();
+
+		target->DrawGeometry(path, brush, stroke);
+
+		path->Release();
+		brush->Release();
 	}
 
 	void Graphics::DrawTextWideString(
