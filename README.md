@@ -9,9 +9,11 @@ Monochrome is currently only supported on Windows.
 ## Installation
 
 After cloning the repo, open git bash in the master directory and execute the following commands:
-``mkdir build ``
-``cd build``
-``cmake ..``
+```
+mkdir build
+cd build
+cmake ..
+```
 
 The Visual Studio solution will be generated in the build directory.
 
