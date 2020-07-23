@@ -1,7 +1,7 @@
 # Monochrome
 
 Monochrome is a GUI library aimed at C++ developers to help make the process of GUI development much easier. Monochrome offers modern style window and UI elements.
-The windowing system depends on Win32 API and graphics drawing is done by Direct2D and DirectDraw.
+The windowing system depends on Win32 API and graphics drawing is done by Direct2D and DirectWrite.
 
 ## Platform
 Monochrome is currently only supported on Windows.
@@ -9,9 +9,11 @@ Monochrome is currently only supported on Windows.
 ## Installation
 
 After cloning the repo, open git bash in the master directory and execute the following commands:
-``mkdir build ``
-``cd build``
-``cmake ..``
+```
+mkdir build
+cd build
+cmake ..
+```
 
 The Visual Studio solution will be generated in the build directory.
 
