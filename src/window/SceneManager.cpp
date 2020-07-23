@@ -97,12 +97,13 @@ namespace mc
 
 	void SceneManager::ProcessEvent(EventPtr& event, Ref<UIView>& view, const std::vector<Ref<UIView>>& view_layer, uint32_t window_dpi)
 	{
+		// Validating event (checking if the event belongs to the view)
+		bool event_valid = EventValidator::ValidateEvent(*event.get(), view, view_layer, window_dpi);
+
 		// Retrieving all callback functions
 		auto callbacks = view->GetEventHandlers(event->GetEventType());
 		if (callbacks.size() > 0)
 		{
-			// Validating event (checking if the event belongs to the view)
-			bool event_valid = EventValidator::ValidateEvent(*event.get(), view, view_layer, window_dpi);
 			if (event_valid)
 			{
 				// For every callback, if it's valid, call the event handler

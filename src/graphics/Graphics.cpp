@@ -81,6 +81,35 @@ namespace mc
 		}
 	}
 
+	static DWRITE_WORD_WRAPPING McWordWrappingToDwriteWrapping(WordWrapping mode)
+	{
+		switch (mode)
+		{
+		case WordWrapping::NORMAL_WRAP:
+		{
+			return DWRITE_WORD_WRAPPING_WRAP;
+		}
+		case WordWrapping::NO_WRAP:
+		{
+			return DWRITE_WORD_WRAPPING_NO_WRAP;
+		}
+		case WordWrapping::CHARACTER_WRAP:
+		{
+			return DWRITE_WORD_WRAPPING_CHARACTER;
+		}
+		case WordWrapping::WORD_WRAP:
+		{
+			return DWRITE_WORD_WRAPPING_WHOLE_WORD;
+		}
+		case WordWrapping::EMERGENCY_BREAK:
+		{
+			return DWRITE_WORD_WRAPPING_EMERGENCY_BREAK;
+		}
+		default:
+			return DWRITE_WORD_WRAPPING_WRAP;
+		}
+	}
+
 #pragma warning( pop ) 
 
 	static bool s_AreGraphicsInitialized = false;
@@ -260,6 +289,7 @@ namespace mc
 
 		target->DrawGeometry(path, brush, stroke);
 
+		sink->Release();
 		path->Release();
 		brush->Release();
 	}
@@ -295,6 +325,7 @@ namespace mc
 		auto [ta, pa] = TextAllignmentToDwriteAlignment(text_props.Allignment);
 		format->SetTextAlignment(ta);
 		format->SetParagraphAlignment(pa);
+		format->SetWordWrapping(McWordWrappingToDwriteWrapping(text_props.Wrapping));
 		target->DrawTextW(text.c_str(), (UINT32)text.size(), format, D2D1::RectF(x, y, x + width, y + height), brush, D2D1_DRAW_TEXT_OPTIONS_CLIP);
 		brush->Release();
 		format->Release();
@@ -310,6 +341,85 @@ namespace mc
 		Color color)
 	{
 		DrawTextWideString(x, y, width, height, ConvertStringToWstring(text), text_props, color);
+	}
+
+	TextMetrics Graphics::CalculateTextMetrics(
+		const std::string& text,
+		TextProperties text_props,
+		float max_width,
+		float max_height)
+	{
+		TextMetrics metrics = { 0 };
+
+		auto [font_weight, font_style] = TextStyleToDwriteStyle(text_props.Style);
+
+		IDWriteTextFormat* format;
+		HRESULT result = CoreResources::GetWriteFactory()->CreateTextFormat(
+			std::wstring(text_props.Font.begin(), text_props.Font.end()).c_str(),
+			NULL,
+			font_weight,
+			font_style,
+			DWRITE_FONT_STRETCH_NORMAL,
+			(float)text_props.FontSize,
+			L"",
+			&format
+		);
+
+		if (result != S_OK)
+		{ 
+			format->Release(); 
+			return metrics;
+		}
+
+		auto [ta, pa] = TextAllignmentToDwriteAlignment(text_props.Allignment);
+		format->SetTextAlignment(ta);
+		format->SetParagraphAlignment(pa);
+		format->SetWordWrapping(McWordWrappingToDwriteWrapping(text_props.Wrapping));
+
+		// Creating text layout to get mertrics from
+		IDWriteTextLayout* layout;
+		result = CoreResources::GetWriteFactory()->CreateTextLayout(std::wstring(text.begin(), text.end()).c_str(), (UINT32)text.size(), format, max_width, max_height, &layout);
+
+		if (result != S_OK)
+		{
+			format->Release();
+			layout->Release();
+			return metrics;
+		}
+
+		// Getting text layout metrics
+		DWRITE_TEXT_METRICS DwriteMetrics;
+		layout->GetMetrics(&DwriteMetrics);
+
+		static float static_text_metric_offset = 5.0f;
+
+		metrics.Left		= DwriteMetrics.left;
+		metrics.Top			= DwriteMetrics.top;
+		metrics.Width		= DwriteMetrics.width;
+		metrics.WidthIncludingTrailingWhitespace = DwriteMetrics.widthIncludingTrailingWhitespace + static_text_metric_offset;
+		metrics.Height		= DwriteMetrics.height;
+		metrics.LineCount	= DwriteMetrics.lineCount;
+
+		format->Release();
+		layout->Release();
+		return metrics;
+	}
+
+	uint32_t Graphics::GetLineCharacterLimit(TextProperties text_props, float container_width, float container_height)
+	{
+		std::string SampleText = "";
+		float TextWidth = 0;
+		uint32_t CharacterCount = 0;
+
+		while (TextWidth <= container_width)
+		{
+			TextMetrics metrics = CalculateTextMetrics(SampleText, text_props, container_width, container_height);
+			TextWidth = metrics.WidthIncludingTrailingWhitespace;
+			SampleText.append("a");
+			CharacterCount++;
+		}
+
+		return (CharacterCount - 2);
 	}
 
 #pragma warning( pop ) 

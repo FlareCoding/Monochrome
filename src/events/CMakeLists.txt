@@ -9,6 +9,7 @@ set(
     src/events/IResponder.h
     src/events/KeyboardEvents.h
     src/events/MouseEvents.h
+    src/events/FocusChangedEvent.h
 
     PARENT_SCOPE
 )

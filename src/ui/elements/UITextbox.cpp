@@ -1,0 +1,246 @@
+#include "UITextbox.h"
+#include <graphics/Graphics.h>
+#include <window/UIWindow.h>
+
+namespace mc
+{
+	UITextbox::UITextbox()
+	{
+		layer.frame = Frame(40, 40, 180, 26);
+		SetDefaultOptions();
+	}
+
+	UITextbox::UITextbox(Frame frame) : UIView(frame)
+	{
+		SetDefaultOptions();
+	}
+	
+	void UITextbox::SetDefaultOptions()
+	{
+		Text = "";
+		Placeholder = "Enter text ...";
+		TextProperties.Allignment = TextAlignment::LEADING;
+		TextProperties.Wrapping = WordWrapping::NO_WRAP;
+
+		m_Label = MakeRef<UILabel>();
+		m_Label->layer.frame = Frame(5, 2, layer.frame.size.width - 10, layer.frame.size.height - 4);
+		subviews.push_back(m_Label);
+
+		Update();
+		SetupEventHandlers();
+	}
+
+	void UITextbox::SetupEventHandlers()
+	{
+		AddEventHandler<EventType::KeyPressed>([this](Event& event, UIView* sender) -> bool {
+			KeyPressedEvent& evt = reinterpret_cast<KeyPressedEvent&>(event);
+			auto input = std::string(1, McKeycodeToChar(evt.keycode, evt.capital, evt.capslock_on));
+
+			if (!input.empty() && !input._Equal("\n"))
+				ProcessKeyEvent(input, evt.keycode);
+
+			return EVENT_UNHANDLED;
+		});
+	}
+
+	void UITextbox::ProcessKeyEvent(const std::string& input, KeyCode keycode)
+	{
+		const auto local_visible_text_sanitize = [this]() {
+			bool success = false;
+			while (!success)
+			{
+				auto VisibleText = Text.substr(m_VisibleStartIndex, m_CursorIndex - m_VisibleStartIndex);
+				auto metrics = Graphics::CalculateTextMetrics(VisibleText, TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
+
+				if (!IsTextAboveLengthLimit(metrics.WidthIncludingTrailingWhitespace))
+					success = true;
+				else
+				{
+					m_VisibleStartIndex++;
+					m_VisibleEndIndex++;
+				}
+			}
+
+			m_VisibleEndIndex = m_CursorIndex;
+		};
+
+		switch (keycode)
+		{
+		case KeyCode::KEY_TAB:
+		{
+			ProcessKeyEvent("    ", KeyCode::None); // 4 spaces
+			break;
+		}
+		case KeyCode::KEY_LEFT:
+		{
+			if (m_CursorIndex > 0)
+			{
+				if (m_CursorIndex == m_VisibleStartIndex)
+				{
+					m_VisibleStartIndex--;
+					m_VisibleEndIndex--;
+				}
+
+				m_CursorIndex--;
+			}
+			break;
+		}
+		case KeyCode::KEY_RIGHT:
+		{
+			if (m_CursorIndex < Text.size())
+			{
+				if (m_CursorIndex == m_VisibleEndIndex)
+				{
+					m_VisibleStartIndex++;
+					m_VisibleEndIndex++;
+				}
+
+				m_CursorIndex++;
+			}
+			break;
+		}
+		case KeyCode::KEY_BACKSPACE:
+		{
+			if (m_CursorIndex > 0)
+			{
+				Text.erase(m_CursorIndex - 1, 1);
+				m_CursorIndex--;
+
+				if (m_VisibleStartIndex > 0)
+				{
+					m_VisibleStartIndex--;
+					m_VisibleEndIndex--;
+				}
+			}
+			break;
+		}
+		default:
+			if (strcmp(input.c_str(), "\0") != 0)
+			{
+				Text.insert(m_CursorIndex, input);
+				m_CursorIndex++;
+
+				if (m_CursorIndex >= Text.size() || m_CursorIndex > m_VisibleEndIndex)
+					local_visible_text_sanitize();
+			}
+		}
+	}
+
+	void UITextbox::Draw()
+	{
+		Update();
+
+		bool IsFocused = (srcwindow && srcwindow->IsViewFocused(this));
+
+		// Highlighted border when the textbox is in a focused state
+		if (IsFocused)
+		{
+			Graphics::DrawRectangle(
+				layer.frame.position.x,
+				layer.frame.position.y,
+				layer.frame.size.width,
+				layer.frame.size.height,
+				FocusedHighlightColor,
+				CornerRadius,
+				true,
+				Stroke
+			);
+		}
+
+		// Main textbox area
+		// The offset is set to make the main area slightly smaller 
+		// to fit inside the highlighted area while the highlighted 
+		// border can still fit inside the layer's area.
+		Graphics::DrawRectangle(
+			layer.frame.position.x + 1,
+			layer.frame.position.y + 1,
+			layer.frame.size.width - 2,
+			layer.frame.size.height - 2,
+			layer.color,
+			CornerRadius,
+			true,
+			Stroke
+		);
+
+		std::string PreCursorText = Text.substr(m_VisibleStartIndex, m_CursorIndex - m_VisibleStartIndex);
+		auto metrics = Graphics::CalculateTextMetrics(PreCursorText, TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
+
+		// If the textbox is focused and active, draw the cursor
+		if (IsFocused)
+		{
+			float TextToLayerGap = (layer.frame.size.height - metrics.Height) / 2.0f;
+
+			Graphics::DrawLine(
+				layer.frame.position.x + metrics.WidthIncludingTrailingWhitespace + 1,
+				layer.frame.position.y + TextToLayerGap,
+				layer.frame.position.x + metrics.WidthIncludingTrailingWhitespace + 1,
+				layer.frame.position.y + layer.frame.size.height - TextToLayerGap,
+				TextColor,
+				1
+			);
+		}
+	}
+
+	void UITextbox::Update()
+	{
+		// Keeping the visible character limit updated
+		m_VisibleCharLimit = Graphics::GetLineCharacterLimit(TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
+
+		// Sanitizing the cursor position
+		if (m_CursorIndex > Text.size() && m_CursorIndex > 0)
+			m_CursorIndex = Text.size() - 1;
+
+		if (m_CursorIndex < 0)
+			m_CursorIndex = 0;
+
+		// Sanitizing visible text indices
+		SanitizeVisibleText();
+
+		// Keeping the label frame same as button's
+		m_Label->layer.frame = Frame(5, 2, layer.frame.size.width - 10, layer.frame.size.height - 4);
+
+		// Controlling the opacity of the child label
+		m_Label->layer.color.alpha = layer.color.alpha;
+		m_Label->color.alpha = layer.color.alpha;
+
+		// Keeping label's text properties updated
+		m_Label->Properties = TextProperties;
+
+		// Controlling the label's text and opacity in case
+		// the placeholder text is displayed.
+		if (Text.empty())
+		{
+			m_Label->Text = Placeholder;
+			m_Label->color.alpha = 0.6f;
+		}
+		else
+			m_Label->Text = m_VisibleText;
+	}
+
+	void UITextbox::SanitizeVisibleText()
+	{
+		auto metrics = Graphics::CalculateTextMetrics(Text, TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
+
+		if (!IsTextAboveLengthLimit(metrics.WidthIncludingTrailingWhitespace))
+		{
+			m_VisibleStartIndex = 0;
+			m_VisibleEndIndex = Text.size();
+		}
+		else
+		{
+			if (m_VisibleStartIndex < 0)
+				m_VisibleStartIndex = 0;
+
+			if (m_VisibleEndIndex > Text.size())
+				m_VisibleEndIndex = Text.size();
+		}
+
+		m_VisibleText = Text.substr(m_VisibleStartIndex, m_VisibleEndIndex - m_VisibleStartIndex);
+	}
+
+	bool UITextbox::IsTextAboveLengthLimit(float text_width)
+	{
+		static float text_safe_area_gap = 10.0f;
+		return text_width >= (layer.frame.size.width - text_safe_area_gap);
+	}
+}

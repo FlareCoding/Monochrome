@@ -33,7 +33,7 @@
    <div id="projectname">Monochrome
    &#160;<span id="projectnumber">7.2</span>
    </div>
-   <div id="projectbrief">Monochrome is a GUI library aimed at C++ developers to help make the process of GUI development much easier. Monochrome offers modern style window and UI elements. The windowing system depends on Win32 API and graphics drawing is done by Direct2D and DirectDraw.</div>
+   <div id="projectbrief">Monochrome is a modern style GUI library aimed at making GUI apps with C++ easier</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -142,8 +142,70 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
 <tr class="separator:a4fcf1fc5fe84920cc4ef7e6c49b52954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4f137bdebfd0134a95271869667bedb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_graphics.html#aa4f137bdebfd0134a95271869667bedb">DrawTextString</a> (float x, float y, float width, float height, const std::string &amp;text, <a class="el" href="structmc_1_1_text_properties.html">TextProperties</a> text_props=<a class="el" href="structmc_1_1_text_properties.html">TextProperties</a>(), <a class="el" href="classmc_1_1_color.html">Color</a> color=Color::black)</td></tr>
 <tr class="separator:aa4f137bdebfd0134a95271869667bedb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0db71d451c3f6ace1e5629166ea0b369"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structmc_1_1_text_metrics.html">TextMetrics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_graphics.html#a0db71d451c3f6ace1e5629166ea0b369">CalculateTextMetrics</a> (const std::string &amp;text, <a class="el" href="structmc_1_1_text_properties.html">TextProperties</a> text_props, float max_width, float max_height)</td></tr>
+<tr class="separator:a0db71d451c3f6ace1e5629166ea0b369"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a267747f29ee0ebaec48ae86807ecbd28"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_graphics.html#a267747f29ee0ebaec48ae86807ecbd28">GetLineCharacterLimit</a> (<a class="el" href="structmc_1_1_text_properties.html">TextProperties</a> text_props, float container_width, float container_height)</td></tr>
+<tr class="separator:a267747f29ee0ebaec48ae86807ecbd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0db71d451c3f6ace1e5629166ea0b369"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0db71d451c3f6ace1e5629166ea0b369">&#9670;&nbsp;</a></span>CalculateTextMetrics()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmc_1_1_text_metrics.html">TextMetrics</a> mc::Graphics::CalculateTextMetrics </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmc_1_1_text_properties.html">TextProperties</a>&#160;</td>
+          <td class="paramname"><em>text_props</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max_height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Calculates metrics of the text based on the text properties and layout. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>Text to calculate the metrics of </td></tr>
+    <tr><td class="paramname">text_props</td><td>Properties describing the text font and style </td></tr>
+    <tr><td class="paramname">max_width</td><td>Maximum width of the text layout container </td></tr>
+    <tr><td class="paramname">max_height</td><td>Maximum height of the text layout container </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Structure containing calculated metrics of the inputted text </dd></dl>
+
+</div>
+</div>
 <a id="a42f8c3178113e3074061a607e29d21f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a42f8c3178113e3074061a607e29d21f4">&#9670;&nbsp;</a></span>DrawArc()</h2>
 
@@ -617,10 +679,57 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>graphics/<a class="el" href="_graphics_8h_source.html">Graphics.h</a></li>
-<li>graphics/Graphics.cpp</li>
-</ul>
+<a id="a267747f29ee0ebaec48ae86807ecbd28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a267747f29ee0ebaec48ae86807ecbd28">&#9670;&nbsp;</a></span>GetLineCharacterLimit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mc::Graphics::GetLineCharacterLimit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmc_1_1_text_properties.html">TextProperties</a>&#160;</td>
+          <td class="paramname"><em>text_props</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>container_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>container_height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Calculates how many characters would fit on a single line. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text_props</td><td>Properties describing the text font and style </td></tr>
+    <tr><td class="paramname">container_width</td><td>Width of the container holding the text </td></tr>
+    <tr><td class="paramname">container_height</td><td>Height of the container holding the text </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of characters that would fit on the line </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

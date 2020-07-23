@@ -61,6 +61,19 @@ namespace mc
 		/// @returns Returns the pointer to the window's title label if the window was created with modern style, otherwise returns nullptr.
 		Ref<UILabel> GetWindowTitleLabelRef() const { return m_ModernWindowTitleLabel; }
 
+		/// Sets focus onto a single view.
+		/// If another view is already focused, that view will lose its focus.
+		void FocusView(Ref<UIView> view);
+
+		/// @returns Returns the raw pointer to the currently focused UIView, but if no view is in focus, returns nullptr.
+		UIView* GetFocusedView() { return m_FocusedView; };
+
+		/// @returns Returns whether or not the following view is in focused state
+		bool IsViewFocused(Ref<UIView>& view) { return view.get() == m_FocusedView; }
+
+		/// @returns Returns whether or not the following view is in focused state
+		bool IsViewFocused(UIView* view) { return view == m_FocusedView; }
+
 	private:
 		UIWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title);
 		HWND m_NativeHandle = {};
@@ -91,6 +104,8 @@ namespace mc
 
 	private:
 		SceneManager m_SceneManager;
+
+		UIView* m_FocusedView = nullptr;
 
 	public:
 		LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

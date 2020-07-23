@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['operator_2b_3d_146',['operator+=',['../d3/d95/classmc_1_1_i_responder.html#aa924b69168f5d0daa0e119d857a9ceb6',1,'mc::IResponder::operator+=()'],['../d5/d49/classmc_1_1_u_i_checkbox.html#a2a97a11e07bf421a106692e8698c0827',1,'mc::UICheckbox::operator+=()'],['../da/d27/classmc_1_1_u_i_slider.html#ae881d3f0bf9ed48d13097dfa94666c82',1,'mc::UISlider::operator+=()']]]
+  ['isincategory_163',['IsInCategory',['../classmc_1_1_event.html#aa95a2163fb99880fa497a52f2866323a',1,'mc::Event']]],
+  ['isopened_164',['IsOpened',['../classmc_1_1_u_i_window.html#a59ce118902641dc9c02c92200c66c7a5',1,'mc::UIWindow']]],
+  ['isviewfocused_165',['IsViewFocused',['../classmc_1_1_u_i_window.html#a693f1c8875f3f94f13dfb2b102ecb71f',1,'mc::UIWindow::IsViewFocused(Ref&lt; UIView &gt; &amp;view)'],['../classmc_1_1_u_i_window.html#a5c5655440bcab1d34f9ca17134531acf',1,'mc::UIWindow::IsViewFocused(UIView *view)']]]
 ];

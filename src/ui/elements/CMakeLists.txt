@@ -7,6 +7,7 @@ set(
     src/ui/elements/UIButton.h
     src/ui/elements/UICheckbox.h
     src/ui/elements/UISlider.h
+    src/ui/elements/UITextbox.h
 
     PARENT_SCOPE
 )
@@ -18,6 +19,7 @@ set(
     src/ui/elements/UIButton.cpp
     src/ui/elements/UICheckbox.cpp
     src/ui/elements/UISlider.cpp
+    src/ui/elements/UITextbox.cpp
 
     PARENT_SCOPE
 )

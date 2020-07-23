@@ -144,6 +144,31 @@ namespace mc
 			Color color = Color::black
 		);
 
+		/// Calculates metrics of the text based on the text properties and layout.
+		/// @param text Text to calculate the metrics of
+		/// @param text_props Properties describing the text font and style
+		/// @param max_width Maximum width of the text layout container
+		/// @param max_height Maximum height of the text layout container
+		/// @returns Structure containing calculated metrics of the inputted text
+		///
+		static TextMetrics CalculateTextMetrics(
+			const std::string& text,
+			TextProperties text_props,
+			float max_width,
+			float max_height
+		);
+
+		/// Calculates how many characters would fit on a single line.
+		/// @param text_props Properties describing the text font and style
+		/// @param container_width Width of the container holding the text
+		/// @param container_height Height of the container holding the text
+		/// @returns Number of characters that would fit on the line
+		static uint32_t GetLineCharacterLimit(
+			TextProperties text_props,
+			float container_width,
+			float container_height
+		);
+
 	private:
 		static Ref<RenderTarget> m_RenderTarget;
 	};

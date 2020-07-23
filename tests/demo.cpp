@@ -40,6 +40,29 @@ int main()
 	slider->AddValueChangedEventHandler(Slider_ValueChanged);
 	window->AddView(slider);
 
+	Ref<UITextbox> textbox = MakeRef<UITextbox>();
+	textbox->layer.frame = Frame(Position{ 400, 300 }, Size{ 260, 34 });
+	textbox->TextProperties.FontSize = 16;
+	textbox->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
+		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
+			MessageBoxA(0, "Text Entered!", "Textbox 1", 0);
+
+		return EVENT_HANDLED;
+	});
+	window->AddView(textbox);
+
+	Ref<UITextbox> textbox2 = MakeRef<UITextbox>();
+	textbox2->layer.frame = Frame(Position{ 400, 360 }, Size{ 260, 34 });
+	textbox2->TextProperties.FontSize = 16;
+	textbox2->Placeholder = "Enter Username";
+	textbox2->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
+		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
+			MessageBoxA(0, "Username Entered!", "Textbox 2", 0);
+
+		return EVENT_HANDLED;
+	});
+	window->AddView(textbox2);
+
 	window->StartWindowLoop();
 
 	MessageBoxA(0, "End of control flow reached\r\nClean up code should go here", "Ready to Return", 0);

@@ -21,6 +21,15 @@ namespace mc
 		SEMIBOLD_ITALIC
 	};
 
+	enum class WordWrapping
+	{
+		NORMAL_WRAP,
+		NO_WRAP,
+		CHARACTER_WRAP,
+		WORD_WRAP,
+		EMERGENCY_BREAK
+	};
+
 	struct TextProperties
 	{
 		std::string		Font = "Arial";
@@ -28,5 +37,16 @@ namespace mc
 
 		TextAlignment	Allignment = TextAlignment::CENTERED;
 		TextStyle		Style = TextStyle::DEFAULT;
+		WordWrapping	Wrapping = WordWrapping::NORMAL_WRAP;
+	};
+
+	struct TextMetrics
+	{
+		float Left;
+		float Top;
+		float Width;
+		float WidthIncludingTrailingWhitespace;
+		float Height;
+		uint32_t LineCount;
 	};
 }

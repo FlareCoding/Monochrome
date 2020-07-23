@@ -140,7 +140,7 @@ namespace mc
 		{ KeyCode::KEY_F11, std::pair<char, char>('\0', '\0') },
 		{ KeyCode::KEY_F12, std::pair<char, char>('\0', '\0') },
 
-		{ KeyCode::KEY_BACKSPACE,	std::pair<char, char>('\b', '\b') },
+		{ KeyCode::KEY_BACKSPACE,	std::pair<char, char>('\0', '\0') },
 		{ KeyCode::KEY_SPACE,		std::pair<char, char>(' ', ' ')	  },
 		{ KeyCode::KEY_BACKTICK,	std::pair<char, char>('`', '~')   },
 		{ KeyCode::KEY_ENTER,		std::pair<char, char>('\n', '\n') },

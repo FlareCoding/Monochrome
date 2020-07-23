@@ -1,4 +1,5 @@
 #include "EventValidator.h"
+#include <window/UIWindow.h>
 
 namespace mc
 {
@@ -36,7 +37,13 @@ namespace mc
 		// or the view is not on top of all other views, then it doesn't belong to that view.
 		// In that case event would be automatically invalid.
 		if (event.IsInCategory(EventCategory::EventCategoryMouseButton) && (!MouseInsideFrame || !ViewIsTopMost))
+		{
+			if (event.GetEventType() == EventType::MouseButtonPressed)
+				if (view->srcwindow && view->srcwindow->GetFocusedView() == view.get())
+					view->srcwindow->FocusView(nullptr);
+
 			return false;
+		}
 
 		//
 		// Checking for specific mouse events
@@ -122,12 +129,22 @@ namespace mc
 				return false;
 		}
 
+		// If the event passed all checks and is valid, the element should become focused.
+		if (event.GetEventType() == EventType::MouseButtonPressed)
+		{
+			if (view->srcwindow)
+				view->srcwindow->FocusView(view);
+		}
+
 		return true;
 	}
 
 	bool EventValidator::ValidateKeyboardEvent(KeyboardEvent& event, Ref<UIView>& view)
 	{
-		return true;
+		if (view->srcwindow && view->srcwindow->IsViewFocused(view))
+			return true;
+		else
+			return false;
 	}
 
 	bool EventValidator::IsMouseInsideViewFrame(Ref<UIView>& view, Point mouse_location, uint32_t window_dpi)

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['frame_89',['Frame',['../d6/df1/structmc_1_1_frame.html',1,'mc']]]
+  ['focuschangedevent_101',['FocusChangedEvent',['../classmc_1_1_focus_changed_event.html',1,'mc']]],
+  ['frame_102',['Frame',['../structmc_1_1_frame.html',1,'mc']]]
 ];

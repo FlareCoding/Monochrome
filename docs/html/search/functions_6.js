@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['setbackgroundcolor_147',['SetBackgroundColor',['../d2/d7d/classmc_1_1_u_i_window.html#abeacd2327ef70c6ce7f6cc8c83897a4f',1,'mc::UIWindow']]],
-  ['setzindex_148',['SetZIndex',['../d4/dfd/classmc_1_1_u_i_view.html#aa44894c75232684a1bbbaea9a7c50ad8',1,'mc::UIView']]],
-  ['startwindowloop_149',['StartWindowLoop',['../d2/d7d/classmc_1_1_u_i_window.html#a34d3e85ba9cbf7f29235b4d918e04365',1,'mc::UIWindow']]]
+  ['operator_2b_3d_166',['operator+=',['../classmc_1_1_i_responder.html#aa924b69168f5d0daa0e119d857a9ceb6',1,'mc::IResponder::operator+=()'],['../classmc_1_1_u_i_checkbox.html#a2a97a11e07bf421a106692e8698c0827',1,'mc::UICheckbox::operator+=()'],['../classmc_1_1_u_i_slider.html#ae881d3f0bf9ed48d13097dfa94666c82',1,'mc::UISlider::operator+=()']]]
 ];

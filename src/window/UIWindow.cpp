@@ -393,7 +393,7 @@ namespace mc
 	{
 		while (IsOpened())
 		{
-			Sleep(20);
+			Sleep(16); // 16 miliseconds is the most optimal sleep amount (1 frame per 16 ms.)
 			Update();
 
 			m_SceneManager.ProcessEvents(m_Dpi);
@@ -405,5 +405,33 @@ namespace mc
 	{
 		view->srcwindow = this;
 		m_SceneManager.AddView(view);
+	}
+
+	void UIWindow::FocusView(Ref<UIView> view)
+	{
+		if (m_FocusedView == view.get()) return;
+
+		// If a view was already focused, unfocus it and call event handlers
+		if (m_FocusedView)
+		{
+			for (auto& callback : m_FocusedView->GetEventHandlers(EventType::FocusChanged))
+			{
+				auto& event = FocusChangedEvent(false);
+				callback(event, m_FocusedView);
+			}
+		}
+
+		// Set the new focused view
+		m_FocusedView = view.get();
+
+		// If there is a new focused view, call its event handlers
+		if (m_FocusedView)
+		{
+			for (auto& callback : m_FocusedView->GetEventHandlers(EventType::FocusChanged))
+			{
+				auto& event = FocusChangedEvent(true);
+				callback(event, m_FocusedView);
+			}
+		}
 	}
 }

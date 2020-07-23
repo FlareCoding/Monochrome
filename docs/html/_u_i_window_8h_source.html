@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Monochrome: window/UIWindow.h Source File</title>
+<title>Monochrome: C:/Users/alber/Desktop/Monochrome/src/window/UIWindow.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,7 +33,7 @@
    <div id="projectname">Monochrome
    &#160;<span id="projectnumber">7.2</span>
    </div>
-   <div id="projectbrief">Monochrome is a GUI library aimed at C++ developers to help make the process of GUI development much easier. Monochrome offers modern style window and UI elements. The windowing system depends on Win32 API and graphics drawing is done by Direct2D and DirectDraw.</div>
+   <div id="projectbrief">Monochrome is a modern style GUI library aimed at making GUI apps with C++ easier</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -112,89 +112,109 @@ $(document).ready(function(){initNavTree('_u_i_window_8h_source.html',''); initR
 <div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html">   13</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmc_1_1_u_i_window.html">UIWindow</a></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">static</span> <a class="code" href="classmc_1_1_u_i_window.html">UIWindow</a>* GetCurrentActiveWindow();</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keyword">static</span> Ref&lt;UIWindow&gt; <a class="code" href="classmc_1_1_u_i_window.html#ae461ffc8afd9630f1cd1cd2ea646b646">Create</a>(WindowStyle style = WindowStyle::Default, uint32_t width = 1270, uint32_t height = 920, <span class="keyword">const</span> <span class="keywordtype">char</span>* title = <span class="stringliteral">&quot;Monochrome 6.0 Window&quot;</span>);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="comment">// Returns Win32 handle to the native window</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">inline</span> HWND GetNativeHandle()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_NativeHandle; }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="comment">// Returns width of the window in pixels</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keyword">inline</span> uint32_t GetWidth()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_Width; }</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="comment">// Returns height of the window in pixels</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keyword">inline</span> uint32_t GetHeight()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_Height; }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="comment">// Returns window title</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <span class="keyword">const</span> GetTitle()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_Title; }</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="comment">// Returns window-specific DPI</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">inline</span> uint32_t GetDpi()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_Dpi; }</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="comment">// Adds a UIView to the window&#39;s uiview hierarchy</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">void</span> AddView(Ref&lt;UIView&gt; view);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="comment">// Processed occured events and updates the screen buffer</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">void</span> Update();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="comment">// Starts the continous window loop which ends when the window closes</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">void</span> StartWindowLoop();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="comment">// Returns whether or not the window was opened and still exists.</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="comment">// If the window is manually hidden but hasn&#39;t been destroyed yet, returned result will still be true.</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">inline</span> <span class="keywordtype">bool</span> <span class="keyword">const</span> IsOpened()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_IsOpened; }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> GetBackgroundColor()<span class="keyword"> const        </span>{ <span class="keywordflow">return</span> m_Background; }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">void</span> SetBackgroundColor(<a class="code" href="classmc_1_1_color.html">Color</a> color)    { m_Background = color; }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        Ref&lt;UIButton&gt; GetCloseButtonRef()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_ModernWindowCloseButton; }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        Ref&lt;UILabel&gt; GetWindowTitleLabelRef()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_ModernWindowTitleLabel; }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="classmc_1_1_u_i_window.html">UIWindow</a>(WindowStyle style, uint32_t width, uint32_t height, <span class="keyword">const</span> <span class="keywordtype">char</span>* title);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        HWND m_NativeHandle = {};</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        MSG msg = {};</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        WindowStyle m_WindowStyle = WindowStyle::Default;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        uint32_t    m_Width     = 0;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        uint32_t    m_Height    = 0;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* m_Title     = 0;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        uint32_t    m_Dpi       = 0;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a>       m_Background = Color::gray;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keyword">static</span> <a class="code" href="classmc_1_1_u_i_window.html">UIWindow</a>* <a class="code" href="classmc_1_1_u_i_window.html#a0503f24dc4106a20cc666067b96e1c81">GetCurrentActiveWindow</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">static</span> Ref&lt;UIWindow&gt; <a class="code" href="classmc_1_1_u_i_window.html#a763a15f211319c40cc81bdb40ae0c1a5">Create</a>(WindowStyle style = WindowStyle::Default, uint32_t width = 1270, uint32_t height = 920, <span class="keyword">const</span> <span class="keywordtype">char</span>* title = <span class="stringliteral">&quot;Monochrome 7.2 Window&quot;</span>);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#a8fdfa338109d2630476a5b09adfc3145">   24</a></span>&#160;        <span class="keyword">inline</span> HWND <a class="code" href="classmc_1_1_u_i_window.html#a8fdfa338109d2630476a5b09adfc3145">GetNativeHandle</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_NativeHandle; }</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#a49d7b9b1bd20d49b2eb82d28c2f922ba">   27</a></span>&#160;        <span class="keyword">inline</span> uint32_t <a class="code" href="classmc_1_1_u_i_window.html#a49d7b9b1bd20d49b2eb82d28c2f922ba">GetWidth</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_Width; }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#af0faa13c4aafd9141481ddc25a98ec8d">   30</a></span>&#160;        <span class="keyword">inline</span> uint32_t <a class="code" href="classmc_1_1_u_i_window.html#af0faa13c4aafd9141481ddc25a98ec8d">GetHeight</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_Height; }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#a9b75a62665cfca57ada95c4afdbf297b">   33</a></span>&#160;        <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <span class="keyword">const</span> <a class="code" href="classmc_1_1_u_i_window.html#a9b75a62665cfca57ada95c4afdbf297b">GetTitle</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_Title; }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#ab69506b299f4b0fcd32d39d5ddba99fe">   36</a></span>&#160;        <span class="keyword">inline</span> uint32_t <a class="code" href="classmc_1_1_u_i_window.html#ab69506b299f4b0fcd32d39d5ddba99fe">GetDpi</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_Dpi; }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_window.html#a40f42964d5bfbc873dff14228bc07436">AddView</a>(Ref&lt;UIView&gt; view);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_window.html#a98fcb989f2dadc8edfb564daa4344121">Update</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_window.html#a34d3e85ba9cbf7f29235b4d918e04365">StartWindowLoop</a>();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#a59ce118902641dc9c02c92200c66c7a5">   49</a></span>&#160;        <span class="keyword">inline</span> <span class="keywordtype">bool</span> <span class="keyword">const</span> <a class="code" href="classmc_1_1_u_i_window.html#a59ce118902641dc9c02c92200c66c7a5">IsOpened</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_IsOpened; }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#a451cda0b81a3337a32f8ef575d27bbcd">   52</a></span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> <a class="code" href="classmc_1_1_u_i_window.html#a451cda0b81a3337a32f8ef575d27bbcd">GetBackgroundColor</a>()<span class="keyword"> const        </span>{ <span class="keywordflow">return</span> m_Background; }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#abeacd2327ef70c6ce7f6cc8c83897a4f">   56</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_window.html#abeacd2327ef70c6ce7f6cc8c83897a4f">SetBackgroundColor</a>(<a class="code" href="classmc_1_1_color.html">Color</a> color)    { m_Background = color; }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#a3c42128d6e8dc2ea444637d47f01898b">   59</a></span>&#160;        Ref&lt;UIButton&gt; <a class="code" href="classmc_1_1_u_i_window.html#a3c42128d6e8dc2ea444637d47f01898b">GetCloseButtonRef</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_ModernWindowCloseButton; }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#aa340e86cf549b2511876633cac4792af">   62</a></span>&#160;        Ref&lt;UILabel&gt; <a class="code" href="classmc_1_1_u_i_window.html#aa340e86cf549b2511876633cac4792af">GetWindowTitleLabelRef</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_ModernWindowTitleLabel; }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_window.html#a4ab577927fa53811aad63431257e5b26">FocusView</a>(Ref&lt;UIView&gt; view);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordtype">bool</span> m_IsOpened = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">// Specifies whether the window is main or not.</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="comment">// This variable is used to determine when the application</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="comment">// should exit on WM_CLOSE message.</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordtype">bool</span> m_IsMainWindow = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordtype">void</span> Init();</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#a84b2e0faae8bc93d7720df705ba1afdc">   69</a></span>&#160;        <a class="code" href="classmc_1_1_u_i_view.html">UIView</a>* <a class="code" href="classmc_1_1_u_i_window.html#a84b2e0faae8bc93d7720df705ba1afdc">GetFocusedView</a>() { <span class="keywordflow">return</span> m_FocusedView; };</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#a693f1c8875f3f94f13dfb2b102ecb71f">   72</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classmc_1_1_u_i_window.html#a693f1c8875f3f94f13dfb2b102ecb71f">IsViewFocused</a>(Ref&lt;UIView&gt;&amp; view) { <span class="keywordflow">return</span> view.get() == m_FocusedView; }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_window.html#a5c5655440bcab1d34f9ca17134531acf">   75</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classmc_1_1_u_i_window.html#a5c5655440bcab1d34f9ca17134531acf">IsViewFocused</a>(<a class="code" href="classmc_1_1_u_i_view.html">UIView</a>* view) { <span class="keywordflow">return</span> view == m_FocusedView; }</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        Ref&lt;UIView&gt;     m_ModernWindowDragPanel     = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        Ref&lt;UIButton&gt;   m_ModernWindowCloseButton   = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        Ref&lt;UILabel&gt;    m_ModernWindowTitleLabel    = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">void</span> SetupModernWindowViews();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="classmc_1_1_scene_manager.html">SceneManager</a> m_SceneManager;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    };</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="classmc_1_1_u_i_window.html">UIWindow</a>(WindowStyle style, uint32_t width, uint32_t height, <span class="keyword">const</span> <span class="keywordtype">char</span>* title);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        HWND m_NativeHandle = {};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        MSG msg = {};</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        WindowStyle m_WindowStyle = WindowStyle::Default;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        uint32_t    m_Width     = 0;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        uint32_t    m_Height    = 0;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* m_Title     = 0;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        uint32_t    m_Dpi       = 0;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        Color       m_Background = Color::gray;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">bool</span> m_IsOpened = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="comment">// Specifies whether the window is main or not.</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="comment">// This variable is used to determine when the application</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="comment">// should exit on WM_CLOSE message.</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordtype">bool</span> m_IsMainWindow = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordtype">void</span> Init();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        Ref&lt;UIView&gt;     m_ModernWindowDragPanel     = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        Ref&lt;UIButton&gt;   m_ModernWindowCloseButton   = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        Ref&lt;UILabel&gt;    m_ModernWindowTitleLabel    = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordtype">void</span> SetupModernWindowViews();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        SceneManager m_SceneManager;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        UIView* m_FocusedView = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    };</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a9b75a62665cfca57ada95c4afdbf297b"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a9b75a62665cfca57ada95c4afdbf297b">mc::UIWindow::GetTitle</a></div><div class="ttdeci">const char *const GetTitle() const</div><div class="ttdef"><b>Definition:</b> UIWindow.h:33</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html"><div class="ttname"><a href="classmc_1_1_u_i_view.html">mc::UIView</a></div><div class="ttdef"><b>Definition:</b> UIView.h:12</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_ab69506b299f4b0fcd32d39d5ddba99fe"><div class="ttname"><a href="classmc_1_1_u_i_window.html#ab69506b299f4b0fcd32d39d5ddba99fe">mc::UIWindow::GetDpi</a></div><div class="ttdeci">uint32_t GetDpi() const</div><div class="ttdef"><b>Definition:</b> UIWindow.h:36</div></div>
 <div class="ttc" id="aclassmc_1_1_u_i_window_html"><div class="ttname"><a href="classmc_1_1_u_i_window.html">mc::UIWindow</a></div><div class="ttdef"><b>Definition:</b> UIWindow.h:14</div></div>
 <div class="ttc" id="aclassmc_1_1_color_html"><div class="ttname"><a href="classmc_1_1_color.html">mc::Color</a></div><div class="ttdef"><b>Definition:</b> Color.h:7</div></div>
-<div class="ttc" id="aclassmc_1_1_scene_manager_html"><div class="ttname"><a href="classmc_1_1_scene_manager.html">mc::SceneManager</a></div><div class="ttdef"><b>Definition:</b> SceneManager.h:7</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_window_html_ae461ffc8afd9630f1cd1cd2ea646b646"><div class="ttname"><a href="classmc_1_1_u_i_window.html#ae461ffc8afd9630f1cd1cd2ea646b646">mc::UIWindow::Create</a></div><div class="ttdeci">static Ref&lt; UIWindow &gt; Create(WindowStyle style=WindowStyle::Default, uint32_t width=1270, uint32_t height=920, const char *title=&quot;Monochrome 6.0 Window&quot;)</div><div class="ttdoc">Creates UIWindow instance and returns shared_ptr to it</div><div class="ttdef"><b>Definition:</b> UIWindow.cpp:55</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_af0faa13c4aafd9141481ddc25a98ec8d"><div class="ttname"><a href="classmc_1_1_u_i_window.html#af0faa13c4aafd9141481ddc25a98ec8d">mc::UIWindow::GetHeight</a></div><div class="ttdeci">uint32_t GetHeight() const</div><div class="ttdef"><b>Definition:</b> UIWindow.h:30</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a98fcb989f2dadc8edfb564daa4344121"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a98fcb989f2dadc8edfb564daa4344121">mc::UIWindow::Update</a></div><div class="ttdeci">void Update()</div><div class="ttdoc">Processes occured events and updates the screen buffer.</div><div class="ttdef"><b>Definition:</b> UIWindow.cpp:372</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a5c5655440bcab1d34f9ca17134531acf"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a5c5655440bcab1d34f9ca17134531acf">mc::UIWindow::IsViewFocused</a></div><div class="ttdeci">bool IsViewFocused(UIView *view)</div><div class="ttdef"><b>Definition:</b> UIWindow.h:75</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_aa340e86cf549b2511876633cac4792af"><div class="ttname"><a href="classmc_1_1_u_i_window.html#aa340e86cf549b2511876633cac4792af">mc::UIWindow::GetWindowTitleLabelRef</a></div><div class="ttdeci">Ref&lt; UILabel &gt; GetWindowTitleLabelRef() const</div><div class="ttdef"><b>Definition:</b> UIWindow.h:62</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a59ce118902641dc9c02c92200c66c7a5"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a59ce118902641dc9c02c92200c66c7a5">mc::UIWindow::IsOpened</a></div><div class="ttdeci">bool const IsOpened() const</div><div class="ttdef"><b>Definition:</b> UIWindow.h:49</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a8fdfa338109d2630476a5b09adfc3145"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a8fdfa338109d2630476a5b09adfc3145">mc::UIWindow::GetNativeHandle</a></div><div class="ttdeci">HWND GetNativeHandle() const</div><div class="ttdef"><b>Definition:</b> UIWindow.h:24</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a693f1c8875f3f94f13dfb2b102ecb71f"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a693f1c8875f3f94f13dfb2b102ecb71f">mc::UIWindow::IsViewFocused</a></div><div class="ttdeci">bool IsViewFocused(Ref&lt; UIView &gt; &amp;view)</div><div class="ttdef"><b>Definition:</b> UIWindow.h:72</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a3c42128d6e8dc2ea444637d47f01898b"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a3c42128d6e8dc2ea444637d47f01898b">mc::UIWindow::GetCloseButtonRef</a></div><div class="ttdeci">Ref&lt; UIButton &gt; GetCloseButtonRef() const</div><div class="ttdef"><b>Definition:</b> UIWindow.h:59</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a49d7b9b1bd20d49b2eb82d28c2f922ba"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a49d7b9b1bd20d49b2eb82d28c2f922ba">mc::UIWindow::GetWidth</a></div><div class="ttdeci">uint32_t GetWidth() const</div><div class="ttdef"><b>Definition:</b> UIWindow.h:27</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a34d3e85ba9cbf7f29235b4d918e04365"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a34d3e85ba9cbf7f29235b4d918e04365">mc::UIWindow::StartWindowLoop</a></div><div class="ttdeci">void StartWindowLoop()</div><div class="ttdoc">Starts the continous window loop which ends when the window closes.</div><div class="ttdef"><b>Definition:</b> UIWindow.cpp:392</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a0503f24dc4106a20cc666067b96e1c81"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a0503f24dc4106a20cc666067b96e1c81">mc::UIWindow::GetCurrentActiveWindow</a></div><div class="ttdeci">static UIWindow * GetCurrentActiveWindow()</div><div class="ttdef"><b>Definition:</b> UIWindow.cpp:50</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a40f42964d5bfbc873dff14228bc07436"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a40f42964d5bfbc873dff14228bc07436">mc::UIWindow::AddView</a></div><div class="ttdeci">void AddView(Ref&lt; UIView &gt; view)</div><div class="ttdoc">Adds a UIView to the window's uiview hierarchy.</div><div class="ttdef"><b>Definition:</b> UIWindow.cpp:404</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_abeacd2327ef70c6ce7f6cc8c83897a4f"><div class="ttname"><a href="classmc_1_1_u_i_window.html#abeacd2327ef70c6ce7f6cc8c83897a4f">mc::UIWindow::SetBackgroundColor</a></div><div class="ttdeci">void SetBackgroundColor(Color color)</div><div class="ttdef"><b>Definition:</b> UIWindow.h:56</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a763a15f211319c40cc81bdb40ae0c1a5"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a763a15f211319c40cc81bdb40ae0c1a5">mc::UIWindow::Create</a></div><div class="ttdeci">static Ref&lt; UIWindow &gt; Create(WindowStyle style=WindowStyle::Default, uint32_t width=1270, uint32_t height=920, const char *title=&quot;Monochrome 7.2 Window&quot;)</div><div class="ttdef"><b>Definition:</b> UIWindow.cpp:55</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a4ab577927fa53811aad63431257e5b26"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a4ab577927fa53811aad63431257e5b26">mc::UIWindow::FocusView</a></div><div class="ttdeci">void FocusView(Ref&lt; UIView &gt; view)</div><div class="ttdef"><b>Definition:</b> UIWindow.cpp:410</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a84b2e0faae8bc93d7720df705ba1afdc"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a84b2e0faae8bc93d7720df705ba1afdc">mc::UIWindow::GetFocusedView</a></div><div class="ttdeci">UIView * GetFocusedView()</div><div class="ttdef"><b>Definition:</b> UIWindow.h:69</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html_a451cda0b81a3337a32f8ef575d27bbcd"><div class="ttname"><a href="classmc_1_1_u_i_window.html#a451cda0b81a3337a32f8ef575d27bbcd">mc::UIWindow::GetBackgroundColor</a></div><div class="ttdeci">Color GetBackgroundColor() const</div><div class="ttdef"><b>Definition:</b> UIWindow.h:52</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_9257174f690635f75a6c414b151b5118.html">window</a></li><li class="navelem"><b>UIWindow.h</b></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_c7f79d9fead0a70cab4af348b59fbdf1.html">window</a></li><li class="navelem"><b>UIWindow.h</b></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.18 </li>
