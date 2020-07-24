@@ -40,7 +40,7 @@ namespace mc
 			if (evt.button == MouseButton::Left)
 				m_VerticalScrollbarMousePressed = true;
 
-			return EVENT_HANDLED;
+			return EVENT_UNHANDLED;
 		});
 
 		AddEventHandler<EventType::MouseButtonReleased>([this](Event& e, UIView* sender) -> bool {
@@ -68,7 +68,7 @@ namespace mc
 			MouseScrolledEvent& evt = reinterpret_cast<MouseScrolledEvent&>(e);	
 			ScrollContent(-evt.ScrollDistance / 2.0f);
 
-			return EVENT_HANDLED;
+			return EVENT_UNHANDLED;
 		});
 	}
 

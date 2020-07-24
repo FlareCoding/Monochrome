@@ -18,7 +18,7 @@ namespace mc
 		{
 			float box_radius = SliderBarHeight * 2.0f;
 
-			box_location.x = GetAbsolutePosition().x + slider_area_start_offset + m_SliderKnobPositionOffset - box_radius;
+			box_location.x = layer.frame.position.x + slider_area_start_offset + m_SliderKnobPositionOffset - box_radius;
 			box_location.y = GetAbsolutePosition().y + (layer.frame.size.height / 2.0f) + (SliderBarHeight / 2.0f) - box_radius;
 
 			box_size.width = box_radius * 2.0f;
@@ -26,7 +26,7 @@ namespace mc
 		}
 		else
 		{
-			box_location.x = GetAbsolutePosition().x + slider_area_start_offset + m_SliderKnobPositionOffset;
+			box_location.x = layer.frame.position.x + slider_area_start_offset + m_SliderKnobPositionOffset;
 			box_location.y = GetAbsolutePosition().y;
 
 			box_size.width = UISLIDER_RECTANGULAR_KNOB_WIDTH;
@@ -45,7 +45,7 @@ namespace mc
 	{
 		float slider_area_start_offset = (m_SliderAreaStart - layer.frame.position.x);
 
-		float mouse_offset = mouse_pos.x - ((GetAbsolutePosition().x + slider_area_start_offset) * UIWindow::GetCurrentActiveWindow()->GetDpi() / 96.0f);
+		float mouse_offset = mouse_pos.x - ((layer.frame.position.x + slider_area_start_offset) * UIWindow::GetCurrentActiveWindow()->GetDpi() / 96.0f);
 		float percentage = mouse_offset / m_SliderAreaSize;
 		float precise_value = percentage * MaxValue;
 
@@ -116,7 +116,7 @@ namespace mc
 
 		AddEventHandler<EventType::MouseMoved>([this](Event& event, UIView* sender) -> bool {
 			MouseMovedEvent& mmevent = (MouseMovedEvent&)event;
-			
+
 			if (mmevent.button == MouseButton::Left && m_bMousePressedOnKnob)
 			{
 				bool value_changed = false;
