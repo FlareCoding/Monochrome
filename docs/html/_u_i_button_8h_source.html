@@ -112,34 +112,33 @@ $(document).ready(function(){initNavTree('_u_i_button_8h_source.html',''); initR
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="comment">// Inherited via IDrawable</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_button.html#ae4f5b2c6830100fb36ca061987d6f863">Draw</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keywordtype">float</span>   CornerRadius = 6;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keywordtype">bool</span>    Filled = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordtype">float</span>   Stroke = 2;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_button.html#ab6e6919007ef426d4cb666361c634995">   21</a></span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> <a class="code" href="classmc_1_1_u_i_button.html#ab6e6919007ef426d4cb666361c634995">HoverOnColor</a> = Color::transparent;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_button.html#ada3197d6c965297e20b012fc4e376899">   24</a></span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> <a class="code" href="classmc_1_1_u_i_button.html#ada3197d6c965297e20b012fc4e376899">OnMousePressColor</a> = Color::transparent;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        Ref&lt;UILabel&gt; Label;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordtype">void</span> SetDefaultOptions();</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordtype">void</span> SetupEventHandlers();</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordtype">void</span> Update();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> m_PreHoverOnColor = { 0, 0, 0, 0 };</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> m_PreMousePressColor = { 0, 0, 0, 0 };</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    };</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keywordtype">bool</span>    Filled = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keywordtype">float</span>   Stroke = 2;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_button.html#ab6e6919007ef426d4cb666361c634995">   20</a></span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> <a class="code" href="classmc_1_1_u_i_button.html#ab6e6919007ef426d4cb666361c634995">HoverOnColor</a> = Color::transparent;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_button.html#ada3197d6c965297e20b012fc4e376899">   23</a></span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> <a class="code" href="classmc_1_1_u_i_button.html#ada3197d6c965297e20b012fc4e376899">OnMousePressColor</a> = Color::transparent;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        Ref&lt;UILabel&gt; Label;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordtype">void</span> SetDefaultOptions();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordtype">void</span> SetupEventHandlers();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordtype">void</span> Update();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> m_PreHoverOnColor = { 0, 0, 0, 0 };</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <a class="code" href="classmc_1_1_color.html">Color</a> m_PreMousePressColor = { 0, 0, 0, 0 };</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    };</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclassmc_1_1_u_i_button_html_ada3197d6c965297e20b012fc4e376899"><div class="ttname"><a href="classmc_1_1_u_i_button.html#ada3197d6c965297e20b012fc4e376899">mc::UIButton::OnMousePressColor</a></div><div class="ttdeci">Color OnMousePressColor</div><div class="ttdoc">Color of the button when the mouse is pressed on it.</div><div class="ttdef"><b>Definition:</b> UIButton.h:24</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_button_html_ada3197d6c965297e20b012fc4e376899"><div class="ttname"><a href="classmc_1_1_u_i_button.html#ada3197d6c965297e20b012fc4e376899">mc::UIButton::OnMousePressColor</a></div><div class="ttdeci">Color OnMousePressColor</div><div class="ttdoc">Color of the button when the mouse is pressed on it.</div><div class="ttdef"><b>Definition:</b> UIButton.h:23</div></div>
 <div class="ttc" id="aclassmc_1_1_u_i_view_html"><div class="ttname"><a href="classmc_1_1_u_i_view.html">mc::UIView</a></div><div class="ttdef"><b>Definition:</b> UIView.h:12</div></div>
 <div class="ttc" id="aclassmc_1_1_color_html"><div class="ttname"><a href="classmc_1_1_color.html">mc::Color</a></div><div class="ttdef"><b>Definition:</b> Color.h:7</div></div>
 <div class="ttc" id="aclassmc_1_1_u_i_button_html_ae4f5b2c6830100fb36ca061987d6f863"><div class="ttname"><a href="classmc_1_1_u_i_button.html#ae4f5b2c6830100fb36ca061987d6f863">mc::UIButton::Draw</a></div><div class="ttdeci">virtual void Draw() override</div><div class="ttdoc">Called during the graphics update routine.</div><div class="ttdef"><b>Definition:</b> UIButton.cpp:83</div></div>
 <div class="ttc" id="aclassmc_1_1_u_i_button_html"><div class="ttname"><a href="classmc_1_1_u_i_button.html">mc::UIButton</a></div><div class="ttdef"><b>Definition:</b> UIButton.h:7</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_button_html_ab6e6919007ef426d4cb666361c634995"><div class="ttname"><a href="classmc_1_1_u_i_button.html#ab6e6919007ef426d4cb666361c634995">mc::UIButton::HoverOnColor</a></div><div class="ttdeci">Color HoverOnColor</div><div class="ttdoc">Color of the button when the mouse hovers over it.</div><div class="ttdef"><b>Definition:</b> UIButton.h:21</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_button_html_ab6e6919007ef426d4cb666361c634995"><div class="ttname"><a href="classmc_1_1_u_i_button.html#ab6e6919007ef426d4cb666361c634995">mc::UIButton::HoverOnColor</a></div><div class="ttdeci">Color HoverOnColor</div><div class="ttdoc">Color of the button when the mouse hovers over it.</div><div class="ttdef"><b>Definition:</b> UIButton.h:20</div></div>
 <div class="ttc" id="astructmc_1_1_frame_html"><div class="ttname"><a href="structmc_1_1_frame.html">mc::Frame</a></div><div class="ttdef"><b>Definition:</b> Layer.h:42</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

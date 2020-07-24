@@ -6,6 +6,5 @@ var classmc_1_1_u_i_scroll_panel =
     [ "AddChild", "classmc_1_1_u_i_scroll_panel.html#a944946e421dbeb2668bfc32a7bc89e74", null ],
     [ "Draw", "classmc_1_1_u_i_scroll_panel.html#a497f9bb859efb9d168d8a65bcab4c913", null ],
     [ "ContentView", "classmc_1_1_u_i_scroll_panel.html#a206eacfe0e5024866c04e44b9bf9a6d1", null ],
-    [ "CornerRadius", "classmc_1_1_u_i_scroll_panel.html#a361b5e64fb1a40f49591a6062804b22c", null ],
     [ "ScrollbarColor", "classmc_1_1_u_i_scroll_panel.html#a75cc241ec8d776dc3b4fe17bc6bcf466", null ]
 ];

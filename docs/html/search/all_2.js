@@ -7,5 +7,6 @@ var searchData=
   ['color_11',['Color',['../classmc_1_1_color.html',1,'mc::Color'],['../classmc_1_1_u_i_label.html#aec3c6c1184d7c205649a0049594b3d7e',1,'mc::UILabel::color()']]],
   ['contentview_12',['ContentView',['../classmc_1_1_u_i_scroll_panel.html#a206eacfe0e5024866c04e44b9bf9a6d1',1,'mc::UIScrollPanel']]],
   ['coreresources_13',['CoreResources',['../classmc_1_1_core_resources.html',1,'mc']]],
-  ['create_14',['Create',['../classmc_1_1_u_i_window.html#a763a15f211319c40cc81bdb40ae0c1a5',1,'mc::UIWindow']]]
+  ['cornerradius_14',['CornerRadius',['../classmc_1_1_u_i_view.html#aea18ed1b8824d32242c6a76f8d8d51d2',1,'mc::UIView']]],
+  ['create_15',['Create',['../classmc_1_1_u_i_window.html#a763a15f211319c40cc81bdb40ae0c1a5',1,'mc::UIWindow']]]
 ];

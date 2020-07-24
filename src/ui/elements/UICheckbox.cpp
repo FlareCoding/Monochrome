@@ -20,6 +20,8 @@ namespace mc
 
 	void UICheckbox::SetDefaultOptions()
 	{
+		CornerRadius = 2;
+
 		Label = MakeRef<UILabel>();
 		Label->color = Color::white;
 		Label->layer.frame = Frame(BoxSize + LabelMargins, 0, layer.frame.size.width - BoxSize, layer.frame.size.height);

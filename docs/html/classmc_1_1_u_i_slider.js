@@ -7,7 +7,6 @@ var classmc_1_1_u_i_slider =
     [ "AddValueChangedEventHandler", "classmc_1_1_u_i_slider.html#a98102008155e9a152cac3fec3835fc84", null ],
     [ "Draw", "classmc_1_1_u_i_slider.html#a57ab5f60b18aeadda7f7bc984030a182", null ],
     [ "operator+=", "classmc_1_1_u_i_slider.html#ae881d3f0bf9ed48d13097dfa94666c82", null ],
-    [ "CornerRadius", "classmc_1_1_u_i_slider.html#a72a701d152b5851336c292004613e54f", null ],
     [ "Intervals", "classmc_1_1_u_i_slider.html#a8159e44bf66fd6e7aec988b9cff411b1", null ],
     [ "MaxValue", "classmc_1_1_u_i_slider.html#a024e20c06c48a73c2f841fef03e7d99c", null ],
     [ "MinValue", "classmc_1_1_u_i_slider.html#a617f142d7a2cc36719df59a557736770", null ],

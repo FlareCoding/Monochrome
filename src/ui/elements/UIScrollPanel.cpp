@@ -111,6 +111,8 @@ namespace mc
 		if (ContentView->layer.frame.position.y > 0)
 			ContentView->layer.frame.position.y = 0;
 
+		ContentView->CornerRadius = CornerRadius;
+
 		// Scrollbar
 		ProcessScrollbar();
 	}

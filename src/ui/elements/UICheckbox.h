@@ -18,7 +18,6 @@ namespace mc
 
 		float	BoxSize = 16;
 		float	LabelMargins = 16;
-		float	CornerRadius = 2;
 		
 		/// Color of the checkmark that appears when the checkbox is checked.
 		Color	CheckmarkColor = Color::black;

@@ -14,7 +14,6 @@ namespace mc
 		// Inherited via IDrawable
 		virtual void Draw() override;
 
-		float	CornerRadius = 6;
 		float	Stroke = 2;
 
 		/// Color of the border around the textbox when it is in a focused state.S

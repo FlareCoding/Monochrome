@@ -12,7 +12,6 @@ var classmc_1_1_u_i_checkbox =
     [ "Checked", "classmc_1_1_u_i_checkbox.html#acaa2ad81eaad767e40cab4ef48cf7e6a", null ],
     [ "CheckedBoxColor", "classmc_1_1_u_i_checkbox.html#af4cbbcf984bd12b7a747d9639a37d52f", null ],
     [ "CheckmarkColor", "classmc_1_1_u_i_checkbox.html#aa9adb38c67840f231459c1e4caf77cd0", null ],
-    [ "CornerRadius", "classmc_1_1_u_i_checkbox.html#a6741685b8e1f2223e3cff689463165b1", null ],
     [ "Label", "classmc_1_1_u_i_checkbox.html#ac8bd1d606c8a0726fb5e3d9fe7c04476", null ],
     [ "LabelMargins", "classmc_1_1_u_i_checkbox.html#a45bee6a979d32ed2ce3b05aa36ee06a4", null ]
 ];

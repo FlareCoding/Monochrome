@@ -13,7 +13,6 @@ namespace mc
 		// Inherited via IDrawable
 		virtual void Draw() override;
 
-		float	CornerRadius = 6;
 		bool	Filled = true;
 		float	Stroke = 2;
 

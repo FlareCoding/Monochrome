@@ -14,7 +14,6 @@ namespace mc
 		// Inherited via IDrawable
 		virtual void Draw() override;
 
-		float	CornerRadius = 6;
 		Color	ScrollbarColor = Color(40, 40, 40, 1.0f);
 
 		/// Adds a view to the scrollable content area.

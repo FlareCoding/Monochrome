@@ -27,6 +27,9 @@ namespace mc
 		/// @returns Heirarchical position of the view.
 		inline const uint32_t GetZIndex() const { return m_zIndex; }
 
+		/// Default view's rounded corner radius.
+		float CornerRadius = 6;
+
 	public:
 		/// Contains position, size, and color of the UIView.
 		Layer layer = Layer();

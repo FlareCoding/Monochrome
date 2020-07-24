@@ -16,7 +16,6 @@ namespace mc
 
 		Shape SliderKnobShape = Shape::Rectangle;
 
-		float CornerRadius = 0;
 		float SliderBarHeight = 4.0f;
 
 		Color SliderKnobColor = Color::gray;

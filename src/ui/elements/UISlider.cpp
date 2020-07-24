@@ -76,6 +76,8 @@ namespace mc
 	
 	void UISlider::SetDefaultOptions()
 	{
+		CornerRadius = 0;
+
 		layer.color = Color(82, 87, 107, 1.0f);
 
 		m_SliderAreaStart = CornerRadius * 2.0f;
