@@ -4,3 +4,4 @@
 #include "elements/UICheckbox.h"
 #include "elements/UISlider.h"
 #include "elements/UITextbox.h"
+#include "elements/UIScrollPanel.h"

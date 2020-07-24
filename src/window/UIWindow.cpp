@@ -343,6 +343,16 @@ namespace mc
 			_mc_uiwindow_static_previous_mouse_position_ = click_absolute_point;
 			break;
 		}
+		case WM_MOUSEWHEEL:
+		{
+			auto clickpos = POINT{ (LONG)((float)GET_X_LPARAM(lParam) * (float)m_Dpi / 96.0f), (LONG)((float)GET_Y_LPARAM(lParam) * (float)m_Dpi / 96.0f) };
+			float distance = (float)GET_WHEEL_DELTA_WPARAM(wParam);
+
+			auto e = std::make_shared<MouseScrolledEvent>(Point{ (float)clickpos.x, (float)clickpos.y }, distance);
+			m_SceneManager.DispatchEvent(e);
+
+			break;
+		}
 		case WM_KEYDOWN:
 		{
 			int vk_keycode = (int)wParam;

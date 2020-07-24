@@ -21,7 +21,7 @@ int main()
 	window->GetCloseButtonRef()->layer.color = Color(28, 21, 31, 1.0f);
 
 	Ref<UIButton> button = MakeRef<UIButton>();
-	button->layer.frame = Frame({ 340, 120 }, { 200, 36 });
+	button->layer.frame = Frame({ 280, 120 }, { 200, 36 });
 	button->Label->Text = "Click Me";
 	button->AddEventHandler<EventType::MouseButtonClicked>([](Event& evt, UIView* sender) -> bool {
 		checkbox->Checked = !checkbox->Checked;
@@ -41,7 +41,7 @@ int main()
 	window->AddView(slider);
 
 	Ref<UITextbox> textbox = MakeRef<UITextbox>();
-	textbox->layer.frame = Frame(Position{ 400, 300 }, Size{ 260, 34 });
+	textbox->layer.frame = Frame(Position{ 220, 340 }, Size{ 260, 34 });
 	textbox->TextProperties.FontSize = 16;
 	textbox->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
 		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
@@ -52,7 +52,7 @@ int main()
 	window->AddView(textbox);
 
 	Ref<UITextbox> textbox2 = MakeRef<UITextbox>();
-	textbox2->layer.frame = Frame(Position{ 400, 360 }, Size{ 260, 34 });
+	textbox2->layer.frame = Frame(Position{ 220, 400 }, Size{ 260, 34 });
 	textbox2->TextProperties.FontSize = 16;
 	textbox2->Placeholder = "Enter Username";
 	textbox2->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
@@ -62,6 +62,21 @@ int main()
 		return EVENT_HANDLED;
 	});
 	window->AddView(textbox2);
+
+	Ref<UIScrollPanel> scrollPanel = MakeRef<UIScrollPanel>();
+	scrollPanel->layer.frame = Frame(Position{ 560, 100 }, Size{ 340, 500 });
+	scrollPanel->layer.color = Color(200, 200, 200, 1.0f);
+	scrollPanel->ContentView->layer.frame.size.height = 400;
+	scrollPanel->ContentView->layer.color = Color::gray;
+	window->AddView(scrollPanel);
+
+	for (int i = 0; i < 10; i++)
+	{
+		Ref<UIButton> btn = MakeRef<UIButton>();
+		btn->layer.frame = Frame({ 70, 30 + (float)i * 70 }, { 200, 36 });
+		btn->Label->Text = "Button " + std::to_string(i + 1);
+		scrollPanel->AddChild(btn);
+	}
 
 	window->StartWindowLoop();
 

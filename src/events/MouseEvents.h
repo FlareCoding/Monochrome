@@ -113,4 +113,16 @@ namespace mc
 		MouseHoverOffEvent(Point location, Point distance, MouseButton button) : MouseMovedEvent(location, distance, button) {}
 		REGISTER_EVT_CLASS_TYPE(MouseHoverOff)
 	};
+
+	/// Event that is fired when the mouse wheel is scrolled.
+	class MouseScrolledEvent : public MouseEvent
+	{
+	public:
+		MouseScrolledEvent(Point location, float distance) : MouseEvent(location), ScrollDistance(distance) {}
+
+		/// Distance that the mouse wheel was scrolled.
+		float ScrollDistance;
+
+		REGISTER_EVT_CLASS_TYPE(MouseScrolled)
+	};
 }

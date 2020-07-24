@@ -17,7 +17,8 @@ var hierarchy =
         [ "mc::MouseMovedEvent", "classmc_1_1_mouse_moved_event.html", [
           [ "mc::MouseHoverOffEvent", "classmc_1_1_mouse_hover_off_event.html", null ],
           [ "mc::MouseHoverOnEvent", "classmc_1_1_mouse_hover_on_event.html", null ]
-        ] ]
+        ] ],
+        [ "mc::MouseScrolledEvent", "classmc_1_1_mouse_scrolled_event.html", null ]
       ] ]
     ] ],
     [ "mc::EventValidator", "classmc_1_1_event_validator.html", null ],
@@ -28,6 +29,7 @@ var hierarchy =
         [ "mc::UIButton", "classmc_1_1_u_i_button.html", null ],
         [ "mc::UICheckbox", "classmc_1_1_u_i_checkbox.html", null ],
         [ "mc::UILabel", "classmc_1_1_u_i_label.html", null ],
+        [ "mc::UIScrollPanel", "classmc_1_1_u_i_scroll_panel.html", null ],
         [ "mc::UISlider", "classmc_1_1_u_i_slider.html", null ],
         [ "mc::UITextbox", "classmc_1_1_u_i_textbox.html", null ]
       ] ]
