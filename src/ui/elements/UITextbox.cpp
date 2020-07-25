@@ -41,6 +41,11 @@ namespace mc
 
 			return EVENT_UNHANDLED;
 		});
+
+		AddEventHandler<EventType::FocusChanged>([this](Event& event, UIView* sender) -> bool {
+			m_IsFocused = ((FocusChangedEvent&)event).GainedFocus;
+			return EVENT_UNHANDLED;
+		});
 	}
 
 	void UITextbox::ProcessKeyEvent(const std::string& input, KeyCode keycode)
@@ -130,10 +135,8 @@ namespace mc
 	{
 		Update();
 
-		bool IsFocused = (srcwindow && srcwindow->IsViewFocused(this));
-
 		// Highlighted border when the textbox is in a focused state
-		if (IsFocused)
+		if (m_IsFocused)
 		{
 			Graphics::DrawRectangle(
 				layer.frame.position.x,
@@ -166,7 +169,7 @@ namespace mc
 		auto metrics = Graphics::CalculateTextMetrics(PreCursorText, TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
 
 		// If the textbox is focused and active, draw the cursor
-		if (IsFocused)
+		if (m_IsFocused)
 		{
 			float TextToLayerGap = (layer.frame.size.height - metrics.Height) / 2.0f;
 

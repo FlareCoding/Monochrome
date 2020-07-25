@@ -53,6 +53,7 @@ namespace mc
 		void AddSubview(Ref<T> subview)
 		{
 			subview->parent = this;
+			subview->srcwindow = srcwindow;
 			subviews.push_back(std::dynamic_pointer_cast<UIView>(subview));
 			SortElements();
 		}

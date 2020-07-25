@@ -1,6 +1,7 @@
 #pragma once
 #include "UILabel.h"
 #include <events/KeyboardEvents.h>
+#include <events/FocusChangedEvent.h>
 
 namespace mc
 {
@@ -37,6 +38,8 @@ namespace mc
 		void ProcessKeyEvent(const std::string& input, KeyCode keycode);
 
 		Ref<UILabel> m_Label;
+
+		bool m_IsFocused = false;
 
 	private:
 		void Update();

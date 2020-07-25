@@ -130,7 +130,8 @@ namespace mc
 		}
 
 		// If the event passed all checks and is valid, the element should become focused.
-		if (event.GetEventType() == EventType::MouseButtonPressed)
+		// The view should also have focus changed event handlers.
+		if (event.GetEventType() == EventType::MouseButtonPressed && view->GetEventHandlers<EventType::FocusChanged>().size())
 		{
 			if (view->srcwindow)
 				view->srcwindow->FocusView(view);
