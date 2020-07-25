@@ -203,6 +203,7 @@ namespace mc
 		m_Label->layer.frame = Frame(5, 2, layer.frame.size.width - 10, layer.frame.size.height - 4);
 
 		// Controlling the opacity of the child label
+		m_Label->color = TextColor;
 		m_Label->layer.color.alpha = layer.color.alpha;
 		m_Label->color.alpha = layer.color.alpha;
 
