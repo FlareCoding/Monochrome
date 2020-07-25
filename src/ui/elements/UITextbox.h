@@ -41,6 +41,10 @@ namespace mc
 
 		bool m_IsFocused = false;
 
+		// Used to shift cursor to the end of the text
+		// when textbox is clicked for the first time.
+		bool m_FirstTimeClick = true;
+
 	private:
 		void Update();
 

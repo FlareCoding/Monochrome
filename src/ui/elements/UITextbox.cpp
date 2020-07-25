@@ -46,6 +46,16 @@ namespace mc
 			m_IsFocused = ((FocusChangedEvent&)event).GainedFocus;
 			return EVENT_UNHANDLED;
 		});
+
+		AddEventHandler<EventType::MouseButtonPressed>([this](Event& event, UIView* sender) -> bool {
+			if (m_FirstTimeClick)
+			{
+				if (Text.size()) m_CursorIndex = Text.size();
+				m_FirstTimeClick = false;
+			}
+
+			return EVENT_UNHANDLED;	
+		});
 	}
 
 	void UITextbox::ProcessKeyEvent(const std::string& input, KeyCode keycode)
