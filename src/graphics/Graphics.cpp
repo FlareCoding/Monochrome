@@ -113,19 +113,16 @@ namespace mc
 #pragma warning( pop ) 
 
 	static bool s_AreGraphicsInitialized = false;
+	static bool s_ShutdownRequired = false;
 	Ref<RenderTarget> Graphics::m_RenderTarget = nullptr;
+	std::map<HWND, Ref<RenderTarget>> Graphics::m_RenderTargetMap;
+
+#define VALIDATE_RENDERTARGET if (!m_RenderTarget.get()) return;
 
 	bool Graphics::Initialize(HWND hwnd)
 	{
-		if (!s_AreGraphicsInitialized)
-		{
-			m_RenderTarget = std::make_shared<RenderTarget>(hwnd);
-			s_AreGraphicsInitialized = true;
-		}
-		else
-			return false;
-
-		m_RenderTarget->Resize(hwnd);
+		m_RenderTargetMap[hwnd] = MakeRef<RenderTarget>(hwnd);
+		m_RenderTargetMap[hwnd]->Resize(hwnd);
 
 		return true;
 	}
@@ -134,34 +131,51 @@ namespace mc
 	{
 		return s_AreGraphicsInitialized;
 	}
+
+	void Graphics::Shutdown()
+	{
+		s_ShutdownRequired = true;
+	}
+
+	void Graphics::SetActiveTarget(HWND hwnd)
+	{
+		if (s_ShutdownRequired) return;
+		m_RenderTarget = m_RenderTargetMap[hwnd];
+	}
 	
 	void Graphics::BeginFrame()
 	{
+		VALIDATE_RENDERTARGET;
 		m_RenderTarget->BeginDraw();
 	}
 	
 	void Graphics::EndFrame()
 	{
+		VALIDATE_RENDERTARGET;
 		m_RenderTarget->EndDraw();
 	}
 	
 	void Graphics::ClearScreenColor(uint32_t r, uint32_t g, uint32_t b)
 	{
+		VALIDATE_RENDERTARGET;
 		m_RenderTarget->ClearScreen(r, g, b);
 	}
 	
 	void Graphics::PushLayer(float x, float y, float width, float height)
 	{
+		VALIDATE_RENDERTARGET;
 		m_RenderTarget->PushLayer(x, y, width, height);
 	}
 	
 	void Graphics::PopLayer()
 	{
+		VALIDATE_RENDERTARGET;
 		m_RenderTarget->PopLayer();
 	}
 
 	void Graphics::ResizeRenderTarget(HWND hwnd)
 	{
+		VALIDATE_RENDERTARGET;
 		m_RenderTarget->Resize(hwnd);
 	}
 
@@ -175,6 +189,7 @@ namespace mc
 		Color color,
 		float stroke)
 	{
+		VALIDATE_RENDERTARGET;
 		ID2D1HwndRenderTarget* target = m_RenderTarget->GetNativeHandle();
 		ID2D1SolidColorBrush* brush;
 
@@ -195,6 +210,7 @@ namespace mc
 		bool filled,
 		float stroke)
 	{
+		VALIDATE_RENDERTARGET;
 		ID2D1HwndRenderTarget* target = m_RenderTarget->GetNativeHandle();
 
 		ID2D1SolidColorBrush* brush;
@@ -230,6 +246,7 @@ namespace mc
 		bool filled,
 		float stroke)
 	{
+		VALIDATE_RENDERTARGET;
 		ID2D1HwndRenderTarget* target = m_RenderTarget->GetNativeHandle();
 
 		ID2D1SolidColorBrush* brush;
@@ -254,6 +271,7 @@ namespace mc
 		bool large_arc,
 		float stroke)
 	{
+		VALIDATE_RENDERTARGET;
 		ID2D1HwndRenderTarget* target = m_RenderTarget->GetNativeHandle();
 
 		D2D1::ColorF norm_color = D2D1::ColorF((float)color.r / 255.0f, (float)color.g / 255.0f, (float)color.b / 255.0f, color.alpha);
@@ -303,6 +321,7 @@ namespace mc
 		TextProperties text_props,
 		Color color)
 	{
+		VALIDATE_RENDERTARGET;
 		ID2D1HwndRenderTarget* target = m_RenderTarget->GetNativeHandle();
 
 		ID2D1SolidColorBrush* brush;
@@ -340,6 +359,7 @@ namespace mc
 		TextProperties text_props,
 		Color color)
 	{
+		VALIDATE_RENDERTARGET;
 		DrawTextWideString(x, y, width, height, ConvertStringToWstring(text), text_props, color);
 	}
 
@@ -350,6 +370,7 @@ namespace mc
 		float max_height)
 	{
 		TextMetrics metrics = { 0 };
+		if (!m_RenderTarget) return metrics;
 
 		auto [font_weight, font_style] = TextStyleToDwriteStyle(text_props.Style);
 
@@ -407,6 +428,7 @@ namespace mc
 
 	uint32_t Graphics::GetLineCharacterLimit(TextProperties text_props, float container_width, float container_height)
 	{
+		if (!m_RenderTarget) return 0;
 		std::string SampleText = "";
 		float TextWidth = 0;
 		uint32_t CharacterCount = 0;
@@ -426,6 +448,7 @@ namespace mc
 
 	void Graphics::Update(const Color& background, SceneManager& sm)
 	{
+		VALIDATE_RENDERTARGET;
 		BeginFrame();
 		ClearScreenColor(background.r, background.g, background.b);
 

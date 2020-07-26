@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 #include <utility>
+#include <map>
+#include <thread>
 
 namespace mc
 {

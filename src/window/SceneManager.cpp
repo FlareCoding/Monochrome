@@ -2,12 +2,9 @@
 #include <graphics/Graphics.h>
 #include <events/EventValidator.h>
 #include <algorithm>
-#include <mutex>
 
 namespace mc
 {
-	static std::mutex _scene_manager_event_queue_mutex_;
-
 	static void RenderUIView(Ref<UIView>& view, UIView* parent_view);
 
 	void SceneManager::DispatchEvent(EventPtr event)
@@ -33,9 +30,16 @@ namespace mc
 
 	void SceneManager::ProcessEvents(uint32_t window_dpi)
 	{
-		_scene_manager_event_queue_mutex_.lock();
+		//
+		// Cloning the vector of events is the safest way to process them.
+		// For some reason using a mutex didn't work, so if somebody makes
+		// it work, please feel free to change this part to use a mutex
+		// and the original vector (m_EventQueue).
+		//
+		std::vector<EventPtr> m_EventQueueClone = m_EventQueue;
+		m_EventQueue.clear();
 
-		for (auto event : m_EventQueue)
+		for (auto& event : m_EventQueueClone)
 		{
 			// Event handling needs to be done in reverse order compared to rendering views.
 			// Top element must receive events first, but renderered last.
@@ -49,9 +53,6 @@ namespace mc
 					break;
 			}
 		}
-		m_EventQueue.clear();
-
-		_scene_manager_event_queue_mutex_.unlock();
 	}
 
 	void RenderUIView(Ref<UIView>& view, UIView* parent_view)

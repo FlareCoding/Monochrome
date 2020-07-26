@@ -28,11 +28,14 @@ std::wstring ConvertStringToWstring(const std::string& str)
 
 namespace mc
 {
-#define MONOCHROME_72_WINDOW_CLASS_NAME L"Monochrome60WindowClass"
-
 	static UIWindow* s_CurrentActiveWindowInstance = nullptr;
 
 	static POINT _mc_uiwindow_static_previous_mouse_position_;
+
+	static bool s_MainWindowClosed = false;
+
+#define MONOCHROME_70_WINDOW_CLASSNAME L"Monochrome70Window"
+	static uint32_t WindowInstancesCreated = 0;
 
 	LRESULT CALLBACK SetupWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT CALLBACK MsgRedirectWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -68,6 +71,9 @@ namespace mc
 		// Set window DPI-Awareness mode to be aware of high dpi displays
 		SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
 
+		WindowInstancesCreated++;
+		std::wstring WindowClassName = std::wstring(MONOCHROME_70_WINDOW_CLASSNAME + std::to_wstring(WindowInstancesCreated));
+
 		WNDCLASSEX wc;
 		ZeroMemory(&wc, sizeof(WNDCLASSEX));
 		wc.cbSize = sizeof(WNDCLASSEX);
@@ -75,7 +81,7 @@ namespace mc
 		wc.cbWndExtra = NULL;
 		wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
 		wc.hInstance = NULL;
-		wc.lpszClassName = MONOCHROME_72_WINDOW_CLASS_NAME;
+		wc.lpszClassName = WindowClassName.c_str();
 		wc.lpszMenuName = L"";
 		wc.lpfnWndProc = SetupWindowProc;
 		wc.style = NULL;
@@ -113,7 +119,7 @@ namespace mc
 
 		// Creating window handle
 		HWND hwnd = CreateWindowEx(
-			dwExStyle, MONOCHROME_72_WINDOW_CLASS_NAME, ConvertStringToWstring(m_Title).c_str(), dwStyle,
+			dwExStyle, WindowClassName.c_str(), ConvertStringToWstring(m_Title).c_str(), dwStyle,
 			window_rect.left, window_rect.top, window_rect.right - window_rect.left, window_rect.bottom - window_rect.top,
 			NULL, NULL, NULL,
 			this /* This parameter is crucial as it specifies the UIWindow pointer to be used in the WindowProc*/
@@ -148,6 +154,9 @@ namespace mc
 			// Setup modern window ui elements
 			SetupModernWindowViews();
 		}
+
+		if (WindowInstancesCreated == 1)
+			m_IsMainWindow = true;
 	}
 
 	void UIWindow::SetupModernWindowViews()
@@ -217,7 +226,8 @@ namespace mc
 		case WM_CREATE:
 		{
 			Graphics::Initialize(hwnd);
-			s_CurrentActiveWindowInstance = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));;
+			Graphics::SetActiveTarget(hwnd);
+			s_CurrentActiveWindowInstance = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 			break;
 		}
@@ -229,8 +239,33 @@ namespace mc
 			// Setting the opened flag to false
 			pWindow->m_IsOpened = false;
 
+			// Graphics should shutdown when the main window closes
+			if (m_IsMainWindow)
+			{
+				Graphics::Shutdown();
+				s_MainWindowClosed = true;
+			}
+
 			// Destroying the win32 window object
 			DestroyWindow(hwnd);
+
+			break;
+		}
+		case WM_ACTIVATE:
+		{
+			// Retrieveing UIWindow pointer
+			UIWindow* pWindow = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+			unsigned short activation_flag = LOWORD(wParam);
+			if (activation_flag == WA_ACTIVE || activation_flag == WA_CLICKACTIVE)
+			{
+				Graphics::SetActiveTarget(hwnd);
+				s_CurrentActiveWindowInstance = pWindow;
+			}
+			else
+			{
+				s_CurrentActiveWindowInstance = nullptr;
+			}
 
 			break;
 		}
@@ -405,6 +440,10 @@ namespace mc
 		{
 			Sleep(16); // 16 miliseconds is the most optimal sleep amount (1 frame per 16 ms.)
 			Update();
+
+			if (s_MainWindowClosed) return;
+
+			if (GetActiveWindow() != m_NativeHandle) continue;
 
 			m_SceneManager.ProcessEvents(m_Dpi);
 			Graphics::Update(m_Background, m_SceneManager);

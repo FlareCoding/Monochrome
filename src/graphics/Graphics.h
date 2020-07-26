@@ -15,6 +15,10 @@ namespace mc
 	public:
 		static bool Initialize(HWND hwnd);
 		static bool IsInitialized();
+	
+		static void Shutdown();
+
+		static void SetActiveTarget(HWND hwnd);
 
 	public:
 		static void BeginFrame();
@@ -171,5 +175,6 @@ namespace mc
 
 	private:
 		static Ref<RenderTarget> m_RenderTarget;
+		static std::map<HWND, Ref<RenderTarget>> m_RenderTargetMap;
 	};
 }

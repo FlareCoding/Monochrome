@@ -92,7 +92,7 @@ namespace mc
 		// Specifies whether the window is main or not.
 		// This variable is used to determine when the application
 		// should exit on WM_CLOSE message.
-		bool m_IsMainWindow = true;
+		bool m_IsMainWindow = false;
 
 		void Init();
 
