@@ -18,7 +18,7 @@ int main()
 {
 	auto window = UIWindow::Create(WindowStyle::Modern, 1000, 670, "Demo App");
 	window->SetBackgroundColor(Color(28, 21, 31, 1.0f));
-	window->GetCloseButtonRef()->layer.color = Color(28, 21, 31, 1.0f);
+	window->SetModernWindowButtonsColor(Color(28, 21, 31, 1.0f));
 
 	Ref<UIButton> button = MakeRef<UIButton>();
 	button->layer.frame = Frame({ 280, 120 }, { 200, 36 });

@@ -14,6 +14,9 @@ namespace mc
 		if (color.alpha > layer.color.alpha)
 			color.alpha = layer.color.alpha;
 
-		Graphics::DrawTextString(layer.frame.position.x, layer.frame.position.y, layer.frame.size.width, layer.frame.size.height, Text, Properties, color);
+		if (UseWidestringText)
+			Graphics::DrawTextWideString(layer.frame.position.x, layer.frame.position.y, layer.frame.size.width, layer.frame.size.height, WidestringText, Properties, color);
+		else
+			Graphics::DrawTextString(layer.frame.position.x, layer.frame.position.y, layer.frame.size.width, layer.frame.size.height, Text, Properties, color);
 	}
 }

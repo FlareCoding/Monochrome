@@ -18,6 +18,12 @@ namespace mc
 		/// Text to be displayed in the label.
 		std::string Text = "Label";
 
+		/// Optional widestring text to be displayed in the label instead of the usual string.
+		std::wstring WidestringText = L"";
+
+		/// Specifies whether to use widestring text instead of the usual string.
+		bool UseWidestringText = false;
+
 		/// Font and style of the text in the label.
 		TextProperties Properties;
 

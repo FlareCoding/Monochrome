@@ -35,6 +35,15 @@ namespace mc
 		/// @returns Window-specific DPI
 		inline uint32_t GetDpi() const { return m_Dpi; }
 
+		/// Sets the size of the window.
+		void SetSize(uint32_t width, uint32_t height);
+
+		/// Sets the position of the window's top left corner.
+		void SetPos(uint32_t x, uint32_t y);
+
+		/// Sets the title of the window.
+		void SetTitle(const char* title);
+
 		/// Adds a UIView to the window's uiview hierarchy.
 		void AddView(Ref<UIView> view);
 
@@ -58,8 +67,17 @@ namespace mc
 		/// @returns Returns the pointer to the close ("x") button if the window was created with modern style, otherwise returns nullptr.
 		Ref<UIButton> GetCloseButtonRef() const { return m_ModernWindowCloseButton; }
 
+		/// @returns Returns the pointer to the maximize button if the window was created with modern style, otherwise returns nullptr.
+		Ref<UIButton> GetMaximizeButtonRef() const { return m_ModernWindowMaximizeButton; }
+
+		/// @returns Returns the pointer to the minimize button if the window was created with modern style, otherwise returns nullptr.
+		Ref<UIButton> GetMinimizeButtonRef() const { return m_ModernWindowMinimizeButton; }
+
 		/// @returns Returns the pointer to the window's title label if the window was created with modern style, otherwise returns nullptr.
 		Ref<UILabel> GetWindowTitleLabelRef() const { return m_ModernWindowTitleLabel; }
+
+		/// Sets the color of all modern style buttons in the top window bar.
+		void SetModernWindowButtonsColor(Color color);
 
 		/// Sets focus onto a single view.
 		/// If another view is already focused, that view will lose its focus.
@@ -96,11 +114,14 @@ namespace mc
 
 		void Init();
 
-		Ref<UIView>		m_ModernWindowDragPanel		= nullptr;
-		Ref<UIButton>	m_ModernWindowCloseButton	= nullptr;
-		Ref<UILabel>	m_ModernWindowTitleLabel	= nullptr;
+		Ref<UIView>		m_ModernWindowDragPanel			= nullptr;
+		Ref<UIButton>	m_ModernWindowCloseButton		= nullptr;
+		Ref<UIButton>	m_ModernWindowMaximizeButton	= nullptr;
+		Ref<UIButton>	m_ModernWindowMinimizeButton	= nullptr;
+		Ref<UILabel>	m_ModernWindowTitleLabel		= nullptr;
 
 		void SetupModernWindowViews();
+		void AdjustModernWindowViews();
 
 	private:
 		SceneManager m_SceneManager;

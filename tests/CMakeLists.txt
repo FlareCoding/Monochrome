@@ -5,3 +5,6 @@ target_link_libraries(Demo PUBLIC Monochrome)
 
 add_executable(MultipleWindows multiple_windows.cpp)
 target_link_libraries(MultipleWindows PUBLIC Monochrome)
+
+add_executable(WindowControl window_control.cpp)
+target_link_libraries(WindowControl PUBLIC Monochrome)

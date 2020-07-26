@@ -1,7 +1,10 @@
-#include "UIWindow.h"
+﻿#include "UIWindow.h"
 #include <graphics/Graphics.h>
 #include <ui/UIElements.h>
 #include <events/Events.h>
+
+#include <locale>
+#include <codecvt>
 
 #define GET_X_LPARAM(lp)    ((int)(short)LOWORD(lp))
 #define GET_Y_LPARAM(lp)    ((int)(short)HIWORD(lp))
@@ -40,12 +43,37 @@ namespace mc
 	LRESULT CALLBACK SetupWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT CALLBACK MsgRedirectWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	
-	static bool ModernWindowButton_OnMouseClick(Event& event, UIView* sender)
+	static bool ModernWindowCloseButton_OnMouseClick(Event& event, UIView* sender)
 	{
 		if (((MouseButtonEvent&)event).button == MouseButton::Left)
-		{
 			SendMessage(sender->srcwindow->GetNativeHandle(), WM_CLOSE, 0, 0);
+
+		return EVENT_HANDLED;
+	}
+
+	static bool ModernWindowMaximizeButton_OnMouseClick(Event& event, UIView* sender)
+	{
+		WINDOWPLACEMENT wndpl;
+		wndpl.length = sizeof(WINDOWPLACEMENT);
+		GetWindowPlacement(sender->srcwindow->GetNativeHandle(), &wndpl);
+
+		if (((MouseButtonEvent&)event).button == MouseButton::Left)
+		{
+			// The window should be maximized if it's not already and 
+			// should return to normal state if it was already maximized.
+			if (wndpl.showCmd == SW_MAXIMIZE)
+				ShowWindow(sender->srcwindow->GetNativeHandle(), SW_NORMAL);
+			else
+				ShowWindow(sender->srcwindow->GetNativeHandle(), SW_MAXIMIZE);
 		}
+
+		return EVENT_HANDLED;
+	}
+
+	static bool ModernWindowMinimizeButton_OnMouseClick(Event& event, UIView* sender)
+	{
+		if (((MouseButtonEvent&)event).button == MouseButton::Left)
+			ShowWindow(sender->srcwindow->GetNativeHandle(), SW_MINIMIZE);
 
 		return EVENT_HANDLED;
 	}
@@ -162,7 +190,7 @@ namespace mc
 	void UIWindow::SetupModernWindowViews()
 	{
 		m_ModernWindowDragPanel = MakeRef<UIView>();
-		m_ModernWindowDragPanel->layer.frame = Frame(0, 0, (float)m_Width - 60, 60);
+		m_ModernWindowDragPanel->layer.frame = Frame(0, 0, (float)m_Width - 160, 60);
 		m_ModernWindowDragPanel->layer.color = Color::transparent;
 		m_ModernWindowDragPanel->SetZIndex(10000);
 		AddView(m_ModernWindowDragPanel);
@@ -172,9 +200,26 @@ namespace mc
 		m_ModernWindowCloseButton->CornerRadius = 0;
 		m_ModernWindowCloseButton->Label->Text = "X";
 		m_ModernWindowCloseButton->HoverOnColor = Color::red;
-		m_ModernWindowCloseButton->SetZIndex(10000);
-		m_ModernWindowCloseButton->AddEventHandler<EventType::MouseButtonReleased>(ModernWindowButton_OnMouseClick);
+		m_ModernWindowCloseButton->SetZIndex(20000);
+		m_ModernWindowCloseButton->AddEventHandler<EventType::MouseButtonReleased>(ModernWindowCloseButton_OnMouseClick);
 		AddView(CastToUiView(m_ModernWindowCloseButton));
+
+		m_ModernWindowMaximizeButton = MakeRef<UIButton>();
+		m_ModernWindowMaximizeButton->layer.frame = Frame((float)m_Width - 46 * 2, 0, 46, 36);
+		m_ModernWindowMaximizeButton->CornerRadius = 0;
+		m_ModernWindowMaximizeButton->Label->UseWidestringText = true;
+		m_ModernWindowMaximizeButton->Label->WidestringText = L"⬜";
+		m_ModernWindowMaximizeButton->SetZIndex(20000);
+		m_ModernWindowMaximizeButton->AddEventHandler<EventType::MouseButtonReleased>(ModernWindowMaximizeButton_OnMouseClick);
+		AddView(CastToUiView(m_ModernWindowMaximizeButton));
+
+		m_ModernWindowMinimizeButton = MakeRef<UIButton>();
+		m_ModernWindowMinimizeButton->layer.frame = Frame((float)m_Width - 46 * 3, 0, 46, 36);
+		m_ModernWindowMinimizeButton->CornerRadius = 0;
+		m_ModernWindowMinimizeButton->Label->Text = "_";
+		m_ModernWindowMinimizeButton->SetZIndex(20000);
+		m_ModernWindowMinimizeButton->AddEventHandler<EventType::MouseButtonReleased>(ModernWindowMinimizeButton_OnMouseClick);
+		AddView(CastToUiView(m_ModernWindowMinimizeButton));
 
 		m_ModernWindowTitleLabel = MakeRef<UILabel>();
 		m_ModernWindowTitleLabel->layer.frame = Frame(10, 8, 300, 26);
@@ -184,6 +229,24 @@ namespace mc
 		m_ModernWindowTitleLabel->color = Color::white;
 		m_ModernWindowTitleLabel->SetZIndex(10000);
 		AddView(CastToUiView(m_ModernWindowTitleLabel));
+	}
+
+	void UIWindow::AdjustModernWindowViews()
+	{
+		if (m_ModernWindowDragPanel) 
+			m_ModernWindowDragPanel->layer.frame = Frame(0, 0, (float)m_Width - 160, 60);
+
+		if (m_ModernWindowCloseButton) 
+			m_ModernWindowCloseButton->layer.frame = Frame((float)m_Width - 46, 0, 46, 36);
+
+		if (m_ModernWindowMaximizeButton)
+			m_ModernWindowMaximizeButton->layer.frame = Frame((float)m_Width - 46 * 2, 0, 46, 36);
+
+		if (m_ModernWindowMinimizeButton)
+			m_ModernWindowMinimizeButton->layer.frame = Frame((float)m_Width - 46 * 3, 0, 46, 36);
+
+		if (m_ModernWindowTitleLabel)
+			m_ModernWindowTitleLabel->layer.frame = Frame(10, 8, 300, 26);
 	}
 
 	LRESULT CALLBACK SetupWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -281,6 +344,21 @@ namespace mc
 
 			pWindow->m_Width = nWidth;
 			pWindow->m_Height = nHeight;
+
+			if (pWindow->m_WindowStyle == WindowStyle::Modern)
+				pWindow->AdjustModernWindowViews();
+
+			if (pWindow->m_ModernWindowMaximizeButton)
+			{
+				WINDOWPLACEMENT wndpl;
+				wndpl.length = sizeof(WINDOWPLACEMENT);
+				GetWindowPlacement(pWindow->m_NativeHandle, &wndpl);
+
+				if (wndpl.showCmd == SW_MAXIMIZE)
+					pWindow->m_ModernWindowMaximizeButton->Label->WidestringText = L"🗗";
+				else
+					pWindow->m_ModernWindowMaximizeButton->Label->WidestringText = L"⬜";
+			}
 
 			break;
 		}
@@ -450,10 +528,57 @@ namespace mc
 		}
 	}
 
+	void UIWindow::SetSize(uint32_t width, uint32_t height)
+	{
+		// Get window's current position and size
+		RECT rect;
+		GetWindowRect(m_NativeHandle, &rect);
+
+		// Set new window size
+		SetWindowPos(m_NativeHandle, NULL, rect.left, rect.top, width, height, 0);
+
+		// Adjust modern window widget's position and size
+		if (m_WindowStyle == WindowStyle::Modern)
+			AdjustModernWindowViews();
+	}
+
+	void UIWindow::SetPos(uint32_t x, uint32_t y)
+	{
+		// Get window's current position and size
+		RECT rect;
+		GetWindowRect(m_NativeHandle, &rect);
+
+		int width = (int)(rect.right - rect.left);
+		int height = (int)(rect.bottom - rect.top);
+
+		// Set new window position
+		SetWindowPos(m_NativeHandle, NULL, x, y, width, height, 0);
+	}
+
+	void UIWindow::SetTitle(const char* title)
+	{
+		SetWindowTextA(m_NativeHandle, title);
+
+		if (m_WindowStyle == WindowStyle::Modern)
+			m_ModernWindowTitleLabel->Text = title;
+	}
+
 	void UIWindow::AddView(Ref<UIView> view)
 	{
 		view->srcwindow = this;
 		m_SceneManager.AddView(view);
+	}
+
+	void UIWindow::SetModernWindowButtonsColor(Color color)
+	{
+		if (m_ModernWindowCloseButton)
+			m_ModernWindowCloseButton->layer.color = color;
+
+		if (m_ModernWindowMaximizeButton)
+			m_ModernWindowMaximizeButton->layer.color = color;
+
+		if (m_ModernWindowMinimizeButton)
+			m_ModernWindowMinimizeButton->layer.color = color;
 	}
 
 	void UIWindow::FocusView(Ref<UIView> view)
