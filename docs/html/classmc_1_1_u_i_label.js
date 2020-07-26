@@ -6,5 +6,7 @@ var classmc_1_1_u_i_label =
     [ "Draw", "classmc_1_1_u_i_label.html#ae9cbb029649d712d8bbdaeb368f958bd", null ],
     [ "color", "classmc_1_1_u_i_label.html#aec3c6c1184d7c205649a0049594b3d7e", null ],
     [ "Properties", "classmc_1_1_u_i_label.html#a2000920a7232fd72f22e3792222ce404", null ],
-    [ "Text", "classmc_1_1_u_i_label.html#a14e4c24202f892824691d90797205f66", null ]
+    [ "Text", "classmc_1_1_u_i_label.html#a14e4c24202f892824691d90797205f66", null ],
+    [ "UseWidestringText", "classmc_1_1_u_i_label.html#a0ee3f7e6a462d493201eece5c21a58f2", null ],
+    [ "WidestringText", "classmc_1_1_u_i_label.html#a99bade7825318a3472ccc3aab0a157f0", null ]
 ];

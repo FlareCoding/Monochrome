@@ -12,11 +12,13 @@ var searchData=
   ['getfocusedview_40',['GetFocusedView',['../classmc_1_1_u_i_window.html#a84b2e0faae8bc93d7720df705ba1afdc',1,'mc::UIWindow']]],
   ['getheight_41',['GetHeight',['../classmc_1_1_u_i_window.html#af0faa13c4aafd9141481ddc25a98ec8d',1,'mc::UIWindow']]],
   ['getlinecharacterlimit_42',['GetLineCharacterLimit',['../classmc_1_1_graphics.html#a267747f29ee0ebaec48ae86807ecbd28',1,'mc::Graphics']]],
-  ['getname_43',['GetName',['../classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce',1,'mc::Event']]],
-  ['getnativehandle_44',['GetNativeHandle',['../classmc_1_1_u_i_window.html#a8fdfa338109d2630476a5b09adfc3145',1,'mc::UIWindow']]],
-  ['gettitle_45',['GetTitle',['../classmc_1_1_u_i_window.html#a9b75a62665cfca57ada95c4afdbf297b',1,'mc::UIWindow']]],
-  ['getwidth_46',['GetWidth',['../classmc_1_1_u_i_window.html#a49d7b9b1bd20d49b2eb82d28c2f922ba',1,'mc::UIWindow']]],
-  ['getwindowtitlelabelref_47',['GetWindowTitleLabelRef',['../classmc_1_1_u_i_window.html#aa340e86cf549b2511876633cac4792af',1,'mc::UIWindow']]],
-  ['getzindex_48',['GetZIndex',['../classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f',1,'mc::UIView']]],
-  ['graphics_49',['Graphics',['../classmc_1_1_graphics.html',1,'mc']]]
+  ['getmaximizebuttonref_43',['GetMaximizeButtonRef',['../classmc_1_1_u_i_window.html#ad5ef214569c7a389a1705940a8790d22',1,'mc::UIWindow']]],
+  ['getminimizebuttonref_44',['GetMinimizeButtonRef',['../classmc_1_1_u_i_window.html#abe9c4dc6b1bca476a7e0e5f3e1a3419b',1,'mc::UIWindow']]],
+  ['getname_45',['GetName',['../classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce',1,'mc::Event']]],
+  ['getnativehandle_46',['GetNativeHandle',['../classmc_1_1_u_i_window.html#a8fdfa338109d2630476a5b09adfc3145',1,'mc::UIWindow']]],
+  ['gettitle_47',['GetTitle',['../classmc_1_1_u_i_window.html#a9b75a62665cfca57ada95c4afdbf297b',1,'mc::UIWindow']]],
+  ['getwidth_48',['GetWidth',['../classmc_1_1_u_i_window.html#a49d7b9b1bd20d49b2eb82d28c2f922ba',1,'mc::UIWindow']]],
+  ['getwindowtitlelabelref_49',['GetWindowTitleLabelRef',['../classmc_1_1_u_i_window.html#aa340e86cf549b2511876633cac4792af',1,'mc::UIWindow']]],
+  ['getzindex_50',['GetZIndex',['../classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f',1,'mc::UIView']]],
+  ['graphics_51',['Graphics',['../classmc_1_1_graphics.html',1,'mc']]]
 ];
