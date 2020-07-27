@@ -35,9 +35,11 @@ namespace mc
 
 		auto box = Frame(box_location, box_size);
 		
-		auto window_dpi = UIWindow::GetCurrentActiveWindow()->GetDpi();
-		box.AdjustToDpi(window_dpi);
+		uint32_t window_dpi = 96;
+		if (UIWindow::GetCurrentActiveWindow())
+			window_dpi = UIWindow::GetCurrentActiveWindow()->GetDpi();
 
+		box.AdjustToDpi(window_dpi);
 		return box;
 	}
 
@@ -45,7 +47,11 @@ namespace mc
 	{
 		float slider_area_start_offset = (m_SliderAreaStart - layer.frame.position.x);
 
-		float mouse_offset = mouse_pos.x - ((layer.frame.position.x + slider_area_start_offset) * UIWindow::GetCurrentActiveWindow()->GetDpi() / 96.0f);
+		uint32_t window_dpi = 96;
+		if (UIWindow::GetCurrentActiveWindow())
+			window_dpi = UIWindow::GetCurrentActiveWindow()->GetDpi();
+
+		float mouse_offset = mouse_pos.x - ((layer.frame.position.x + slider_area_start_offset) * (float)window_dpi / 96.0f);
 		float percentage = mouse_offset / m_SliderAreaSize;
 		float precise_value = percentage * MaxValue;
 
