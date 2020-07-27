@@ -55,7 +55,9 @@ namespace mc
 		uint32_t m_VisibleCharLimit = 0;
 
 		std::string m_VisibleText = "";
+		std::string m_OldText = "";
 
+		void RecalculateVisibleText();
 		void SanitizeVisibleText();
 		bool IsTextAboveLengthLimit(float text_width);
     };
