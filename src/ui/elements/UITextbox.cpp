@@ -177,28 +177,9 @@ namespace mc
 
 	void UITextbox::Update()
 	{
-		const auto local_visible_text_sanitize = [this]() {
-			bool success = false;
-			while (!success)
-			{
-				auto VisibleText = Text.substr(m_VisibleStartIndex, m_CursorIndex - m_VisibleStartIndex);
-				auto metrics = Graphics::CalculateTextMetrics(VisibleText, TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
-
-				if (!IsTextAboveLengthLimit(metrics.WidthIncludingTrailingWhitespace))
-					success = true;
-				else
-				{
-					m_VisibleStartIndex++;
-					m_VisibleEndIndex++;
-				}
-			}
-
-			m_VisibleEndIndex = m_CursorIndex;
-		};
-
 		// Someone edited the text either through copy-pasting or
 		// through the source code.
-		if (std::fabs(Text.size() - m_OldText.size()) > 4)
+		if (std::labs((long)Text.size() - (long)m_OldText.size()) > 4)
 		{
 			m_CursorIndex = Text.size();
 			RecalculateVisibleText();

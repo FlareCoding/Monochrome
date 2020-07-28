@@ -37,7 +37,9 @@ namespace mc
 		AddEventHandler<EventType::MouseButtonReleased>([this](Event& event, UIView* sender) -> bool {
 			auto& e = (MouseButtonEvent&)event;
 
-			auto window_dpi = UIWindow::GetCurrentActiveWindow()->GetDpi();
+			uint32_t window_dpi = 96;
+			if (UIWindow::GetCurrentActiveWindow())
+				window_dpi = UIWindow::GetCurrentActiveWindow()->GetDpi();
 
 			Point box_location;
 			box_location.x = (sender->GetAbsolutePosition().x + UICHECKBOX_BOX_LEADING_MARGIN) * (float)window_dpi / 96.0f;
