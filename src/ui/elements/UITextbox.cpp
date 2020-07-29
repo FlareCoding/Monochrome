@@ -4,6 +4,34 @@
 
 namespace mc
 {
+	static std::string GetClipboardText()
+	{
+		// Try opening the clipboard
+		if (!OpenClipboard(nullptr))
+			return "";
+
+		// Get handle of clipboard object for ANSI text
+		HANDLE hData = GetClipboardData(CF_TEXT);
+		if (hData == nullptr)
+			return "";
+
+		// Lock the handle to get the actual text pointer
+		char* pszText = static_cast<char*>(GlobalLock(hData));
+		if (pszText == nullptr)
+			return "";
+
+		// Save text in a string class instance
+		std::string text(pszText);
+
+		// Release the lock
+		GlobalUnlock(hData);
+
+		// Release the clipboard
+		CloseClipboard();
+
+		return text;
+	}
+
 	UITextbox::UITextbox()
 	{
 		layer.frame = Frame(40, 40, 180, 26);
@@ -42,6 +70,14 @@ namespace mc
 			return EVENT_UNHANDLED;
 		});
 
+		AddEventHandler<EventType::KeyReleased>([this](Event& event, UIView* sender) -> bool {
+			KeyReleasedEvent& evt = reinterpret_cast<KeyReleasedEvent&>(event);
+			if (evt.keycode == KeyCode::KEY_LCONTROL)
+				m_CtrlPressed = false;
+
+			return EVENT_UNHANDLED;
+		});
+
 		AddEventHandler<EventType::FocusChanged>([this](Event& event, UIView* sender) -> bool {
 			m_IsFocused = ((FocusChangedEvent&)event).GainedFocus;
 			return EVENT_UNHANDLED;
@@ -62,9 +98,9 @@ namespace mc
 	{
 		switch (keycode)
 		{
-		case KeyCode::KEY_TAB:
+		case KeyCode::KEY_LCONTROL:
 		{
-			ProcessKeyEvent("    ", KeyCode::None); // 4 spaces
+			m_CtrlPressed = true;
 			break;
 		}
 		case KeyCode::KEY_LEFT:
@@ -111,6 +147,17 @@ namespace mc
 			break;
 		}
 		default:
+			if (keycode == KeyCode::KEY_V && m_CtrlPressed)
+			{
+				std::string ClipboardText = GetClipboardText();
+				if (!ClipboardText.empty())
+				{
+					Text.insert(m_CursorIndex, ClipboardText);
+					m_CursorIndex += ClipboardText.size();
+					return;
+				}
+			}
+
 			if (strcmp(input.c_str(), "\0") != 0)
 			{
 				Text.insert(m_CursorIndex, input);
@@ -179,7 +226,7 @@ namespace mc
 	{
 		// Someone edited the text either through copy-pasting or
 		// through the source code.
-		if (std::labs((long)Text.size() - (long)m_OldText.size()) > 4)
+		if (std::labs((long)Text.size() - (long)m_OldText.size()) > 1)
 		{
 			m_CursorIndex = Text.size();
 			RecalculateVisibleText();

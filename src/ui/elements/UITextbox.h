@@ -45,6 +45,8 @@ namespace mc
 		// when textbox is clicked for the first time.
 		bool m_FirstTimeClick = true;
 
+		bool m_CtrlPressed = false;
+
 	private:
 		void Update();
 
