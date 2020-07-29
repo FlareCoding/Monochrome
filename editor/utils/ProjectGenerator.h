@@ -18,6 +18,9 @@ namespace utils
         std::string uiClassName;
         WindowSettings windowSettings;
         std::vector<Ref<UIView>> uiViews;
+        std::string monochromeSourcePath;
+        std::string monochromeLibraryDebugPath;
+        std::string monochromeLibraryReleasePath;
     };
 
     class ProjectGenerator

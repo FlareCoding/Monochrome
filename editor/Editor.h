@@ -63,5 +63,17 @@ private:
 	Ref<UIButton> m_SelectProjectPathButton;
 	Ref<UIButton> m_GenerateProjectButton;
 
+	// Monochrome Source Path
+	Ref<UITextbox> m_MonochromeSourcePathTextbox;
+	Ref<UIButton> m_SelectMonochromeSourcePathButton;
+
+	// Monochrome Library Debug Path
+	Ref<UITextbox> m_MonochromeLibDbgPathTextbox;
+	Ref<UIButton> m_SelectMonochromeLibDbgPathButton;
+
+	// Monochrome Library Release Path
+	Ref<UITextbox> m_MonochromeLibRelPathTextbox;
+	Ref<UIButton> m_SelectMonochromeLibRelPathButton;
+
 	void GenerateProjectSolution();
 };

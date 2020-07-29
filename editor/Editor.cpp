@@ -354,6 +354,141 @@ void MonochromeEditor::InitEditorUI()
 	});
 	m_EditorWindow->AddView(m_GenerateProjectButton);
 
+	m_MonochromeSourcePathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 370 }, Size{ 240, 20 }));
+	m_MonochromeSourcePathTextbox->Placeholder = "Monochrome Source Path";
+	m_MonochromeSourcePathTextbox->Text = "";
+	m_MonochromeSourcePathTextbox->TextProperties.FontSize = 14;
+	m_MonochromeSourcePathTextbox->CornerRadius = 2;
+	m_MonochromeSourcePathTextbox->layer.color = Color(58, 58, 59, 1.0f);
+	m_MonochromeSourcePathTextbox->TextColor = Color::white;
+	m_MonochromeSourcePathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_EditorWindow->AddView(m_MonochromeSourcePathTextbox);
+
+	m_SelectMonochromeSourcePathButton = MakeRef<UIButton>(Frame(Position{ 300, 370 }, Size{ 100, 20 }));
+	m_SelectMonochromeSourcePathButton->Label->Text = "Select ...";
+	m_SelectMonochromeSourcePathButton->Label->color = Color::white;
+	m_SelectMonochromeSourcePathButton->Label->Properties.FontSize = 12;
+	m_SelectMonochromeSourcePathButton->layer.color = Color(49, 49, 50, 1.0f);
+	m_SelectMonochromeSourcePathButton->CornerRadius = 2;
+	m_SelectMonochromeSourcePathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
+		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
+		{
+			char szDir[MAX_PATH];
+			BROWSEINFOA bInfo;
+			bInfo.hwndOwner = NULL;
+			bInfo.pidlRoot = NULL;
+			bInfo.pszDisplayName = szDir;
+			bInfo.lpszTitle = "Choose location";
+			bInfo.ulFlags = 0;
+			bInfo.lpfn = NULL;
+			bInfo.lParam = 0;
+			bInfo.iImage = -1;
+
+			LPITEMIDLIST lpItem = SHBrowseForFolderA(&bInfo);
+			std::string dir = "C:\\";
+
+			if (lpItem != NULL)
+			{
+				SHGetPathFromIDListA(lpItem, szDir);
+				m_MonochromeSourcePathTextbox->Text = std::string(szDir);
+				m_MonochromeSourcePathTextbox->TextColor = Color::white;
+			}
+		}
+
+		return EVENT_HANDLED;
+	});
+	m_EditorWindow->AddView(m_SelectMonochromeSourcePathButton);
+
+	m_MonochromeLibDbgPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 400 }, Size{ 240, 20 }));
+	m_MonochromeLibDbgPathTextbox->Placeholder = "Monochrome Library Debug Path";
+	m_MonochromeLibDbgPathTextbox->Text = "";
+	m_MonochromeLibDbgPathTextbox->TextProperties.FontSize = 14;
+	m_MonochromeLibDbgPathTextbox->CornerRadius = 2;
+	m_MonochromeLibDbgPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
+	m_MonochromeLibDbgPathTextbox->TextColor = Color::white;
+	m_MonochromeLibDbgPathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_EditorWindow->AddView(m_MonochromeLibDbgPathTextbox);
+
+	m_SelectMonochromeLibDbgPathButton = MakeRef<UIButton>(Frame(Position{ 300, 400 }, Size{ 100, 20 }));
+	m_SelectMonochromeLibDbgPathButton->Label->Text = "Select ...";
+	m_SelectMonochromeLibDbgPathButton->Label->color = Color::white;
+	m_SelectMonochromeLibDbgPathButton->Label->Properties.FontSize = 12;
+	m_SelectMonochromeLibDbgPathButton->layer.color = Color(49, 49, 50, 1.0f);
+	m_SelectMonochromeLibDbgPathButton->CornerRadius = 2;
+	m_SelectMonochromeLibDbgPathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
+		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
+		{
+			char szDir[MAX_PATH];
+			BROWSEINFOA bInfo;
+			bInfo.hwndOwner = NULL;
+			bInfo.pidlRoot = NULL;
+			bInfo.pszDisplayName = szDir;
+			bInfo.lpszTitle = "Choose location";
+			bInfo.ulFlags = 0;
+			bInfo.lpfn = NULL;
+			bInfo.lParam = 0;
+			bInfo.iImage = -1;
+
+			LPITEMIDLIST lpItem = SHBrowseForFolderA(&bInfo);
+			std::string dir = "C:\\";
+
+			if (lpItem != NULL)
+			{
+				SHGetPathFromIDListA(lpItem, szDir);
+				m_MonochromeLibDbgPathTextbox->Text = std::string(szDir);
+				m_MonochromeLibDbgPathTextbox->TextColor = Color::white;
+			}
+		}
+
+		return EVENT_HANDLED;
+	});
+	m_EditorWindow->AddView(m_SelectMonochromeLibDbgPathButton);
+
+	m_MonochromeLibRelPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 430 }, Size{ 240, 20 }));
+	m_MonochromeLibRelPathTextbox->Placeholder = "Monochrome Library Release Path";
+	m_MonochromeLibRelPathTextbox->Text = "";
+	m_MonochromeLibRelPathTextbox->TextProperties.FontSize = 14;
+	m_MonochromeLibRelPathTextbox->CornerRadius = 2;
+	m_MonochromeLibRelPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
+	m_MonochromeLibRelPathTextbox->TextColor = Color::white;
+	m_MonochromeLibRelPathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_EditorWindow->AddView(m_MonochromeLibRelPathTextbox);
+
+	m_SelectMonochromeLibRelPathButton = MakeRef<UIButton>(Frame(Position{ 300, 430 }, Size{ 100, 20 }));
+	m_SelectMonochromeLibRelPathButton->Label->Text = "Select ...";
+	m_SelectMonochromeLibRelPathButton->Label->color = Color::white;
+	m_SelectMonochromeLibRelPathButton->Label->Properties.FontSize = 12;
+	m_SelectMonochromeLibRelPathButton->layer.color = Color(49, 49, 50, 1.0f);
+	m_SelectMonochromeLibRelPathButton->CornerRadius = 2;
+	m_SelectMonochromeLibRelPathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
+		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
+		{
+			char szDir[MAX_PATH];
+			BROWSEINFOA bInfo;
+			bInfo.hwndOwner = NULL;
+			bInfo.pidlRoot = NULL;
+			bInfo.pszDisplayName = szDir;
+			bInfo.lpszTitle = "Choose location";
+			bInfo.ulFlags = 0;
+			bInfo.lpfn = NULL;
+			bInfo.lParam = 0;
+			bInfo.iImage = -1;
+
+			LPITEMIDLIST lpItem = SHBrowseForFolderA(&bInfo);
+			std::string dir = "C:\\";
+
+			if (lpItem != NULL)
+			{
+				SHGetPathFromIDListA(lpItem, szDir);
+				m_MonochromeLibRelPathTextbox->Text = std::string(szDir);
+				m_MonochromeLibRelPathTextbox->TextColor = Color::white;
+			}
+		}
+
+		return EVENT_HANDLED;
+	});
+	m_EditorWindow->AddView(m_SelectMonochromeLibRelPathButton);
+
 #pragma endregion
 
 }
@@ -462,13 +597,28 @@ void MonochromeEditor::AddElementToProjectWindow()
 
 void MonochromeEditor::GenerateProjectSolution()
 {
-	if (m_UIClassNameTextbox->Text.empty())
-	{
-		m_UIClassNameTextbox->TextColor = Color(155, 28, 29, 1.0f);
-		return;
-	}
-	else
-		m_UIClassNameTextbox->TextColor = Color::white;
+	// Checking for a valid Project Name
+	if (m_ProjectNameTextbox->Text.empty()) { m_ProjectNameTextbox->TextColor = Color(155, 28, 29, 1.0f); return; }
+	else { m_ProjectNameTextbox->TextColor = Color::white; }
+
+	// Checking for a valid Class Name
+	if (m_UIClassNameTextbox->Text.empty()) { m_UIClassNameTextbox->TextColor = Color(155, 28, 29, 1.0f); return; }
+	else { m_UIClassNameTextbox->TextColor = Color::white; }
+
+	// Checking monochrome source path
+	std::string MonochromeSourcePath = m_MonochromeSourcePathTextbox->Text;
+	if (!std::filesystem::is_directory(MonochromeSourcePath)) { m_MonochromeSourcePathTextbox->TextColor = Color(155, 28, 29, 1.0f); return; }
+	else { m_MonochromeSourcePathTextbox->TextColor = Color::white; }
+
+	// Checking monochrome library debug path
+	std::string MonochromeLibDbgPath = m_MonochromeLibDbgPathTextbox->Text;
+	if (!std::filesystem::is_directory(MonochromeLibDbgPath)) { m_MonochromeLibDbgPathTextbox->TextColor = Color(155, 28, 29, 1.0f); return; }
+	else { m_MonochromeLibDbgPathTextbox->TextColor = Color::white; }
+
+	// Checking monochrome library release path
+	std::string MonochromeLibRelPath = m_MonochromeLibRelPathTextbox->Text;
+	if (!std::filesystem::is_directory(MonochromeLibRelPath)) { m_MonochromeLibRelPathTextbox->TextColor = Color(155, 28, 29, 1.0f); return; }
+	else { m_MonochromeLibRelPathTextbox->TextColor = Color::white; }
 
 	if (std::filesystem::is_directory(m_ProjectPathTextbox->Text))
 	{
@@ -493,6 +643,10 @@ void MonochromeEditor::GenerateProjectSolution()
 		config.uiClassName = m_UIClassNameTextbox->Text;
 		config.projectName = m_ProjectNameTextbox->Text;
 		config.uiViews = m_ProjectUIElements;
+
+		config.monochromeSourcePath = MonochromeSourcePath;
+		config.monochromeLibraryDebugPath = MonochromeLibDbgPath;
+		config.monochromeLibraryReleasePath = MonochromeLibRelPath;
 
 		utils::ProjectGenerator::GenerateProject(config);
 

@@ -7,6 +7,8 @@ using namespace rapidxml;
 
 namespace utils
 {
+#define MC_ENUM_ELEM_TO_STRING(elem) "mc::"##elem
+
     static std::wstring StringToWidestring(const std::string& as)
     {
         if (as.empty())    return std::wstring();
@@ -45,9 +47,13 @@ namespace utils
         // Arg1 --> Target Path
         // Arg2 --> Project Name
         // Arg3 --> Class Name
+        // Arg4 --> Monochrome Source Path
+        // Arg5 --> Monochrome Library Debug Path
+        // Arg6 --> Monochrome Library Release Path
 
         std::string cmd = std::string("python project_source_generator.py " + 
-            std::string("\"") + config.location + "\"" + " \"" + config.projectName + "\" \"" + config.uiClassName + "\""
+            std::string("\"") + config.location + "\"" + " \"" + config.projectName + "\" \"" + config.uiClassName + "\" " +
+            "\"" + config.monochromeSourcePath + "\" \"" + config.monochromeLibraryDebugPath + "\" \"" + config.monochromeLibraryReleasePath + "\""
         );
 
         std::system(cmd.c_str());
@@ -195,6 +201,66 @@ namespace utils
         color_node->append_attribute(doc->allocate_attribute("b", doc->allocate_string(std::to_string(label->color.b).c_str())));
         color_node->append_attribute(doc->allocate_attribute("a", doc->allocate_string(std::to_string(label->color.alpha).c_str())));
         view_node->append_node(color_node);
+
+        xml_node<>* text_properties_node = doc->allocate_node(node_element, "text_properties");
+        
+        xml_node<>* font_node = doc->allocate_node(node_element, "font");
+        font_node->value(doc->allocate_string(label->Properties.Font.c_str()));
+        text_properties_node->append_node(font_node);
+
+        xml_node<>* font_size_node = doc->allocate_node(node_element, "font_size");
+        font_size_node->value(doc->allocate_string(std::to_string(label->Properties.FontSize).c_str()));
+        text_properties_node->append_node(font_size_node);
+
+        const auto alignment_to_string = [](TextAlignment alignment) -> std::string {
+            switch (alignment)
+            {
+            case TextAlignment::CENTERED: return "mc::TextAlignment::CENTERED";
+            case TextAlignment::LEADING: return "mc::TextAlignment::LEADING";
+            case TextAlignment::TRAILING: return "mc::TextAlignment::TRAILING";
+            default: return "Unknown";
+            }
+        };
+
+        const auto wrapping_to_string = [](WordWrapping wrapping) -> std::string {
+            switch (wrapping)
+            {
+            case WordWrapping::CHARACTER_WRAP: return "mc::WordWrapping::CHARACTER_WRAP";
+            case WordWrapping::NORMAL_WRAP: return "mc::WordWrapping::NORMAL_WRAP";
+            case WordWrapping::NO_WRAP: return "mc::WordWrapping::NO_WRAP";
+            case WordWrapping::EMERGENCY_BREAK: return "mc::WordWrapping::EMERGENCY_BREAK";
+            case WordWrapping::WORD_WRAP: return "mc::WordWrapping::WORD_WRAP";
+            default: return "Unknown";
+            }
+        };
+
+        const auto style_to_string = [](TextStyle style) -> std::string {
+            switch (style)
+            {
+            case TextStyle::DEFAULT: return "mc::TextStyle::DEFAULT";
+            case TextStyle::BOLD: return "mc::TextStyle::BOLD";
+            case TextStyle::BOLD_ITALIC: return "mc::TextStyle::BOLD_ITALIC";
+            case TextStyle::ITALIC: return "mc::TextStyle::ITALIC";
+            case TextStyle::SEMIBOLD_ITALIC: return "mc::TextStyle::SEMIBOLD_ITALIC";
+            case TextStyle::SEMIBOLD: return "mc::TextStyle::SEMIBOLD";
+            case TextStyle::Light: return "mc::TextStyle::Light";
+            default: return "Unknown";
+            }
+        };
+
+        xml_node<>* alignment_node = doc->allocate_node(node_element, "alignment");
+        alignment_node->value(doc->allocate_string(alignment_to_string(label->Properties.Allignment).c_str()));
+        text_properties_node->append_node(alignment_node);
+
+        xml_node<>* style_node = doc->allocate_node(node_element, "style");
+        style_node->value(doc->allocate_string(style_to_string(label->Properties.Style).c_str()));
+        text_properties_node->append_node(style_node);
+
+        xml_node<>* wrapping_node = doc->allocate_node(node_element, "wrapping");
+        wrapping_node->value(doc->allocate_string(wrapping_to_string(label->Properties.Wrapping).c_str()));
+        text_properties_node->append_node(wrapping_node);
+
+        view_node->append_node(text_properties_node);
     }
     
     void AddButtonPropertyNodes(Ref<xml_document<>>& doc, xml_node<>*& view_node, Ref<UIButton>& button)

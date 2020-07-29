@@ -5,6 +5,13 @@ from mclayout_reader import *
 input_TargetPath    = sys.argv[1]
 input_ProjectName   = sys.argv[2]
 input_ClassName     = sys.argv[3]
+input_MCSourcePath  = sys.argv[4].replace('\\', '/')
+input_LibDbgPath    = sys.argv[5].replace('\\', '/')
+input_LibRelPath    = sys.argv[6].replace('\\', '/')
+
+print(input_MCSourcePath)
+print(input_LibDbgPath)
+print(input_LibRelPath)
 
 reader = MCLayoutReader(input_TargetPath + "\\" + input_ProjectName + ".mc")
 reader.generate_cpp_source()
@@ -54,29 +61,49 @@ with open(input_TargetPath + "\\src\\main.cpp", 'w') as main_cpp:
 # CMakeLists
 with open(input_TargetPath + "\\CMakeLists.txt", 'w') as cmakelists:
     project_name = "".join(input_ProjectName.split())
-    source = "cmake_minimum_required(VERSION 3.0)\n"
-    source += "set(CMAKE_CONFIGURATION_TYPES \"Debug;Release;MinSizeRel;RelWithDebInfo\")\n"
-    source += "set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} /std:c++17 /EHsc\")\n"
-    source += "\n"
-    source += "add_definitions(-DUNICODE -D_UNICODE)\n"
-    source += "\n"
-    source += "project(" + project_name + ")\n"
-    source += "\n"
-    source += "set(HEADERS\n"
-    source += "src/" + input_ClassName + ".h\n"
-    source += ")\n"
-    source += "\n"
-    source += "set(SOURCES\n"
-    source += "src/" + input_ClassName + ".cpp\n"
-    source += "src/main.cpp\n"
-    source += ")\n"
-    source += "\n"
-    source += "add_executable(\n"
-    source += project_name + "\n"
-    source += "${HEADERS}\n"
-    source += "${SOURCES}\n"
-    source += ")\n"
-    source += "\n"
+    source = """
+    cmake_minimum_required(VERSION 3.0)
+    set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
+    set(CMAKE_CXX_FLAGS "${{CMAKE_CXX_FLAGS}} /std:c++17 /EHsc")
+
+    add_definitions(-DUNICODE -D_UNICODE)
+
+    project({0})
+
+    set(HEADERS
+        src/{1}.h
+    )
+
+    set(SOURCES
+        src/{1}.cpp
+        src/main.cpp
+    )
+
+    include_directories(
+        {2}
+    )
+
+    add_executable(
+        ${{PROJECT_NAME}}
+        ${{HEADERS}}
+        ${{SOURCES}}
+    )
+
+    find_library(
+        MONOCHROME_LIB_DEBUG
+        NAMES Monochrome
+        HINTS {3}
+    )
+
+    find_library(
+    MONOCHROME_LIB_RELEASE
+    NAMES Monochrome
+    HINTS {4}
+    )
+
+    target_link_libraries(${{PROJECT_NAME}} debug ${{MONOCHROME_LIB_DEBUG}})
+    target_link_libraries(${{PROJECT_NAME}} optimized ${{MONOCHROME_LIB_RELEASE}})
+    """.format(project_name, input_ClassName, input_MCSourcePath, input_LibDbgPath, input_LibRelPath)
 
     cmakelists.write(source)
 
