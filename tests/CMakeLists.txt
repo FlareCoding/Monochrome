@@ -8,3 +8,6 @@ target_link_libraries(MultipleWindows PUBLIC Monochrome)
 
 add_executable(WindowControl window_control.cpp)
 target_link_libraries(WindowControl PUBLIC Monochrome)
+
+add_executable(FileChooserTest file_chooser_test.cpp)
+target_link_libraries(FileChooserTest PUBLIC Monochrome)

@@ -17,6 +17,8 @@ set(
     ${MC_UI_HEADERS}
     ${MC_WINDOW_HEADERS}
 
+    src/Monochrome.h
+
     PARENT_SCOPE
 )
 
