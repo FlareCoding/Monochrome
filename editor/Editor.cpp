@@ -296,24 +296,12 @@ void MonochromeEditor::InitEditorUI()
 	m_SelectProjectPathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 		{
-			char szDir[MAX_PATH];
-			BROWSEINFOA bInfo;
-			bInfo.hwndOwner = NULL;
-			bInfo.pidlRoot = NULL;
-			bInfo.pszDisplayName = szDir;
-			bInfo.lpszTitle = "Choose location";
-			bInfo.ulFlags = 0;
-			bInfo.lpfn = NULL;
-			bInfo.lParam = 0;
-			bInfo.iImage = -1;
+			UIFileDialogue fd;
+			auto path = fd.ChooseDirectoryDialogue();
 
-			LPITEMIDLIST lpItem = SHBrowseForFolderA(&bInfo);
-			std::string dir = "C:\\";
-
-			if (lpItem != NULL)
+			if (!path.empty())
 			{
-				SHGetPathFromIDListA(lpItem, szDir);
-				m_ProjectPathTextbox->Text = std::string(szDir);
+				m_ProjectPathTextbox->Text = path;
 				m_ProjectPathTextbox->TextColor = Color::white;
 			}
 		}
@@ -373,24 +361,12 @@ void MonochromeEditor::InitEditorUI()
 	m_SelectMonochromeSourcePathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 		{
-			char szDir[MAX_PATH];
-			BROWSEINFOA bInfo;
-			bInfo.hwndOwner = NULL;
-			bInfo.pidlRoot = NULL;
-			bInfo.pszDisplayName = szDir;
-			bInfo.lpszTitle = "Choose location";
-			bInfo.ulFlags = 0;
-			bInfo.lpfn = NULL;
-			bInfo.lParam = 0;
-			bInfo.iImage = -1;
+			UIFileDialogue fd;
+			auto path = fd.ChooseDirectoryDialogue();
 
-			LPITEMIDLIST lpItem = SHBrowseForFolderA(&bInfo);
-			std::string dir = "C:\\";
-
-			if (lpItem != NULL)
+			if (!path.empty())
 			{
-				SHGetPathFromIDListA(lpItem, szDir);
-				m_MonochromeSourcePathTextbox->Text = std::string(szDir);
+				m_MonochromeSourcePathTextbox->Text = path;
 				m_MonochromeSourcePathTextbox->TextColor = Color::white;
 			}
 		}
@@ -418,24 +394,12 @@ void MonochromeEditor::InitEditorUI()
 	m_SelectMonochromeLibDbgPathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 		{
-			char szDir[MAX_PATH];
-			BROWSEINFOA bInfo;
-			bInfo.hwndOwner = NULL;
-			bInfo.pidlRoot = NULL;
-			bInfo.pszDisplayName = szDir;
-			bInfo.lpszTitle = "Choose location";
-			bInfo.ulFlags = 0;
-			bInfo.lpfn = NULL;
-			bInfo.lParam = 0;
-			bInfo.iImage = -1;
+			UIFileDialogue fd;
+			auto path = fd.ChooseDirectoryDialogue();
 
-			LPITEMIDLIST lpItem = SHBrowseForFolderA(&bInfo);
-			std::string dir = "C:\\";
-
-			if (lpItem != NULL)
+			if (!path.empty())
 			{
-				SHGetPathFromIDListA(lpItem, szDir);
-				m_MonochromeLibDbgPathTextbox->Text = std::string(szDir);
+				m_MonochromeLibDbgPathTextbox->Text = path;
 				m_MonochromeLibDbgPathTextbox->TextColor = Color::white;
 			}
 		}
@@ -463,24 +427,12 @@ void MonochromeEditor::InitEditorUI()
 	m_SelectMonochromeLibRelPathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 		{
-			char szDir[MAX_PATH];
-			BROWSEINFOA bInfo;
-			bInfo.hwndOwner = NULL;
-			bInfo.pidlRoot = NULL;
-			bInfo.pszDisplayName = szDir;
-			bInfo.lpszTitle = "Choose location";
-			bInfo.ulFlags = 0;
-			bInfo.lpfn = NULL;
-			bInfo.lParam = 0;
-			bInfo.iImage = -1;
+			UIFileDialogue fd;
+			auto path = fd.ChooseDirectoryDialogue();
 
-			LPITEMIDLIST lpItem = SHBrowseForFolderA(&bInfo);
-			std::string dir = "C:\\";
-
-			if (lpItem != NULL)
+			if (!path.empty())
 			{
-				SHGetPathFromIDListA(lpItem, szDir);
-				m_MonochromeLibRelPathTextbox->Text = std::string(szDir);
+				m_MonochromeLibRelPathTextbox->Text = path;
 				m_MonochromeLibRelPathTextbox->TextColor = Color::white;
 			}
 		}
