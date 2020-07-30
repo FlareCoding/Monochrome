@@ -31,6 +31,8 @@ var annotated_dup =
       [ "TextProperties", "structmc_1_1_text_properties.html", "structmc_1_1_text_properties" ],
       [ "UIButton", "classmc_1_1_u_i_button.html", "classmc_1_1_u_i_button" ],
       [ "UICheckbox", "classmc_1_1_u_i_checkbox.html", "classmc_1_1_u_i_checkbox" ],
+      [ "UIFileDialogue", "classmc_1_1_u_i_file_dialogue.html", "classmc_1_1_u_i_file_dialogue" ],
+      [ "UIFileDialogueFilter", "classmc_1_1_u_i_file_dialogue_filter.html", "classmc_1_1_u_i_file_dialogue_filter" ],
       [ "UILabel", "classmc_1_1_u_i_label.html", "classmc_1_1_u_i_label" ],
       [ "UIScrollPanel", "classmc_1_1_u_i_scroll_panel.html", "classmc_1_1_u_i_scroll_panel" ],
       [ "UISlider", "classmc_1_1_u_i_slider.html", "classmc_1_1_u_i_slider" ],

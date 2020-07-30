@@ -44,5 +44,7 @@ var hierarchy =
     [ "mc::SceneManager", "classmc_1_1_scene_manager.html", null ],
     [ "mc::TextMetrics", "structmc_1_1_text_metrics.html", null ],
     [ "mc::TextProperties", "structmc_1_1_text_properties.html", null ],
+    [ "mc::UIFileDialogue", "classmc_1_1_u_i_file_dialogue.html", null ],
+    [ "mc::UIFileDialogueFilter", "classmc_1_1_u_i_file_dialogue_filter.html", null ],
     [ "mc::UIWindow", "classmc_1_1_u_i_window.html", null ]
 ];
