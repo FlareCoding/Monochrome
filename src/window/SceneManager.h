@@ -1,5 +1,6 @@
 #pragma once
 #include <ui/UIView.h>
+#include <mutex>
 
 namespace mc
 {
@@ -19,5 +20,6 @@ namespace mc
 	private:
 		std::vector<Ref<UIView>> m_Views;
 		std::vector<EventPtr> m_EventQueue;
+		std::mutex m_EventQueueMutex;
 	};
 }

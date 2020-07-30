@@ -30,14 +30,11 @@ namespace mc
 
 	void SceneManager::ProcessEvents(uint32_t window_dpi)
 	{
-		//
-		// Cloning the vector of events is the safest way to process them.
-		// For some reason using a mutex didn't work, so if somebody makes
-		// it work, please feel free to change this part to use a mutex
-		// and the original vector (m_EventQueue).
-		//
-		std::vector<EventPtr> m_EventQueueClone = m_EventQueue;
-		m_EventQueue.clear();
+		std::vector<EventPtr> m_EventQueueClone;
+		{
+			std::lock_guard<std::mutex> guard(m_EventQueueMutex);
+			m_EventQueueClone.swap(m_EventQueue);
+		}
 
 		for (auto& event : m_EventQueueClone)
 		{
