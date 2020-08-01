@@ -8,6 +8,7 @@ var classmc_1_1_u_i_view =
     [ "Draw", "classmc_1_1_u_i_view.html#a519c488dbbd342550057e77831d640ef", null ],
     [ "GetAbsolutePosition", "classmc_1_1_u_i_view.html#a872caf88b4629769886b477f4f562338", null ],
     [ "GetZIndex", "classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f", null ],
+    [ "RemoveSubview", "classmc_1_1_u_i_view.html#ab01b6fd4c03d66cce9af52dbb626c583", null ],
     [ "SetZIndex", "classmc_1_1_u_i_view.html#aa44894c75232684a1bbbaea9a7c50ad8", null ],
     [ "EventValidator", "classmc_1_1_u_i_view.html#a6a5d53da4856053a462c579c0873812a", null ],
     [ "CornerRadius", "classmc_1_1_u_i_view.html#aea18ed1b8824d32242c6a76f8d8d51d2", null ],
