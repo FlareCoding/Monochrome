@@ -16,7 +16,7 @@ void Slider_ValueChanged(float value, UISlider* sender)
 
 int main()
 {
-	auto window = UIWindow::Create(WindowStyle::Modern, 1000, 670, "Demo App");
+	auto window = UIWindow::Create(WindowStyle::Modern, 1220, 760, "Demo App");
 	window->SetBackgroundColor(Color(28, 21, 31, 1.0f));
 	window->SetModernWindowButtonsColor(Color(28, 21, 31, 1.0f));
 
@@ -77,6 +77,20 @@ int main()
 		btn->Label->Text = "Button " + std::to_string(i + 1);
 		scrollPanel->AddChild(btn);
 	}
+
+	Ref<UICombobox> combobox = MakeRef<UICombobox>();
+	combobox->layer.frame = Frame(Position{ 960, 100 }, Size{ 180, 100 });
+	std::vector<std::string> items = { "Red", "Green", "Blue", "Purple", "Cyan", "Pink", "Brown" };
+	combobox->SetItems(items);
+	combobox->SetItemBackgroundColor(Color(58, 58, 59, 1));
+	combobox->SetItemTextColor(Color::white);
+	combobox->layer.color = Color(62, 62, 63, 1);
+	combobox->SetDropdownArrowColor(Color::white);
+	combobox->SetSelectedItemColor(Color::white);
+	combobox->AddItemChangedEventHandler([](size_t index, UICombobox* sender) {
+		printf("Selected \"%s\" at index %zu\n", sender->GetItem(index).c_str(), index);
+	});
+	window->AddView(combobox);
 
 	window->StartWindowLoop();
 

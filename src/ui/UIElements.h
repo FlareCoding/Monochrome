@@ -5,3 +5,4 @@
 #include "elements/UISlider.h"
 #include "elements/UITextbox.h"
 #include "elements/UIScrollPanel.h"
+#include "elements/UICombobox.h"

@@ -70,10 +70,22 @@ namespace mc
 
 			return EVENT_UNHANDLED;
 		});
+
+		AddEventHandler<EventType::MouseHoverOn>([this](Event& e, UIView* sender) -> bool {
+			m_IsFocused = true;
+			return EVENT_UNHANDLED;
+		});
+
+		AddEventHandler<EventType::MouseHoverOff>([this](Event& e, UIView* sender) -> bool {
+			m_IsFocused = false;
+			return EVENT_UNHANDLED;
+		});
 	}
 
 	void UIScrollPanel::ScrollContent(float distance)
 	{
+		if (!m_IsFocused) return;
+
 		ContentView->layer.frame.position.y -= distance;
 
 		if (ContentView->layer.frame.position.y > 0)
@@ -166,5 +178,15 @@ namespace mc
 	void UIScrollPanel::AddChild(const Ref<UIView>& view)
 	{
 		ContentView->AddSubview(view);
+	}
+
+	void UIScrollPanel::RemoveChild(Ref<UIView> view)
+	{
+		ContentView->RemoveSubview(view);
+	}
+
+	void UIScrollPanel::Clear()
+	{
+		ContentView->subviews.clear();
 	}
 }

@@ -9,6 +9,7 @@ set(
     src/ui/elements/UISlider.h
     src/ui/elements/UITextbox.h
     src/ui/elements/UIScrollPanel.h
+    src/ui/elements/UICombobox.h
 
     PARENT_SCOPE
 )
@@ -22,6 +23,7 @@ set(
     src/ui/elements/UISlider.cpp
     src/ui/elements/UITextbox.cpp
     src/ui/elements/UIScrollPanel.cpp
+    src/ui/elements/UICombobox.cpp
 
     PARENT_SCOPE
 )

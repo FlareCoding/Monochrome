@@ -58,6 +58,17 @@ namespace mc
 			SortElements();
 		}
 
+		/// Removes a child view.
+		template <typename T>
+		void RemoveSubview(Ref<T> subview)
+		{
+			std::vector<Ref<UIView>>::iterator it = std::find(subviews.begin(), subviews.end(), subview);
+			if (it != subviews.end())
+				subviews.erase(it);
+
+			SortElements();
+		}
+
 	private:
 		friend class EventValidator;
 
