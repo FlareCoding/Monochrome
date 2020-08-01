@@ -31,7 +31,9 @@ private:
 	LabelProperties m_LabelProperties;
 	ButtonProperties m_ButtonProperties;
 
-	void OpenElementProperties(Widget type);
+	Ref<UIButton> m_OpenVariablePropertiesButton;
+
+	void OpenElementProperties(Ref<UIView> TargetElement);
 
 private:
 	// Project Window Settings

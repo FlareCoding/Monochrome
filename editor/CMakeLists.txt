@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 set(
     MC_EDITOR_HEADERS
 
+    panels/UIElementProperties.h
     panels/LabelProperties.h
     panels/ButtonProperties.h
 
@@ -19,7 +20,7 @@ set(
 
 set(
     MC_EDITOR_SOURCES
-
+   
     panels/LabelProperties.cpp
     panels/ButtonProperties.cpp
 

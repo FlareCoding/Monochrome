@@ -12,8 +12,8 @@ void MonochromeEditor::Initialize()
 	CreateEditorWindow();
 	InitEditorUI();
 
-	m_LabelProperties.Initialize(m_ElementPreviewArea, m_PropertiesView);
-	m_ButtonProperties.Initialize(m_ElementPreviewArea, m_PropertiesView);
+	m_LabelProperties.Initialize(m_PropertiesView);
+	m_ButtonProperties.Initialize(m_PropertiesView);
 
 	m_PropertiesView->subviews.clear();
 }
@@ -74,7 +74,7 @@ void MonochromeEditor::InitEditorUI()
 		widget->layer.frame.position = DefaultElementPreviewPosition;
 		m_ElementPreviewArea->AddSubview(widget);
 
-		OpenElementProperties(Widget::Label);
+		OpenElementProperties(widget);
 	});
 
 	auto ToolboxWidgetButton_Button	= MakeToolboxWidgetButton("Button", [this]() {
@@ -84,7 +84,7 @@ void MonochromeEditor::InitEditorUI()
 		widget->layer.frame.position = DefaultElementPreviewPosition;
 		m_ElementPreviewArea->AddSubview(widget);
 
-		OpenElementProperties(Widget::Button);
+		OpenElementProperties(widget);
 	});
 
 	auto ToolboxWidgetButton_Checkbox = MakeToolboxWidgetButton("Checkbox", [this]() {
@@ -94,7 +94,7 @@ void MonochromeEditor::InitEditorUI()
 		widget->layer.frame.position = DefaultElementPreviewPosition;
 		m_ElementPreviewArea->AddSubview(widget);
 
-		OpenElementProperties(Widget::Checkbox);
+		OpenElementProperties(widget);
 	});
 	
 	auto ToolboxWidgetButton_Slider	= MakeToolboxWidgetButton("Slider", [this]() {
@@ -106,7 +106,7 @@ void MonochromeEditor::InitEditorUI()
 		widget->VisibleTickmarks = false;
 		m_ElementPreviewArea->AddSubview(widget);
 
-		OpenElementProperties(Widget::Slider);
+		OpenElementProperties(widget);
 	});
 
 	m_EditorWindow->AddView(m_Toolbox);
@@ -445,32 +445,12 @@ void MonochromeEditor::InitEditorUI()
 
 }
 
-void MonochromeEditor::OpenElementProperties(Widget type)
+void MonochromeEditor::OpenElementProperties(Ref<UIView> TargetElement)
 {
 	m_PropertiesView->subviews.clear();
 
-	switch (type)
-	{
-	case Widget::Label:
-	{
-		m_LabelProperties.Open(std::dynamic_pointer_cast<UILabel>(m_ElementPreviewArea->subviews.at(0)));
-		break;
-	}
-	case Widget::Button:
-	{
-		m_ButtonProperties.Open(std::dynamic_pointer_cast<UIButton>(m_ElementPreviewArea->subviews.at(0)));
-		break;
-	}
-	case Widget::Checkbox:
-	{
-		break;
-	}
-	case Widget::Slider:
-	{
-		break;
-	}
-	default: break;
-	}
+	if (utils::CheckType<UILabel>(TargetElement.get())) { m_LabelProperties.Open(std::dynamic_pointer_cast<UILabel>(TargetElement)); }
+	if (utils::CheckType<UIButton>(TargetElement.get())) { m_ButtonProperties.Open(std::dynamic_pointer_cast<UIButton>(TargetElement)); }
 }
 
 void MonochromeEditor::OpenProjectWindow()

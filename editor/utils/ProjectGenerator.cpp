@@ -20,12 +20,6 @@ namespace utils
         return ret;
     }
 
-    template <typename T>
-    bool CheckType(UIView* view)
-    {
-        return dynamic_cast<T*>(view);
-    }
-
     Widget GetWidgetType(UIView* view);
     std::string WidgetTypeToString(Widget type);
     void AddWidgetPropertyNodes(Ref<xml_document<>>& doc, xml_node<>*& view_node, Widget type, Ref<UIView>& view);
