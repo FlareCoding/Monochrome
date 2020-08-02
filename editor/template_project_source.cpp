@@ -13,7 +13,7 @@ void {ClassName}::Setup()
 {{
 {WindowCreationSourceCode}
 
-InitUI();
+    InitUI();
 
 }}
 

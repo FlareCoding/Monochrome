@@ -13,6 +13,7 @@ var classmc_1_1_u_i_combobox =
     [ "GetItemBackgroundColor", "classmc_1_1_u_i_combobox.html#a3af6e2ad34bc8c7fe28f483baffbef09", null ],
     [ "GetItemCount", "classmc_1_1_u_i_combobox.html#aba6749de92befecbb5cf5595b55ef629", null ],
     [ "GetItemTextColor", "classmc_1_1_u_i_combobox.html#a7d8bcdd848b018e9f5c5908605b0047c", null ],
+    [ "GetSelectedItem", "classmc_1_1_u_i_combobox.html#af1db2aa34e6fc0891d0aca4e864e2392", null ],
     [ "IndexOf", "classmc_1_1_u_i_combobox.html#af41f9bfa33e3eb72adc5e4b40468ca3a", null ],
     [ "InsertItem", "classmc_1_1_u_i_combobox.html#a545d5371e700a03452343103518380f4", null ],
     [ "operator+=", "classmc_1_1_u_i_combobox.html#a405a9a1ff388fd7c13f700ff9a8ae038", null ],

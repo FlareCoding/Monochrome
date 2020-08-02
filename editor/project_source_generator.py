@@ -18,6 +18,8 @@ reader.generate_cpp_source()
 
 HeaderVariables = {}
 HeaderVariables['ClassName'] = input_ClassName
+HeaderVariables['PublicDataMembers'] = reader.get_public_data_members_source_string()
+HeaderVariables['PrivateDataMembers'] = reader.get_private_data_members_source_string()
 
 SourceVariables = {}
 SourceVariables['ClassName'] = input_ClassName

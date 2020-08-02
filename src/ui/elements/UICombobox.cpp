@@ -236,6 +236,11 @@ namespace mc
 		return m_Items.size();
 	}
 
+	std::string UICombobox::GetSelectedItem()
+	{
+		return GetItem(m_SelectedIndex);
+	}
+
 	void UICombobox::RecalculateItemPositions()
 	{
 		Position ItemPosition = { 0, 0 };

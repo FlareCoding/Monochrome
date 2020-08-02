@@ -91,7 +91,6 @@ inline Ref<UITextbox> UIElementProperties<UIElement>::AddInputField(std::string 
 	label->color = Color::white;
 	label->Text = title;
 	label->Properties.FontSize = font_size;
-	m_PropertiesPanel->AddSubview(label);
 
 	Ref<UITextbox> Input = MakeRef<UITextbox>();
 	Input->layer.frame = Frame(position + Position{ 110, 5 }, Size{ 150, 20 });
@@ -106,8 +105,7 @@ inline Ref<UITextbox> UIElementProperties<UIElement>::AddInputField(std::string 
 			input_handler(Input);
 		}
 		return EVENT_HANDLED;
-		});
-	m_PropertiesPanel->AddSubview(Input);
+	});
 
 	m_PropertiesList.push_back(label);
 	m_PropertiesList.push_back(Input);

@@ -14,7 +14,7 @@ void ButtonProperties::InitPropertiesUI()
 	// Height
 	m_HeightInput = AddInputField("Height: ", Position{ 100, 170 }, [this](Ref<UITextbox> src) { AssignFloatFromField(m_TargetElement->layer.frame.size.height, src); });
 
-	// Button Color Tex Label
+	// Button Color Text Label
 	Ref<UILabel> ButtonColorLabel = MakeRef<UILabel>();
 	ButtonColorLabel->layer.frame = Frame(Position{ 80, 210 }, Size{ 160, 40 });
 	ButtonColorLabel->color = Color::white;

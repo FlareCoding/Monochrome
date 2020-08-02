@@ -30,13 +30,13 @@ namespace utils
     void AddCheckboxPropertyNodes(Ref<xml_document<>>& doc, xml_node<>*& view_node, Ref<UICheckbox>& checkbox);
     void AddSliderPropertyNodes(Ref<xml_document<>>& doc, xml_node<>*& view_node, Ref<UISlider>& slider);
 
-    void UIViewToXML(Ref<xml_document<>>& doc, xml_node<>*& root_node, Ref<UIView>& view);
+    void UIViewToXML(Ref<xml_document<>>& doc, xml_node<>*& root_node, Ref<UIView>& view, std::map<Ref<UIView>, ElementCodeProperties>& element_code_props);
     void AddWindowSettingsNode(Ref<xml_document<>>& doc, xml_node<>*& root_node, WindowSettings& window_settings);
 
     void ProjectGenerator::GenerateProject(ProjectConfig& config)
     {
         // Create monochrome UI layout file
-        CreateMCLayoutFile(config.location + "\\" + config.projectName + ".mc", config.uiViews, config.windowSettings);
+        CreateMCLayoutFile(config.location + "\\" + config.projectName + ".mc", config.uiViews, config.windowSettings, *config.elementCodeProperties);
 
         // Arg1 --> Target Path
         // Arg2 --> Project Name
@@ -53,7 +53,7 @@ namespace utils
         std::system(cmd.c_str());
     }
 
-    void ProjectGenerator::CreateMCLayoutFile(std::string& path, std::vector<Ref<UIView>>& views, WindowSettings& window_settings)
+    void ProjectGenerator::CreateMCLayoutFile(std::string& path, std::vector<Ref<UIView>>& views, WindowSettings& window_settings, std::map<Ref<UIView>, ElementCodeProperties>& element_code_props)
     {
         std::ofstream file(path);
         Ref<xml_document<>> document = MakeRef<xml_document<>>();
@@ -70,24 +70,31 @@ namespace utils
         AddWindowSettingsNode(document, root_node, window_settings);
 
         for (auto& view : views)
-            UIViewToXML(document, root_node, view);
+            UIViewToXML(document, root_node, view, element_code_props);
 
         document->append_node(root_node);
         file << *document;
         file.close();
     }
 
-    void UIViewToXML(Ref<xml_document<>>& doc, xml_node<>*& root_node, Ref<UIView>& view)
+    void UIViewToXML(Ref<xml_document<>>& doc, xml_node<>*& root_node, Ref<UIView>& view, std::map<Ref<UIView>, ElementCodeProperties>& element_code_props)
     {
         xml_node<>* view_node = doc->allocate_node(node_element, "uiview");
 
         Widget widget_type = GetWidgetType(view.get());
         view_node->append_attribute(doc->allocate_attribute("type", doc->allocate_string(WidgetTypeToString(widget_type).c_str())));
 
+        // Element Code Properties
+        if (element_code_props.find(view) != element_code_props.end())
+        {
+            view_node->append_attribute(doc->allocate_attribute("visibility", doc->allocate_string(element_code_props[view].visibility.c_str())));
+            view_node->append_attribute(doc->allocate_attribute("name", doc->allocate_string(element_code_props[view].name.c_str())));
+        }
+
         AddWidgetPropertyNodes(doc, view_node, widget_type, view);
 
         for (auto& child : view->subviews)
-            UIViewToXML(doc, view_node, child);
+            UIViewToXML(doc, view_node, child, element_code_props);
 
         root_node->append_node(view_node);
     }

@@ -4,8 +4,10 @@ from xml.etree import ElementTree
 class MCLayoutReader:
     def __init__(self, layout_file):
         self.__dom = ElementTree.parse(layout_file)
-        self.__cppsource = ""
-        self.__window_creation_source = ""
+        self.__cppsource = "\n"
+        self.__window_creation_source = "\n"
+        self.__public_data_members_source = "\n"
+        self.__private_data_members_source = "\n"
         self.__available_label_id = 0
         self.__available_button_id = 0
         self.__available_checkbox_id = 0
@@ -203,16 +205,38 @@ class MCLayoutReader:
         return source
 
     def __get_element_props_and_name(self, view_node, widget_type):
+        props = {}
+        name = ""
+
+        # If a variable is public or private, use the given name
+        # and add the variable declaration as a data member.
+        if 'visibility' in view_node.attrib:
+            visibility = view_node.attrib['visibility']
+            if visibility == 'public':
+                name = view_node.attrib['name']
+                self.__public_data_members_source += "mc::Ref<mc::{0}> {1};\n".format(widget_type, name)
+            elif visibility == 'private':
+                name = view_node.attrib['name']
+                self.__private_data_members_source += "mc::Ref<mc::{0}> {1};\n".format(widget_type, name)
+
         if widget_type == 'UILabel':
-            return self.__read_UILabel_properties(view_node), self.__get_label_id()
+            props = self.__read_UILabel_properties(view_node)
+            if not name:
+                name = self.__get_label_id()
         elif widget_type == 'UIButton':
-            return self.__read_UIButton_properties(view_node), self.__get_button_id()
+            props = self.__read_UIButton_properties(view_node)
+            if not name:
+                name = self.__get_button_id()
         elif widget_type == 'UICheckbox':
-            return self.__read_UICheckbox_properties(view_node), self.__get_checkbox_id()
+            props = self.__read_UICheckbox_properties(view_node)
+            if not name:
+                name = self.__get_checkbox_id()
         elif widget_type == 'UISlider':
-            return self.__read_UISlider_properties(view_node), self.__get_slider_id()
-        else:
-            return {}, "Unknown"
+            props = self.__read_UISlider_properties(view_node)
+            if not name:
+                name = self.__get_slider_id()
+
+        return props, name
 
     def __parse_uiview_node(self, view_node):
         widget_type = view_node.attrib['type']
@@ -221,8 +245,14 @@ class MCLayoutReader:
 
         props, name = self.__get_element_props_and_name(view_node, widget_type)
 
-        decl = "mc::Ref<mc::{0}> {1} = mc::MakeRef<mc::{0}>();\n".format(widget_type, name)
+        decl = ""
         source = ""
+
+        if 'visibility' in view_node.attrib:
+            if view_node.attrib['visibility'] == 'local':
+                decl = "mc::Ref<mc::{0}> {1} = mc::MakeRef<mc::{0}>();\n".format(widget_type, name)
+            else:
+                decl = "{1} = mc::MakeRef<mc::{0}>();\n".format(widget_type, name)
 
         if widget_type == 'UILabel':
             source += self.__generate_cpp_source_UILabel_properties(decl, name, props, base_props)
@@ -243,6 +273,12 @@ class MCLayoutReader:
     def get_window_creation_source_string(self) -> str:
         return self.__window_creation_source
 
+    def get_public_data_members_source_string(self) -> str:
+        return self.__public_data_members_source
+
+    def get_private_data_members_source_string(self) -> str:
+        return self.__private_data_members_source
+
     def generate_cpp_source(self):
         self.__generate_window_creation_cpp_source()
 
@@ -250,3 +286,8 @@ class MCLayoutReader:
 
         for view in views:
             self.__parse_uiview_node(view)
+
+        self.__cppsource = self.__cppsource.replace('\n', '\n\t')
+        self.__window_creation_source = self.__window_creation_source.replace('\n', '\n\t')
+        self.__public_data_members_source = self.__public_data_members_source.replace('\n', '\n\t')
+        self.__private_data_members_source = self.__private_data_members_source.replace('\n', '\n\t')

@@ -1,6 +1,7 @@
 #pragma once
 #include "panels/LabelProperties.h"
 #include "panels/ButtonProperties.h"
+#include "panels/VariableCodeProperties.h"
 #include "utils/ProjectGenerator.h"
 
 class MonochromeEditor
@@ -30,6 +31,7 @@ private:
 
 	LabelProperties m_LabelProperties;
 	ButtonProperties m_ButtonProperties;
+	VariableCodeProperties m_VariableCodeProperties;
 
 	Ref<UIButton> m_OpenVariablePropertiesButton;
 

@@ -9,8 +9,12 @@ public:
     void Run();
     void Setup();
 
+{PublicDataMembers}
+
 private:
     mc::Ref<mc::UIWindow> m_Window;
+
+{PrivateDataMembers}
 
 private:
     void InitUI();

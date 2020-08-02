@@ -21,9 +21,10 @@ var searchData=
   ['getminimizebuttonref_56',['GetMinimizeButtonRef',['../classmc_1_1_u_i_window.html#abe9c4dc6b1bca476a7e0e5f3e1a3419b',1,'mc::UIWindow']]],
   ['getname_57',['GetName',['../classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce',1,'mc::Event']]],
   ['getnativehandle_58',['GetNativeHandle',['../classmc_1_1_u_i_window.html#a8fdfa338109d2630476a5b09adfc3145',1,'mc::UIWindow']]],
-  ['gettitle_59',['GetTitle',['../classmc_1_1_u_i_window.html#a9b75a62665cfca57ada95c4afdbf297b',1,'mc::UIWindow']]],
-  ['getwidth_60',['GetWidth',['../classmc_1_1_u_i_window.html#a49d7b9b1bd20d49b2eb82d28c2f922ba',1,'mc::UIWindow']]],
-  ['getwindowtitlelabelref_61',['GetWindowTitleLabelRef',['../classmc_1_1_u_i_window.html#aa340e86cf549b2511876633cac4792af',1,'mc::UIWindow']]],
-  ['getzindex_62',['GetZIndex',['../classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f',1,'mc::UIView']]],
-  ['graphics_63',['Graphics',['../classmc_1_1_graphics.html',1,'mc']]]
+  ['getselecteditem_59',['GetSelectedItem',['../classmc_1_1_u_i_combobox.html#af1db2aa34e6fc0891d0aca4e864e2392',1,'mc::UICombobox']]],
+  ['gettitle_60',['GetTitle',['../classmc_1_1_u_i_window.html#a9b75a62665cfca57ada95c4afdbf297b',1,'mc::UIWindow']]],
+  ['getwidth_61',['GetWidth',['../classmc_1_1_u_i_window.html#a49d7b9b1bd20d49b2eb82d28c2f922ba',1,'mc::UIWindow']]],
+  ['getwindowtitlelabelref_62',['GetWindowTitleLabelRef',['../classmc_1_1_u_i_window.html#aa340e86cf549b2511876633cac4792af',1,'mc::UIWindow']]],
+  ['getzindex_63',['GetZIndex',['../classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f',1,'mc::UIView']]],
+  ['graphics_64',['Graphics',['../classmc_1_1_graphics.html',1,'mc']]]
 ];

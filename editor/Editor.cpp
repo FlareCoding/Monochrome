@@ -14,6 +14,7 @@ void MonochromeEditor::Initialize()
 
 	m_LabelProperties.Initialize(m_PropertiesView);
 	m_ButtonProperties.Initialize(m_PropertiesView);
+	m_VariableCodeProperties.Initialize(m_PropertiesView);
 
 	m_PropertiesView->subviews.clear();
 }
@@ -53,7 +54,12 @@ void MonochromeEditor::InitEditorUI()
 		ToolboxWidgetButton->layer.color = Color(61, 61, 62, 1.0f);
 		ToolboxWidgetButton->CornerRadius = 0;
 
-		ToolboxWidgetButton->AddEventHandler<EventType::MouseButtonClicked>([click_cb](Event& e, UIView* sender) -> bool {
+		ToolboxWidgetButton->AddEventHandler<EventType::MouseButtonClicked>([this, click_cb](Event& e, UIView* sender) -> bool {
+			if (m_ElementPreviewArea->subviews.size())
+				m_VariableCodeProperties.UnregisterElement(m_ElementPreviewArea->subviews.at(0));
+
+			m_OpenVariablePropertiesButton->Label->Text = "Variable Properties";
+
 			click_cb();
 			return EVENT_HANDLED;
 		});
@@ -144,6 +150,43 @@ void MonochromeEditor::InitEditorUI()
 	m_PropertiesView->layer.frame = Frame(Position{ (float)m_EditorWidth / 2.0f - 500, 60 }, Size{ 1000, 440 });
 	m_PropertiesView->layer.color = Color(51, 51, 52, 1.0f);
 	m_EditorWindow->AddView(m_PropertiesView);
+
+	m_OpenVariablePropertiesButton = MakeRef<UIButton>();
+	Position ShowVariablePropertiesBtnPosition = m_PropertiesView->layer.frame.position + m_PropertiesView->layer.frame.size;
+	ShowVariablePropertiesBtnPosition -= { 160, 42 };
+	m_OpenVariablePropertiesButton->layer.frame = Frame(ShowVariablePropertiesBtnPosition, Size{ 158, 40 });
+	m_OpenVariablePropertiesButton->Label->Text = "Variable Properties";
+	m_OpenVariablePropertiesButton->Label->color = Color::white;
+	m_OpenVariablePropertiesButton->Label->Properties.FontSize = 15;
+	m_OpenVariablePropertiesButton->layer.color = Color(61, 61, 62, 1.0f);
+	m_OpenVariablePropertiesButton->CornerRadius = 4;
+	m_OpenVariablePropertiesButton->SetZIndex(1000);
+	m_OpenVariablePropertiesButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
+		// Nothing should be done if no element is being previewed
+		if (!m_ElementPreviewArea->subviews.size()) return EVENT_HANDLED;
+
+		auto TargetElement = m_ElementPreviewArea->subviews.at(0);
+
+		if (m_OpenVariablePropertiesButton->Label->Text._Equal("Variable Properties"))
+		{
+			// Open Variable Properties
+			m_PropertiesView->subviews.clear();
+			m_VariableCodeProperties.Open(TargetElement);
+
+			m_OpenVariablePropertiesButton->Label->Text = "Element Properties";
+		}
+		else
+		{
+			// Open Element Properties
+			m_PropertiesView->subviews.clear();
+			OpenElementProperties(TargetElement);
+
+			m_OpenVariablePropertiesButton->Label->Text = "Variable Properties";
+		}
+
+		return EVENT_HANDLED;
+	});
+	m_EditorWindow->AddView(m_OpenVariablePropertiesButton);
 
 #pragma endregion
 
@@ -447,7 +490,10 @@ void MonochromeEditor::InitEditorUI()
 
 void MonochromeEditor::OpenElementProperties(Ref<UIView> TargetElement)
 {
+	if (!TargetElement) return;
+
 	m_PropertiesView->subviews.clear();
+	m_VariableCodeProperties.RegisterElement(TargetElement);
 
 	if (utils::CheckType<UILabel>(TargetElement.get())) { m_LabelProperties.Open(std::dynamic_pointer_cast<UILabel>(TargetElement)); }
 	if (utils::CheckType<UIButton>(TargetElement.get())) { m_ButtonProperties.Open(std::dynamic_pointer_cast<UIButton>(TargetElement)); }
@@ -579,6 +625,8 @@ void MonochromeEditor::GenerateProjectSolution()
 		config.monochromeSourcePath = MonochromeSourcePath;
 		config.monochromeLibraryDebugPath = MonochromeLibDbgPath;
 		config.monochromeLibraryReleasePath = MonochromeLibRelPath;
+
+		config.elementCodeProperties = m_VariableCodeProperties.GetRegisteredElementCodeProperties();
 
 		utils::ProjectGenerator::GenerateProject(config);
 

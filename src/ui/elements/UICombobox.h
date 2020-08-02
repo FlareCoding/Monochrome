@@ -54,6 +54,9 @@ namespace mc
 		/// Returns the number of items in the combobox.
 		size_t GetItemCount();
 
+		/// Returns currently selected item.
+		std::string GetSelectedItem();
+
 		/// Sets the background color of items in the selection list.
 		void SetItemBackgroundColor(Color color);
 

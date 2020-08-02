@@ -1,5 +1,6 @@
 #pragma once
 #include "EditorUtils.h"
+#include "../panels/VariableCodeProperties.h"
 
 namespace utils
 {
@@ -21,6 +22,7 @@ namespace utils
         std::string monochromeSourcePath;
         std::string monochromeLibraryDebugPath;
         std::string monochromeLibraryReleasePath;
+        std::map<Ref<UIView>, ElementCodeProperties>* elementCodeProperties;
     };
 
     class ProjectGenerator
@@ -29,6 +31,6 @@ namespace utils
         static void GenerateProject(ProjectConfig& config);
 
     private:
-        static void CreateMCLayoutFile(std::string& path, std::vector<Ref<UIView>>& views, WindowSettings& window_settings);
+        static void CreateMCLayoutFile(std::string& path, std::vector<Ref<UIView>>& views, WindowSettings& window_settings, std::map<Ref<UIView>, ElementCodeProperties>& element_code_props);
     };
 }
