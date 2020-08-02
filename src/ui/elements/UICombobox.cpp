@@ -95,6 +95,7 @@ namespace mc
 
 		m_ItemPanel->layer.color.alpha = layer.color.alpha;
 		m_ItemPanel->Visible = m_ItemSelectionOpened;
+		m_ItemPanel->ContentView->layer.color = m_ItemBackgroundColor;
 	}
 
 	void UICombobox::AddItem(const std::string& item)
@@ -109,8 +110,8 @@ namespace mc
 		auto ItemButton = MakeRef<UIButton>();
 		ItemButton->Label->Text = item;
 		ItemButton->CornerRadius = 0;
-		ItemButton->layer.color = ItemBackgroundColor;
-		ItemButton->Label->color = ItemTextColor;
+		ItemButton->layer.color = m_ItemBackgroundColor;
+		ItemButton->Label->color = m_ItemTextColor;
 		ItemButton->AddEventHandler<EventType::MouseButtonClicked>([this, item](Event& e, UIView* sender) -> bool {
 			// This check has to be done since the scroll panel
 			// will receive events regardless of whether or not
@@ -270,28 +271,28 @@ namespace mc
 
 	void UICombobox::SetItemBackgroundColor(Color color)
 	{
-		ItemBackgroundColor = color;
+		m_ItemBackgroundColor = color;
 
 		for (auto& [item_name, button] : m_Items)
-			button->layer.color = ItemBackgroundColor;
+			button->layer.color = m_ItemBackgroundColor;
 	}
 
 	Color UICombobox::GetItemBackgroundColor()
 	{
-		return ItemBackgroundColor;
+		return m_ItemBackgroundColor;
 	}
 
 	void UICombobox::SetItemTextColor(Color color)
 	{
-		ItemTextColor = color;
+		m_ItemTextColor = color;
 
 		for (auto& [item_name, button] : m_Items)
-			button->Label->color = ItemTextColor;
+			button->Label->color = m_ItemTextColor;
 	}
 
 	Color UICombobox::GetItemTextColor()
 	{
-		return ItemTextColor;
+		return m_ItemTextColor;
 	}
 
 	void UICombobox::SetDropdownArrowColor(Color color)

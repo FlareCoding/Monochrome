@@ -99,8 +99,8 @@ namespace mc
 
 		float m_OpenSelectionArrowAreaWidth = 20.0f;
 
-		Color ItemBackgroundColor = Color::white;
-		Color ItemTextColor = Color::black;
+		Color m_ItemBackgroundColor = Color::white;
+		Color m_ItemTextColor = Color::black;
 
 	private:
 		bool m_ItemSelectionOpened = false;
