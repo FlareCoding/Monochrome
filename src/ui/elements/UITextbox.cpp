@@ -271,6 +271,10 @@ namespace mc
 
 	void UITextbox::RecalculateVisibleText()
 	{
+		// Extra edge-case sanitization
+		if (m_VisibleStartIndex > Text.size() || m_VisibleEndIndex < 0)
+			return;
+
 		bool success = false;
 		while (!success)
 		{
