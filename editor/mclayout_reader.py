@@ -2,16 +2,24 @@ import sys
 from xml.etree import ElementTree
 
 class MCLayoutReader:
-    def __init__(self, layout_file):
+    def __init__(self, layout_file, class_name):
         self.__dom = ElementTree.parse(layout_file)
+        self.__class_name = class_name
         self.__cppsource = "\n"
         self.__window_creation_source = "\n"
         self.__public_data_members_source = "\n"
         self.__private_data_members_source = "\n"
+        self.__public_member_function_declarations_source = "\n"
+        self.__private_member_function_declarations_source = "\n"
+        self.__public_member_function_definitions_source = "\n"
+        self.__private_member_function_definitions_source = "\n"
         self.__available_label_id = 0
         self.__available_button_id = 0
         self.__available_checkbox_id = 0
         self.__available_slider_id = 0
+    
+    def __str2bool(self, v):
+        return str(v).lower() in ("true", "1")
     
     def __get_label_id(self):
         self.__available_label_id += 1
@@ -174,6 +182,7 @@ class MCLayoutReader:
 
     def __read_Basic_UIView_properties(self, node):
         props = {}
+        props['type'] = node.attrib['type']
         props['layer'] = {}
         props['layer']['color'] = self.__get_color_ctor(node, 'layer/color')
         props['layer']['frame'] = {}
@@ -187,6 +196,22 @@ class MCLayoutReader:
         props['corner_radius'] =  str(int(float(node.find('corner_radius').text)))
         props['visible'] = node.find('visible').text
 
+        # Parse event handlers data
+        event_handlers_node = node.find('event_handlers')
+        if event_handlers_node is not None:
+            props['event_handlers'] = []
+            for handler_node in event_handlers_node.findall('handler'):
+                handler = {}
+                handler['type'] = handler_node.attrib['type']
+                handler['generate_member_fn'] = self.__str2bool(handler_node.attrib['generate_member_fn'])
+                if handler['generate_member_fn'] is True:
+                    handler['member_fn'] = {}
+                    handler['member_fn']['name'] = handler_node.find('member_fn/name').text
+                    handler['member_fn']['visibility'] = handler_node.find('member_fn/visibility').text
+                
+                handler['return_status'] = handler_node.find('return_status').text
+                props['event_handlers'].append(handler)
+
         return props
 
     def __generate_cpp_source_Basic_UIView_properties(self, name, props):
@@ -196,11 +221,36 @@ class MCLayoutReader:
         width = props['layer']['frame']['size']['width']
         height = props['layer']['frame']['size']['height']
         
-        source += name + "->layer.frame = mc::Frame(mc::Position{{ {}, {} }}, mc::Size{{ {}, {} }});\n".format(xpos, ypos, width, height)
-        source += name + "->layer.color = {};\n".format(props['layer']['color'])
-        source += name + "->SetZIndex({});\n".format(props['z_index'])
-        source += name + "->CornerRadius = {};\n".format(props['corner_radius'])
-        source += name + "->Visible = {};\n".format(props['visible'])
+        source += "{}->layer.frame = mc::Frame(mc::Position{{ {}, {} }}, mc::Size{{ {}, {} }});\n".format(name, xpos, ypos, width, height)
+        source += "{}->layer.color = {};\n".format(name, props['layer']['color'])
+        source += "{}->SetZIndex({});\n".format(name, props['z_index'])
+        source += "{}->CornerRadius = {};\n".format(name, props['corner_radius'])
+        source += "{}->Visible = {};\n".format(name, props['visible'])
+
+        if 'event_handlers' in props:
+            for handler in props['event_handlers']:
+                should_generate_member_fn = handler['generate_member_fn']
+
+                source += "{}->AddEventHandler<mc::EventType::{}>([this](mc::Event& e, mc::UIView* sender) -> bool {{\n".format(name, handler['type'])
+                if should_generate_member_fn is True:
+                    parameters = "reinterpret_cast<mc::{0}Event&>(e), dynamic_cast<mc::{1}*>(sender)".format(handler['type'], props['type'])
+                    source += "\t{}({});\n".format(handler['member_fn']['name'], parameters)
+                else:
+                    source += "\n"
+                
+                source += "\treturn {};\n}});\n".format(handler['return_status'])
+
+                # Generation of member functions
+                if should_generate_member_fn is True:
+                    function_name = handler['member_fn']['name']
+                    visibility = handler['member_fn']['visibility']
+                    parameters = "mc::{}Event& e, mc::{}* sender".format(handler['type'], props['type'])
+                    if visibility == 'public':
+                        self.__public_member_function_declarations_source += "void {}({});\n".format(function_name, parameters)
+                        self.__public_member_function_definitions_source += "void {}::{}({})\n{{\n\n}}\n\n".format(self.__class_name, function_name, parameters)
+                    else:
+                        self.__private_member_function_declarations_source += "void {}({});\n".format(function_name, parameters)
+                        self.__private_member_function_definitions_source += "void {}::{}({})\n{{\n\n}}\n\n".format(self.__class_name, function_name, parameters)
 
         return source
 
@@ -279,6 +329,18 @@ class MCLayoutReader:
     def get_private_data_members_source_string(self) -> str:
         return self.__private_data_members_source
 
+    def get_public_member_function_declarations_source_string(self) -> str:
+        return self.__public_member_function_declarations_source
+
+    def get_private_member_function_declarations_source_string(self) -> str:
+        return self.__private_member_function_declarations_source
+
+    def get_public_member_function_definitions_source_string(self) -> str:
+        return self.__public_member_function_definitions_source
+
+    def get_private_member_function_definitions_source_string(self) -> str:
+        return self.__private_member_function_definitions_source
+
     def generate_cpp_source(self):
         self.__generate_window_creation_cpp_source()
 
@@ -291,3 +353,5 @@ class MCLayoutReader:
         self.__window_creation_source = self.__window_creation_source.replace('\n', '\n\t')
         self.__public_data_members_source = self.__public_data_members_source.replace('\n', '\n\t')
         self.__private_data_members_source = self.__private_data_members_source.replace('\n', '\n\t')
+        self.__public_member_function_declarations_source = self.__public_member_function_declarations_source.replace('\n', '\n\t')
+        self.__private_member_function_declarations_source = self.__private_member_function_declarations_source.replace('\n', '\n\t')

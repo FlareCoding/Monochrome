@@ -1,10 +1,19 @@
 #pragma once
 #include "UIElementProperties.h"
 
+struct ElementEventHandlerData
+{
+	bool generateClassFunction = false;
+	std::string classFunctionName = "";
+	std::string classFunctionVisibility = "";
+	std::string returnStatus = "Handled";
+};
+
 struct ElementCodeProperties
 {
 	std::string name;
 	std::string visibility;
+	std::map<std::string, ElementEventHandlerData> eventHandlerDataMap;
 };
 
 class VariableCodeProperties : public UIElementProperties<UIView>
@@ -30,4 +39,32 @@ private:
 
 	Ref<UILabel> m_VariableNameLabel;
 	Ref<UITextbox> m_VariableNameInput;
+
+	Ref<UIScrollPanel> m_EventHandlersPanel;
+	Ref<UILabel> m_EventTypeSelectedLabel;
+	Ref<UICheckbox> m_UseEventHandlerCheckbox;
+
+	Ref<UICheckbox> m_GenerateClassFunctionCheckbox;
+	Ref<UICombobox> m_ClassFunctionVisbilityCombobox;
+	Ref<UITextbox>  m_ClassFunctionNameInput;
+
+	Ref<UILabel> m_EventReturnStatusLabel;
+	Ref<UICombobox> m_EventReturnStatusCombobox;
+	void OpenEventHandlerSettingsUI(const std::string& event_type);
+
+private:
+	std::vector<std::string> EventTypes =
+	{
+		"MouseButtonPressed",
+		"MouseButtonClicked",
+		"MouseMoved",
+		"MouseHoverOn",
+		"MouseHoverOff",
+		"MouseScrolled",
+		"KeyPressed",
+		"KeyReleased",
+		"FocusChanged",
+	};
+
+	size_t m_SelectedEventTypeIndex = 0;
 };

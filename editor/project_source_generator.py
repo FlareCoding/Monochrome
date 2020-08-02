@@ -13,18 +13,22 @@ print(input_MCSourcePath)
 print(input_LibDbgPath)
 print(input_LibRelPath)
 
-reader = MCLayoutReader(input_TargetPath + "\\" + input_ProjectName + ".mc")
+reader = MCLayoutReader(input_TargetPath + "\\" + input_ProjectName + ".mc", input_ClassName)
 reader.generate_cpp_source()
 
 HeaderVariables = {}
 HeaderVariables['ClassName'] = input_ClassName
 HeaderVariables['PublicDataMembers'] = reader.get_public_data_members_source_string()
 HeaderVariables['PrivateDataMembers'] = reader.get_private_data_members_source_string()
+HeaderVariables['PublicMemberFunctions'] = reader.get_public_member_function_declarations_source_string()
+HeaderVariables['PrivateMemberFunctions'] = reader.get_private_member_function_declarations_source_string()
 
 SourceVariables = {}
 SourceVariables['ClassName'] = input_ClassName
 SourceVariables['UserInterfaceSourceCode'] = reader.get_cpp_source_string()
 SourceVariables['WindowCreationSourceCode'] = reader.get_window_creation_source_string()
+SourceVariables['PublicMemberFunctionDefinitions'] = reader.get_public_member_function_definitions_source_string()
+SourceVariables['PrivateMemberFunctionDefinitions'] = reader.get_private_member_function_definitions_source_string()
 
 source_dir = input_TargetPath + "\\src"
 if not os.path.exists(source_dir):

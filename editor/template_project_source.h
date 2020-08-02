@@ -10,11 +10,13 @@ public:
     void Setup();
 
 {PublicDataMembers}
+{PublicMemberFunctions}
 
 private:
     mc::Ref<mc::UIWindow> m_Window;
 
 {PrivateDataMembers}
+{PrivateMemberFunctions}
 
 private:
     void InitUI();

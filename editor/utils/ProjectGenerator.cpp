@@ -89,6 +89,42 @@ namespace utils
         {
             view_node->append_attribute(doc->allocate_attribute("visibility", doc->allocate_string(element_code_props[view].visibility.c_str())));
             view_node->append_attribute(doc->allocate_attribute("name", doc->allocate_string(element_code_props[view].name.c_str())));
+            
+            // Event handlers data
+            if (element_code_props[view].eventHandlerDataMap.size())
+            {
+                xml_node<>* event_handlers_data_node = doc->allocate_node(node_element, "event_handlers");
+                for (auto& [type, data] : element_code_props[view].eventHandlerDataMap)
+                {
+                    xml_node<>* handler_node = doc->allocate_node(node_element, "handler");
+                    handler_node->append_attribute(doc->allocate_attribute("type", doc->allocate_string(type.c_str())));
+                    handler_node->append_attribute(doc->allocate_attribute("generate_member_fn", doc->allocate_string(std::to_string(data.generateClassFunction).c_str())));
+
+                    if (data.generateClassFunction)
+                    {
+                        xml_node<>* member_fn_name_node = doc->allocate_node(node_element, "name");
+                        member_fn_name_node->value(doc->allocate_string(data.classFunctionName.c_str()));
+
+                        xml_node<>* member_fn_visibility_node = doc->allocate_node(node_element, "visibility");
+                        member_fn_visibility_node->value(doc->allocate_string(data.classFunctionVisibility.c_str()));
+
+                        xml_node<>* member_fn_node = doc->allocate_node(node_element, "member_fn");
+                        member_fn_node->append_node(member_fn_name_node);
+                        member_fn_node->append_node(member_fn_visibility_node);
+                        handler_node->append_node(member_fn_node);
+                    }
+
+                    xml_node<>* return_status_node = doc->allocate_node(node_element, "return_status");
+                    if (data.returnStatus._Equal("Handled"))
+                        return_status_node->value(doc->allocate_string("EVENT_HANDLED"));
+                    else
+                        return_status_node->value(doc->allocate_string("EVENT_UNHANDLED"));
+
+                    handler_node->append_node(return_status_node);
+                    event_handlers_data_node->append_node(handler_node);
+                }
+                view_node->append_node(event_handlers_data_node);
+            }
         }
 
         AddWidgetPropertyNodes(doc, view_node, widget_type, view);
