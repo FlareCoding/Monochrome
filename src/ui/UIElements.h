@@ -6,3 +6,4 @@
 #include "elements/UITextbox.h"
 #include "elements/UIScrollPanel.h"
 #include "elements/UICombobox.h"
+#include "elements/UITabView.h"

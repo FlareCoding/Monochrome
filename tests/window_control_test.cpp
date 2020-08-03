@@ -4,7 +4,7 @@ using namespace mc;
 
 int main()
 {
-	auto window = UIWindow::Create(WindowStyle::Modern, 1000, 670, "Demo App");
+	auto window = UIWindow::Create(WindowStyle::Modern, 1000, 670, "Window Control Test");
 	window->SetBackgroundColor(Color(38, 38, 39, 1.0f));
 	window->SetModernWindowButtonsColor(Color(38, 38, 39, 1.0f));
 

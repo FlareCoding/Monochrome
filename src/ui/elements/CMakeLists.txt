@@ -10,6 +10,7 @@ set(
     src/ui/elements/UITextbox.h
     src/ui/elements/UIScrollPanel.h
     src/ui/elements/UICombobox.h
+    src/ui/elements/UITabView.h
 
     PARENT_SCOPE
 )
@@ -24,6 +25,7 @@ set(
     src/ui/elements/UITextbox.cpp
     src/ui/elements/UIScrollPanel.cpp
     src/ui/elements/UICombobox.cpp
+    src/ui/elements/UITabView.cpp
 
     PARENT_SCOPE
 )
