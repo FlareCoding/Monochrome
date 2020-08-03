@@ -24,11 +24,13 @@ private:
 	// Element Editing
 	Ref<UIView> m_ElementPreviewArea;
 	Ref<UIScrollPanel> m_Toolbox;
+	Ref<UIButton> m_DeleteElementButton;
 
 private:
 	// Element Properties
 	Ref<UIView> m_PropertiesView;
 
+	Ref<UIView> m_SelectedTargetView;
 	LabelProperties m_LabelProperties;
 	ButtonProperties m_ButtonProperties;
 	VariableCodeProperties m_VariableCodeProperties;

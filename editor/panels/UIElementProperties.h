@@ -5,14 +5,17 @@ template <typename UIElement>
 class UIElementProperties
 {
 public:
-	void Initialize(Ref<UIView> PropertiesPanel);
+	void Initialize(Ref<UIView> PropertiesPanel, Ref<UIWindow>* ProjectWindowPtr);
 	void Open(Ref<UIElement> target);
 
 protected:
+	Ref<UIWindow>* m_ProjectWindow;
 	Ref<UIView> m_PropertiesPanel = nullptr;
 	Ref<UIElement> m_TargetElement = nullptr;
 
 	std::vector<Ref<UIView>> m_PropertiesList;
+
+	void ForceUpdateProjectWindow();
 
 protected:
 	Ref<UITextbox> AddInputField(std::string title, Position position, std::function<void(Ref<UITextbox>)> input_handler, uint32_t font_size = 14);
@@ -27,8 +30,9 @@ private:
 };
 
 template<typename UIElement>
-inline void UIElementProperties<UIElement>::Initialize(Ref<UIView> PropertiesPanel)
+inline void UIElementProperties<UIElement>::Initialize(Ref<UIView> PropertiesPanel, Ref<UIWindow>* ProjectWindowPtr)
 {
+	m_ProjectWindow = ProjectWindowPtr;
 	m_PropertiesPanel = PropertiesPanel;
 	InitPropertiesUI();
 }
@@ -46,6 +50,12 @@ inline void UIElementProperties<UIElement>::Open(Ref<UIElement> target)
 }
 
 template<typename UIElement>
+inline void UIElementProperties<UIElement>::ForceUpdateProjectWindow()
+{
+	if (*m_ProjectWindow) (*m_ProjectWindow)->ForceUpdate();
+}
+
+template<typename UIElement>
 inline void UIElementProperties<UIElement>::AssignFloatFromField(float& target, Ref<UITextbox>& src)
 {
 	try 
@@ -57,6 +67,8 @@ inline void UIElementProperties<UIElement>::AssignFloatFromField(float& target, 
 	{
 		src->Text = std::to_string((uint32_t)target);
 	}
+
+	ForceUpdateProjectWindow();
 }
 
 template<typename UIElement>
@@ -71,6 +83,8 @@ inline void UIElementProperties<UIElement>::AssignIntFromField(int& target, Ref<
 	{
 		src->Text = std::to_string(target);
 	}
+
+	ForceUpdateProjectWindow();
 }
 
 template<typename UIElement>
@@ -81,6 +95,8 @@ inline void UIElementProperties<UIElement>::AssignColorFromField(Color& target, 
 		target = color;
 	}
 	catch (...) { src->Text = utils::ColorToString(target); }
+
+	ForceUpdateProjectWindow();
 }
 
 template<typename UIElement>
@@ -103,6 +119,7 @@ inline Ref<UITextbox> UIElementProperties<UIElement>::AddInputField(std::string 
 		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
 		{
 			input_handler(Input);
+			ForceUpdateProjectWindow();
 		}
 		return EVENT_HANDLED;
 	});

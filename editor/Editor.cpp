@@ -12,9 +12,9 @@ void MonochromeEditor::Initialize()
 	CreateEditorWindow();
 	InitEditorUI();
 
-	m_LabelProperties.Initialize(m_PropertiesView);
-	m_ButtonProperties.Initialize(m_PropertiesView);
-	m_VariableCodeProperties.Initialize(m_PropertiesView);
+	m_LabelProperties.Initialize(m_PropertiesView, &m_ProjectWindow);
+	m_ButtonProperties.Initialize(m_PropertiesView, &m_ProjectWindow);
+	m_VariableCodeProperties.Initialize(m_PropertiesView, &m_ProjectWindow);
 
 	m_PropertiesView->subviews.clear();
 }
@@ -79,6 +79,7 @@ void MonochromeEditor::InitEditorUI()
 		widget->color = Color::white;
 		widget->layer.frame.position = DefaultElementPreviewPosition;
 		m_ElementPreviewArea->AddSubview(widget);
+		m_SelectedTargetView = widget;
 
 		OpenElementProperties(widget);
 	});
@@ -89,6 +90,7 @@ void MonochromeEditor::InitEditorUI()
 		Ref<UIButton> widget = MakeRef<UIButton>();
 		widget->layer.frame.position = DefaultElementPreviewPosition;
 		m_ElementPreviewArea->AddSubview(widget);
+		m_SelectedTargetView = widget;
 
 		OpenElementProperties(widget);
 	});
@@ -99,6 +101,7 @@ void MonochromeEditor::InitEditorUI()
 		Ref<UICheckbox> widget = MakeRef<UICheckbox>();
 		widget->layer.frame.position = DefaultElementPreviewPosition;
 		m_ElementPreviewArea->AddSubview(widget);
+		m_SelectedTargetView = widget;
 
 		OpenElementProperties(widget);
 	});
@@ -111,6 +114,7 @@ void MonochromeEditor::InitEditorUI()
 		widget->SliderKnobShape = Shape::Circle;
 		widget->VisibleTickmarks = false;
 		m_ElementPreviewArea->AddSubview(widget);
+		m_SelectedTargetView = widget;
 
 		OpenElementProperties(widget);
 	});
@@ -163,15 +167,13 @@ void MonochromeEditor::InitEditorUI()
 	m_OpenVariablePropertiesButton->SetZIndex(1000);
 	m_OpenVariablePropertiesButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		// Nothing should be done if no element is being previewed
-		if (!m_ElementPreviewArea->subviews.size()) return EVENT_HANDLED;
-
-		auto TargetElement = m_ElementPreviewArea->subviews.at(0);
+		if (!m_SelectedTargetView) return EVENT_HANDLED;
 
 		if (m_OpenVariablePropertiesButton->Label->Text._Equal("Variable Properties"))
 		{
 			// Open Variable Properties
 			m_PropertiesView->subviews.clear();
-			m_VariableCodeProperties.Open(TargetElement);
+			m_VariableCodeProperties.Open(m_SelectedTargetView);
 
 			m_OpenVariablePropertiesButton->Label->Text = "Element Properties";
 		}
@@ -179,7 +181,7 @@ void MonochromeEditor::InitEditorUI()
 		{
 			// Open Element Properties
 			m_PropertiesView->subviews.clear();
-			OpenElementProperties(TargetElement);
+			OpenElementProperties(m_SelectedTargetView);
 
 			m_OpenVariablePropertiesButton->Label->Text = "Variable Properties";
 		}
@@ -187,6 +189,49 @@ void MonochromeEditor::InitEditorUI()
 		return EVENT_HANDLED;
 	});
 	m_EditorWindow->AddView(m_OpenVariablePropertiesButton);
+
+	m_DeleteElementButton = MakeRef<UIButton>();
+	Position DeleteElementBtnPosition = m_PropertiesView->layer.frame.position + m_PropertiesView->layer.frame.size;
+	DeleteElementBtnPosition -= { 322, 42 };
+	m_DeleteElementButton->layer.frame = Frame(DeleteElementBtnPosition, Size{ 158, 40 });
+	m_DeleteElementButton->Label->Text = "Delete Element";
+	m_DeleteElementButton->Label->color = Color::white;
+	m_DeleteElementButton->Label->Properties.FontSize = 15;
+	m_DeleteElementButton->layer.color = Color(61, 61, 62, 1.0f);
+	m_DeleteElementButton->CornerRadius = 4;
+	m_DeleteElementButton->SetZIndex(1000);
+	m_DeleteElementButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
+		// Target element must be in the project window
+		if (!m_ElementPreviewArea->subviews.size() && m_ProjectWindow)
+		{
+			auto& ref = m_ProjectWindow->GetViewRef(m_SelectedTargetView.get());
+			if (ref)
+			{
+				auto it = std::find(m_ProjectUIElements.begin(), m_ProjectUIElements.end(), ref);
+				if (it != m_ProjectUIElements.end())
+					m_ProjectUIElements.erase(it);
+
+				m_ProjectWindow->RemoveView(ref);
+			}
+
+			if (m_PropertiesView->subviews.size())
+				m_PropertiesView->subviews.clear();
+
+			m_ProjectWindow->ForceUpdate(true);
+		}
+		else
+		{
+			// Target element is still in the element preview area
+			if (m_PropertiesView->subviews.size())
+				m_PropertiesView->subviews.clear();
+
+			if (m_ElementPreviewArea->subviews.size())
+				m_ElementPreviewArea->subviews.clear();
+		}
+
+		return EVENT_HANDLED;
+	});
+	m_EditorWindow->AddView(m_DeleteElementButton);
 
 #pragma endregion
 
@@ -518,8 +563,29 @@ void MonochromeEditor::OpenProjectWindow()
 			m_ProjectWindow->SetBackgroundColor(BackgroundColor);
 			m_ProjectWindow->SetModernWindowButtonsColor(BackgroundColor);
 
+			Ref<UIView> BackgroundEventView = MakeRef<UIView>(Frame(0, 0, (float)width, (float)height));
+			BackgroundEventView->layer.color = Color::transparent;
+			BackgroundEventView->SetZIndex(0);
+			BackgroundEventView->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
+				if (!m_ElementPreviewArea->subviews.size())
+					m_PropertiesView->subviews.clear();
+
+				m_EditorWindow->ForceUpdate();
+				return EVENT_HANDLED;
+			});
+			m_ProjectWindow->AddView(BackgroundEventView);
+
 			for (auto& view : m_ProjectUIElements)
+			{
+				view->SetZIndex(1);
 				m_ProjectWindow->AddView(view);
+			}
+
+			m_ProjectWindow->GetCloseButtonRef()->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
+				m_PropertiesView->subviews.clear();
+				m_EditorWindow->ForceUpdate();
+				return EVENT_HANDLED;
+			});
 
 			m_ProjectWindow->StartWindowLoop();
 		});
@@ -558,9 +624,17 @@ void MonochromeEditor::AddElementToProjectWindow()
 
 	TargetElement->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		MouseButtonClickedEvent& mbc = reinterpret_cast<MouseButtonClickedEvent&>(e);
-		if (mbc.button == MouseButton::Right)
+		if (mbc.button == MouseButton::Left)
 		{
-			// Remove target from project window and bring it back to the element preview panel
+			if (!m_ElementPreviewArea->subviews.size())
+			{
+				auto& ref = m_ProjectWindow->GetViewRef(sender);
+
+				m_OpenVariablePropertiesButton->Label->Text = "Variable Properties";
+				OpenElementProperties(ref);
+				m_SelectedTargetView = ref;
+				m_EditorWindow->ForceUpdate();
+			}
 		}
 
 		return EVENT_HANDLED;
@@ -571,6 +645,7 @@ void MonochromeEditor::AddElementToProjectWindow()
 
 	m_ProjectUIElements.push_back(TargetElement);
 	m_ProjectWindow->AddView(TargetElement);
+	m_ProjectWindow->ForceUpdate();
 }
 
 void MonochromeEditor::GenerateProjectSolution()
