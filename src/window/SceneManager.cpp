@@ -22,6 +22,15 @@ namespace mc
 		});
 	}
 
+	Ref<UIView> SceneManager::GetViewRef(UIView* raw_address)
+	{
+		for (auto view : m_Views)
+			if (view.get() == raw_address)
+				return view;
+
+		return nullptr;
+	}
+
 	void SceneManager::RenderGraphics()
 	{
 		for (auto& view : m_Views)

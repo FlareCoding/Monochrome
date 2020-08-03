@@ -88,6 +88,11 @@ namespace mc
 		return Ref<UIWindow>(new UIWindow(style, width, height, title));
 	}
 
+	Ref<UIView> UIWindow::GetViewRef(UIView* raw_address)
+	{
+		return m_SceneManager.GetViewRef(raw_address);
+	}
+
 	UIWindow::UIWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title)
 		: m_WindowStyle(style), m_Width(width), m_Height(height), m_Title(title)
 	{

@@ -92,6 +92,9 @@ namespace mc
 		/// @returns Returns whether or not the following view is in focused state
 		bool IsViewFocused(UIView* view) { return view == m_FocusedView; }
 
+		/// Returns a shared_ptr to the uiview with the specified address.
+		Ref<UIView> GetViewRef(UIView* raw_address);
+
 	private:
 		UIWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title);
 		HWND m_NativeHandle = {};
