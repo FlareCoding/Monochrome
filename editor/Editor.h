@@ -14,6 +14,9 @@ private:
 	void CreateEditorWindow();
 	void InitEditorUI();
 
+	void SaveConfiguration();
+	void LoadConfiguration();
+
 private:
 	Ref<UIWindow> m_EditorWindow;
 

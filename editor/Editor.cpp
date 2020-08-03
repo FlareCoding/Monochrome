@@ -1,6 +1,7 @@
 #include "Editor.h"
 #include <ShlObj.h>
 #include <filesystem>
+#include <fstream>
 
 void MonochromeEditor::Start()
 {
@@ -17,6 +18,47 @@ void MonochromeEditor::Initialize()
 	m_VariableCodeProperties.Initialize(m_PropertiesView, &m_ProjectWindow);
 
 	m_PropertiesView->subviews.clear();
+
+	LoadConfiguration();
+}
+
+void MonochromeEditor::SaveConfiguration()
+{
+	char appdata_path[MAX_PATH];
+	if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_LOCAL_APPDATA, NULL, NULL, appdata_path)))
+	{
+		std::string config_path = std::string(appdata_path) + "\\MCEditor\\settings.cfg";
+
+		std::ofstream cfg(config_path);
+		cfg << "[Monochrome Paths]" << std::endl;
+		cfg << "MCsrc: " << m_MonochromeSourcePathTextbox->Text << std::endl;
+		cfg << "MClibdbg: " << m_MonochromeLibDbgPathTextbox->Text << std::endl;
+		cfg << "MClibrel: " << m_MonochromeLibRelPathTextbox->Text << std::endl;
+		cfg.close();
+	}
+}
+
+void MonochromeEditor::LoadConfiguration()
+{
+	char appdata_path[MAX_PATH];
+	if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_LOCAL_APPDATA, NULL, NULL, appdata_path)))
+	{
+		if (!std::filesystem::is_directory(std::string(appdata_path) + "\\MCEditor"))
+			std::filesystem::create_directory(std::string(appdata_path) + "\\MCEditor");
+
+		std::string config_path = std::string(appdata_path) + "\\MCEditor\\settings.cfg";
+		if (std::filesystem::exists(config_path))
+		{
+			std::string line;
+			std::ifstream cfg(config_path);
+			while (std::getline(cfg, line))
+			{
+				if (line.find("MCsrc: ") != std::string::npos) m_MonochromeSourcePathTextbox->Text = line.substr(7, line.size() - 7);
+				if (line.find("MClibdbg: ") != std::string::npos) m_MonochromeLibDbgPathTextbox->Text = line.substr(10, line.size() - 10);
+				if (line.find("MClibrel: ") != std::string::npos) m_MonochromeLibRelPathTextbox->Text = line.substr(10, line.size() - 10);
+			}
+		}
+	}
 }
 
 void MonochromeEditor::CreateEditorWindow()
@@ -456,6 +498,7 @@ void MonochromeEditor::InitEditorUI()
 			{
 				m_MonochromeSourcePathTextbox->Text = path;
 				m_MonochromeSourcePathTextbox->TextColor = Color::white;
+				SaveConfiguration();
 			}
 		}
 
@@ -489,6 +532,7 @@ void MonochromeEditor::InitEditorUI()
 			{
 				m_MonochromeLibDbgPathTextbox->Text = path;
 				m_MonochromeLibDbgPathTextbox->TextColor = Color::white;
+				SaveConfiguration();
 			}
 		}
 
@@ -522,6 +566,7 @@ void MonochromeEditor::InitEditorUI()
 			{
 				m_MonochromeLibRelPathTextbox->Text = path;
 				m_MonochromeLibRelPathTextbox->TextColor = Color::white;
+				SaveConfiguration();
 			}
 		}
 
