@@ -517,7 +517,7 @@ namespace mc
 		}
 	}
 
-	void UIWindow::ForceUpdate()
+	void UIWindow::ForceUpdate(bool clear_screen)
 	{
 		UIWindow* TrueActiveWindowInstance = s_CurrentActiveWindowInstance;
 		s_CurrentActiveWindowInstance = this;
@@ -525,7 +525,7 @@ namespace mc
 
 		Update();
 		m_SceneManager.ProcessEvents(m_Dpi);
-		Graphics::Update(m_Background, m_SceneManager, false);
+		Graphics::Update(m_Background, m_SceneManager, clear_screen);
 
 		if (TrueActiveWindowInstance)
 		{
@@ -534,7 +534,7 @@ namespace mc
 
 			s_CurrentActiveWindowInstance->Update();
 			s_CurrentActiveWindowInstance->m_SceneManager.ProcessEvents(m_Dpi);
-			Graphics::Update(m_Background, s_CurrentActiveWindowInstance->m_SceneManager, false);
+			Graphics::Update(m_Background, s_CurrentActiveWindowInstance->m_SceneManager, clear_screen);
 		}
 	}
 
@@ -594,6 +594,11 @@ namespace mc
 	{
 		view->srcwindow = this;
 		m_SceneManager.AddView(view);
+	}
+
+	void UIWindow::RemoveView(Ref<UIView> view)
+	{
+		m_SceneManager.RemoveView(view);
 	}
 
 	void UIWindow::SetModernWindowButtonsColor(Color color)

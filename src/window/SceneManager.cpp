@@ -22,6 +22,13 @@ namespace mc
 		});
 	}
 
+	void SceneManager::RemoveView(Ref<UIView> view)
+	{
+		auto it = std::find(m_Views.begin(), m_Views.end(), view);
+		if (it != m_Views.end())
+			m_Views.erase(it);
+	}
+
 	Ref<UIView> SceneManager::GetViewRef(UIView* raw_address)
 	{
 		for (auto view : m_Views)

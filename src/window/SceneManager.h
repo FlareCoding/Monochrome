@@ -13,6 +13,7 @@ namespace mc
 	public:
 		void DispatchEvent(EventPtr event);
 		void AddView(Ref<UIView>& view);
+		void RemoveView(Ref<UIView> view);
 		Ref<UIView> GetViewRef(UIView* raw_address);
 
 	private:
