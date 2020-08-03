@@ -116,7 +116,7 @@ namespace mc
 				// For every callback, if it's valid, call the event handler
 				for (auto callback : callbacks)
 				{
-					if (callback && !event->Handled)
+					if (callback)
 					{
 						bool handled = callback(*event.get(), view.get());
 

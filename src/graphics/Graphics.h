@@ -24,7 +24,7 @@ namespace mc
 		static void BeginFrame();
 		static void EndFrame();
 		static void ClearScreenColor(uint32_t r, uint32_t g, uint32_t b);
-		static void Update(const Color& background, SceneManager& sm);
+		static void Update(const Color& background, SceneManager& sm, bool clearBackgroundColor = true);
 
 	public:
 		static void PushLayer(float x, float y, float width, float height);

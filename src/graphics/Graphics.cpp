@@ -446,11 +446,11 @@ namespace mc
 
 #pragma warning( pop ) 
 
-	void Graphics::Update(const Color& background, SceneManager& sm)
+	void Graphics::Update(const Color& background, SceneManager& sm, bool clearBackgroundColor)
 	{
 		VALIDATE_RENDERTARGET;
 		BeginFrame();
-		ClearScreenColor(background.r, background.g, background.b);
+		if (clearBackgroundColor) ClearScreenColor(background.r, background.g, background.b);
 
 		sm.RenderGraphics();
 

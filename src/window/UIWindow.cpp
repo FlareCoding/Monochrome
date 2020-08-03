@@ -525,8 +525,7 @@ namespace mc
 
 		Update();
 		m_SceneManager.ProcessEvents(m_Dpi);
-		Graphics::Update(m_Background, m_SceneManager);
-		RedrawWindow(m_NativeHandle, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+		Graphics::Update(m_Background, m_SceneManager, false);
 
 		if (TrueActiveWindowInstance)
 		{
@@ -535,8 +534,7 @@ namespace mc
 
 			s_CurrentActiveWindowInstance->Update();
 			s_CurrentActiveWindowInstance->m_SceneManager.ProcessEvents(m_Dpi);
-			Graphics::Update(m_Background, s_CurrentActiveWindowInstance->m_SceneManager);
-			RedrawWindow(s_CurrentActiveWindowInstance->GetNativeHandle(), NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+			Graphics::Update(m_Background, s_CurrentActiveWindowInstance->m_SceneManager, false);
 		}
 	}
 
