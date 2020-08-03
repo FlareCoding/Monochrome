@@ -2,6 +2,7 @@ var classmc_1_1_u_i_window =
 [
     [ "AddView", "classmc_1_1_u_i_window.html#a40f42964d5bfbc873dff14228bc07436", null ],
     [ "FocusView", "classmc_1_1_u_i_window.html#a4ab577927fa53811aad63431257e5b26", null ],
+    [ "ForceUpdate", "classmc_1_1_u_i_window.html#a6ec4039bc3059b8f09eb566db7e68c4d", null ],
     [ "GetBackgroundColor", "classmc_1_1_u_i_window.html#a451cda0b81a3337a32f8ef575d27bbcd", null ],
     [ "GetCloseButtonRef", "classmc_1_1_u_i_window.html#a3c42128d6e8dc2ea444637d47f01898b", null ],
     [ "GetDpi", "classmc_1_1_u_i_window.html#ab69506b299f4b0fcd32d39d5ddba99fe", null ],
@@ -11,6 +12,7 @@ var classmc_1_1_u_i_window =
     [ "GetMinimizeButtonRef", "classmc_1_1_u_i_window.html#abe9c4dc6b1bca476a7e0e5f3e1a3419b", null ],
     [ "GetNativeHandle", "classmc_1_1_u_i_window.html#a8fdfa338109d2630476a5b09adfc3145", null ],
     [ "GetTitle", "classmc_1_1_u_i_window.html#a9b75a62665cfca57ada95c4afdbf297b", null ],
+    [ "GetViewRef", "classmc_1_1_u_i_window.html#a2f15762ec2cfc2377a1c8f9f7b8099ad", null ],
     [ "GetWidth", "classmc_1_1_u_i_window.html#a49d7b9b1bd20d49b2eb82d28c2f922ba", null ],
     [ "GetWindowTitleLabelRef", "classmc_1_1_u_i_window.html#aa340e86cf549b2511876633cac4792af", null ],
     [ "IsOpened", "classmc_1_1_u_i_window.html#a59ce118902641dc9c02c92200c66c7a5", null ],

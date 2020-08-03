@@ -517,6 +517,29 @@ namespace mc
 		}
 	}
 
+	void UIWindow::ForceUpdate()
+	{
+		UIWindow* TrueActiveWindowInstance = s_CurrentActiveWindowInstance;
+		s_CurrentActiveWindowInstance = this;
+		Graphics::SetActiveTarget(m_NativeHandle);
+
+		Update();
+		m_SceneManager.ProcessEvents(m_Dpi);
+		Graphics::Update(m_Background, m_SceneManager);
+		RedrawWindow(m_NativeHandle, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+
+		if (TrueActiveWindowInstance)
+		{
+			s_CurrentActiveWindowInstance = TrueActiveWindowInstance;
+			Graphics::SetActiveTarget(s_CurrentActiveWindowInstance->GetNativeHandle());
+
+			s_CurrentActiveWindowInstance->Update();
+			s_CurrentActiveWindowInstance->m_SceneManager.ProcessEvents(m_Dpi);
+			Graphics::Update(m_Background, s_CurrentActiveWindowInstance->m_SceneManager);
+			RedrawWindow(s_CurrentActiveWindowInstance->GetNativeHandle(), NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+		}
+	}
+
 	void UIWindow::StartWindowLoop()
 	{
 		while (IsOpened())
@@ -528,6 +551,7 @@ namespace mc
 
 			if (GetActiveWindow() != m_NativeHandle) continue;
 
+			s_CurrentActiveWindowInstance = this;
 			m_SceneManager.ProcessEvents(m_Dpi);
 			Graphics::Update(m_Background, m_SceneManager);
 		}

@@ -50,6 +50,9 @@ namespace mc
 		/// Processes occured events and updates the screen buffer.
 		void Update();
 
+		/// Forces events to be processed and graphics to be drawn.
+		void ForceUpdate();
+
 		/// Starts the continous window loop which ends when the window closes
 		void StartWindowLoop();
 
