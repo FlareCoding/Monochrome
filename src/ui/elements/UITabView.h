@@ -81,5 +81,6 @@ namespace mc
 
 		void UpdateTabButtonsColors();
 		void RecalculateTabButtonsPositions();
+		void UpdateSourceWindowProperty(Ref<UIView> view);
 	};
 }

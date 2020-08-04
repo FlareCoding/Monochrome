@@ -64,6 +64,9 @@ namespace mc
 			m_CurrentlyPlacedView = m_SelectedView;
 			
 			if (m_CurrentlyPlacedView) AddSubview(m_CurrentlyPlacedView);
+
+			for (auto [name, tab, view] : m_Tabs)
+				UpdateSourceWindowProperty(view);
 		}
 
 		float TabViewOffsetY = UnderlineTabs ? 3.0f : 0.0f;
@@ -107,6 +110,13 @@ namespace mc
 		}
 
 		UpdateTabButtonsColors();
+	}
+
+	void UITabView::UpdateSourceWindowProperty(Ref<UIView> view)
+	{
+		view->srcwindow = srcwindow;
+		for (auto& subview : view->subviews)
+			UpdateSourceWindowProperty(subview);
 	}
 
 	Ref<UIView> UITabView::AddTab(const std::string& name)
