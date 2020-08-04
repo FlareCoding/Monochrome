@@ -24,6 +24,10 @@ private:
 	uint32_t m_EditorHeight = 980;
 
 private:
+	// Workspace
+	Ref<UITabView> m_WorkspaceTabView;
+
+private:
 	// Element Editing
 	Ref<UIView> m_ElementPreviewArea;
 	Ref<UIScrollPanel> m_Toolbox;
@@ -41,6 +45,10 @@ private:
 	Ref<UIButton> m_OpenVariablePropertiesButton;
 
 	void OpenElementProperties(Ref<UIView> TargetElement);
+
+private:
+	// Window Options Tab Panel
+	Ref<UIView> m_WindowOptionsView;
 
 private:
 	// Project Window Settings

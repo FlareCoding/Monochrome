@@ -165,12 +165,27 @@ void MonochromeEditor::InitEditorUI()
 
 #pragma endregion
 
+#pragma region Workspace
+
+	m_WorkspaceTabView = MakeRef<UITabView>(Frame((float)m_EditorWidth / 2.0f - 500, 60, 1000, 916));
+	m_WorkspaceTabView->UnderlineTabs = true;
+	m_WorkspaceTabView->AddTab("Editor")->layer.color = m_EditorWindow->GetBackgroundColor();
+	m_WorkspaceTabView->AddTab("Window Options")->layer.color = m_EditorWindow->GetBackgroundColor();
+	m_WorkspaceTabView->OpenTab("Editor");
+	m_WorkspaceTabView->StyleTabButtons([this](Ref<UIButton>& tab) {
+		tab->layer.color = m_EditorWindow->GetBackgroundColor();
+	});
+	m_WorkspaceTabView->SelectedTabColor = Color(61, 61, 62, 1.0f);
+	m_EditorWindow->AddView(m_WorkspaceTabView);
+
+#pragma endregion
+
 #pragma region Element Preview Area
 
 	m_ElementPreviewArea = MakeRef<UIView>();
-	m_ElementPreviewArea->layer.frame = Frame(Position{ (float)m_EditorWidth/2.0f - 450, (float)m_EditorHeight - 450 }, Size{ 900, 448 });
+	m_ElementPreviewArea->layer.frame = Frame(Position{ m_WorkspaceTabView->layer.frame.size.width / 2.0f - 448, m_WorkspaceTabView->layer.frame.size.height - 450 }, Size{ 896, 448 });
 	m_ElementPreviewArea->layer.color = Color(51, 51, 52, 1.0f);
-	m_EditorWindow->AddView(m_ElementPreviewArea);
+	m_WorkspaceTabView->GetTab("Editor")->AddSubview(m_ElementPreviewArea);
 
 	m_AddElementToProjectWindowButton = MakeRef<UIButton>();
 	Position AddElemToProjWindowBtnPosition = Position{ m_ElementPreviewArea->layer.frame.size.width - 160, 2 };
@@ -186,16 +201,16 @@ void MonochromeEditor::InitEditorUI()
 		AddElementToProjectWindow();
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(m_AddElementToProjectWindowButton);
+	m_WorkspaceTabView->GetTab("Editor")->AddSubview(m_AddElementToProjectWindowButton);
 
 #pragma endregion
 
 #pragma region Element Properties Area
 
 	m_PropertiesView = MakeRef<UIView>();
-	m_PropertiesView->layer.frame = Frame(Position{ (float)m_EditorWidth / 2.0f - 500, 60 }, Size{ 1000, 440 });
+	m_PropertiesView->layer.frame = Frame(Position{ 0, 0 }, Size{ 996, 440 });
 	m_PropertiesView->layer.color = Color(51, 51, 52, 1.0f);
-	m_EditorWindow->AddView(m_PropertiesView);
+	m_WorkspaceTabView->GetTab("Editor")->AddSubview(m_PropertiesView);
 
 	m_OpenVariablePropertiesButton = MakeRef<UIButton>();
 	Position ShowVariablePropertiesBtnPosition = m_PropertiesView->layer.frame.position + m_PropertiesView->layer.frame.size;
@@ -230,7 +245,7 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(m_OpenVariablePropertiesButton);
+	m_WorkspaceTabView->GetTab("Editor")->AddSubview(m_OpenVariablePropertiesButton);
 
 	m_DeleteElementButton = MakeRef<UIButton>();
 	Position DeleteElementBtnPosition = m_PropertiesView->layer.frame.position + m_PropertiesView->layer.frame.size;
@@ -273,7 +288,16 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(m_DeleteElementButton);
+	m_WorkspaceTabView->GetTab("Editor")->AddSubview(m_DeleteElementButton);
+
+#pragma endregion
+
+#pragma region Window Options Area
+
+	m_WindowOptionsView = MakeRef<UIView>();
+	m_WindowOptionsView->layer.frame = Frame(Position{ 0, 0 }, Size{ 996, 440 });
+	m_WindowOptionsView->layer.color = Color(51, 51, 52, 1.0f);
+	m_WorkspaceTabView->GetTab("Window Options")->AddSubview(m_WindowOptionsView);
 
 #pragma endregion
 
@@ -581,7 +605,7 @@ void MonochromeEditor::InitEditorUI()
 void MonochromeEditor::OpenElementProperties(Ref<UIView> TargetElement)
 {
 	if (!TargetElement) return;
-
+	
 	m_PropertiesView->subviews.clear();
 	m_VariableCodeProperties.RegisterElement(TargetElement);
 
