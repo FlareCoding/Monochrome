@@ -45,7 +45,7 @@ namespace utils
         // Arg5 --> Monochrome Library Debug Path
         // Arg6 --> Monochrome Library Release Path
 
-        std::string cmd = std::string("python project_source_generator.py " + 
+        std::string cmd = std::string("python project_source_generator.py " +
             std::string("\"") + config.location + "\"" + " \"" + config.projectName + "\" \"" + config.uiClassName + "\" " +
             "\"" + config.monochromeSourcePath + "\" \"" + config.monochromeLibraryDebugPath + "\" \"" + config.monochromeLibraryReleasePath + "\""
         );
@@ -89,7 +89,7 @@ namespace utils
         {
             view_node->append_attribute(doc->allocate_attribute("visibility", doc->allocate_string(element_code_props[view].visibility.c_str())));
             view_node->append_attribute(doc->allocate_attribute("name", doc->allocate_string(element_code_props[view].name.c_str())));
-            
+
             // Event handlers data
             if (element_code_props[view].eventHandlerDataMap.size())
             {
@@ -174,16 +174,16 @@ namespace utils
 
     void AddBasicPropertyNodes(Ref<xml_document<>>& doc, xml_node<>*& view_node, Ref<UIView>& view)
     {
-        xml_node<>* width_node      = doc->allocate_node(node_element, "width");
+        xml_node<>* width_node = doc->allocate_node(node_element, "width");
         width_node->value(doc->allocate_string(std::to_string(view->layer.frame.size.width).c_str()));
 
-        xml_node<>* height_node     = doc->allocate_node(node_element, "height");
+        xml_node<>* height_node = doc->allocate_node(node_element, "height");
         height_node->value(doc->allocate_string(std::to_string(view->layer.frame.size.height).c_str()));
 
-        xml_node<>* xpos_node      = doc->allocate_node(node_element, "x");
+        xml_node<>* xpos_node = doc->allocate_node(node_element, "x");
         xpos_node->value(doc->allocate_string(std::to_string(view->layer.frame.position.x).c_str()));
 
-        xml_node<>* ypos_node     = doc->allocate_node(node_element, "y");
+        xml_node<>* ypos_node = doc->allocate_node(node_element, "y");
         ypos_node->value(doc->allocate_string(std::to_string(view->layer.frame.position.y).c_str()));
 
         xml_node<>* size_node = doc->allocate_node(node_element, "size");
@@ -221,7 +221,7 @@ namespace utils
         corner_radius_node->value(doc->allocate_string(std::to_string(view->CornerRadius).c_str()));
         view_node->append_node(corner_radius_node);
     }
-    
+
     void AddLabelPropertyNodes(Ref<xml_document<>>& doc, xml_node<>*& view_node, Ref<UILabel>& label)
     {
         xml_node<>* text_node = doc->allocate_node(node_element, "text");
@@ -240,7 +240,7 @@ namespace utils
         view_node->append_node(color_node);
 
         xml_node<>* text_properties_node = doc->allocate_node(node_element, "text_properties");
-        
+
         xml_node<>* font_node = doc->allocate_node(node_element, "font");
         font_node->value(doc->allocate_string(label->Properties.Font.c_str()));
         text_properties_node->append_node(font_node);
@@ -299,7 +299,7 @@ namespace utils
 
         view_node->append_node(text_properties_node);
     }
-    
+
     void AddButtonPropertyNodes(Ref<xml_document<>>& doc, xml_node<>*& view_node, Ref<UIButton>& button)
     {
         xml_node<>* filled_node = doc->allocate_node(node_element, "filled");
@@ -324,7 +324,7 @@ namespace utils
         on_mouse_press_color->append_attribute(doc->allocate_attribute("a", doc->allocate_string(std::to_string(button->HoverOnColor.alpha).c_str())));
         view_node->append_node(on_mouse_press_color);
     }
-    
+
     void AddCheckboxPropertyNodes(Ref<xml_document<>>& doc, xml_node<>*& view_node, Ref<UICheckbox>& checkbox)
     {
         xml_node<>* checked_node = doc->allocate_node(node_element, "checked");
@@ -353,7 +353,7 @@ namespace utils
         checkedbox_color->append_attribute(doc->allocate_attribute("a", doc->allocate_string(std::to_string(checkbox->CheckedBoxColor.alpha).c_str())));
         view_node->append_node(checkedbox_color);
     }
-    
+
     void AddSliderPropertyNodes(Ref<xml_document<>>& doc, xml_node<>*& view_node, Ref<UISlider>& slider)
     {
         std::string knob_shape_string = (slider->SliderKnobShape == Shape::Rectangle) ? "rectangle" : "circle";
@@ -424,5 +424,34 @@ namespace utils
         window_node->append_node(color_node);
 
         root_node->append_node(window_node);
+    }
+
+    //============================================================================================================================================//
+    //============================================================================================================================================//
+    //============================================================================================================================================//
+    //============================================================================================================================================//
+    //============================================================================================================================================//
+
+    void ReadWindowSettingsNode(xml_node<>* node, MCLayout& layout)
+    {
+
+    }
+
+    MCLayout ProjectGenerator::LoadMCProject(const std::string& path)
+    {
+        MCLayout layout;
+
+        std::ifstream file(path);
+        Ref<xml_document<>> document = MakeRef<xml_document<>>();
+
+        std::vector<char> buffer((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+        buffer.push_back('\0');
+        document->parse<0>(&buffer[0]);
+        
+        xml_node<>* root_node = document->first_node();
+        ReadWindowSettingsNode(root_node, layout);
+
+        file.close();
+        return layout;
     }
 }

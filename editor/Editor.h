@@ -51,6 +51,10 @@ private:
 	Ref<UIView> m_WindowOptionsView;
 
 private:
+	// Project Settings Tab Panel
+	Ref<UIView> m_ProjectSettingsView;
+
+private:
 	// Project Window Settings
 	uint32_t m_ProjectWindowWidth = 0;
 	uint32_t m_ProjectWindowHeight = 0;

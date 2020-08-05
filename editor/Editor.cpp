@@ -171,6 +171,7 @@ void MonochromeEditor::InitEditorUI()
 	m_WorkspaceTabView->UnderlineTabs = true;
 	m_WorkspaceTabView->AddTab("Editor")->layer.color = m_EditorWindow->GetBackgroundColor();
 	m_WorkspaceTabView->AddTab("Window Options")->layer.color = m_EditorWindow->GetBackgroundColor();
+	m_WorkspaceTabView->AddTab("Project Settings")->layer.color = m_EditorWindow->GetBackgroundColor();
 	m_WorkspaceTabView->OpenTab("Editor");
 	m_WorkspaceTabView->StyleTabButtons([this](Ref<UIButton>& tab) {
 		tab->layer.color = m_EditorWindow->GetBackgroundColor();
@@ -298,6 +299,15 @@ void MonochromeEditor::InitEditorUI()
 	m_WindowOptionsView->layer.frame = Frame(Position{ 0, 0 }, Size{ 996, 440 });
 	m_WindowOptionsView->layer.color = Color(51, 51, 52, 1.0f);
 	m_WorkspaceTabView->GetTab("Window Options")->AddSubview(m_WindowOptionsView);
+
+#pragma endregion
+
+#pragma region Project Settings Area
+
+	m_ProjectSettingsView = MakeRef<UIView>();
+	m_ProjectSettingsView->layer.frame = Frame(Position{ 0, 0 }, Size{ 996, 440 });
+	m_ProjectSettingsView->layer.color = Color(51, 51, 52, 1.0f);
+	m_WorkspaceTabView->GetTab("Project Settings")->AddSubview(m_ProjectSettingsView);
 
 #pragma endregion
 

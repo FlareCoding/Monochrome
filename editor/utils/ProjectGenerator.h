@@ -6,10 +6,10 @@ namespace utils
 {
     struct WindowSettings
     {
-        uint32_t width;
-        uint32_t height;
-        const char* title;
-        Color color;
+        uint32_t width = 0;
+        uint32_t height = 0;
+        const char* title = 0;
+        Color color = Color::gray;
     };
 
     struct ProjectConfig
@@ -25,10 +25,18 @@ namespace utils
         std::map<Ref<UIView>, ElementCodeProperties>* elementCodeProperties;
     };
 
+    struct MCLayout
+    {
+        WindowSettings windowSettings;
+        std::vector<Ref<UIView>> uiViews;
+        std::map<Ref<UIView>, ElementCodeProperties> elementCodeProperties;
+    };
+
     class ProjectGenerator
     {
     public:
         static void GenerateProject(ProjectConfig& config);
+        static MCLayout LoadMCProject(const std::string& path);
 
     private:
         static void CreateMCLayoutFile(std::string& path, std::vector<Ref<UIView>>& views, WindowSettings& window_settings, std::map<Ref<UIView>, ElementCodeProperties>& element_code_props);
