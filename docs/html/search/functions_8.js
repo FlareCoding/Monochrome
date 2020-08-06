@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['removechild_240',['RemoveChild',['../classmc_1_1_u_i_scroll_panel.html#a4e765bc9a589540afc0485b531348f13',1,'mc::UIScrollPanel']]],
-  ['removeitem_241',['RemoveItem',['../classmc_1_1_u_i_combobox.html#aed94ae3f7955b76ed0900abaea5857dc',1,'mc::UICombobox::RemoveItem(size_t index)'],['../classmc_1_1_u_i_combobox.html#a141e8d69f0d453dae49c03e41cae6de0',1,'mc::UICombobox::RemoveItem(const std::string &amp;item)']]],
-  ['removesubview_242',['RemoveSubview',['../classmc_1_1_u_i_view.html#ab01b6fd4c03d66cce9af52dbb626c583',1,'mc::UIView']]]
+  ['opentab_271',['OpenTab',['../classmc_1_1_u_i_tab_view.html#ab228cc84f378c5072f835def24449712',1,'mc::UITabView::OpenTab(size_t index)'],['../classmc_1_1_u_i_tab_view.html#a03b50aa4284e487350c6a2903c1650ff',1,'mc::UITabView::OpenTab(const std::string &amp;name)']]],
+  ['operator_2b_3d_272',['operator+=',['../classmc_1_1_i_responder.html#aa924b69168f5d0daa0e119d857a9ceb6',1,'mc::IResponder::operator+=()'],['../classmc_1_1_u_i_checkbox.html#a2a97a11e07bf421a106692e8698c0827',1,'mc::UICheckbox::operator+=()'],['../classmc_1_1_u_i_combobox.html#a405a9a1ff388fd7c13f700ff9a8ae038',1,'mc::UICombobox::operator+=()'],['../classmc_1_1_u_i_slider.html#ae881d3f0bf9ed48d13097dfa94666c82',1,'mc::UISlider::operator+=()']]],
+  ['operator_5b_5d_273',['operator[]',['../classmc_1_1_u_i_tab_view.html#a21c179fc9d014c04ead44b709afebc8c',1,'mc::UITabView::operator[](size_t index)'],['../classmc_1_1_u_i_tab_view.html#a34da9f30fd32887937a572917e33541c',1,'mc::UITabView::operator[](const std::string &amp;name)']]]
 ];

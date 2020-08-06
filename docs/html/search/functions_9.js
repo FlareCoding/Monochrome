@@ -1,18 +1,8 @@
 var searchData=
 [
-  ['savefiledialogue_243',['SaveFileDialogue',['../classmc_1_1_u_i_file_dialogue.html#a83acc7706b33d67a1740cb1cacb76c51',1,'mc::UIFileDialogue']]],
-  ['selectitem_244',['SelectItem',['../classmc_1_1_u_i_combobox.html#a5afd330834145b7901ad57b4b74fd108',1,'mc::UICombobox::SelectItem(size_t index)'],['../classmc_1_1_u_i_combobox.html#aa0d25c1fc2eeefc1f6f477ce1b768bb3',1,'mc::UICombobox::SelectItem(const std::string &amp;item)']]],
-  ['setbackgroundcolor_245',['SetBackgroundColor',['../classmc_1_1_u_i_window.html#abeacd2327ef70c6ce7f6cc8c83897a4f',1,'mc::UIWindow']]],
-  ['setdropdownarrowcolor_246',['SetDropdownArrowColor',['../classmc_1_1_u_i_combobox.html#a47f378325d22b7138ff86c0327e4b676',1,'mc::UICombobox']]],
-  ['setfilter_247',['SetFilter',['../classmc_1_1_u_i_file_dialogue.html#af4c83b2092ae4e82878cefc86bbedc0b',1,'mc::UIFileDialogue']]],
-  ['setitembackgroundcolor_248',['SetItemBackgroundColor',['../classmc_1_1_u_i_combobox.html#af6151a45dbe28aa6b6041f6ae964ca73',1,'mc::UICombobox']]],
-  ['setitems_249',['SetItems',['../classmc_1_1_u_i_combobox.html#a73dc6eb24d854478a3f9d20650dbc3f6',1,'mc::UICombobox']]],
-  ['setitemtextcolor_250',['SetItemTextColor',['../classmc_1_1_u_i_combobox.html#aab0c375fb5ccd9674249cd26dd172da6',1,'mc::UICombobox']]],
-  ['setmodernwindowbuttonscolor_251',['SetModernWindowButtonsColor',['../classmc_1_1_u_i_window.html#ad491c02d51d714ef75f79e32cb3ca156',1,'mc::UIWindow']]],
-  ['setpos_252',['SetPos',['../classmc_1_1_u_i_window.html#a497b8e3e92783a273d5d642990cd2617',1,'mc::UIWindow']]],
-  ['setselecteditemcolor_253',['SetSelectedItemColor',['../classmc_1_1_u_i_combobox.html#ae47b4cce961e30818d1a92f55d9a38c1',1,'mc::UICombobox']]],
-  ['setsize_254',['SetSize',['../classmc_1_1_u_i_window.html#ade4d89d406bc864065ff63dfb33cc5af',1,'mc::UIWindow']]],
-  ['settitle_255',['SetTitle',['../classmc_1_1_u_i_window.html#abccede0c2be92aaa8805ff7b36424b52',1,'mc::UIWindow']]],
-  ['setzindex_256',['SetZIndex',['../classmc_1_1_u_i_view.html#aa44894c75232684a1bbbaea9a7c50ad8',1,'mc::UIView']]],
-  ['startwindowloop_257',['StartWindowLoop',['../classmc_1_1_u_i_window.html#a34d3e85ba9cbf7f29235b4d918e04365',1,'mc::UIWindow']]]
+  ['removechild_274',['RemoveChild',['../classmc_1_1_u_i_scroll_panel.html#a4e765bc9a589540afc0485b531348f13',1,'mc::UIScrollPanel']]],
+  ['removeitem_275',['RemoveItem',['../classmc_1_1_u_i_combobox.html#aed94ae3f7955b76ed0900abaea5857dc',1,'mc::UICombobox::RemoveItem(size_t index)'],['../classmc_1_1_u_i_combobox.html#a141e8d69f0d453dae49c03e41cae6de0',1,'mc::UICombobox::RemoveItem(const std::string &amp;item)']]],
+  ['removesubview_276',['RemoveSubview',['../classmc_1_1_u_i_view.html#ab01b6fd4c03d66cce9af52dbb626c583',1,'mc::UIView']]],
+  ['removetab_277',['RemoveTab',['../classmc_1_1_u_i_tab_view.html#a158146b8eecc421b98298e8afa9d9a17',1,'mc::UITabView::RemoveTab(size_t index)'],['../classmc_1_1_u_i_tab_view.html#a610790d2247ab407ca08e6698bea9c86',1,'mc::UITabView::RemoveTab(const std::string &amp;name)']]],
+  ['removeview_278',['RemoveView',['../classmc_1_1_u_i_window.html#a65fe77b493b824e486432eaf16ed9526',1,'mc::UIWindow']]]
 ];

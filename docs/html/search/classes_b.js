@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['textmetrics_169',['TextMetrics',['../structmc_1_1_text_metrics.html',1,'mc']]],
-  ['textproperties_170',['TextProperties',['../structmc_1_1_text_properties.html',1,'mc']]]
+  ['scenemanager_188',['SceneManager',['../classmc_1_1_scene_manager.html',1,'mc']]]
 ];

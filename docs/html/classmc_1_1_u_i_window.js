@@ -2,7 +2,7 @@ var classmc_1_1_u_i_window =
 [
     [ "AddView", "classmc_1_1_u_i_window.html#a40f42964d5bfbc873dff14228bc07436", null ],
     [ "FocusView", "classmc_1_1_u_i_window.html#a4ab577927fa53811aad63431257e5b26", null ],
-    [ "ForceUpdate", "classmc_1_1_u_i_window.html#a6ec4039bc3059b8f09eb566db7e68c4d", null ],
+    [ "ForceUpdate", "classmc_1_1_u_i_window.html#a49bfab84c5919e8e304986b7ebe726b0", null ],
     [ "GetBackgroundColor", "classmc_1_1_u_i_window.html#a451cda0b81a3337a32f8ef575d27bbcd", null ],
     [ "GetCloseButtonRef", "classmc_1_1_u_i_window.html#a3c42128d6e8dc2ea444637d47f01898b", null ],
     [ "GetDpi", "classmc_1_1_u_i_window.html#ab69506b299f4b0fcd32d39d5ddba99fe", null ],
@@ -18,6 +18,7 @@ var classmc_1_1_u_i_window =
     [ "IsOpened", "classmc_1_1_u_i_window.html#a59ce118902641dc9c02c92200c66c7a5", null ],
     [ "IsViewFocused", "classmc_1_1_u_i_window.html#a693f1c8875f3f94f13dfb2b102ecb71f", null ],
     [ "IsViewFocused", "classmc_1_1_u_i_window.html#a5c5655440bcab1d34f9ca17134531acf", null ],
+    [ "RemoveView", "classmc_1_1_u_i_window.html#a65fe77b493b824e486432eaf16ed9526", null ],
     [ "SetBackgroundColor", "classmc_1_1_u_i_window.html#abeacd2327ef70c6ce7f6cc8c83897a4f", null ],
     [ "SetModernWindowButtonsColor", "classmc_1_1_u_i_window.html#ad491c02d51d714ef75f79e32cb3ca156", null ],
     [ "SetPos", "classmc_1_1_u_i_window.html#a497b8e3e92783a273d5d642990cd2617", null ],

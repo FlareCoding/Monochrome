@@ -124,9 +124,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>EndFrame</b> (
 <tr class="memitem:a58a30fd3b4b371a23a4f58c28957407a"><td class="memItemLeft" align="right" valign="top"><a id="a58a30fd3b4b371a23a4f58c28957407a"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearScreenColor</b> (uint32_t r, uint32_t g, uint32_t b)</td></tr>
 <tr class="separator:a58a30fd3b4b371a23a4f58c28957407a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47a685007da283019116b00faca9ce72"><td class="memItemLeft" align="right" valign="top"><a id="a47a685007da283019116b00faca9ce72"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> (const <a class="el" href="classmc_1_1_color.html">Color</a> &amp;background, <a class="el" href="classmc_1_1_scene_manager.html">SceneManager</a> &amp;sm)</td></tr>
-<tr class="separator:a47a685007da283019116b00faca9ce72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af70ae2cc974120432d496a05a2690fa3"><td class="memItemLeft" align="right" valign="top"><a id="af70ae2cc974120432d496a05a2690fa3"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> (const <a class="el" href="classmc_1_1_color.html">Color</a> &amp;background, <a class="el" href="classmc_1_1_scene_manager.html">SceneManager</a> &amp;sm, bool clearBackgroundColor=true)</td></tr>
+<tr class="separator:af70ae2cc974120432d496a05a2690fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c4229a08f58644ae7446a155c5cc59e"><td class="memItemLeft" align="right" valign="top"><a id="a7c4229a08f58644ae7446a155c5cc59e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>PushLayer</b> (float x, float y, float width, float height)</td></tr>
 <tr class="separator:a7c4229a08f58644ae7446a155c5cc59e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,6 +152,14 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
 <tr class="separator:a0db71d451c3f6ace1e5629166ea0b369"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a267747f29ee0ebaec48ae86807ecbd28"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_graphics.html#a267747f29ee0ebaec48ae86807ecbd28">GetLineCharacterLimit</a> (<a class="el" href="structmc_1_1_text_properties.html">TextProperties</a> text_props, float container_width, float container_height)</td></tr>
 <tr class="separator:a267747f29ee0ebaec48ae86807ecbd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a188f5353b619b247d5e751a800a2962d"><td class="memItemLeft" align="right" valign="top"><a id="a188f5353b619b247d5e751a800a2962d"></a>
+static Ref&lt; <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_graphics.html#a188f5353b619b247d5e751a800a2962d">CreateBitmapFromFile</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:a188f5353b619b247d5e751a800a2962d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> object holding the image data from reading a file. <br /></td></tr>
+<tr class="separator:a188f5353b619b247d5e751a800a2962d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5275d9382e5a43ac5850c8660aea56a6"><td class="memItemLeft" align="right" valign="top">static Ref&lt; <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_graphics.html#a5275d9382e5a43ac5850c8660aea56a6">CreateBitmap</a> (const char *data, uint32_t size)</td></tr>
+<tr class="separator:a5275d9382e5a43ac5850c8660aea56a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae8cda4f753bdc55aad5225020bc325f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_graphics.html#aae8cda4f753bdc55aad5225020bc325f">DrawBitmapImage</a> (Ref&lt; <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> &gt; &amp;bmp, float x, float y, float width, float height, float opacity=1.0f)</td></tr>
+<tr class="separator:aae8cda4f753bdc55aad5225020bc325f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0db71d451c3f6ace1e5629166ea0b369"></a>
@@ -209,6 +217,49 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Structure containing calculated metrics of the inputted text </dd></dl>
+
+</div>
+</div>
+<a id="a5275d9382e5a43ac5850c8660aea56a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5275d9382e5a43ac5850c8660aea56a6">&#9670;&nbsp;</a></span>CreateBitmap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Ref&lt; <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> &gt; mc::Graphics::CreateBitmap </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> object holding the image data provided. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Raw data of the image. </td></tr>
+    <tr><td class="paramname">size</td><td>Size of the image data in bytes. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -287,7 +338,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Draws a straight line. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Draws an arc. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">start_x</td><td>x-coordinate of the location of the first endpoint </td></tr>
     <tr><td class="paramname">start_y</td><td>y-coordinate of the location of the first endpoint </td></tr>
@@ -298,6 +349,77 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
     <tr><td class="paramname">clockwise</td><td>Specifies whether the arc should bend in the clockwise direction </td></tr>
     <tr><td class="paramname">large_arc</td><td>Specifies whether the arc should be calculated using the larger or the smaller angle </td></tr>
     <tr><td class="paramname">stroke</td><td>Border thickness </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aae8cda4f753bdc55aad5225020bc325f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae8cda4f753bdc55aad5225020bc325f">&#9670;&nbsp;</a></span>DrawBitmapImage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mc::Graphics::DrawBitmapImage </td>
+          <td>(</td>
+          <td class="paramtype">Ref&lt; <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bmp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>opacity</em> = <code>1.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Draws a bitmap image. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bmp</td><td>Reference to a shared_ptr&lt;Bitmap&gt; </td></tr>
+    <tr><td class="paramname">x</td><td>x-coordinate of the location of the top left corner relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>
+    <tr><td class="paramname">y</td><td>y-coordinate of the location of the top left corner relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>
+    <tr><td class="paramname">width</td><td>Width of the image </td></tr>
+    <tr><td class="paramname">height</td><td>Height of the image </td></tr>
+    <tr><td class="paramname">opacity</td><td>Specifies the value of the alpha channel of the draw image </td></tr>
   </table>
   </dd>
 </dl>
@@ -361,7 +483,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Draws a straight line. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Draws a circle. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>x-coordinate of the location of the circle's center relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>
     <tr><td class="paramname">y</td><td>y-coordinate of the location of the circle's center relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>
@@ -513,7 +635,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Draws a straight line. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Draws a rectangle. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>x-coordinate of the location of the top left corner relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>
     <tr><td class="paramname">y</td><td>y-coordinate of the location of the top left corner relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>
@@ -592,7 +714,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Draws a straight line. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Draws a text string. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>x-coordinate of the location of the top left corner relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>
     <tr><td class="paramname">y</td><td>y-coordinate of the location of the top left corner relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>
@@ -670,7 +792,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Draws a straight line. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Draws a text string. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>x-coordinate of the location of the top left corner relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>
     <tr><td class="paramname">y</td><td>y-coordinate of the location of the top left corner relative to the parent <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> </td></tr>

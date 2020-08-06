@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "mc::Bitmap", "classmc_1_1_bitmap.html", null ],
     [ "mc::Circle", "classmc_1_1_circle.html", null ],
     [ "mc::Color", "classmc_1_1_color.html", null ],
     [ "mc::CoreResources", "classmc_1_1_core_resources.html", null ],
@@ -29,9 +30,11 @@ var hierarchy =
         [ "mc::UIButton", "classmc_1_1_u_i_button.html", null ],
         [ "mc::UICheckbox", "classmc_1_1_u_i_checkbox.html", null ],
         [ "mc::UICombobox", "classmc_1_1_u_i_combobox.html", null ],
+        [ "mc::UIImage", "classmc_1_1_u_i_image.html", null ],
         [ "mc::UILabel", "classmc_1_1_u_i_label.html", null ],
         [ "mc::UIScrollPanel", "classmc_1_1_u_i_scroll_panel.html", null ],
         [ "mc::UISlider", "classmc_1_1_u_i_slider.html", null ],
+        [ "mc::UITabView", "classmc_1_1_u_i_tab_view.html", null ],
         [ "mc::UITextbox", "classmc_1_1_u_i_textbox.html", null ]
       ] ]
     ] ],

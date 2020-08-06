@@ -1,6 +1,7 @@
 var annotated_dup =
 [
     [ "mc", null, [
+      [ "Bitmap", "classmc_1_1_bitmap.html", "classmc_1_1_bitmap" ],
       [ "Circle", "classmc_1_1_circle.html", "classmc_1_1_circle" ],
       [ "Color", "classmc_1_1_color.html", "classmc_1_1_color" ],
       [ "CoreResources", "classmc_1_1_core_resources.html", null ],
@@ -34,9 +35,11 @@ var annotated_dup =
       [ "UICombobox", "classmc_1_1_u_i_combobox.html", "classmc_1_1_u_i_combobox" ],
       [ "UIFileDialogue", "classmc_1_1_u_i_file_dialogue.html", "classmc_1_1_u_i_file_dialogue" ],
       [ "UIFileDialogueFilter", "classmc_1_1_u_i_file_dialogue_filter.html", "classmc_1_1_u_i_file_dialogue_filter" ],
+      [ "UIImage", "classmc_1_1_u_i_image.html", "classmc_1_1_u_i_image" ],
       [ "UILabel", "classmc_1_1_u_i_label.html", "classmc_1_1_u_i_label" ],
       [ "UIScrollPanel", "classmc_1_1_u_i_scroll_panel.html", "classmc_1_1_u_i_scroll_panel" ],
       [ "UISlider", "classmc_1_1_u_i_slider.html", "classmc_1_1_u_i_slider" ],
+      [ "UITabView", "classmc_1_1_u_i_tab_view.html", "classmc_1_1_u_i_tab_view" ],
       [ "UITextbox", "classmc_1_1_u_i_textbox.html", "classmc_1_1_u_i_textbox" ],
       [ "UIView", "classmc_1_1_u_i_view.html", "classmc_1_1_u_i_view" ],
       [ "UIWindow", "classmc_1_1_u_i_window.html", "classmc_1_1_u_i_window" ]
