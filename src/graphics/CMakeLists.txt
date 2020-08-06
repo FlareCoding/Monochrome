@@ -9,6 +9,7 @@ set(
     src/graphics/RenderTarget.h
     src/graphics/Shapes.h
     src/graphics/TextProperties.h
+    src/graphics/Bitmap.h
 
     PARENT_SCOPE
 )
@@ -20,6 +21,7 @@ set(
     src/graphics/Color.cpp
     src/graphics/Graphics.cpp
     src/graphics/RenderTarget.cpp
+    src/graphics/Bitmap.cpp
 
     PARENT_SCOPE
 )

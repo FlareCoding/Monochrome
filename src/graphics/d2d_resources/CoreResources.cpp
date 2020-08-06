@@ -1,11 +1,13 @@
 #include "CoreResources.h"
+#include <stdio.h>
 
 namespace mc
 {
 	static bool s_Initialized = false;
 
-	ComPtr<ID2D1Factory>	CoreResources::s_Factory;
-	ComPtr<IDWriteFactory>  CoreResources::s_WriteFactory;
+	ComPtr<ID2D1Factory>		CoreResources::s_Factory;
+	ComPtr<IDWriteFactory>		CoreResources::s_WriteFactory;
+	ComPtr<IWICImagingFactory>  CoreResources::s_WicImagingFactory;
 
 	void CoreResources::Initialize()
 	{
@@ -22,6 +24,15 @@ namespace mc
 		if (result != S_OK)
 		{
 			MessageBoxA(0, "Failed to create DirectWrite Factory Resource", "CoreResources", 0);
+			return;
+		}
+
+		CoInitialize(NULL);
+		result = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (LPVOID*)s_WicImagingFactory.GetAddressOf());
+		if (result != S_OK)
+		{
+			printf("Result: 0x%X\n", result);
+			MessageBoxA(0, "Failed to create WICImagingFactory", "CoreResources", 0);
 			return;
 		}
 

@@ -11,6 +11,7 @@ set(
     src/ui/elements/UIScrollPanel.h
     src/ui/elements/UICombobox.h
     src/ui/elements/UITabView.h
+    src/ui/elements/UIImage.h
 
     PARENT_SCOPE
 )
@@ -26,6 +27,7 @@ set(
     src/ui/elements/UIScrollPanel.cpp
     src/ui/elements/UICombobox.cpp
     src/ui/elements/UITabView.cpp
+    src/ui/elements/UIImage.cpp
 
     PARENT_SCOPE
 )

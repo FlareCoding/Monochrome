@@ -14,3 +14,6 @@ target_link_libraries(FileChooserTest PUBLIC Monochrome)
 
 add_executable(UITabViewTest uitabview_test.cpp)
 target_link_libraries(UITabViewTest PUBLIC Monochrome)
+
+add_executable(UIImageTest uiimage_test.cpp)
+target_link_libraries(UIImageTest PUBLIC Monochrome)

@@ -4,6 +4,7 @@
 #include "Color.h"
 #include "Shapes.h"
 #include "TextProperties.h"
+#include "Bitmap.h"
 
 namespace mc
 {
@@ -49,7 +50,7 @@ namespace mc
 			float stroke = 2
 		);
 
-		/// Draws a straight line.
+		/// Draws a rectangle.
 		/// @param x x-coordinate of the location of the top left corner relative to the parent UIView
 		/// @param y y-coordinate of the location of the top left corner relative to the parent UIView
 		/// @param width Width of the rectangle
@@ -70,7 +71,7 @@ namespace mc
 			float stroke = 2
 		);
 
-		/// Draws a straight line.
+		/// Draws a circle.
 		/// @param x x-coordinate of the location of the circle's center relative to the parent UIView
 		/// @param y y-coordinate of the location of the circle's center relative to the parent UIView
 		/// @param radius Radius of the circle
@@ -87,7 +88,7 @@ namespace mc
 			float stroke = 2
 		);
 
-		/// Draws a straight line.
+		/// Draws an arc.
 		/// @param start_x x-coordinate of the location of the first endpoint
 		/// @param start_y y-coordinate of the location of the first endpoint
 		/// @param end_x x-coordinate of the location of the second endpoint
@@ -110,7 +111,7 @@ namespace mc
 			float stroke = 2
 		);
 
-		/// Draws a straight line.
+		/// Draws a text string.
 		/// @param x x-coordinate of the location of the top left corner relative to the parent UIView
 		/// @param y y-coordinate of the location of the top left corner relative to the parent UIView
 		/// @param width Width of the text rectangle
@@ -129,7 +130,7 @@ namespace mc
 			Color color = Color::black
 		);
 
-		/// Draws a straight line.
+		/// Draws a text string.
 		/// @param x x-coordinate of the location of the top left corner relative to the parent UIView
 		/// @param y y-coordinate of the location of the top left corner relative to the parent UIView
 		/// @param width Width of the text rectangle
@@ -171,6 +172,31 @@ namespace mc
 			TextProperties text_props,
 			float container_width,
 			float container_height
+		);
+
+		/// Returns a Bitmap object holding the image data from reading a file.
+		static Ref<Bitmap> CreateBitmapFromFile(const std::string& path);
+
+		/// Returns a Bitmap object holding the image data provided.
+		/// @param data Raw data of the image.
+		/// @param size Size of the image data in bytes.
+		static Ref<Bitmap> CreateBitmap(const char* data, uint32_t size);
+
+		/// Draws a bitmap image.
+		/// @param bmp Reference to a shared_ptr<Bitmap>
+		/// @param x x-coordinate of the location of the top left corner relative to the parent UIView
+		/// @param y y-coordinate of the location of the top left corner relative to the parent UIView
+		/// @param width Width of the image
+		/// @param height Height of the image
+		/// @param opacity Specifies the value of the alpha channel of the draw image
+		///
+		static void DrawBitmapImage(
+			Ref<Bitmap>& bmp,
+			float x,
+			float y,
+			float width,
+			float height,
+			float opacity = 1.0f
 		);
 
 	private:

@@ -444,6 +444,109 @@ namespace mc
 		return (CharacterCount - 2);
 	}
 
+	static Ref<Bitmap> private_graphics_CreateBitmap(IWICBitmapDecoder* decoder, ID2D1RenderTarget* target)
+	{
+		IWICBitmapFrameDecode* WicFrame;
+		HRESULT hr = decoder->GetFrame(0, &WicFrame);
+		if (FAILED(hr))
+		{
+			decoder->Release();
+			return nullptr;
+		}
+
+		IWICFormatConverter* WicConverter;
+		hr = CoreResources::GetWICImagingFactory()->CreateFormatConverter(&WicConverter);
+		if (FAILED(hr))
+		{
+			WicFrame->Release();
+			decoder->Release();
+			return nullptr;
+		}
+
+		hr = WicConverter->Initialize(
+			WicFrame,
+			GUID_WICPixelFormat32bppPBGRA,
+			WICBitmapDitherTypeNone,
+			NULL,
+			0.0,
+			WICBitmapPaletteTypeCustom
+		);
+		if (FAILED(hr))
+		{
+			WicConverter->Release();
+			WicFrame->Release();
+			decoder->Release();
+			return nullptr;
+		}
+
+		ID2D1Bitmap* bmp;
+		hr = target->CreateBitmapFromWicBitmap(WicConverter, NULL, &bmp);
+		if (FAILED(hr))
+		{
+			WicConverter->Release();
+			WicFrame->Release();
+			decoder->Release();
+			return nullptr;
+		}
+
+		Ref<Bitmap> bitmap = MakeRef<Bitmap>((void*)bmp);
+
+		WicConverter->Release();
+		WicFrame->Release();
+		decoder->Release();
+
+		return bitmap;
+	}
+
+	Ref<Bitmap> Graphics::CreateBitmapFromFile(const std::string& path)
+	{
+		IWICBitmapDecoder* WicDecoder;
+		HRESULT hr = CoreResources::GetWICImagingFactory()->CreateDecoderFromFilename(
+			ConvertStringToWstring(path).c_str(),
+			NULL,
+			GENERIC_READ,
+			WICDecodeMetadataCacheOnLoad,
+			&WicDecoder
+		);
+
+		if (FAILED(hr)) return nullptr;
+
+		// WicDecoder->Release will be called inside private_graphics_CreateBitmap
+		return private_graphics_CreateBitmap(WicDecoder, m_RenderTarget->GetNativeHandle());
+	}
+
+	Ref<Bitmap> Graphics::CreateBitmap(const char* data, uint32_t size)
+	{
+		IStream* stream = SHCreateMemStream((const BYTE*)data, size);
+		if (!stream) return nullptr;
+
+		IWICBitmapDecoder* WicDecoder;
+		HRESULT hr = CoreResources::GetWICImagingFactory()->CreateDecoderFromStream(stream, NULL, WICDecodeMetadataCacheOnLoad, &WicDecoder);
+
+		if (FAILED(hr)) return nullptr;
+
+		// WicDecoder->Release will be called inside private_graphics_CreateBitmap
+		return private_graphics_CreateBitmap(WicDecoder, m_RenderTarget->GetNativeHandle());
+	}
+
+	void Graphics::DrawBitmapImage(
+		Ref<Bitmap>& bmp,
+		float x,
+		float y,
+		float width,
+		float height,
+		float opacity
+	)
+	{
+		VALIDATE_RENDERTARGET;
+		ID2D1HwndRenderTarget* target = m_RenderTarget->GetNativeHandle();
+
+		D2D1_RECT_F src_rect = D2D1::RectF(0.0f, 0.0f, bmp->GetWidth(), bmp->GetHeight());
+		D2D1_RECT_F dest_rect = D2D1::RectF(x, y, x + width, y + height);
+
+		target->DrawBitmap((ID2D1Bitmap*)bmp->GetBmpData(), dest_rect, opacity, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, src_rect);
+	}
+
 #pragma warning( pop ) 
 
 	void Graphics::Update(const Color& background, SceneManager& sm, bool clearBackgroundColor)
