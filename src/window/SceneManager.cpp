@@ -24,9 +24,23 @@ namespace mc
 
 	void SceneManager::RemoveView(Ref<UIView> view)
 	{
-		auto it = std::find(m_Views.begin(), m_Views.end(), view);
-		if (it != m_Views.end())
-			m_Views.erase(it);
+		m_ViewsToDelete.push_back(view);
+	}
+
+	void SceneManager::RemoveNeededViews()
+	{
+		std::vector<Ref<UIView>> m_ViewsToDeleteClone;
+		{
+			std::lock_guard<std::mutex> guard(m_ViewsToDeleteMutex);
+			m_ViewsToDeleteClone.swap(m_ViewsToDelete);
+		}
+
+		for (auto& view : m_ViewsToDeleteClone)
+		{
+			auto it = std::find(m_Views.begin(), m_Views.end(), view);
+			if (it != m_Views.end())
+				m_Views.erase(it);
+		}
 	}
 
 	Ref<UIView> SceneManager::GetViewRef(UIView* raw_address)
@@ -40,6 +54,9 @@ namespace mc
 
 	void SceneManager::RenderGraphics()
 	{
+		if (m_ViewsToDelete.size())
+			RemoveNeededViews();
+
 		for (auto& view : m_Views)
 			RenderUIView(view, view->parent);
 	}

@@ -18,9 +18,13 @@ namespace mc
 
 	private:
 		void ProcessEvent(EventPtr& event, Ref<UIView>& view, const std::vector<Ref<UIView>>& view_layer, uint32_t window_dpi);
+		void RemoveNeededViews();
 
 	private:
 		std::vector<Ref<UIView>> m_Views;
+		std::vector<Ref<UIView>> m_ViewsToDelete;
+		std::mutex m_ViewsToDeleteMutex;
+
 		std::vector<EventPtr> m_EventQueue;
 		std::mutex m_EventQueueMutex;
 	};
