@@ -654,6 +654,11 @@ void MonochromeEditor::OpenProjectWindow()
 			});
 			m_ProjectWindow->AddView(BackgroundEventView);
 
+			BackgroundEventView->AddEventHandler<EventType::MouseButtonReleased>([this](Event& e, UIView* sender) -> bool {
+				m_PWScriptController.Widget_OnMouseReleased();
+				return EVENT_HANDLED;
+			});
+
 			for (auto& view : m_ProjectUIElements)
 			{
 				view->SetZIndex(1);
@@ -685,19 +690,17 @@ void MonochromeEditor::AddElementToProjectWindow()
 	TargetElement->parent = nullptr;
 
 	// Setting an event handler so that elements can be drageged with a mouse inside the project window
-	TargetElement->AddEventHandler<EventType::MouseMoved>([](Event& e, UIView* sender) -> bool {
-		MouseMovedEvent& mme = reinterpret_cast<MouseMovedEvent&>(e);
-		if (mme.button == MouseButton::Left)
-		{
-			float multiplier = 1; // to be adjusted in future commits
+	TargetElement->AddEventHandler<EventType::MouseButtonPressed>([this](Event& e, UIView* sender) -> bool {
+		Ref<UIView> target = m_ProjectWindow->GetViewRef(sender);
+		m_PWScriptController.Widget_OnMousePressed(target);
 
-			Point distance;
-			distance.x = mme.distance.x * multiplier;
-			distance.y = mme.distance.y * multiplier;
+		return EVENT_HANDLED;
+	});
 
-			sender->layer.frame.position += distance;
-		}
 
+	TargetElement->AddEventHandler<EventType::MouseButtonReleased>([this](Event& e, UIView* sender) -> bool {
+		Ref<UIView> target = m_ProjectWindow->GetViewRef(sender);
+		m_PWScriptController.Widget_OnMouseReleased();
 		return EVENT_HANDLED;
 	});
 

@@ -10,6 +10,7 @@ set(
 
     utils/EditorUtils.h
     utils/ProjectGenerator.h
+    utils/ProjectWindowScriptController.h
 
     rapidxml/rapidxml.hpp
     rapidxml/rapidxml_iterators.hpp
@@ -28,6 +29,7 @@ set(
 
     utils/EditorUtils.cpp
     utils/ProjectGenerator.cpp
+    utils/ProjectWindowScriptController.cpp
 
     Editor.cpp
     main.cpp

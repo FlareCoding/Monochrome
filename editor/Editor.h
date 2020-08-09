@@ -3,6 +3,7 @@
 #include "panels/ButtonProperties.h"
 #include "panels/VariableCodeProperties.h"
 #include "utils/ProjectGenerator.h"
+#include "utils/ProjectWindowScriptController.h"
 
 class MonochromeEditor
 {
@@ -65,6 +66,8 @@ private:
 	Ref<UITextbox> m_ProjectWindowColorTextbox;
 
 	Ref<UIButton> m_OpenProjectWindowButton;
+
+	ProjectWindowScriptController m_PWScriptController;
 
 private:
 	// Project Window Functionality
