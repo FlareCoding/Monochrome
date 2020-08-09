@@ -640,4 +640,31 @@ namespace mc
 			}
 		}
 	}
+
+	Position UIWindow::GetMouseCursorPos()
+	{
+		Position position = { -1, -1 };
+
+		POINT p;
+		if (!GetCursorPos(&p))
+			return position;
+
+		if (!ScreenToClient(m_NativeHandle, &p))
+			return position;
+
+		position = { (float)p.x, (float)p.y };
+		return position;
+	}
+
+	Position UIWindow::GetAsboluteMouseCursorPos()
+	{
+		Position position = { -1, -1 };
+
+		POINT p;
+		if (!GetCursorPos(&p))
+			return position;
+
+		position = { (float)p.x, (float)p.y };
+		return position;
+	}
 }

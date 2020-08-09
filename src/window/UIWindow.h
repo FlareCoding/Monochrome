@@ -101,6 +101,12 @@ namespace mc
 		/// Returns a shared_ptr to the uiview with the specified address.
 		Ref<UIView> GetViewRef(UIView* raw_address);
 
+		/// Returns the position of the mouse cursor relative to the top left corner of the window.
+		Position GetMouseCursorPos();
+
+		/// Returns the position of the mouse cursor relative to the top left corner of the monitor.
+		Position GetAsboluteMouseCursorPos();
+
 	private:
 		UIWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title);
 		HWND m_NativeHandle = {};
