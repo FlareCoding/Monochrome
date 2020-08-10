@@ -15,7 +15,9 @@ void MonochromeEditor::Initialize()
 
 	m_LabelProperties.Initialize(m_PropertiesView, &m_ProjectWindow);
 	m_ButtonProperties.Initialize(m_PropertiesView, &m_ProjectWindow);
+	m_PlainViewProperties.Initialize(m_PropertiesView, &m_ProjectWindow);
 	m_VariableCodeProperties.Initialize(m_PropertiesView, &m_ProjectWindow);
+	m_PWScriptController.Initialize(&m_ProjectWindow, &m_ProjectUIElements);
 
 	m_PropertiesView->subviews.clear();
 
@@ -101,6 +103,7 @@ void MonochromeEditor::InitEditorUI()
 				m_VariableCodeProperties.UnregisterElement(m_ElementPreviewArea->subviews.at(0));
 
 			m_OpenVariablePropertiesButton->Label->Text = "Variable Properties";
+			m_ElementPreviewArea->subviews.clear();
 
 			click_cb();
 			return EVENT_HANDLED;
@@ -114,9 +117,17 @@ void MonochromeEditor::InitEditorUI()
 
 	static Position DefaultElementPreviewPosition = Position{ 360, 200 };
 
-	auto ToolboxWidgetButton_Label = MakeToolboxWidgetButton("Label", [this]() {
-		m_ElementPreviewArea->subviews.clear();
+	auto ToolboxWidgetButton_UIView = MakeToolboxWidgetButton("UIView", [this]() {
+		Ref<UIView> widget = MakeRef<UIView>();
+		widget->layer.frame.position = DefaultElementPreviewPosition;
+		widget->layer.frame.size = { 500, 400 };
+		m_ElementPreviewArea->AddSubview(widget);
+		m_SelectedTargetView = widget;
 
+		OpenElementProperties(widget);
+	});
+
+	auto ToolboxWidgetButton_Label = MakeToolboxWidgetButton("Label", [this]() {
 		Ref<UILabel> widget = MakeRef<UILabel>();
 		widget->color = Color::white;
 		widget->layer.frame.position = DefaultElementPreviewPosition;
@@ -127,8 +138,6 @@ void MonochromeEditor::InitEditorUI()
 	});
 
 	auto ToolboxWidgetButton_Button	= MakeToolboxWidgetButton("Button", [this]() {
-		m_ElementPreviewArea->subviews.clear();
-
 		Ref<UIButton> widget = MakeRef<UIButton>();
 		widget->layer.frame.position = DefaultElementPreviewPosition;
 		m_ElementPreviewArea->AddSubview(widget);
@@ -138,8 +147,6 @@ void MonochromeEditor::InitEditorUI()
 	});
 
 	auto ToolboxWidgetButton_Checkbox = MakeToolboxWidgetButton("Checkbox", [this]() {
-		m_ElementPreviewArea->subviews.clear();
-
 		Ref<UICheckbox> widget = MakeRef<UICheckbox>();
 		widget->layer.frame.position = DefaultElementPreviewPosition;
 		m_ElementPreviewArea->AddSubview(widget);
@@ -149,8 +156,6 @@ void MonochromeEditor::InitEditorUI()
 	});
 	
 	auto ToolboxWidgetButton_Slider	= MakeToolboxWidgetButton("Slider", [this]() {
-		m_ElementPreviewArea->subviews.clear();
-
 		Ref<UISlider> widget = MakeRef<UISlider>();
 		widget->layer.frame.position = DefaultElementPreviewPosition;
 		widget->SliderKnobShape = Shape::Circle;
@@ -619,8 +624,11 @@ void MonochromeEditor::OpenElementProperties(Ref<UIView> TargetElement)
 	m_PropertiesView->subviews.clear();
 	m_VariableCodeProperties.RegisterElement(TargetElement);
 
-	if (utils::CheckType<UILabel>(TargetElement.get())) { m_LabelProperties.Open(std::dynamic_pointer_cast<UILabel>(TargetElement)); }
-	if (utils::CheckType<UIButton>(TargetElement.get())) { m_ButtonProperties.Open(std::dynamic_pointer_cast<UIButton>(TargetElement)); }
+	if (utils::CheckType<UILabel>(TargetElement.get())) { return m_LabelProperties.Open(std::dynamic_pointer_cast<UILabel>(TargetElement)); }
+	if (utils::CheckType<UIButton>(TargetElement.get())) { return m_ButtonProperties.Open(std::dynamic_pointer_cast<UIButton>(TargetElement)); }
+
+	// If it doesn't belong to any other category, open plain view properties.
+	m_PlainViewProperties.Open(TargetElement);
 }
 
 void MonochromeEditor::OpenProjectWindow()
@@ -649,7 +657,7 @@ void MonochromeEditor::OpenProjectWindow()
 				if (!m_ElementPreviewArea->subviews.size())
 					m_PropertiesView->subviews.clear();
 
-				m_EditorWindow->ForceUpdate();
+				m_EditorWindow->ForceUpdate(true);
 				return EVENT_HANDLED;
 			});
 			m_ProjectWindow->AddView(BackgroundEventView);
@@ -667,7 +675,7 @@ void MonochromeEditor::OpenProjectWindow()
 
 			m_ProjectWindow->GetCloseButtonRef()->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 				m_PropertiesView->subviews.clear();
-				m_EditorWindow->ForceUpdate();
+				m_EditorWindow->ForceUpdate(true);
 				return EVENT_HANDLED;
 			});
 
@@ -692,15 +700,16 @@ void MonochromeEditor::AddElementToProjectWindow()
 	// Setting an event handler so that elements can be drageged with a mouse inside the project window
 	TargetElement->AddEventHandler<EventType::MouseButtonPressed>([this](Event& e, UIView* sender) -> bool {
 		Ref<UIView> target = m_ProjectWindow->GetViewRef(sender);
+		m_PWScriptController.FindInnerMostView(target, target);
 		m_PWScriptController.Widget_OnMousePressed(target);
 
 		return EVENT_HANDLED;
 	});
 
-
 	TargetElement->AddEventHandler<EventType::MouseButtonReleased>([this](Event& e, UIView* sender) -> bool {
 		Ref<UIView> target = m_ProjectWindow->GetViewRef(sender);
 		m_PWScriptController.Widget_OnMouseReleased();
+
 		return EVENT_HANDLED;
 	});
 
@@ -711,11 +720,17 @@ void MonochromeEditor::AddElementToProjectWindow()
 			if (!m_ElementPreviewArea->subviews.size())
 			{
 				auto& ref = m_ProjectWindow->GetViewRef(sender);
+				if (!ref) 
+					return EVENT_HANDLED;
+
+				Ref<UIView> target = ref; 
+				m_PWScriptController.FindInnerMostView(ref, target);
 
 				m_OpenVariablePropertiesButton->Label->Text = "Variable Properties";
-				OpenElementProperties(ref);
-				m_SelectedTargetView = ref;
-				m_EditorWindow->ForceUpdate();
+				OpenElementProperties(target);
+				m_SelectedTargetView = target;
+
+				m_EditorWindow->ForceUpdate(true);
 			}
 		}
 
@@ -727,7 +742,7 @@ void MonochromeEditor::AddElementToProjectWindow()
 
 	m_ProjectUIElements.push_back(TargetElement);
 	m_ProjectWindow->AddView(TargetElement);
-	m_ProjectWindow->ForceUpdate();
+	m_ProjectWindow->ForceUpdate(true);
 }
 
 void MonochromeEditor::GenerateProjectSolution()

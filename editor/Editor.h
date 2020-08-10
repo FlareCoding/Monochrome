@@ -1,6 +1,7 @@
 #pragma once
 #include "panels/LabelProperties.h"
 #include "panels/ButtonProperties.h"
+#include "panels/PlainViewProperties.h"
 #include "panels/VariableCodeProperties.h"
 #include "utils/ProjectGenerator.h"
 #include "utils/ProjectWindowScriptController.h"
@@ -41,6 +42,7 @@ private:
 	Ref<UIView> m_SelectedTargetView;
 	LabelProperties m_LabelProperties;
 	ButtonProperties m_ButtonProperties;
+	PlainViewProperties m_PlainViewProperties;
 	VariableCodeProperties m_VariableCodeProperties;
 
 	Ref<UIButton> m_OpenVariablePropertiesButton;

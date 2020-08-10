@@ -52,7 +52,7 @@ inline void UIElementProperties<UIElement>::Open(Ref<UIElement> target)
 template<typename UIElement>
 inline void UIElementProperties<UIElement>::ForceUpdateProjectWindow()
 {
-	if (*m_ProjectWindow) (*m_ProjectWindow)->ForceUpdate();
+	if (*m_ProjectWindow) (*m_ProjectWindow)->ForceUpdate(true);
 }
 
 template<typename UIElement>

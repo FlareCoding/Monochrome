@@ -6,6 +6,7 @@ set(
     panels/UIElementProperties.h
     panels/LabelProperties.h
     panels/ButtonProperties.h
+    panels/PlainViewProperties.h
     panels/VariableCodeProperties.h
 
     utils/EditorUtils.h
@@ -25,6 +26,7 @@ set(
    
     panels/LabelProperties.cpp
     panels/ButtonProperties.cpp
+    panels/PlainViewProperties.cpp
     panels/VariableCodeProperties.cpp
 
     utils/EditorUtils.cpp
