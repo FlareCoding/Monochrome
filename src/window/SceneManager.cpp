@@ -69,16 +69,18 @@ namespace mc
 			m_EventQueueClone.swap(m_EventQueue);
 		}
 
+		std::vector<Ref<UIView>> m_ViewsListClone(m_Views);
+
 		for (auto& event : m_EventQueueClone)
 		{
 			// Event handling needs to be done in reverse order compared to rendering views.
 			// Top element must receive events first, but renderered last.
-			for (auto it = m_Views.rbegin(); it != m_Views.rend(); ++it)
+			for (auto it = m_ViewsListClone.rbegin(); it != m_ViewsListClone.rend(); ++it)
 			{
 				// If the event has not been handled yet, process it.
 				// If the event got handled, break out of the loop and move on to the next event.
 				if (!event->Handled)
-					ProcessEvent(event, *it, m_Views, window_dpi);
+					ProcessEvent(event, *it, m_ViewsListClone, window_dpi);
 				else
 					break;
 			}
@@ -156,12 +158,14 @@ namespace mc
 		// If the event was handled by the view, stop processing this event
 		if (event->Handled) return;
 
+		std::vector<Ref<UIView>> m_SubviewsListClone(view->subviews);
+
 		// Process event for all subviews.
 		// Again, events should be handled from the top-most element down to the beginning of the list.
-		for (auto it = view->subviews.rbegin(); it != view->subviews.rend(); ++it)
+		for (auto it = m_SubviewsListClone.rbegin(); it != m_SubviewsListClone.rend(); ++it)
 		{
 			if (!event->Handled)
-				ProcessEvent(event, *it, view->subviews, window_dpi);
+				ProcessEvent(event, *it, m_SubviewsListClone, window_dpi);
 			else
 				break;
 		}

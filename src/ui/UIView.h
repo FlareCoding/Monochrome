@@ -64,7 +64,10 @@ namespace mc
 		{
 			std::vector<Ref<UIView>>::iterator it = std::find(subviews.begin(), subviews.end(), subview);
 			if (it != subviews.end())
+			{
+				(*it)->parent = nullptr;
 				subviews.erase(it);
+			}
 
 			SortElements();
 		}

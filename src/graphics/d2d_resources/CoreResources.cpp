@@ -31,7 +31,6 @@ namespace mc
 		result = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (LPVOID*)s_WicImagingFactory.GetAddressOf());
 		if (result != S_OK)
 		{
-			printf("Result: 0x%X\n", result);
 			MessageBoxA(0, "Failed to create WICImagingFactory", "CoreResources", 0);
 			return;
 		}
