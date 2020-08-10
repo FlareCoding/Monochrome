@@ -154,7 +154,7 @@ namespace utils
         case Widget::Checkbox:  return "UICheckbox";
         case Widget::Slider:    return "UISlider";
 
-        default: return "Unknown";
+        default: return "UIView";
         }
     }
 

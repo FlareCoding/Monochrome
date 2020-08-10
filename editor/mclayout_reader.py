@@ -13,6 +13,7 @@ class MCLayoutReader:
         self.__private_member_function_declarations_source = "\n"
         self.__public_member_function_definitions_source = "\n"
         self.__private_member_function_definitions_source = "\n"
+        self.__available_uiview_id = 0
         self.__available_label_id = 0
         self.__available_button_id = 0
         self.__available_checkbox_id = 0
@@ -21,6 +22,10 @@ class MCLayoutReader:
     def __str2bool(self, v):
         return str(v).lower() in ("true", "1")
     
+    def __get_uiview_id(self):
+        self.__available_uiview_id += 1
+        return "view" + str(self.__available_uiview_id)
+
     def __get_label_id(self):
         self.__available_label_id += 1
         return "label" + str(self.__available_label_id)
@@ -269,7 +274,10 @@ class MCLayoutReader:
                 name = view_node.attrib['name']
                 self.__private_data_members_source += "mc::Ref<mc::{0}> {1};\n".format(widget_type, name)
 
-        if widget_type == 'UILabel':
+        if widget_type == 'UIView':
+            if not name:
+                name = self.__get_uiview_id()
+        elif widget_type == 'UILabel':
             props = self.__read_UILabel_properties(view_node)
             if not name:
                 name = self.__get_label_id()
@@ -288,7 +296,7 @@ class MCLayoutReader:
 
         return props, name
 
-    def __parse_uiview_node(self, view_node):
+    def __parse_uiview_node(self, view_node, parent_name):
         widget_type = view_node.attrib['type']
         name = ""
         base_props = self.__read_Basic_UIView_properties(view_node)
@@ -304,7 +312,10 @@ class MCLayoutReader:
             else:
                 decl = "{1} = mc::MakeRef<mc::{0}>();\n".format(widget_type, name)
 
-        if widget_type == 'UILabel':
+        if widget_type == 'UIView':
+            source += decl
+            source += self.__generate_cpp_source_Basic_UIView_properties(name, base_props)
+        elif widget_type == 'UILabel':
             source += self.__generate_cpp_source_UILabel_properties(decl, name, props, base_props)
         elif widget_type == 'UIButton':
             source += self.__generate_cpp_source_UIButton_properties(decl, name, props, base_props)
@@ -314,8 +325,17 @@ class MCLayoutReader:
             source += self.__generate_cpp_source_UISlider_properties(decl, name, props, base_props)
 
         self.__cppsource += source
-        self.__cppsource += "m_Window->AddView({});\n".format(name)
+       
+        if not parent_name:
+            self.__cppsource += "m_Window->AddView({});\n".format(name)
+        else:
+            self.__cppsource += "{}->AddSubview({});\n".format(parent_name, name)
+
         self.__cppsource += "\n"
+        
+        if self.__should_parse_subviews(widget_type):
+            for subview in view_node.findall('uiview'):
+                self.__parse_uiview_node(subview, name)
 
     def get_cpp_source_string(self) -> str:
         return self.__cppsource
@@ -347,7 +367,7 @@ class MCLayoutReader:
         views = self.__dom.findall('uiview')
 
         for view in views:
-            self.__parse_uiview_node(view)
+            self.__parse_uiview_node(view, None)
 
         self.__cppsource = self.__cppsource.replace('\n', '\n\t')
         self.__window_creation_source = self.__window_creation_source.replace('\n', '\n\t')
