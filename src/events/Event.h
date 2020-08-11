@@ -16,7 +16,8 @@ namespace mc
 		None = 0,
 		MouseButtonPressed, MouseButtonReleased, MouseButtonClicked = MouseButtonReleased, MouseMoved, MouseHoverOn, MouseHoverOff, MouseScrolled,
 		KeyDown, KeyPressed = KeyDown, KeyReleased,
-		FocusChanged
+		FocusChanged,
+		WindowResized, WindowClosed, WindowGainedFocus, WindowLostFocus
 	};
 
 	enum EventCategory

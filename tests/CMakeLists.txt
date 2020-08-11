@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 3.0)
 add_executable(Demo demo.cpp)
 target_link_libraries(Demo PUBLIC Monochrome)
 
-add_executable(MultipleWindows multiple_windows_test.cpp)
-target_link_libraries(MultipleWindows PUBLIC Monochrome)
+add_executable(MultipleWindowsTest multiple_windows_test.cpp)
+target_link_libraries(MultipleWindowsTest PUBLIC Monochrome)
 
-add_executable(WindowControl window_control_test.cpp)
-target_link_libraries(WindowControl PUBLIC Monochrome)
+add_executable(WindowControlTest window_control_test.cpp)
+target_link_libraries(WindowControlTest PUBLIC Monochrome)
 
 add_executable(FileChooserTest file_chooser_test.cpp)
 target_link_libraries(FileChooserTest PUBLIC Monochrome)
@@ -17,3 +17,6 @@ target_link_libraries(UITabViewTest PUBLIC Monochrome)
 
 add_executable(UIImageTest uiimage_test.cpp)
 target_link_libraries(UIImageTest PUBLIC Monochrome)
+
+add_executable(WindowEventsTest window_events_test.cpp)
+target_link_libraries(WindowEventsTest PUBLIC Monochrome)

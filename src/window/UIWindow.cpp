@@ -304,6 +304,10 @@ namespace mc
 			// Retrieveing UIWindow pointer
 			UIWindow* pWindow = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
+			auto e = std::make_shared<WindowClosedEvent>(hwnd);
+			m_SceneManager.DispatchEvent(e);
+			m_SceneManager.ProcessEvents(m_Dpi);
+
 			// Setting the opened flag to false
 			pWindow->m_IsOpened = false;
 
@@ -329,9 +333,17 @@ namespace mc
 			{
 				Graphics::SetActiveTarget(hwnd);
 				s_CurrentActiveWindowInstance = pWindow;
+
+				auto e = std::make_shared<WindowGainedFocusEvent>(s_CurrentActiveWindowInstance->GetNativeHandle());
+				m_SceneManager.DispatchEvent(e);
+				m_SceneManager.ProcessEvents(m_Dpi);
 			}
 			else
 			{
+				auto e = std::make_shared<WindowLostFocusEvent>(s_CurrentActiveWindowInstance->GetNativeHandle());
+				m_SceneManager.DispatchEvent(e);
+				m_SceneManager.ProcessEvents(m_Dpi);
+
 				s_CurrentActiveWindowInstance = nullptr;
 			}
 
@@ -364,6 +376,10 @@ namespace mc
 				else
 					pWindow->m_ModernWindowMaximizeButton->Label->WidestringText = L"⬜";
 			}
+
+			auto e = std::make_shared<WindowResizedEvent>(hwnd, (uint32_t)nWidth, (uint32_t)nHeight);
+			m_SceneManager.DispatchEvent(e);
+			m_SceneManager.ProcessEvents(m_Dpi);
 
 			break;
 		}
