@@ -30,4 +30,9 @@ namespace mc
 		else
 			return _empty_;
 	}
+
+	bool IResponder::HasEventHandlers()
+	{
+		return m_Events.size();
+	}
 }

@@ -59,4 +59,19 @@ namespace mc
 		WindowLostFocusEvent(void* hwnd) : WindowEvent(hwnd) {}
 		REGISTER_EVT_CLASS_TYPE(WindowLostFocus)
 	};
+
+	class WindowUpdatedEvent : public WindowEvent
+	{
+	public:
+		WindowUpdatedEvent(void* hwnd, double event_processing_time, double graphics_rendering_time)
+			: WindowEvent(hwnd), EventProcessingTime(event_processing_time), GraphicsRenderingTime(graphics_rendering_time) {}
+
+		/// Holds the time in seconds it took to process events for the current frame.
+		double EventProcessingTime = 0;
+
+		/// Holds the time in seconds it took to render all graphics in the current frame.
+		double GraphicsRenderingTime = 0;
+
+		REGISTER_EVT_CLASS_TYPE(WindowUpdated)
+	};
 }

@@ -4,6 +4,7 @@
 #include <graphics/Color.h>
 #include "SceneManager.h"
 #include <Windows.h>
+#include <chrono>
 
 namespace mc
 {
@@ -145,5 +146,24 @@ namespace mc
 
 	public:
 		LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	private:
+		class InternalTimer
+		{
+		public:
+			InternalTimer() : beg_(clock_::now()) {}
+			void reset() { beg_ = clock_::now(); }
+			double elapsed() const {
+				return std::chrono::duration_cast<second_>
+					(clock_::now() - beg_).count();
+			}
+
+		private:
+			typedef std::chrono::high_resolution_clock clock_;
+			typedef std::chrono::duration<double, std::ratio<1> > second_;
+			std::chrono::time_point<clock_> beg_;
+		};
+
+		InternalTimer m_InternalTimer;
 	};
 }

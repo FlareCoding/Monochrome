@@ -3,7 +3,7 @@ using namespace mc;
 
 int main()
 {
-	auto window = UIWindow::Create(WindowStyle::Modern, 1000, 670, "File Chooser Test");
+	auto window = UIWindow::Create(WindowStyle::Modern, 1000, 670, "Window Events Test");
 	window->SetBackgroundColor(Color(38, 38, 39, 1.0f));
 	window->SetModernWindowButtonsColor(Color(38, 38, 39, 1.0f));
 

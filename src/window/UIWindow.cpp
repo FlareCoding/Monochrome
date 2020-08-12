@@ -566,8 +566,18 @@ namespace mc
 			if (GetActiveWindow() != m_NativeHandle) continue;
 
 			s_CurrentActiveWindowInstance = this;
+
+			m_InternalTimer.reset();
 			m_SceneManager.ProcessEvents(m_Dpi);
+			auto EventProcessingTime = m_InternalTimer.elapsed();
+
+			m_InternalTimer.reset();
 			Graphics::Update(m_Background, m_SceneManager);
+			auto GraphicsRenderingTime = m_InternalTimer.elapsed();
+
+			auto e = std::make_shared<WindowUpdatedEvent>(m_NativeHandle, EventProcessingTime, GraphicsRenderingTime);
+			m_SceneManager.DispatchEvent(e);
+			m_SceneManager.ProcessEvents(m_Dpi);
 		}
 	}
 

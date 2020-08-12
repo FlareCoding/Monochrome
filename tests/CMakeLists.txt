@@ -20,3 +20,6 @@ target_link_libraries(UIImageTest PUBLIC Monochrome)
 
 add_executable(WindowEventsTest window_events_test.cpp)
 target_link_libraries(WindowEventsTest PUBLIC Monochrome)
+
+add_executable(PerformanceTest performance_test.cpp)
+target_link_libraries(PerformanceTest PUBLIC Monochrome)

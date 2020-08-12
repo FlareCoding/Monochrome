@@ -40,6 +40,9 @@ namespace mc
 		/// Returns a list of all registered callbacks for the responder.
 		std::vector<EventCallbackFn> GetEventHandlers(EventType type);
 
+		/// Returns whether or not any event handler is present.
+		bool HasEventHandlers();
+
 	private:
 		std::map<EventType, std::vector<EventCallbackFn>> m_Events;
 	};
