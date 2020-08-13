@@ -45,6 +45,8 @@ namespace mc
 	
 	void UITextbox::SetDefaultOptions()
 	{
+		cursor = CursorType::IBeam;
+
 		Text = "";
 		Placeholder = "Enter text ...";
 		TextProperties.Allignment = TextAlignment::LEADING;

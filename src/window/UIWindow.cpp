@@ -379,8 +379,14 @@ namespace mc
 
 			auto e = std::make_shared<WindowResizedEvent>(hwnd, (uint32_t)nWidth, (uint32_t)nHeight);
 			m_SceneManager.DispatchEvent(e);
-			m_SceneManager.ProcessEvents(m_Dpi);
-
+			pWindow->ForceUpdate(true);
+			break;
+		}
+		case WM_MOVE:
+		{
+			// Retrieveing UIWindow pointer
+			UIWindow* pWindow = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			pWindow->ForceUpdate();
 			break;
 		}
 		case WM_NCHITTEST:
@@ -397,6 +403,63 @@ namespace mc
 				POINT pt;
 				pt.x = GET_X_LPARAM(lParam);
 				pt.y = GET_Y_LPARAM(lParam);
+
+				const auto CheckForResizingConditions = [this, pWindow](POINT pt, LONG BorderWidth, LRESULT& result) -> bool {
+					RECT ClientArea;
+					GetClientRect(pWindow->GetNativeHandle(), &ClientArea);
+					ScreenToClient(pWindow->GetNativeHandle(), &pt);
+
+					/*top-left, top and top-right*/
+					if (pt.y < BorderWidth)
+					{
+						if (pt.x < BorderWidth)
+						{
+							result = HTTOPLEFT;
+							return true;
+						}
+						else if (pt.x > (ClientArea.right - BorderWidth))
+						{
+							result = HTTOPRIGHT;
+							return true;
+						}
+						result = HTTOP;
+						return true;
+					}
+					/*bottom-left, bottom and bottom-right */
+					if (pt.y > (ClientArea.bottom - BorderWidth))
+					{
+						if (pt.x < BorderWidth)
+						{
+							result = HTBOTTOMLEFT;
+							return true;
+						}
+						else if (pt.x > (ClientArea.right - BorderWidth))
+						{
+							result = HTBOTTOMRIGHT;
+							return true;
+						}
+
+						result = HTBOTTOM;
+						return true;
+					}
+					if (pt.x < BorderWidth)
+					{
+						result = HTLEFT;
+						return true;
+					}
+					if (pt.x > (ClientArea.right - BorderWidth))
+					{
+						result = HTRIGHT;
+						return true;
+					}
+
+					return false;
+				};
+
+				LRESULT ResizingConditionsResult = 0;
+				static LONG BorderWidth = 5;
+				if (CheckForResizingConditions(pt, BorderWidth, ResizingConditionsResult))
+					return ResizingConditionsResult;
 
 				RECT rcDraggable = { 0, 0, (LONG)pWindow->m_ModernWindowDragPanel->layer.frame.size.width, (LONG)pWindow->m_ModernWindowDragPanel->layer.frame.size.height };
 

@@ -175,8 +175,7 @@ void MonochromeEditor::InitEditorUI()
 	m_WorkspaceTabView = MakeRef<UITabView>(Frame((float)m_EditorWidth / 2.0f - 500, 60, 1000, 916));
 	m_WorkspaceTabView->UnderlineTabs = true;
 	m_WorkspaceTabView->AddTab("Editor")->layer.color = m_EditorWindow->GetBackgroundColor();
-	m_WorkspaceTabView->AddTab("Window Options")->layer.color = m_EditorWindow->GetBackgroundColor();
-	m_WorkspaceTabView->AddTab("Project Settings")->layer.color = m_EditorWindow->GetBackgroundColor();
+	m_WorkspaceTabView->AddTab("Settings")->layer.color = m_EditorWindow->GetBackgroundColor();
 	m_WorkspaceTabView->OpenTab("Editor");
 	m_WorkspaceTabView->StyleTabButtons([this](Ref<UIButton>& tab) {
 		tab->layer.color = m_EditorWindow->GetBackgroundColor();
@@ -298,21 +297,52 @@ void MonochromeEditor::InitEditorUI()
 
 #pragma endregion
 
-#pragma region Window Options Area
+#pragma region Editor Settings Area
 
-	m_WindowOptionsView = MakeRef<UIView>();
-	m_WindowOptionsView->layer.frame = Frame(Position{ 0, 0 }, Size{ 996, 440 });
-	m_WindowOptionsView->layer.color = Color(51, 51, 52, 1.0f);
-	m_WorkspaceTabView->GetTab("Window Options")->AddSubview(m_WindowOptionsView);
+	m_EditorSettingsView = MakeRef<UIView>();
+	m_EditorSettingsView->layer.frame = Frame(Position{ 0, 0 }, Size{ 996, 440 });
+	m_EditorSettingsView->layer.color = Color(51, 51, 52, 1.0f);
+	m_WorkspaceTabView->GetTab("Settings")->AddSubview(m_EditorSettingsView);
 
-#pragma endregion
+	// Grid Snapping
+	auto GridSnappingCheckbox = MakeRef<UICheckbox>();
+	GridSnappingCheckbox->layer.frame = Frame(Position{ 55, 40 }, Size{ 280, 30 });
+	GridSnappingCheckbox->Label->Text = "Enable Grid Snapping";
+	GridSnappingCheckbox->Label->Properties.FontSize = 14;
+	GridSnappingCheckbox->BoxSize = 16;
+	GridSnappingCheckbox->layer.color = Color(88, 88, 89, 1);
+	GridSnappingCheckbox->CheckedBoxColor = Color(108, 108, 109, 1);
+	GridSnappingCheckbox->CheckmarkColor = Color::white;
+	GridSnappingCheckbox->AddValueChangedEventHandler([this](bool checked, UICheckbox* sender) {
+		utils::EditorSettings::GridSnapping = checked;
+	});
+	m_EditorSettingsView->AddSubview(GridSnappingCheckbox);
 
-#pragma region Project Settings Area
+	// Grid Size
+	auto GridSizeLabel = MakeRef<UILabel>(Frame(Position{ 60, 70 }, Size{ 160, 30 }));
+	GridSizeLabel->Text = "Grid Size: ";
+	GridSizeLabel->Properties.FontSize = 14;
+	GridSizeLabel->Properties.Allignment = TextAlignment::LEADING;
+	GridSizeLabel->color = Color::white;
+	m_EditorSettingsView->AddSubview(GridSizeLabel);
 
-	m_ProjectSettingsView = MakeRef<UIView>();
-	m_ProjectSettingsView->layer.frame = Frame(Position{ 0, 0 }, Size{ 996, 440 });
-	m_ProjectSettingsView->layer.color = Color(51, 51, 52, 1.0f);
-	m_WorkspaceTabView->GetTab("Project Settings")->AddSubview(m_ProjectSettingsView);
+	auto GridSizeInput = MakeRef<UITextbox>();
+	GridSizeInput->layer.frame = Frame(Position{ 130, 75 }, Size{ 140, 20 });
+	GridSizeInput->layer.color = Color(58, 58, 59, 1.0f);
+	GridSizeInput->TextColor = Color::white;
+	GridSizeInput->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	GridSizeInput->TextProperties.FontSize = 14;
+	GridSizeInput->Placeholder = "Enter Value";
+	GridSizeInput->AddEventHandler<EventType::KeyPressed>([GridSizeInput](Event& e, UIView* sender) -> bool {
+		try {
+			uint32_t value = std::stoi(GridSizeInput->Text);
+			utils::EditorSettings::GridSize = value;
+		}
+		catch (...) {}
+
+		return EVENT_HANDLED;
+	});
+	m_EditorSettingsView->AddSubview(GridSizeInput);
 
 #pragma endregion
 

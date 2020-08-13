@@ -2,6 +2,7 @@
 #include <core/Core.h>
 #include "IDrawable.h"
 #include "Layer.h"
+#include "UICursor.h"
 #include <events/IResponder.h>
 
 namespace mc
@@ -46,6 +47,9 @@ namespace mc
 
 		/// Pointer to the source window, initially a nullptr.
 		UIWindow* srcwindow = nullptr;
+
+		/// Cursor icon to be used when hovered over the view.
+		CursorType cursor = CursorType::Arrow;
 
 		/// Adds a child subview.
 		/// Children subviews have position relative to their parent view's position.
