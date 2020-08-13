@@ -23,3 +23,6 @@ target_link_libraries(WindowEventsTest PUBLIC Monochrome)
 
 add_executable(PerformanceTest performance_test.cpp)
 target_link_libraries(PerformanceTest PUBLIC Monochrome)
+
+add_executable(MenuBarTest menu_bar_test.cpp)
+target_link_libraries(MenuBarTest PUBLIC Monochrome)

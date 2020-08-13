@@ -615,6 +615,47 @@ void MonochromeEditor::InitEditorUI()
 
 #pragma endregion
 
+#pragma region Project Loading Area 
+
+	Ref<UIButton> SelectFileButton = MakeRef<UIButton>();
+	SelectFileButton->layer.frame = Frame({ 80, 850 }, { 260, 36 });
+	SelectFileButton->Label->Text = "Load Project";
+	SelectFileButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event &evt, UIView *sender) -> bool
+		{
+		UIFileDialogue fd;
+
+		// Set Filter, only mc Files are valid for now
+		UIFileDialogueFilter filter;
+		filter.AddFilter(L"FileType", L"*.mc");
+		fd.SetFilter(filter);
+
+		// Load the file and then load the project, if file is loaded 
+		auto path = fd.ChooseFileDialogue();
+		if (!path.empty())
+			{
+			// File is valid, load the project
+			utils::MCLayout layout = utils::ProjectGenerator::LoadMCProject(path);
+			
+			// Set the project window properties
+			m_ProjectWindowWidth = layout.windowSettings.width;
+			m_ProjectWindowWidthTextbox->Text = std::to_string(layout.windowSettings.width);
+
+			m_ProjectWindowHeight = layout.windowSettings.height;
+			m_ProjectWindowHeightTextbox->Text = std::to_string(layout.windowSettings.height);
+
+			m_ProjectWindowTitleTextbox->Text = std::string(layout.windowSettings.title);
+			//m_ProjectWindowColorTextbox->Color layout.windowSettings.color;
+
+			// Set the UI Elements
+
+			}
+
+		return EVENT_HANDLED;
+		});
+	m_EditorWindow->AddView(SelectFileButton);
+
+#pragma endregion
+
 }
 
 void MonochromeEditor::OpenElementProperties(Ref<UIView> TargetElement)

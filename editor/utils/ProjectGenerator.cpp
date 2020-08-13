@@ -1,6 +1,9 @@
 #include "ProjectGenerator.h"
 #include <fstream>
 
+// TEMP
+#include <iostream>
+
 #include "../rapidxml/rapidxml.hpp"
 #include "../rapidxml/rapidxml_print.hpp"
 using namespace rapidxml;
@@ -434,7 +437,108 @@ namespace utils
 
     void ReadWindowSettingsNode(xml_node<>* node, MCLayout& layout)
     {
+        // node is equal to mcwindow
 
+        // Read values from xml document
+        const char* windowWidth = node->first_node("width")->value();
+        const char* windowHeight = node->first_node("height")->value();
+        const char* windowTitle = node->first_node("title")->value();
+        const char* colorR = node->first_node("color")->first_attribute("r")->value();
+        const char* colorG = node->first_node("color")->first_attribute("g")->value();
+        const char* colorB = node->first_node("color")->first_attribute("b")->value();
+        const char* colorA = node->first_node("color")->first_attribute("a")->value();
+
+        // Convert color values into one string
+        std::string col = ConnectColorStrings(colorR, colorG, colorB, colorA);
+
+        // Save the values in the layout
+        layout.windowSettings.width = utils::StringToUInt(windowWidth);
+        layout.windowSettings.height = utils::StringToUInt(windowWidth);
+        layout.windowSettings.title = windowTitle;
+        layout.windowSettings.color = utils::StringToColor(col);
+    }
+
+    void ReadProjectSettingsNode(xml_node<>* node, MCLayout& layout)
+    {
+        // node is equal to uiview
+        if (node == 0)
+            return;
+
+        // Read XML Document
+        const char* nodeType = node->first_attribute("type")->value();
+        const char* nodeVisibity = node->first_attribute("visibility")->value();
+        const char* nodeName = node->first_attribute("name")->value();
+
+        xml_node<>* frameNode = node->first_node("layer")->first_node("frame");
+        const char* frameWidth = frameNode->first_node("size")->first_node("width")->value();
+        const char* frameHeight = frameNode->first_node("size")->first_node("height")->value();
+        const char* framePosX = frameNode->first_node("position")->first_node("x")->value();
+        const char* framePosY = frameNode->first_node("position")->first_node("y")->value();
+        
+        xml_node<>* frameColorNode = node->first_node("layer")->first_node("color");
+        const char* frameColorR = frameColorNode->first_attribute("r")->value();
+        const char* frameColorG = frameColorNode->first_attribute("g")->value();
+        const char* frameColorB = frameColorNode->first_attribute("b")->value();
+        const char* frameColorA = frameColorNode->first_attribute("a")->value();
+        std::string frameColor = ConnectColorStrings(frameColorR, frameColorG, frameColorB, frameColorA);
+
+        const char* zIndex = node->first_node("z_index")->value();
+        const char* visible = node->first_node("visible")->value();
+        const char* cornerRadius = node->first_node("corner_radius")->value();
+        const char* text = node->first_node("text")->value();
+        const char* use_widestring = node->first_node("use_widestring")->value();
+
+        const char* colorR = node->first_node("color")->first_attribute("r")->value();
+        const char* colorG = node->first_node("color")->first_attribute("g")->value();
+        const char* colorB = node->first_node("color")->first_attribute("b")->value();
+        const char* colorA = node->first_node("color")->first_attribute("a")->value();
+        std::string color = ConnectColorStrings(colorR, colorG, colorB, colorA);
+
+        xml_node<>* textPropertiesNode = node->first_node("text_properties");
+        const char* textPropertiesFont = textPropertiesNode->first_node("font")->value();
+        const char* textPropertiesFontSize = textPropertiesNode->first_node("font_size")->value();
+        const char* textPropertiesAlignment = textPropertiesNode->first_node("alignment")->value();
+        const char* textPropertiesStyle = textPropertiesNode->first_node("style")->value();
+        const char* textPropertiesWrapping = textPropertiesNode->first_node("wrapping")->value();
+
+        // Fill in data
+        if (nodeType == "UILabel")
+            {
+            Ref<UILabel> label;
+            label->layer.color = StringToColor(frameColor);
+            label->layer.frame.position.x = StringToFloat(framePosX);
+            label->layer.frame.position.y = StringToFloat(framePosY);
+            label->layer.frame.size.width = StringToFloat(frameWidth);
+            label->layer.frame.size.height = StringToFloat(frameHeight);
+
+            label->Properties.Font = textPropertiesFont;
+            label->Properties.FontSize = StringToUInt(textPropertiesFontSize);
+            label->Properties.Allignment = StringToTextPropertiesAlignment(textPropertiesAlignment);
+            label->Properties.Style = StringToTextPropertiesStyle(textPropertiesStyle);
+            label->Properties.Wrapping = StringToTextPropertiesWrapping(textPropertiesWrapping);
+
+            label->Text = text;
+            label->color = StringToColor(color);
+            label->Visible = StringToBool(visible);
+            label->UseWidestringText = StringToBool(use_widestring);
+            label->CornerRadius = StringToFloat(cornerRadius);
+            label->SetZIndex(StringToUInt(zIndex));
+            
+            layout.uiViews.push_back(label);
+            }
+        else if (nodeType == "UIButton")
+            {
+            Ref<UIButton> button;
+            button->layer.color = StringToColor(frameColor);
+            button->layer.frame.position.x = StringToFloat(framePosX);
+            button->layer.frame.position.y = StringToFloat(framePosY);
+            button->layer.frame.size.width = StringToFloat(frameWidth);
+            button->layer.frame.size.height = StringToFloat(frameHeight);
+
+            layout.uiViews.push_back(button);
+            }
+
+        ReadProjectSettingsNode(node->next_sibling(), layout);
     }
 
     MCLayout ProjectGenerator::LoadMCProject(const std::string& path)
@@ -449,7 +553,8 @@ namespace utils
         document->parse<0>(&buffer[0]);
         
         xml_node<>* root_node = document->first_node();
-        ReadWindowSettingsNode(root_node, layout);
+        ReadWindowSettingsNode(root_node->first_node("mcwindow"), layout);
+        ReadProjectSettingsNode(root_node->first_node("uiview"), layout);
 
         file.close();
         return layout;

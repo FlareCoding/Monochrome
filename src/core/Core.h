@@ -6,6 +6,8 @@
 
 namespace mc
 {
+	using Byte = unsigned char;
+
 	template <typename T>
 	using Ref = std::shared_ptr<T>;
 
