@@ -12,6 +12,7 @@ set(
     src/ui/UIElements.h
     src/ui/UIView.h
     src/ui/UIFileDialogue.h
+    src/ui/UICursor.h
 
     PARENT_SCOPE
 )
@@ -22,6 +23,7 @@ set(
     ${MC_UIELEMENTS_SOURCES}
     src/ui/UIView.cpp
     src/ui/UIFileDialogue.cpp
+    src/ui/UICursor.cpp
 
     PARENT_SCOPE
 )

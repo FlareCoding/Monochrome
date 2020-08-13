@@ -137,6 +137,12 @@ namespace mc
 				view->srcwindow->FocusView(view);
 		}
 
+		// If the mouse was hovered over successfully, change the cursor to the view's specified cursor.
+		if (event.GetEventType() == EventType::MouseHoverOn && ViewIsTopMost)
+			UICursor::SetCursor(view->cursor);
+		else if (event.GetEventType() == EventType::MouseHoverOff)
+			UICursor::SetCursor(CursorType::Arrow);
+
 		return true;
 	}
 
