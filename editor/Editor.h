@@ -50,12 +50,8 @@ private:
 	void OpenElementProperties(Ref<UIView> TargetElement);
 
 private:
-	// Window Options Tab Panel
-	Ref<UIView> m_WindowOptionsView;
-
-private:
-	// Project Settings Tab Panel
-	Ref<UIView> m_ProjectSettingsView;
+	// Editor Settings Tab Panel
+	Ref<UIView> m_EditorSettingsView;
 
 private:
 	// Project Window Settings

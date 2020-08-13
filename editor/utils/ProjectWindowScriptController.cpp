@@ -45,7 +45,26 @@ void ProjectWindowScriptController::DragView()
 	{
 		if (m_TargetView->srcwindow)
 		{
-			m_TargetView->layer.frame.position = m_TargetView->srcwindow->GetMouseCursorPos() - m_ViewClickedLocationOffset;
+			auto pos = m_TargetView->srcwindow->GetMouseCursorPos() - m_ViewClickedLocationOffset;
+
+			if (utils::EditorSettings::GridSnapping)
+			{
+				auto grid_size = utils::EditorSettings::GridSize;
+				Size offset = { (float)((uint32_t)pos.x % grid_size),  (float)((uint32_t)pos.y % grid_size) };
+
+				if (offset.x > (grid_size / 2))
+					pos.x += grid_size - offset.x;
+				else
+					pos.x -= offset.x;
+
+				if (offset.y > (grid_size / 2))
+					pos.y += grid_size - offset.y;
+				else
+					pos.y -= offset.y;
+			}
+
+			m_TargetView->layer.frame.position = pos;
+			
 			UIView* parent = m_TargetView->parent;
 			while (parent)
 			{

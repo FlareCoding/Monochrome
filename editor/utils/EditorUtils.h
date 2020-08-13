@@ -21,4 +21,11 @@ namespace utils
 	{
 		return dynamic_cast<T*>(view);
 	}
+
+	class EditorSettings
+	{
+	public:
+		static bool			GridSnapping;
+		static uint32_t		GridSize;
+	};
 };
