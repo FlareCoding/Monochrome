@@ -33,24 +33,46 @@ namespace utils
     void UIViewToXML(Ref<xml_document<>>& doc, xml_node<>*& root_node, Ref<UIView>& view, std::map<Ref<UIView>, ElementCodeProperties>& element_code_props);
     void AddWindowSettingsNode(Ref<xml_document<>>& doc, xml_node<>*& root_node, WindowSettings& window_settings);
 
-    void ProjectGenerator::GenerateProject(ProjectConfig& config)
+    void ProjectGenerator::GenerateProjectAndVisualStudioSolution(ProjectConfig& config)
     {
         // Create monochrome UI layout file
         CreateMCLayoutFile(config.location + "\\" + config.projectName + ".mc", config.uiViews, config.windowSettings, *config.elementCodeProperties);
 
-        // Arg1 --> Target Path
-        // Arg2 --> Project Name
-        // Arg3 --> Class Name
-        // Arg4 --> Monochrome Source Path
-        // Arg5 --> Monochrome Library Debug Path
-        // Arg6 --> Monochrome Library Release Path
+        // Arg1 --> Should start CMake process
+        // Arg2 --> Target Path
+        // Arg3 --> Project Name
+        // Arg4 --> Class Name
+        // Arg5 --> Monochrome Source Path
+        // Arg6 --> Monochrome Library Debug Path
+        // Arg7 --> Monochrome Library Release Path
 
-        std::string cmd = std::string("python project_source_generator.py " +
+        std::string cmd = std::string("python project_source_generator.py 1 " +
             std::string("\"") + config.location + "\"" + " \"" + config.projectName + "\" \"" + config.uiClassName + "\" " +
             "\"" + config.monochromeSourcePath + "\" \"" + config.monochromeLibraryDebugPath + "\" \"" + config.monochromeLibraryReleasePath + "\""
         );
 
         std::system(cmd.c_str());
+    }
+
+    void ProjectGenerator::GenerateProjectSourceFiles(ProjectConfig& config)
+    {
+        // Create monochrome UI layout file
+        CreateMCLayoutFile(config.location + "\\" + config.projectName + ".mc", config.uiViews, config.windowSettings, *config.elementCodeProperties);
+
+        // Arg1 --> Should start CMake process
+        // Arg2 --> Target Path
+        // Arg3 --> Project Name
+        // Arg4 --> Class Name
+        // Arg5 --> Monochrome Source Path
+        // Arg6 --> Monochrome Library Debug Path
+        // Arg7 --> Monochrome Library Release Path
+
+        std::string cmd = std::string("python project_source_generator.py 0 " +
+            std::string("\"") + config.location + "\"" + " \"" + config.projectName + "\" \"" + config.uiClassName + "\" " +
+            "\"" + config.monochromeSourcePath + "\" \"" + config.monochromeLibraryDebugPath + "\" \"" + config.monochromeLibraryReleasePath + "\""
+        );
+
+        WinExec(cmd.c_str(), SW_HIDE);
     }
 
     void ProjectGenerator::CreateMCLayoutFile(std::string& path, std::vector<Ref<UIView>>& views, WindowSettings& window_settings, std::map<Ref<UIView>, ElementCodeProperties>& element_code_props)

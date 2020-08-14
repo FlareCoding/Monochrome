@@ -27,5 +27,8 @@ namespace utils
 	public:
 		static bool			GridSnapping;
 		static uint32_t		GridSize;
+
+		static bool			ProjectAutoSaving;
+		static uint32_t		ProjectAutoSavingInterval;
 	};
 };

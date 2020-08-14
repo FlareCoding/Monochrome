@@ -83,7 +83,8 @@ private:
 	Ref<UITextbox> m_ProjectPathTextbox;
 	Ref<UITextbox> m_UIClassNameTextbox;
 	Ref<UIButton> m_SelectProjectPathButton;
-	Ref<UIButton> m_GenerateProjectButton;
+	Ref<UIButton> m_GenerateSourceAndVSSolution;
+	Ref<UIButton> m_GenerateProjectSourceFiles;
 
 	// Monochrome Source Path
 	Ref<UITextbox> m_MonochromeSourcePathTextbox;
@@ -97,5 +98,5 @@ private:
 	Ref<UITextbox> m_MonochromeLibRelPathTextbox;
 	Ref<UIButton> m_SelectMonochromeLibRelPathButton;
 
-	void GenerateProjectSolution();
+	void GenerateProjectSolution(bool run_cmake = false);
 };

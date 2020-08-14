@@ -327,12 +327,14 @@ void MonochromeEditor::InitEditorUI()
 	m_EditorSettingsView->AddSubview(GridSizeLabel);
 
 	auto GridSizeInput = MakeRef<UITextbox>();
-	GridSizeInput->layer.frame = Frame(Position{ 130, 75 }, Size{ 140, 20 });
+	GridSizeInput->layer.frame = Frame(Position{ 130, 75 }, Size{ 100, 20 });
 	GridSizeInput->layer.color = Color(58, 58, 59, 1.0f);
 	GridSizeInput->TextColor = Color::white;
 	GridSizeInput->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
 	GridSizeInput->TextProperties.FontSize = 14;
 	GridSizeInput->Placeholder = "Enter Value";
+	GridSizeInput->Text = "10";
+	utils::EditorSettings::GridSize = 10;
 	GridSizeInput->AddEventHandler<EventType::KeyPressed>([GridSizeInput](Event& e, UIView* sender) -> bool {
 		try {
 			uint32_t value = std::stoi(GridSizeInput->Text);
@@ -343,6 +345,68 @@ void MonochromeEditor::InitEditorUI()
 		return EVENT_HANDLED;
 	});
 	m_EditorSettingsView->AddSubview(GridSizeInput);
+
+	// Auto-Saving
+	auto AutoSavingCheckbox = MakeRef<UICheckbox>();
+	AutoSavingCheckbox->layer.frame = Frame(Position{ 415, 40 }, Size{ 280, 30 });
+	AutoSavingCheckbox->Label->Text = "Project Auto-Saving";
+	AutoSavingCheckbox->Label->Properties.FontSize = 14;
+	AutoSavingCheckbox->BoxSize = 16;
+	AutoSavingCheckbox->layer.color = Color(88, 88, 89, 1);
+	AutoSavingCheckbox->CheckedBoxColor = Color(108, 108, 109, 1);
+	AutoSavingCheckbox->CheckmarkColor = Color::white;
+	AutoSavingCheckbox->AddValueChangedEventHandler([this, AutoSavingCheckbox](bool checked, UICheckbox* sender) {
+		std::thread autosaver_thread([this, AutoSavingCheckbox]() {
+			std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+			while (AutoSavingCheckbox->Checked)
+			{
+				std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+				if (std::chrono::duration_cast<std::chrono::seconds>(now - begin).count() >= utils::EditorSettings::ProjectAutoSavingInterval)
+				{
+					if (std::filesystem::is_directory(m_ProjectPathTextbox->Text) &&
+						!m_UIClassNameTextbox->Text.empty() &&
+						!m_ProjectNameTextbox->Text.empty() &&
+						!m_ProjectPathTextbox->Text.empty())
+					{
+						GenerateProjectSolution(false);
+					}
+					begin = now;
+				}
+
+				Sleep(200);
+			}
+		});
+		autosaver_thread.detach();
+	});
+	m_EditorSettingsView->AddSubview(AutoSavingCheckbox);
+
+	// Auto-Saving Interval
+	auto AutoSavingIntervalLabel = MakeRef<UILabel>(Frame(Position{ 380, 70 }, Size{ 180, 30 }));
+	AutoSavingIntervalLabel->Text = "Auto-Saving Interval (sec.): ";
+	AutoSavingIntervalLabel->Properties.FontSize = 14;
+	AutoSavingIntervalLabel->Properties.Allignment = TextAlignment::LEADING;
+	AutoSavingIntervalLabel->color = Color::white;
+	m_EditorSettingsView->AddSubview(AutoSavingIntervalLabel);
+
+	auto AutoSavingIntervalInput = MakeRef<UITextbox>();
+	AutoSavingIntervalInput->layer.frame = Frame(Position{ 560, 75 }, Size{ 60, 20 });
+	AutoSavingIntervalInput->layer.color = Color(58, 58, 59, 1.0f);
+	AutoSavingIntervalInput->TextColor = Color::white;
+	AutoSavingIntervalInput->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	AutoSavingIntervalInput->TextProperties.FontSize = 14;
+	AutoSavingIntervalInput->Placeholder = "10";
+	AutoSavingIntervalInput->Text = "10";
+	utils::EditorSettings::ProjectAutoSavingInterval = 10;
+	AutoSavingIntervalInput->AddEventHandler<EventType::KeyPressed>([AutoSavingIntervalInput](Event& e, UIView* sender) -> bool {
+		try {
+			uint32_t value = std::stoi(AutoSavingIntervalInput->Text);
+			utils::EditorSettings::ProjectAutoSavingInterval = value;
+		}
+		catch (...) {}
+
+		return EVENT_HANDLED;
+	});
+	m_EditorSettingsView->AddSubview(AutoSavingIntervalInput);
 
 #pragma endregion
 
@@ -527,19 +591,33 @@ void MonochromeEditor::InitEditorUI()
 	m_UIClassNameTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
 	m_EditorWindow->AddView(m_UIClassNameTextbox);
 
-	m_GenerateProjectButton = MakeRef<UIButton>(Frame(Position{ 120, 770 }, Size{ 200, 30 }));
-	m_GenerateProjectButton->Label->Text = "Generate Project";
-	m_GenerateProjectButton->Label->color = Color::white;
-	m_GenerateProjectButton->Label->Properties.FontSize = 12;
-	m_GenerateProjectButton->layer.color = Color(49, 49, 50, 1.0f);
-	m_GenerateProjectButton->CornerRadius = 4;
-	m_GenerateProjectButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
+	m_GenerateSourceAndVSSolution = MakeRef<UIButton>(Frame(Position{ 120, 770 }, Size{ 200, 34 }));
+	m_GenerateSourceAndVSSolution->Label->Text = "Generate Source and VS Project";
+	m_GenerateSourceAndVSSolution->Label->color = Color::white;
+	m_GenerateSourceAndVSSolution->Label->Properties.FontSize = 12;
+	m_GenerateSourceAndVSSolution->layer.color = Color(49, 49, 50, 1.0f);
+	m_GenerateSourceAndVSSolution->CornerRadius = 4;
+	m_GenerateSourceAndVSSolution->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
+		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
+			GenerateProjectSolution(true);
+
+		return EVENT_HANDLED;
+	});
+	m_EditorWindow->AddView(m_GenerateSourceAndVSSolution);
+
+	m_GenerateProjectSourceFiles = MakeRef<UIButton>(Frame(Position{ 120, 816 }, Size{ 200, 34 }));
+	m_GenerateProjectSourceFiles->Label->Text = "Generate Source Files";
+	m_GenerateProjectSourceFiles->Label->color = Color::white;
+	m_GenerateProjectSourceFiles->Label->Properties.FontSize = 12;
+	m_GenerateProjectSourceFiles->layer.color = Color(49, 49, 50, 1.0f);
+	m_GenerateProjectSourceFiles->CornerRadius = 4;
+	m_GenerateProjectSourceFiles->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 			GenerateProjectSolution();
 
 		return EVENT_HANDLED;
-	});
-	m_EditorWindow->AddView(m_GenerateProjectButton);
+		});
+	m_EditorWindow->AddView(m_GenerateProjectSourceFiles);
 
 	m_MonochromeSourcePathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 370 }, Size{ 240, 20 }));
 	m_MonochromeSourcePathTextbox->Placeholder = "Monochrome Source Path";
@@ -775,7 +853,7 @@ void MonochromeEditor::AddElementToProjectWindow()
 	m_ProjectWindow->ForceUpdate(true);
 }
 
-void MonochromeEditor::GenerateProjectSolution()
+void MonochromeEditor::GenerateProjectSolution(bool run_cmake)
 {
 	// Checking for a valid Project Name
 	if (m_ProjectNameTextbox->Text.empty()) { m_ProjectNameTextbox->TextColor = Color(155, 28, 29, 1.0f); return; }
@@ -802,14 +880,15 @@ void MonochromeEditor::GenerateProjectSolution()
 
 	if (std::filesystem::is_directory(m_ProjectPathTextbox->Text))
 	{
-		if (AllocConsole()) {
+		if (run_cmake)
+		{
+			if (AllocConsole()) {
 #pragma warning ( suppress: 4996 )
-			freopen("CONOUT$", "wt", stdout);
-			SetConsoleTitle(L"Building Monochrome Project");
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
+				freopen("CONOUT$", "wt", stdout);
+				SetConsoleTitle(L"Building Monochrome Project");
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
+			}
 		}
-
-		m_GenerateProjectButton->Visible = false;
 
 		utils::WindowSettings ws;
 		ws.color = utils::StringToColor(m_ProjectWindowColorTextbox->Text);
@@ -830,12 +909,17 @@ void MonochromeEditor::GenerateProjectSolution()
 
 		config.elementCodeProperties = m_VariableCodeProperties.GetRegisteredElementCodeProperties();
 
-		utils::ProjectGenerator::GenerateProject(config);
+		if (run_cmake)
+			utils::ProjectGenerator::GenerateProjectAndVisualStudioSolution(config);
+		else
+			utils::ProjectGenerator::GenerateProjectSourceFiles(config);
 
-		HWND console = GetConsoleWindow();
-		ShowWindow(console, SW_HIDE);
-		FreeConsole();
-		m_GenerateProjectButton->Visible = true;
+		if (run_cmake)
+		{
+			HWND console = GetConsoleWindow();
+			ShowWindow(console, SW_HIDE);
+			FreeConsole();
+		}
 	}
 	else
 	{

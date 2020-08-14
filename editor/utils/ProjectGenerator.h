@@ -35,7 +35,8 @@ namespace utils
     class ProjectGenerator
     {
     public:
-        static void GenerateProject(ProjectConfig& config);
+        static void GenerateProjectAndVisualStudioSolution(ProjectConfig& config);
+        static void GenerateProjectSourceFiles(ProjectConfig& config);
         static MCLayout LoadMCProject(const std::string& path);
 
     private:
