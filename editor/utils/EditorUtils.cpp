@@ -164,6 +164,9 @@ namespace utils
 	// ============================================================================== //
 	// ============================================================================== //
 
-	bool		EditorSettings::GridSnapping = false;
-	uint32_t	EditorSettings::GridSize = 10;
+	bool		EditorSettings::GridSnapping	= false;
+	uint32_t	EditorSettings::GridSize		= 10;
+
+	bool		EditorSettings::ProjectAutoSaving			= false;
+	uint32_t	EditorSettings::ProjectAutoSavingInterval	= 10;
 }
