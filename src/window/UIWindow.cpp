@@ -571,6 +571,11 @@ namespace mc
 			m_SceneManager.DispatchEvent(e);
 			break;
 		}
+		case WM_SETCURSOR:
+		{
+			UICursor::ActivateCursor(UICursor::GetActiveCursor());
+			break;
+		}
 		}
 
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);

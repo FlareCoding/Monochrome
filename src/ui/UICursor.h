@@ -24,7 +24,13 @@ namespace mc
     class UICursor
     {
     public:
-        /// Sets the current cursor icon.
+        /// Changes the current cursor icon.
+        static void ActivateCursor(CursorType type);
+
+        /// Sets the active cursor type that gets applied on the next WM_SETCURSOR call.
         static void SetCursor(CursorType type);
+
+        /// Selects the latest activated cursor type.
+        static CursorType GetActiveCursor();
     };
 }

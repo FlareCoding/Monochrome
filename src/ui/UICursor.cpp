@@ -27,9 +27,21 @@ namespace mc
 		{ CursorType::Wait,			IDC_WAIT },
 	};
 
-	void UICursor::SetCursor(CursorType type)
+	static CursorType s_ActiveCursorType = CursorType::Arrow;
+
+	void UICursor::ActivateCursor(CursorType type)
 	{
 		if (type != CursorType::Unknown)
 			_set_cursor(CursorNameMappings[type]);
+	}
+
+	void UICursor::SetCursor(CursorType type)
+	{
+		s_ActiveCursorType = type;
+	}
+
+	CursorType UICursor::GetActiveCursor()
+	{
+		return s_ActiveCursorType;
 	}
 }

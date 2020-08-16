@@ -41,11 +41,89 @@ void ProjectWindowScriptController::FindInnerMostView(Ref<UIView> view, Ref<UIVi
 
 void ProjectWindowScriptController::DragView()
 {
+	Position PreviousMousePosition = 
+		m_TargetView->srcwindow ? m_TargetView->srcwindow->GetMouseCursorPos() : Position { 0, 0 };
+
 	while (!m_MouseButtonReleasedFromView)
 	{
 		if (m_TargetView->srcwindow)
 		{
-			auto pos = m_TargetView->srcwindow->GetMouseCursorPos() - m_ViewClickedLocationOffset;
+			auto cursor_pos = m_TargetView->srcwindow->GetMouseCursorPos();
+			auto pos = cursor_pos - m_ViewClickedLocationOffset;
+
+			Size MouseMovedDistance = cursor_pos - PreviousMousePosition;
+			PreviousMousePosition = cursor_pos;
+
+			const auto CheckForResizingConditions = [this, MouseMovedDistance]() -> bool {
+				static float VerticalBorderWidth = 10.0f;
+				static float HorizontalBorderWidth = 20.0f;
+
+				Position pt = m_ViewClickedLocationOffset;
+
+				/*top-left, top and top-right*/
+				if (pt.y < VerticalBorderWidth)
+				{
+					if (pt.x < HorizontalBorderWidth)
+					{
+						// Top Left
+						m_TargetView->layer.frame.position += MouseMovedDistance;
+						m_TargetView->layer.frame.size -= MouseMovedDistance;
+						return true;
+					}
+					else if (pt.x > (m_TargetView->layer.frame.size.width - HorizontalBorderWidth))
+					{
+						// Top Right
+						m_TargetView->layer.frame.size += MouseMovedDistance;
+						return true;
+					}
+					
+					// Top
+					m_TargetView->layer.frame.position.y += MouseMovedDistance.y;
+					m_TargetView->layer.frame.size.y -= MouseMovedDistance.y;
+					return true;
+				}
+				/*bottom-left, bottom and bottom-right */
+				if (pt.y > (m_TargetView->layer.frame.size.height - VerticalBorderWidth))
+				{
+					if (pt.x < HorizontalBorderWidth)
+					{
+						// Bottom Left
+						m_TargetView->layer.frame.position.x += MouseMovedDistance.x;
+						m_TargetView->layer.frame.size.x += MouseMovedDistance.x * 2.0f;
+						m_TargetView->layer.frame.size.y += MouseMovedDistance.y * 2.0f;
+						return true;
+					}
+					else if (pt.x > (m_TargetView->layer.frame.size.width - HorizontalBorderWidth))
+					{
+						// Bottom Right
+						m_TargetView->layer.frame.size += MouseMovedDistance;
+						return true;
+					}
+
+					// Bottom
+					m_TargetView->layer.frame.size.y += MouseMovedDistance.y;
+					return true;
+				}
+				if (pt.x < HorizontalBorderWidth)
+				{
+					// Left
+					m_TargetView->layer.frame.position.x += MouseMovedDistance.x;
+					m_TargetView->layer.frame.size.x -= MouseMovedDistance.x;
+					return true;
+				}
+				if (pt.x > (m_TargetView->layer.frame.size.width - HorizontalBorderWidth))
+				{
+					// Right
+					m_TargetView->layer.frame.size.x += MouseMovedDistance.x;
+					return true;
+				}
+
+				return false;
+			};
+
+			bool resizing = CheckForResizingConditions();
+			if (resizing)
+				continue;
 
 			if (utils::EditorSettings::GridSnapping)
 			{
@@ -111,8 +189,14 @@ bool ProjectWindowScriptController::IsViewEmbeddable(UIView* view)
 
 bool ProjectWindowScriptController::CheckIfViewNeedsEmbedding(Ref<UIView>& view_being_checked, std::vector<Ref<UIView>>& elements, Ref<UIView>& embeddable)
 {
+	if (!view_being_checked->srcwindow)
+		return false;
+
 	for (auto& view : elements)
 	{
+		if (!view->srcwindow)
+			continue;
+
 		if (view.get() == view_being_checked.get()) continue;
 
 		Frame frame = view->layer.frame;
