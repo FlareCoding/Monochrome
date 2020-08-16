@@ -8,7 +8,7 @@ namespace utils
     {
         uint32_t width = 0;
         uint32_t height = 0;
-        const char* title = 0;
+        std::string title;
         Color color = Color::gray;
     };
 
