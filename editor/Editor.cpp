@@ -804,6 +804,7 @@ void MonochromeEditor::AddElementToProjectWindow()
 
 	Ref<UIView> TargetElement = m_ElementPreviewArea->subviews.at(0);
 	TargetElement->parent = nullptr;
+	TargetElement->SetZIndex(1);
 
 	// Setting an event handler so that elements can be drageged with a mouse inside the project window
 	TargetElement->AddEventHandler<EventType::MouseButtonPressed>([this](Event& e, UIView* sender) -> bool {
@@ -841,6 +842,68 @@ void MonochromeEditor::AddElementToProjectWindow()
 				m_EditorWindow->ForceUpdate(true);
 			}
 		}
+
+		return EVENT_HANDLED;
+	});
+
+	TargetElement->AddEventHandler<EventType::MouseMoved>([this](Event& e, UIView* sender) -> bool {
+		if (!sender)
+			return EVENT_HANDLED;
+
+		auto pt = sender->srcwindow->GetMouseCursorPos() - sender->GetAbsolutePosition();
+		const auto CheckForResizingConditions = [sender, pt]() -> bool {
+			static float VerticalBorderWidth = 10.0f;
+			static float HorizontalBorderWidth = 20.0f;
+
+			/*top-left, top and top-right*/
+			if (pt.y < VerticalBorderWidth)
+			{
+				if (pt.x < HorizontalBorderWidth)
+				{
+					UICursor::SetCursor(CursorType::SizeNWE);
+					return true;
+				}
+				else if (pt.x > (sender->layer.frame.size.width - HorizontalBorderWidth))
+				{
+					UICursor::SetCursor(CursorType::SizeNESW);
+					return true;
+				}
+				UICursor::SetCursor(CursorType::SizeNS);
+				return true;
+			}
+			/*bottom-left, bottom and bottom-right */
+			if (pt.y > (sender->layer.frame.size.height - VerticalBorderWidth))
+			{
+				if (pt.x < HorizontalBorderWidth)
+				{
+					UICursor::SetCursor(CursorType::SizeNESW);
+					return true;
+				}
+				else if (pt.x > (sender->layer.frame.size.width - HorizontalBorderWidth))
+				{
+					UICursor::SetCursor(CursorType::SizeNWE);
+					return true;
+				}
+
+				UICursor::SetCursor(CursorType::SizeNS);
+				return true;
+			}
+			if (pt.x < HorizontalBorderWidth)
+			{
+				UICursor::SetCursor(CursorType::SizeWE);
+				return true;
+			}
+			if (pt.x > (sender->layer.frame.size.width - HorizontalBorderWidth))
+			{
+				UICursor::SetCursor(CursorType::SizeWE);
+				return true;
+			}
+
+			return false;
+		};
+
+		if (!CheckForResizingConditions())
+			UICursor::SetCursor(CursorType::Arrow);
 
 		return EVENT_HANDLED;
 	});
