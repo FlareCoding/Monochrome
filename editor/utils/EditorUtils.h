@@ -17,7 +17,7 @@ namespace utils
 	Color StringToColor(const std::string& str);
 	int32_t StringToInt(const std::string& str);
 	uint32_t StringToUInt(const std::string& str);
-	std::string ConnectColorStrings(const char* r, const char* g, const char* b, const char* a);
+	std::string ConnectColorStrings(const std::string& r, const std::string& g, const std::string& b, const std::string& a);
 	float StringToFloat(const std::string& str);
 	double StringToDouble(const std::string& str);
 	bool StringToBool(const std::string& str);

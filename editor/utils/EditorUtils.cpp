@@ -17,7 +17,7 @@ namespace utils
 		return s;
 	}
 
-	std::string ConnectColorStrings(const char* r, const char* g, const char* b, const char* a)
+	std::string ConnectColorStrings(const std::string& r, const std::string& g, const std::string& b, const std::string& a)
 	{
 		std::string s;
 		s.append(r);
@@ -85,10 +85,10 @@ namespace utils
 		int i = 0;
 
 		while (str[i] && (str[i] >= '0' && str[i] <= '9'))
-			{
+		{
 			num = num * 10 + (str[i] - '0');
 			++i;
-			}
+		}
 
 		return num;
 	}
@@ -105,11 +105,7 @@ namespace utils
 
 	bool StringToBool(const std::string& str)
 	{
-		int result = StringToInt(str);
-		if (result == 1)
-			return true;
-		else
-			return false;
+		return StringToInt(str);
 	}
 
 	TextAlignment StringToTextPropertiesAlignment(const std::string& str)
@@ -164,8 +160,8 @@ namespace utils
 	// ============================================================================== //
 	// ============================================================================== //
 
-	bool		EditorSettings::GridSnapping	= false;
-	uint32_t	EditorSettings::GridSize		= 10;
+	bool		EditorSettings::GridSnapping				= false;
+	uint32_t	EditorSettings::GridSize					= 10;
 
 	bool		EditorSettings::ProjectAutoSaving			= false;
 	uint32_t	EditorSettings::ProjectAutoSavingInterval	= 10;

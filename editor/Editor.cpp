@@ -751,11 +751,14 @@ void MonochromeEditor::InitEditorUI()
 			m_ProjectWindowHeight = layout.windowSettings.height;
 			m_ProjectWindowHeightTextbox->Text = std::to_string(layout.windowSettings.height);
 
-			m_ProjectWindowTitleTextbox->Text = std::string(layout.windowSettings.title);
-			//m_ProjectWindowColorTextbox->Color layout.windowSettings.color;
+			m_ProjectWindowTitleTextbox->Text = layout.windowSettings.title;
+
+			std::stringstream textBoxColor;
+			textBoxColor << layout.windowSettings.color.r << " " << layout.windowSettings.color.g << " " << layout.windowSettings.color.b << " " << layout.windowSettings.color.alpha;
+			m_ProjectWindowColorTextbox->Text = textBoxColor.str();
 
 			// Set the UI Elements
-
+			m_ProjectUIElements = layout.uiViews;
 			}
 
 		return EVENT_HANDLED;
