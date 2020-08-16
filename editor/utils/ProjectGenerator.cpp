@@ -1,9 +1,6 @@
 #include "ProjectGenerator.h"
 #include <fstream>
 
-// TEMP
-#include <iostream>
-
 #include "../rapidxml/rapidxml.hpp"
 #include "../rapidxml/rapidxml_print.hpp"
 using namespace rapidxml;

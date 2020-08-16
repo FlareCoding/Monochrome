@@ -725,6 +725,7 @@ void MonochromeEditor::InitEditorUI()
 
 #pragma region Project Loading Area 
 
+	// TEMP: This is going to move into the FileMenu once it exists
 	Ref<UIButton> SelectFileButton = MakeRef<UIButton>();
 	SelectFileButton->layer.frame = Frame({ 80, 850 }, { 260, 36 });
 	SelectFileButton->Label->Text = "Load Project";
