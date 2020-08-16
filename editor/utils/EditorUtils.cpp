@@ -156,6 +156,18 @@ namespace utils
 		return wrapping;
 	}
 
+	Shape StringToShape(const std::string& str)
+	{
+		Shape shape = Shape::Unknown;
+
+		if (str == "rectangle")
+			shape = Shape::Rectangle;
+		else if (str == "circle")
+			shape = Shape::Circle;
+
+		return shape;
+	}
+
 	// ============================================================================== //
 	// ============================================================================== //
 	// ============================================================================== //

@@ -24,6 +24,7 @@ namespace utils
 	TextAlignment StringToTextPropertiesAlignment(const std::string& str);
 	TextStyle StringToTextPropertiesStyle(const std::string& str);
 	WordWrapping StringToTextPropertiesWrapping(const std::string& str);
+	Shape StringToShape(const std::string& str);
 
 	template <typename T>
 	bool CheckType(UIView* view)

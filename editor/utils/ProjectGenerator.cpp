@@ -733,8 +733,63 @@ namespace utils
             }
 
         Ref<UISlider> slider = MakeRef<UISlider>();
+        xml_node<>* frameNode = node->first_node("layer")->first_node("frame");
+        xml_node<>* frameColorNode = node->first_node("layer")->first_node("color");
+
+        float sliderWidth = utils::StringToFloat(frameNode->first_node("size")->first_node("width")->value());
+        float sliderHeight = utils::StringToFloat(frameNode->first_node("size")->first_node("height")->value());
+        float sliderXPos = utils::StringToFloat(frameNode->first_node("position")->first_node("x")->value());
+        float sliderYPos = utils::StringToFloat(frameNode->first_node("position")->first_node("y")->value());
+
+        std::string frameColorR = frameColorNode->first_attribute("r")->value();
+        std::string frameColorG = frameColorNode->first_attribute("g")->value();
+        std::string frameColorB = frameColorNode->first_attribute("b")->value();
+        std::string frameColorA = frameColorNode->first_attribute("a")->value();
+        Color frameColor = utils::StringToColor(utils::ConnectColorStrings(frameColorR, frameColorG, frameColorB, frameColorA));
+
+        uint32_t zIndex = utils::StringToUInt(node->first_node("z_index")->value());
+        float cornerRadius = utils::StringToFloat(node->first_node("corner_radius")->value());
+        float maxValue = utils::StringToFloat(node->first_node("max_value")->value());
+        float minValue = utils::StringToFloat(node->first_node("min_value")->value());
+        float value = utils::StringToFloat(node->first_node("value")->value());
+        float intervals = utils::StringToFloat(node->first_node("intervals")->value());
+        float barHeight = utils::StringToFloat(node->first_node("sliderbar_height")->value());
+        bool visibleTickmarks = utils::StringToBool(node->first_node("visible_tickmarks")->value());
+        bool visible = utils::StringToBool(node->first_node("visible")->value());
+        Shape knobShape = utils::StringToShape(node->first_node("knob_shape")->value());
+
+        std::string knobColorR = node->first_node("knob_color")->first_attribute("r")->value();
+        std::string knobColorG = node->first_node("knob_color")->first_attribute("g")->value();
+        std::string knobColorB = node->first_node("knob_color")->first_attribute("b")->value();
+        std::string knobColorA = node->first_node("knob_color")->first_attribute("a")->value();
+        Color knobColor = utils::StringToColor(utils::ConnectColorStrings(knobColorR, knobColorG, knobColorB, knobColorA));
+
+        std::string tickmarksColorR = node->first_node("tickmarks_color")->first_attribute("r")->value();
+        std::string tickmarksColorG = node->first_node("tickmarks_color")->first_attribute("g")->value();
+        std::string tickmarksColorB = node->first_node("tickmarks_color")->first_attribute("b")->value();
+        std::string tickmarksColorA = node->first_node("tickmarks_color")->first_attribute("a")->value();
+        Color tickmarksColor = utils::StringToColor(utils::ConnectColorStrings(tickmarksColorR, tickmarksColorG, tickmarksColorB, tickmarksColorA));
+
+        slider->SetZIndex(zIndex);
+        slider->CornerRadius = cornerRadius;
+        slider->Intervals = intervals;
+        slider->MaxValue = maxValue;
+        slider->MinValue = minValue;
+        slider->Value = value;
+        slider->SliderBarHeight = barHeight;
+        slider->SliderKnobColor = knobColor;
+        slider->SliderKnobShape = knobShape;
+        slider->TickmarksColor = tickmarksColor;
+        slider->Visible = visible;
+        slider->VisibleTickmarks = visibleTickmarks;
+        slider->layer.color = frameColor;
+        slider->layer.frame.position.x = sliderXPos;
+        slider->layer.frame.position.y = sliderYPos;
+        slider->layer.frame.size.width = sliderWidth;
+        slider->layer.frame.size.height = sliderHeight;
 
         layout.uiViews.push_back(slider);
+        ReadUISliderNode(node->next_sibling("uiview"), layout);
     }
 
     void ReadUICheckboxNode(xml_node<>* node, MCLayout& layout)
@@ -753,14 +808,114 @@ namespace utils
         Ref<UICheckbox> checkbox = MakeRef<UICheckbox>();
         xml_node<>* frameNode = node->first_node("layer")->first_node("frame");
         xml_node<>* frameColorNode = node->first_node("layer")->first_node("color");
+        xml_node<>* labelNode = node->first_node("uiview");
+        xml_node<>* labelFrameNode = node->first_node("uiview")->first_node("layer")->first_node("frame");
+        xml_node<>* labelFrameColorNode = node->first_node("uiview")->first_node("layer")->first_node("color");
+        xml_node<>* labelTextPropsNode = node->first_node("uiview")->first_node("text_properties");
 
+        // Read checkbox Properties
+        float checkboxWidth = utils::StringToFloat(frameNode->first_node("size")->first_node("width")->value());
+        float checkboxHeight = utils::StringToFloat(frameNode->first_node("size")->first_node("height")->value());
+        float checkboxXPos = utils::StringToFloat(frameNode->first_node("position")->first_node("x")->value());
+        float checkboxYPos = utils::StringToFloat(frameNode->first_node("position")->first_node("y")->value());
 
+        std::string frameColorR = frameColorNode->first_attribute("r")->value();
+        std::string frameColorG = frameColorNode->first_attribute("g")->value();
+        std::string frameColorB = frameColorNode->first_attribute("b")->value();
+        std::string frameColorA = frameColorNode->first_attribute("a")->value();
+        Color frameColor = utils::StringToColor(utils::ConnectColorStrings(frameColorR, frameColorG, frameColorB, frameColorA));
+
+        uint32_t zIndex = utils::StringToUInt(node->first_node("z_index")->value());
+        bool visible = utils::StringToBool(node->first_node("visible")->value());
+        bool checked = utils::StringToBool(node->first_node("checked")->value());
+        float cornerRadius = utils::StringToFloat(node->first_node("corner_radius")->value());
+        float boxSize = utils::StringToFloat(node->first_node("box_size")->value());
+        float labelMarginSize = utils::StringToFloat(node->first_node("label_margins_size")->value());
+
+        std::string checkmarkColorR = node->first_node("checkmark_color")->first_attribute("r")->value();
+        std::string checkmarkColorG = node->first_node("checkmark_color")->first_attribute("g")->value();
+        std::string checkmarkColorB = node->first_node("checkmark_color")->first_attribute("b")->value();
+        std::string checkmarkColorA = node->first_node("checkmark_color")->first_attribute("a")->value();
+        Color checkmarkColor = utils::StringToColor(utils::ConnectColorStrings(checkmarkColorR, checkmarkColorG, checkmarkColorB, checkmarkColorA));
+
+        std::string checkedboxColorR = node->first_node("checkedbox_color")->first_attribute("r")->value();
+        std::string checkedboxColorG = node->first_node("checkedbox_color")->first_attribute("g")->value();
+        std::string checkedboxColorB = node->first_node("checkedbox_color")->first_attribute("b")->value();
+        std::string checkedboxColorA = node->first_node("checkedbox_color")->first_attribute("a")->value();
+        Color checkedboxColor = utils::StringToColor(utils::ConnectColorStrings(checkedboxColorR, checkedboxColorG, checkedboxColorB, checkedboxColorA));
+
+        // Read label Properties
+        float labelWidth = utils::StringToFloat(labelFrameNode->first_node("size")->first_node("width")->value());
+        float labelHeight = utils::StringToFloat(labelFrameNode->first_node("size")->first_node("height")->value());
+        float labelXPos = utils::StringToFloat(labelFrameNode->first_node("position")->first_node("x")->value());
+        float labelYPos = utils::StringToFloat(labelFrameNode->first_node("position")->first_node("y")->value());
+
+        std::string labelFrameColorR = labelFrameColorNode->first_attribute("r")->value();
+        std::string labelFrameColorG = labelFrameColorNode->first_attribute("g")->value();
+        std::string labelFrameColorB = labelFrameColorNode->first_attribute("b")->value();
+        std::string labelFrameColorA = labelFrameColorNode->first_attribute("a")->value();
+        Color labelFrameColor = utils::StringToColor(utils::ConnectColorStrings(labelFrameColorR, labelFrameColorG, labelFrameColorB, labelFrameColorA));
+
+        uint32_t labelZIndex = utils::StringToUInt(labelNode->first_node("z_index")->value());
+        float labelCornerRadius = utils::StringToFloat(labelNode->first_node("corner_radius")->value());
+        bool labelVisibility = utils::StringToBool(labelNode->first_node("visible")->value());
+        bool labelUseWideString = utils::StringToBool(labelNode->first_node("use_widestring")->value());
+        std::string labelText = labelNode->first_node("text")->value();
+
+        std::string labelColorR = labelNode->first_node("color")->first_attribute("r")->value();
+        std::string labelColorG = labelNode->first_node("color")->first_attribute("g")->value();
+        std::string labelColorB = labelNode->first_node("color")->first_attribute("b")->value();
+        std::string labelColorA = labelNode->first_node("color")->first_attribute("a")->value();
+        Color labelColor = utils::StringToColor(utils::ConnectColorStrings(labelColorR, labelColorG, labelColorB, labelColorA));
+
+        std::string labelFontName = labelTextPropsNode->first_node("font")->value();
+        uint32_t labelFontSize = utils::StringToUInt(labelTextPropsNode->first_node("font_size")->value());
+        TextAlignment labelAlignment = utils::StringToTextPropertiesAlignment(labelTextPropsNode->first_node("alignment")->value());
+        TextStyle labelStyle = utils::StringToTextPropertiesStyle(labelTextPropsNode->first_node("style")->value());
+        WordWrapping labelWrapping = utils::StringToTextPropertiesWrapping(labelTextPropsNode->first_node("wrapping")->value());
+
+        // Set checkbox Properties
+        checkbox->BoxSize = boxSize;
+        checkbox->Checked = checked;
+        checkbox->CheckedBoxColor = checkedboxColor;
+        checkbox->CheckmarkColor = checkmarkColor;
+        checkbox->CornerRadius = cornerRadius;
+        checkbox->LabelMargins = labelMarginSize;
+        checkbox->layer.color = frameColor;
+        checkbox->layer.frame.position.x = checkboxXPos;
+        checkbox->layer.frame.position.y = checkboxYPos;
+        checkbox->layer.frame.size.width = checkboxWidth;
+        checkbox->layer.frame.size.height = checkboxHeight;
+        checkbox->Visible = visible;
+        checkbox->SetZIndex(zIndex);
+
+        // Set label Properties
+        checkbox->Label->color = labelColor;
+        checkbox->Label->layer.color = labelFrameColor;
+        checkbox->Label->layer.frame.position.x = labelXPos;
+        checkbox->Label->layer.frame.position.y = labelYPos;
+        checkbox->Label->layer.frame.size.width = labelWidth;
+        checkbox->Label->layer.frame.size.height = labelHeight;
+        checkbox->Label->CornerRadius = labelCornerRadius;
+        checkbox->Label->UseWidestringText = labelUseWideString;
+        checkbox->Label->Visible = labelVisibility;
+        checkbox->Label->SetZIndex(labelZIndex);
+        checkbox->Label->Properties.Font = labelFontName;
+        checkbox->Label->Properties.FontSize = labelFontSize;
+        checkbox->Label->Properties.Allignment = labelAlignment;
+        checkbox->Label->Properties.Style = labelStyle;
+        checkbox->Label->Properties.Wrapping = labelWrapping;
+
+        if (labelUseWideString)
+            checkbox->Label->WidestringText = std::wstring(labelText.begin(), labelText.end());
+        else
+            checkbox->Label->Text = labelText;
 
         layout.uiViews.push_back(checkbox);
         ReadUICheckboxNode(node->next_sibling("uiview"), layout);
     }
 
-    void CheckAndResolveViewNodeType(const std::string &type, xml_node<>* node, MCLayout& layout)
+    void CheckAndResolveViewNodeType(const std::string& type, xml_node<>* node, MCLayout& layout)
     {
         if (type == "UIView")
             ReadUIViewNode(node, layout);
@@ -791,7 +946,7 @@ namespace utils
         ReadUILabelNode(root_node->first_node("uiview"), layout);
         ReadUIButtonNode(root_node->first_node("uiview"), layout);
         ReadUICheckboxNode(root_node->first_node("uiview"), layout);
-        //    ReadUISliderNode(root_node->first_node("uiview"), layout);
+        ReadUISliderNode(root_node->first_node("uiview"), layout);
 
         file.close();
         return layout;
