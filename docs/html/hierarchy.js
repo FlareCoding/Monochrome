@@ -20,6 +20,13 @@ var hierarchy =
           [ "mc::MouseHoverOnEvent", "classmc_1_1_mouse_hover_on_event.html", null ]
         ] ],
         [ "mc::MouseScrolledEvent", "classmc_1_1_mouse_scrolled_event.html", null ]
+      ] ],
+      [ "mc::WindowEvent", "classmc_1_1_window_event.html", [
+        [ "mc::WindowClosedEvent", "classmc_1_1_window_closed_event.html", null ],
+        [ "mc::WindowGainedFocusEvent", "classmc_1_1_window_gained_focus_event.html", null ],
+        [ "mc::WindowLostFocusEvent", "classmc_1_1_window_lost_focus_event.html", null ],
+        [ "mc::WindowResizedEvent", "classmc_1_1_window_resized_event.html", null ],
+        [ "mc::WindowUpdatedEvent", "classmc_1_1_window_updated_event.html", null ]
       ] ]
     ] ],
     [ "mc::EventValidator", "classmc_1_1_event_validator.html", null ],
@@ -48,6 +55,7 @@ var hierarchy =
     [ "mc::SceneManager", "classmc_1_1_scene_manager.html", null ],
     [ "mc::TextMetrics", "structmc_1_1_text_metrics.html", null ],
     [ "mc::TextProperties", "structmc_1_1_text_properties.html", null ],
+    [ "mc::UICursor", "classmc_1_1_u_i_cursor.html", null ],
     [ "mc::UIFileDialogue", "classmc_1_1_u_i_file_dialogue.html", null ],
     [ "mc::UIFileDialogueFilter", "classmc_1_1_u_i_file_dialogue_filter.html", null ],
     [ "mc::UIWindow", "classmc_1_1_u_i_window.html", null ]

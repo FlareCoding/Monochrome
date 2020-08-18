@@ -33,6 +33,7 @@ var annotated_dup =
       [ "UIButton", "classmc_1_1_u_i_button.html", "classmc_1_1_u_i_button" ],
       [ "UICheckbox", "classmc_1_1_u_i_checkbox.html", "classmc_1_1_u_i_checkbox" ],
       [ "UICombobox", "classmc_1_1_u_i_combobox.html", "classmc_1_1_u_i_combobox" ],
+      [ "UICursor", "classmc_1_1_u_i_cursor.html", null ],
       [ "UIFileDialogue", "classmc_1_1_u_i_file_dialogue.html", "classmc_1_1_u_i_file_dialogue" ],
       [ "UIFileDialogueFilter", "classmc_1_1_u_i_file_dialogue_filter.html", "classmc_1_1_u_i_file_dialogue_filter" ],
       [ "UIImage", "classmc_1_1_u_i_image.html", "classmc_1_1_u_i_image" ],
@@ -42,6 +43,12 @@ var annotated_dup =
       [ "UITabView", "classmc_1_1_u_i_tab_view.html", "classmc_1_1_u_i_tab_view" ],
       [ "UITextbox", "classmc_1_1_u_i_textbox.html", "classmc_1_1_u_i_textbox" ],
       [ "UIView", "classmc_1_1_u_i_view.html", "classmc_1_1_u_i_view" ],
-      [ "UIWindow", "classmc_1_1_u_i_window.html", "classmc_1_1_u_i_window" ]
+      [ "UIWindow", "classmc_1_1_u_i_window.html", "classmc_1_1_u_i_window" ],
+      [ "WindowClosedEvent", "classmc_1_1_window_closed_event.html", "classmc_1_1_window_closed_event" ],
+      [ "WindowEvent", "classmc_1_1_window_event.html", "classmc_1_1_window_event" ],
+      [ "WindowGainedFocusEvent", "classmc_1_1_window_gained_focus_event.html", "classmc_1_1_window_gained_focus_event" ],
+      [ "WindowLostFocusEvent", "classmc_1_1_window_lost_focus_event.html", "classmc_1_1_window_lost_focus_event" ],
+      [ "WindowResizedEvent", "classmc_1_1_window_resized_event.html", "classmc_1_1_window_resized_event" ],
+      [ "WindowUpdatedEvent", "classmc_1_1_window_updated_event.html", "classmc_1_1_window_updated_event" ]
     ] ]
 ];

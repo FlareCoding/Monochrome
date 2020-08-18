@@ -761,4 +761,18 @@ namespace mc
 		position = { (float)p.x, (float)p.y };
 		return position;
 	}
+
+	void UIWindow::RemoveAllViews()
+	{
+		for (auto& view : m_SceneManager.GetViewsList())
+		{
+			if (view.get() == m_ModernWindowDragPanel.get()) continue;
+			if (view.get() == m_ModernWindowCloseButton.get()) continue;
+			if (view.get() == m_ModernWindowMaximizeButton.get()) continue;
+			if (view.get() == m_ModernWindowMinimizeButton.get()) continue;
+			if (view.get() == m_ModernWindowTitleLabel.get()) continue;
+
+			RemoveView(view);
+		}
+	}
 }

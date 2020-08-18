@@ -14,6 +14,8 @@ namespace mc
 		void DispatchEvent(EventPtr event);
 		void AddView(Ref<UIView>& view);
 		void RemoveView(Ref<UIView> view);
+		void RemoveAllViews();
+		std::vector<Ref<UIView>>& GetViewsList() { return m_Views; }
 		Ref<UIView> GetViewRef(UIView* raw_address);
 
 	private:

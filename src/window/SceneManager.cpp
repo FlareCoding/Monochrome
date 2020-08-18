@@ -27,6 +27,12 @@ namespace mc
 		m_ViewsToDelete.push_back(view);
 	}
 
+	void SceneManager::RemoveAllViews()
+	{
+		for (auto& view : m_Views)
+			RemoveView(view);
+	}
+
 	void SceneManager::RemoveNeededViews()
 	{
 		std::vector<Ref<UIView>> m_ViewsToDeleteClone;

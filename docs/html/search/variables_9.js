@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['parent_318',['parent',['../classmc_1_1_u_i_view.html#a16263f2d249fa426f2ecd8b6c8baa823',1,'mc::UIView']]],
-  ['placeholder_319',['Placeholder',['../classmc_1_1_u_i_textbox.html#a2b4cde47c31d50c8fdded26dda7fe4f9',1,'mc::UITextbox']]],
-  ['properties_320',['Properties',['../classmc_1_1_u_i_label.html#a2000920a7232fd72f22e3792222ce404',1,'mc::UILabel']]]
+  ['onmousepresscolor_351',['OnMousePressColor',['../classmc_1_1_u_i_button.html#ada3197d6c965297e20b012fc4e376899',1,'mc::UIButton']]],
+  ['opacity_352',['Opacity',['../classmc_1_1_u_i_image.html#a636d313b7223a5ec61ea8223d3a0f13e',1,'mc::UIImage']]]
 ];

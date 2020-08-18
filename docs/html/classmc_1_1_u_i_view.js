@@ -12,6 +12,7 @@ var classmc_1_1_u_i_view =
     [ "SetZIndex", "classmc_1_1_u_i_view.html#aa44894c75232684a1bbbaea9a7c50ad8", null ],
     [ "EventValidator", "classmc_1_1_u_i_view.html#a6a5d53da4856053a462c579c0873812a", null ],
     [ "CornerRadius", "classmc_1_1_u_i_view.html#aea18ed1b8824d32242c6a76f8d8d51d2", null ],
+    [ "cursor", "classmc_1_1_u_i_view.html#aa9b2f51533896d4a1c75471dc150d7dc", null ],
     [ "layer", "classmc_1_1_u_i_view.html#aa154c0d3e0d7e8e76c24d2bc544822da", null ],
     [ "parent", "classmc_1_1_u_i_view.html#a16263f2d249fa426f2ecd8b6c8baa823", null ],
     [ "srcwindow", "classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162", null ],

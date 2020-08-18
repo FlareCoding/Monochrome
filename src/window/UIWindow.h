@@ -108,6 +108,9 @@ namespace mc
 		/// Returns the position of the mouse cursor relative to the top left corner of the monitor.
 		Position GetAsboluteMouseCursorPos();
 
+		/// Removes all current views from the window's view hierarchy.
+		void RemoveAllViews();
+
 	private:
 		UIWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title);
 		HWND m_NativeHandle = {};

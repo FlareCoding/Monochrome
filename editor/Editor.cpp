@@ -762,12 +762,18 @@ void MonochromeEditor::InitEditorUI()
 			textBoxColor << layout.windowSettings.color.r << " " << layout.windowSettings.color.g << " " << layout.windowSettings.color.b << " " << layout.windowSettings.color.alpha;
 			m_ProjectWindowColorTextbox->Text = textBoxColor.str();
 
-			OpenProjectWindow();
-			while (!m_ProjectWindow || !m_ProjectWindow->IsOpened())
-				Sleep(20);
-
 			// Set the UI Elements
 			m_ProjectUIElements.clear();
+
+			OpenProjectWindow();
+
+			// Waiting for the window to open
+			while (!m_ProjectWindow || !m_ProjectWindow->IsOpened())
+				Sleep(20);
+			
+			// Clears all existing views
+			m_ProjectWindow->RemoveAllViews();
+
 			for (auto& view : layout.uiViews)
 				AddElementToProjectWindow(view);
 		}
