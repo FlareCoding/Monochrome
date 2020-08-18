@@ -727,10 +727,14 @@ void MonochromeEditor::InitEditorUI()
 
 	// TEMP: This is going to move into the FileMenu once it exists
 	Ref<UIButton> SelectFileButton = MakeRef<UIButton>();
-	SelectFileButton->layer.frame = Frame({ 80, 850 }, { 260, 36 });
+	SelectFileButton->layer.frame = Frame({ 120, 860 }, { 200, 34 });
 	SelectFileButton->Label->Text = "Load Project";
+	SelectFileButton->Label->color = Color::white;
+	SelectFileButton->Label->Properties.FontSize = 12;
+	SelectFileButton->layer.color = Color(49, 49, 50, 1.0f);
+	SelectFileButton->CornerRadius = 4;
 	SelectFileButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event &evt, UIView *sender) -> bool
-		{
+	{
 		UIFileDialogue fd;
 
 		// Set Filter, only mc Files are valid for now
@@ -741,7 +745,7 @@ void MonochromeEditor::InitEditorUI()
 		// Load the file and then load the project, if file is loaded 
 		auto path = fd.ChooseFileDialogue();
 		if (!path.empty())
-			{
+		{
 			// File is valid, load the project
 			utils::MCLayout layout = utils::ProjectGenerator::LoadMCProject(path);
 			
@@ -758,12 +762,18 @@ void MonochromeEditor::InitEditorUI()
 			textBoxColor << layout.windowSettings.color.r << " " << layout.windowSettings.color.g << " " << layout.windowSettings.color.b << " " << layout.windowSettings.color.alpha;
 			m_ProjectWindowColorTextbox->Text = textBoxColor.str();
 
+			OpenProjectWindow();
+			while (!m_ProjectWindow || !m_ProjectWindow->IsOpened())
+				Sleep(20);
+
 			// Set the UI Elements
-			m_ProjectUIElements = layout.uiViews;
-			}
+			m_ProjectUIElements.clear();
+			for (auto& view : layout.uiViews)
+				AddElementToProjectWindow(view);
+		}
 
 		return EVENT_HANDLED;
-		});
+	});
 	m_EditorWindow->AddView(SelectFileButton);
 
 #pragma endregion
@@ -843,11 +853,19 @@ void MonochromeEditor::OpenProjectWindow()
 	}
 }
 
-void MonochromeEditor::AddElementToProjectWindow()
+void MonochromeEditor::AddElementToProjectWindow(Ref<UIView> elem)
 {
-	if (!m_ElementPreviewArea->subviews.size() || !m_ProjectWindow || !m_ProjectWindow->IsOpened()) return;
+	Ref<UIView> TargetElement = nullptr;
+	if (!elem)
+	{
+		if (!m_ElementPreviewArea->subviews.size() || !m_ProjectWindow || !m_ProjectWindow->IsOpened())
+			return;
 
-	Ref<UIView> TargetElement = m_ElementPreviewArea->subviews.at(0);
+		TargetElement = m_ElementPreviewArea->subviews.at(0);
+	}
+	else
+		TargetElement = elem;
+
 	TargetElement->parent = nullptr;
 	TargetElement->SetZIndex(1);
 

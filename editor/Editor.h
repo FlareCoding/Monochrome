@@ -75,7 +75,7 @@ private:
 	std::vector<Ref<UIView>> m_ProjectUIElements;
 
 	void OpenProjectWindow();
-	void AddElementToProjectWindow();
+	void AddElementToProjectWindow(Ref<UIView> elem = nullptr);
 
 private:
 	// Project Application Saving

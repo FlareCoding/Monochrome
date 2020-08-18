@@ -78,7 +78,7 @@ namespace utils
 
     void ProjectGenerator::CreateMCLayoutFile(std::string& path, std::vector<Ref<UIView>>& views, WindowSettings& window_settings, std::map<Ref<UIView>, ElementCodeProperties>& element_code_props)
     {
-        std::ofstream file(path);
+        std::ofstream file(path, std::ofstream::trunc);
         Ref<xml_document<>> document = MakeRef<xml_document<>>();
 
         // Declaration
@@ -868,7 +868,7 @@ namespace utils
         std::vector<Ref<UIView>> views;
 
         while (node != 0)
-            {
+        {
             Ref<UIView> element = nullptr;
             CheckAndResolveViewNodeType(node, &element);
 
@@ -876,7 +876,7 @@ namespace utils
                 views.push_back(element);
 
             node = node->next_sibling("uiview");
-            }
+        }
 
         layout.uiViews = views;
     }
