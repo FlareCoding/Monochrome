@@ -1,3 +1,18 @@
+## Installation/Usage
+
+- To install the Monochrome python module execute the following:
+    1) Open ```setup.py``` and modify ```mod_include_dirs``` and ```mod_library_dirs```
+    to contain the local path to Monochrome source and library directories.
+    2) Open terminal/cmd with admin privileges in this directory that contains the 'src' folder.
+    3) Run: ```python setup.py install```
+    
+
+- To generate a visual studio solution with the bindings c++ source code:
+    1) Run ```cmake_setup.bat``` to generate a build folder with a VS solution inside.
+    -- **Note**: Do not use Visual Studio's compiler to build the module, use instructions earlier to build/install the module.
+        
+    
+
 ## Sample Code
 
 ```py
