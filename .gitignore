@@ -1,6 +1,8 @@
 # Directories
 .vs/
 build/
+dist/
+__pycache__/
 
 # Compiled Object files
 *.slo
