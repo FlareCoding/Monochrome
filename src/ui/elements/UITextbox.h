@@ -54,7 +54,6 @@ namespace mc
 		size_t m_CursorIndex = 0;
 		size_t m_VisibleStartIndex = 0;
 		size_t m_VisibleEndIndex = 0;
-		uint32_t m_VisibleCharLimit = 0;
 
 		std::string m_VisibleText = "";
 		std::string m_OldText = "";

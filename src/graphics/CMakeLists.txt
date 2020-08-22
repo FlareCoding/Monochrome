@@ -20,7 +20,6 @@ set(
     src/graphics/d2d_resources/CoreResources.cpp
     src/graphics/Color.cpp
     src/graphics/Graphics.cpp
-    src/graphics/RenderTarget.cpp
     src/graphics/Bitmap.cpp
 
     PARENT_SCOPE

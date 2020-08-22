@@ -234,9 +234,6 @@ namespace mc
 			RecalculateVisibleText();
 		}
 
-		// Keeping the visible character limit updated
-		m_VisibleCharLimit = Graphics::GetLineCharacterLimit(TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
-
 		// Sanitizing the cursor position
 		if (m_CursorIndex > Text.size() && m_CursorIndex > 0)
 			m_CursorIndex = Text.size() - 1;

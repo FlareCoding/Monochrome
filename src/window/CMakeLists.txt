@@ -14,7 +14,6 @@ set(
     MC_WINDOW_SOURCES
 
     src/window/SceneManager.cpp
-    src/window/UIWindow.cpp
 
     PARENT_SCOPE
 )

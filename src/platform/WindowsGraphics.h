@@ -1,24 +1,18 @@
 #pragma once
-#include <core/Core.h>
-#include "Color.h"
-#include "Shapes.h"
-#include "TextProperties.h"
-#include "Bitmap.h"
-#include "RenderTarget.h"
+#include <graphics/Graphics.h>
+#include <Windows.h>
 
 namespace mc
 {
-	class SceneManager;
-
-	class Graphics
+	class WindowsGraphics
 	{
 	public:
-		static bool Initialize(void* native);
+		static bool Initialize(HWND hwnd);
 		static bool IsInitialized();
-	
+
 		static void Shutdown();
 
-		static void SetActiveTarget(void* native);
+		static void SetActiveTarget(HWND hwnd);
 
 	public:
 		static void BeginFrame();
@@ -31,7 +25,7 @@ namespace mc
 		static void PopLayer();
 
 	public:
-		static void ResizeRenderTarget(void* native);
+		static void ResizeRenderTarget(HWND hwnd);
 
 	public:
 		/// Draws a straight line.
@@ -162,6 +156,17 @@ namespace mc
 			float max_height
 		);
 
+		/// Calculates how many characters would fit on a single line.
+		/// @param text_props Properties describing the text font and style
+		/// @param container_width Width of the container holding the text
+		/// @param container_height Height of the container holding the text
+		/// @returns Number of characters that would fit on the line
+		static uint32_t GetLineCharacterLimit(
+			TextProperties text_props,
+			float container_width,
+			float container_height
+		);
+
 		/// Returns a Bitmap object holding the image data from reading a file.
 		static Ref<Bitmap> CreateBitmapFromFile(const std::string& path);
 
@@ -186,5 +191,9 @@ namespace mc
 			float height,
 			float opacity = 1.0f
 		);
+
+	private:
+		static Ref<RenderTarget> m_RenderTarget;
+		static std::map<HWND, Ref<RenderTarget>> m_RenderTargetMap;
 	};
 }
