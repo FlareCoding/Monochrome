@@ -34,7 +34,7 @@ PyObject* UIButtonObject_GetLabel(UIButtonObject* self, void* closure)
 }
 
 static PyGetSetDef UIButtonObjectGettersSetters[] = {
-    { "Label", (getter)UIButtonObject_GetLabel, (setter)NULL, "Label", NULL},
+    { "label", (getter)UIButtonObject_GetLabel, (setter)NULL, "Label", NULL},
     { NULL, NULL, 0, NULL }
 };
 

@@ -1,8 +1,6 @@
 #pragma once
-#include <Monochrome.h>
-using namespace mc;
-
-#include <Python.h>
+#include "../events/mouse_events_bindings.h"
+#include "../events/keyboard_events_bindings.h"
 
 typedef struct _IResponderObject {
     PyObject_HEAD

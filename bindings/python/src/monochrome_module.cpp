@@ -66,6 +66,31 @@ static int MonochromeModuleExec(PyObject* mod)
     UIWindowObject_GetType().tp_base = &PyUnicode_Type;
     MODULE_REGISTER_CLASS(mod, "UIWindow", UIWindowObject_GetType());
 
+    // Event Classes
+    MouseButtonPressedEventObject_GetType().tp_base = &PyUnicode_Type;
+    MODULE_REGISTER_CLASS(mod, "MouseButtonPressedEvent", MouseButtonPressedEventObject_GetType());
+
+    MouseButtonClickedEventObject_GetType().tp_base = &PyUnicode_Type;
+    MODULE_REGISTER_CLASS(mod, "MouseButtonClickedEvent", MouseButtonClickedEventObject_GetType());
+
+    MouseHoverOnEventObject_GetType().tp_base = &PyUnicode_Type;
+    MODULE_REGISTER_CLASS(mod, "MouseHoverOnEvent", MouseHoverOnEventObject_GetType());
+
+    MouseHoverOffEventObject_GetType().tp_base = &PyUnicode_Type;
+    MODULE_REGISTER_CLASS(mod, "MouseHoverOffEvent", MouseHoverOffEventObject_GetType());
+
+    MouseMovedEventObject_GetType().tp_base = &PyUnicode_Type;
+    MODULE_REGISTER_CLASS(mod, "MouseMovedEvent", MouseMovedEventObject_GetType());
+
+    MouseScrolledEventObject_GetType().tp_base = &PyUnicode_Type;
+    MODULE_REGISTER_CLASS(mod, "MouseScrolledEvent", MouseScrolledEventObject_GetType());
+
+    KeyPressedEventObject_GetType().tp_base = &PyUnicode_Type;
+    MODULE_REGISTER_CLASS(mod, "KeyPressedEvent", KeyPressedEventObject_GetType());
+
+    KeyReleasedEventObject_GetType().tp_base = &PyUnicode_Type;
+    MODULE_REGISTER_CLASS(mod, "KeyReleasedEvent", KeyReleasedEventObject_GetType());
+
     // IResponder Class
     IResponderObject_GetType().tp_base = &PyUnicode_Type;
     MODULE_REGISTER_CLASS(mod, "IResponder", IResponderObject_GetType());

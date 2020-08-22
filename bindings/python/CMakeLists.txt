@@ -25,6 +25,13 @@ add_library(
     src/window/uiwindow_bindings.h
     src/window/uiwindow_bindings.cpp
 
+    # Events
+    src/events/mouse_events_bindings.h
+    src/events/mouse_events_bindings.cpp
+
+    src/events/keyboard_events_bindings.h
+    src/events/keyboard_events_bindings.cpp
+
     # UI
     src/ui/iresponder_bindings.h
     src/ui/iresponder_bindings.cpp

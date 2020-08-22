@@ -47,7 +47,7 @@ int UILabelObject_SetText(UILabelObject* self, PyObject* value, void* closure)
 }
 
 static PyGetSetDef UILabelObjectGettersSetters[] = {
-    { "Text", (getter)UILabelObject_GetText, (setter)UILabelObject_SetText, "Text", NULL},
+    { "text", (getter)UILabelObject_GetText, (setter)UILabelObject_SetText, "Text", NULL},
     { NULL, NULL, 0, NULL }
 };
 

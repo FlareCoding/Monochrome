@@ -3,6 +3,8 @@ from distutils.core import setup, Extension
 mod_sources = [
         "src\\monochrome_module.cpp",
         "src\\window\\uiwindow_bindings.cpp",
+        "src\\events\\mouse_events_bindings.cpp",
+        "src\\events\\keyboard_events_bindings.cpp",
         "src\\ui\\iresponder_bindings.cpp",
         "src\\ui\\uiview_bindings.cpp",
         "src\\ui\\uilabel_bindings.cpp",
