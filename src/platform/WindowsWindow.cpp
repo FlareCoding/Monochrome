@@ -31,6 +31,8 @@ std::wstring ConvertStringToWstring(const std::string& str)
 
 namespace mc
 {
+	typedef BOOL (__stdcall *SetProcessDpiAwarenessContextFn)(DPI_AWARENESS_CONTEXT);
+
 	static WindowsWindow* s_CurrentActiveWindowInstance = nullptr;
 
 	static POINT _mc_WindowsWindow_static_previous_mouse_position_;
@@ -99,10 +101,14 @@ namespace mc
 
 	void WindowsWindow::Init()
 	{
-#if (WINVER >= 0x0605)
+#pragma warning( push )
+#pragma warning( disable : 6387 )
+		SetProcessDpiAwarenessContextFn DpiAwarenessProc = (SetProcessDpiAwarenessContextFn)GetProcAddress(LoadLibraryA("User32.dll"), "SetProcessDpiAwarenessContext");
+
 		// Set window DPI-Awareness mode to be aware of high dpi displays
-		SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
-#endif
+		if (DpiAwarenessProc)
+			DpiAwarenessProc(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
+#pragma warning( pop ) 
 
 		WindowInstancesCreated++;
 		std::wstring WindowClassName = std::wstring(MONOCHROME_70_WINDOW_CLASSNAME + std::to_wstring(WindowInstancesCreated));
