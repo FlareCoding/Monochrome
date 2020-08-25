@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/Core.h"
+#include "../core/Core.h"
 
 #include <string>
 #include <sstream>
@@ -30,7 +30,7 @@ namespace mc
 		EventCategoryMouseButton	= BIT(4)
 	};
 
-#define REGISTER_EVT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::##type; }\
+#define REGISTER_EVT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
 								virtual EventType GetEventType() const override { return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
 
@@ -59,7 +59,7 @@ namespace mc
 #pragma warning( disable : 26812 )
 		/// @returns Whether or not an event belongs to a category
 		inline bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
-#pragma warning( pop ) 
+#pragma warning( pop )
 	};
 
 	using EventPtr = Ref<Event>;

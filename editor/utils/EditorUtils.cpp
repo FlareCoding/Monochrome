@@ -41,7 +41,7 @@ namespace utils
 		while (iss >> n)
 			inputs.push_back(n);
 
-		if (inputs.size() < 3 || inputs.size() > 4) throw std::exception("incorrect number of color inputs");
+		if (inputs.size() < 3 || inputs.size() > 4) throw std::runtime_error("incorrect number of color inputs");
 
 		color.r = (uint32_t)inputs[0];
 		color.g = (uint32_t)inputs[1];
@@ -123,7 +123,7 @@ namespace utils
 	TextStyle StringToTextPropertiesStyle(const std::string& str)
 	{
 		TextStyle style = TextStyle::DEFAULT;
-		
+
 		if (str == "mc::TextStyle::BOLD")
 			style = TextStyle::BOLD;
 		else if (str == "mc::TextStyle::BOLD_ITALIC")

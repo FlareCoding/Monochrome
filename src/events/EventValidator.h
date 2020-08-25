@@ -1,5 +1,5 @@
 #pragma once
-#include "../UI/UIView.h"
+#include "../ui/UIView.h"
 #include "Events.h"
 
 namespace mc

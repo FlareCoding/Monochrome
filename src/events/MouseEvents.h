@@ -1,6 +1,6 @@
 #pragma once
 #include "Event.h"
-#include "../UI/Layer.h"
+#include "../ui/Layer.h"
 
 namespace mc
 {
@@ -18,7 +18,7 @@ namespace mc
 	class MouseEvent : public Event
 	{
 	public:
-		/// Holds the mouse position in the window. 
+		/// Holds the mouse position in the window.
 		Point location;
 
 		REGISTER_EVT_CATEGORY(EventCategoryMouse | EventCategoryInput)
@@ -32,7 +32,7 @@ namespace mc
 	class MouseButtonEvent : public MouseEvent
 	{
 	public:
-		/// Holds the mouse button that was pressed or released. 
+		/// Holds the mouse button that was pressed or released.
 		MouseButton button;
 
 		REGISTER_EVT_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)

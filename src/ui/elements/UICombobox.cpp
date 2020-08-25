@@ -35,12 +35,12 @@ namespace mc
 		RecalculateItemPositions();
 		SetupEventHandlers();
 	}
-	
+
 	void UICombobox::SetupEventHandlers()
 	{
 		AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 			MouseButtonClickedEvent& mbce = reinterpret_cast<MouseButtonClickedEvent&>(e);
-			
+
 			uint32_t dpi = 96;
 			if (UIWindow::GetCurrentActiveWindow())
 				dpi = UIWindow::GetCurrentActiveWindow()->GetDpi();
@@ -130,7 +130,7 @@ namespace mc
 			}
 			return EVENT_UNHANDLED;
 		});
-		
+
 		m_Items.push_back({ item, ItemButton });
 
 		RecalculateItemPositions();
@@ -158,7 +158,7 @@ namespace mc
 	size_t UICombobox::IndexOf(const std::string& item)
 	{
 		for (size_t i = 0; i < m_Items.size(); i++)
-			if (m_Items[i].first._Equal(item))
+			if (m_Items[i].first == item)
 				return i;
 
 		return -1;

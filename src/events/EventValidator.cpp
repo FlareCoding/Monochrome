@@ -91,11 +91,11 @@ namespace mc
 				// that mouse was over its frame during the last event check.
 				if (bottom_view->m_IsMouseOverFrame)
 				{
-					// Turn off the view's m_IsMouseOverFrame flag since 
+					// Turn off the view's m_IsMouseOverFrame flag since
 					// Hover _Off_ event will be called
 					bottom_view->m_IsMouseOverFrame = false;
 
-					// In order to not create the hover _off_ event in advance in case 
+					// In order to not create the hover _off_ event in advance in case
 					// there is no need for it, we need to create it if it's needed and if
 					// it is initially nullptr.
 					if (manual_hover_off_event == nullptr)
@@ -157,7 +157,7 @@ namespace mc
 	bool EventValidator::IsMouseInsideViewFrame(Ref<UIView>& view, Point mouse_location, uint32_t window_dpi)
 	{
 		// Views' positions are relative to their parent views' positions,
-		// so we need to construct the view's frame according to its 
+		// so we need to construct the view's frame according to its
 		// absolute position.
 		Frame absolute_frame = Frame(view->GetAbsolutePosition(), view->layer.frame.size);
 

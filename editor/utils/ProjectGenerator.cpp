@@ -138,7 +138,7 @@ namespace utils
                     }
 
                     xml_node<>* return_status_node = doc->allocate_node(node_element, "return_status");
-                    if (data.returnStatus._Equal("Handled"))
+                    if (data.returnStatus == "Handled")
                         return_status_node->value(doc->allocate_string("EVENT_HANDLED"));
                     else
                         return_status_node->value(doc->allocate_string("EVENT_UNHANDLED"));
@@ -529,7 +529,7 @@ namespace utils
         label->Properties.Wrapping = wrapping;
         label->UseWidestringText = useWideString;
         label->Visible = visible;
-        
+
         if (useWideString)
             label->WidestringText = std::wstring(labelText.begin(), labelText.end());
         else
@@ -553,7 +553,7 @@ namespace utils
         float buttonHeight = StringToFloat(frameNode->first_node("size")->first_node("height")->value());
         float buttonXPos = StringToFloat(frameNode->first_node("position")->first_node("x")->value());
         float buttonYPos = StringToFloat(frameNode->first_node("position")->first_node("y")->value());
-        
+
         std::string buttonColorR = frameColorNode->first_attribute("r")->value();
         std::string buttonColorG = frameColorNode->first_attribute("g")->value();
         std::string buttonColorB = frameColorNode->first_attribute("b")->value();
@@ -891,7 +891,7 @@ namespace utils
         std::vector<char> buffer((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         buffer.push_back('\0');
         document->parse<0>(&buffer[0]);
-        
+
         xml_node<>* root_node = document->first_node();
         ReadWindowSettingsNode(root_node->first_node("mcwindow"), layout);
         ReadUINodes(root_node->first_node("uiview"), layout);

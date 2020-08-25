@@ -1,5 +1,5 @@
 #pragma once
-#include "../Graphics/Color.h"
+#include "../graphics/Color.h"
 
 namespace mc
 {

@@ -1,10 +1,13 @@
 #pragma once
 #include <core/Core.h>
-#include <Windows.h>
-#include <shobjidl.h>
 #include <string>
 #include <functional>
 #include <map>
+
+#if defined(_WIN32)
+    #include <Windows.h>
+    #include <shobjidl.h>
+#endif
 
 namespace mc
 {
@@ -12,8 +15,10 @@ namespace mc
     class UIFileDialogueFilter
     {
     public:
+#if defined(_WIN32)
         /// Returns the filter data in a format required by UIFileDialogue internal usage.
         std::vector<COMDLG_FILTERSPEC> GetComDlgFilterSpecs();
+#endif
 
         /// Registers a filter for specific file format(s).
         /// @param name Describes the file formats being filtered.
@@ -49,9 +54,11 @@ namespace mc
         void SetFilter(UIFileDialogueFilter filter);
 
     private:
+#if defined(_WIN32)
         IFileOpenDialog* m_pFileOpenDialogue;
         UIFileDialogueFilter m_Filter;
 
         std::string FireOpenFileDialogue(FILEOPENDIALOGOPTIONS options, bool open_dialogue);
+#endif
     };
 }

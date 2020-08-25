@@ -1,9 +1,8 @@
 #pragma once
 #include <core/Core.h>
-#include "WindowStyle.h"
 #include <graphics/Color.h>
+#include "WindowStyle.h"
 #include "SceneManager.h"
-#include <Windows.h>
 #include <chrono>
 
 namespace mc
@@ -118,7 +117,7 @@ namespace mc
 		uint32_t	m_Width = 0;
 		uint32_t	m_Height = 0;
 		const char* m_Title = 0;
-		uint32_t	m_Dpi = 0;
+		uint32_t	m_Dpi = 96;
 		Color		m_Background = Color::gray;
 
 		bool m_IsOpened = false;

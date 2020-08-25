@@ -154,7 +154,7 @@ void MonochromeEditor::InitEditorUI()
 
 		OpenElementProperties(widget);
 	});
-	
+
 	auto ToolboxWidgetButton_Slider	= MakeToolboxWidgetButton("Slider", [this]() {
 		Ref<UISlider> widget = MakeRef<UISlider>();
 		widget->layer.frame.position = DefaultElementPreviewPosition;
@@ -231,7 +231,7 @@ void MonochromeEditor::InitEditorUI()
 		// Nothing should be done if no element is being previewed
 		if (!m_SelectedTargetView) return EVENT_HANDLED;
 
-		if (m_OpenVariablePropertiesButton->Label->Text._Equal("Variable Properties"))
+		if (m_OpenVariablePropertiesButton->Label->Text == "Variable Properties")
 		{
 			// Open Variable Properties
 			m_PropertiesView->subviews.clear();
@@ -331,7 +331,7 @@ void MonochromeEditor::InitEditorUI()
 	GridSizeInput->layer.color = Color(58, 58, 59, 1.0f);
 	GridSizeInput->TextColor = Color::white;
 	GridSizeInput->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	GridSizeInput->TextProperties.FontSize = 14;
+	GridSizeInput->textProperties.FontSize = 14;
 	GridSizeInput->Placeholder = "Enter Value";
 	GridSizeInput->Text = "10";
 	utils::EditorSettings::GridSize = 10;
@@ -393,7 +393,7 @@ void MonochromeEditor::InitEditorUI()
 	AutoSavingIntervalInput->layer.color = Color(58, 58, 59, 1.0f);
 	AutoSavingIntervalInput->TextColor = Color::white;
 	AutoSavingIntervalInput->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	AutoSavingIntervalInput->TextProperties.FontSize = 14;
+	AutoSavingIntervalInput->textProperties.FontSize = 14;
 	AutoSavingIntervalInput->Placeholder = "10";
 	AutoSavingIntervalInput->Text = "10";
 	utils::EditorSettings::ProjectAutoSavingInterval = 10;
@@ -429,7 +429,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowWidthTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 130 }, Size{ 140, 20 }));
 	m_ProjectWindowWidthTextbox->Placeholder = "Enter width";
 	m_ProjectWindowWidthTextbox->Text = "1000";
-	m_ProjectWindowWidthTextbox->TextProperties.FontSize = 14;
+	m_ProjectWindowWidthTextbox->textProperties.FontSize = 14;
 	m_ProjectWindowWidthTextbox->CornerRadius = 2;
 	m_ProjectWindowWidthTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowWidthTextbox->TextColor = Color::white;
@@ -447,7 +447,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowHeightTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 160 }, Size{ 140, 20 }));
 	m_ProjectWindowHeightTextbox->Placeholder = "Enter height";
 	m_ProjectWindowHeightTextbox->Text = "670";
-	m_ProjectWindowHeightTextbox->TextProperties.FontSize = 14;
+	m_ProjectWindowHeightTextbox->textProperties.FontSize = 14;
 	m_ProjectWindowHeightTextbox->CornerRadius = 2;
 	m_ProjectWindowHeightTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowHeightTextbox->TextColor = Color::white;
@@ -465,7 +465,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowTitleTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 190 }, Size{ 140, 20 }));
 	m_ProjectWindowTitleTextbox->Placeholder = "Enter title";
 	m_ProjectWindowTitleTextbox->Text = "Monochrome App";
-	m_ProjectWindowTitleTextbox->TextProperties.FontSize = 14;
+	m_ProjectWindowTitleTextbox->textProperties.FontSize = 14;
 	m_ProjectWindowTitleTextbox->CornerRadius = 2;
 	m_ProjectWindowTitleTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowTitleTextbox->TextColor = Color::white;
@@ -483,7 +483,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowColorTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 220 }, Size{ 140, 20 }));
 	m_ProjectWindowColorTextbox->Placeholder = "100 250 255";
 	m_ProjectWindowColorTextbox->Text = utils::ColorToString(Color::gray);
-	m_ProjectWindowColorTextbox->TextProperties.FontSize = 14;
+	m_ProjectWindowColorTextbox->textProperties.FontSize = 14;
 	m_ProjectWindowColorTextbox->CornerRadius = 2;
 	m_ProjectWindowColorTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowColorTextbox->TextColor = Color::white;
@@ -525,7 +525,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectNameTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 610 }, Size{ 160, 20 }));
 	m_ProjectNameTextbox->Placeholder = "Enter project name";
 	m_ProjectNameTextbox->Text = "Project 1";
-	m_ProjectNameTextbox->TextProperties.FontSize = 14;
+	m_ProjectNameTextbox->textProperties.FontSize = 14;
 	m_ProjectNameTextbox->CornerRadius = 2;
 	m_ProjectNameTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectNameTextbox->TextColor = Color::white;
@@ -543,7 +543,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectPathTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 640 }, Size{ 160, 20 }));
 	m_ProjectPathTextbox->Placeholder = "Project path";
 	m_ProjectPathTextbox->Text = "";
-	m_ProjectPathTextbox->TextProperties.FontSize = 14;
+	m_ProjectPathTextbox->textProperties.FontSize = 14;
 	m_ProjectPathTextbox->CornerRadius = 2;
 	m_ProjectPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectPathTextbox->TextColor = Color::white;
@@ -584,7 +584,7 @@ void MonochromeEditor::InitEditorUI()
 	m_UIClassNameTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 705 }, Size{ 160, 20 }));
 	m_UIClassNameTextbox->Placeholder = "Name";
 	m_UIClassNameTextbox->Text = "UserInterface";
-	m_UIClassNameTextbox->TextProperties.FontSize = 14;
+	m_UIClassNameTextbox->textProperties.FontSize = 14;
 	m_UIClassNameTextbox->CornerRadius = 2;
 	m_UIClassNameTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_UIClassNameTextbox->TextColor = Color::white;
@@ -622,7 +622,7 @@ void MonochromeEditor::InitEditorUI()
 	m_MonochromeSourcePathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 370 }, Size{ 240, 20 }));
 	m_MonochromeSourcePathTextbox->Placeholder = "Monochrome Source Path";
 	m_MonochromeSourcePathTextbox->Text = "";
-	m_MonochromeSourcePathTextbox->TextProperties.FontSize = 14;
+	m_MonochromeSourcePathTextbox->textProperties.FontSize = 14;
 	m_MonochromeSourcePathTextbox->CornerRadius = 2;
 	m_MonochromeSourcePathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_MonochromeSourcePathTextbox->TextColor = Color::white;
@@ -656,7 +656,7 @@ void MonochromeEditor::InitEditorUI()
 	m_MonochromeLibDbgPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 400 }, Size{ 240, 20 }));
 	m_MonochromeLibDbgPathTextbox->Placeholder = "Monochrome Library Debug Path";
 	m_MonochromeLibDbgPathTextbox->Text = "";
-	m_MonochromeLibDbgPathTextbox->TextProperties.FontSize = 14;
+	m_MonochromeLibDbgPathTextbox->textProperties.FontSize = 14;
 	m_MonochromeLibDbgPathTextbox->CornerRadius = 2;
 	m_MonochromeLibDbgPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_MonochromeLibDbgPathTextbox->TextColor = Color::white;
@@ -690,7 +690,7 @@ void MonochromeEditor::InitEditorUI()
 	m_MonochromeLibRelPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 430 }, Size{ 240, 20 }));
 	m_MonochromeLibRelPathTextbox->Placeholder = "Monochrome Library Release Path";
 	m_MonochromeLibRelPathTextbox->Text = "";
-	m_MonochromeLibRelPathTextbox->TextProperties.FontSize = 14;
+	m_MonochromeLibRelPathTextbox->textProperties.FontSize = 14;
 	m_MonochromeLibRelPathTextbox->CornerRadius = 2;
 	m_MonochromeLibRelPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_MonochromeLibRelPathTextbox->TextColor = Color::white;
@@ -723,7 +723,7 @@ void MonochromeEditor::InitEditorUI()
 
 #pragma endregion
 
-#pragma region Project Loading Area 
+#pragma region Project Loading Area
 
 	// TEMP: This is going to move into the FileMenu once it exists
 	Ref<UIButton> SelectFileButton = MakeRef<UIButton>();
@@ -742,13 +742,13 @@ void MonochromeEditor::InitEditorUI()
 		filter.AddFilter(L"FileType", L"*.mc");
 		fd.SetFilter(filter);
 
-		// Load the file and then load the project, if file is loaded 
+		// Load the file and then load the project, if file is loaded
 		auto path = fd.ChooseFileDialogue();
 		if (!path.empty())
 		{
 			// File is valid, load the project
 			utils::MCLayout layout = utils::ProjectGenerator::LoadMCProject(path);
-			
+
 			// Set the project window properties
 			m_ProjectWindowWidth = layout.windowSettings.width;
 			m_ProjectWindowWidthTextbox->Text = std::to_string(layout.windowSettings.width);
@@ -770,7 +770,7 @@ void MonochromeEditor::InitEditorUI()
 			// Waiting for the window to open
 			while (!m_ProjectWindow || !m_ProjectWindow->IsOpened())
 				Sleep(20);
-			
+
 			// Clears all existing views
 			m_ProjectWindow->RemoveAllViews();
 
@@ -789,7 +789,7 @@ void MonochromeEditor::InitEditorUI()
 void MonochromeEditor::OpenElementProperties(Ref<UIView> TargetElement)
 {
 	if (!TargetElement) return;
-	
+
 	m_PropertiesView->subviews.clear();
 	m_VariableCodeProperties.RegisterElement(TargetElement);
 
@@ -806,7 +806,7 @@ void MonochromeEditor::OpenProjectWindow()
 
 	try { width = std::stoi(m_ProjectWindowWidthTextbox->Text); m_ProjectWindowWidth = width; }
 	catch (...) {}
-	
+
 	try { height = std::stoi(m_ProjectWindowHeightTextbox->Text); m_ProjectWindowHeight = height; }
 	catch (...) {}
 
@@ -898,10 +898,10 @@ void MonochromeEditor::AddElementToProjectWindow(Ref<UIView> elem)
 			if (!m_ElementPreviewArea->subviews.size())
 			{
 				auto& ref = m_ProjectWindow->GetViewRef(sender);
-				if (!ref) 
+				if (!ref)
 					return EVENT_HANDLED;
 
-				Ref<UIView> target = ref; 
+				Ref<UIView> target = ref;
 				m_PWScriptController.FindInnerMostView(ref, target);
 
 				m_OpenVariablePropertiesButton->Label->Text = "Variable Properties";

@@ -1,11 +1,13 @@
 #include "UITextbox.h"
 #include <graphics/Graphics.h>
 #include <window/UIWindow.h>
+#include <string.h>
 
 namespace mc
 {
 	static std::string GetClipboardText()
 	{
+#if defined(_WIN32)
 		// Try opening the clipboard
 		if (!OpenClipboard(nullptr))
 			return "";
@@ -30,6 +32,9 @@ namespace mc
 		CloseClipboard();
 
 		return text;
+#else
+		return "";
+#endif
 	}
 
 	UITextbox::UITextbox()
@@ -42,15 +47,15 @@ namespace mc
 	{
 		SetDefaultOptions();
 	}
-	
+
 	void UITextbox::SetDefaultOptions()
 	{
 		cursor = CursorType::IBeam;
 
 		Text = "";
 		Placeholder = "Enter text ...";
-		TextProperties.Allignment = TextAlignment::LEADING;
-		TextProperties.Wrapping = WordWrapping::NO_WRAP;
+		textProperties.Allignment = TextAlignment::LEADING;
+		textProperties.Wrapping = WordWrapping::NO_WRAP;
 
 		m_Label = MakeRef<UILabel>();
 		m_Label->layer.frame = Frame(5, 2, layer.frame.size.width - 10, layer.frame.size.height - 4);
@@ -66,7 +71,7 @@ namespace mc
 			KeyPressedEvent& evt = reinterpret_cast<KeyPressedEvent&>(event);
 			auto input = std::string(1, McKeycodeToChar(evt.keycode, evt.capital, evt.capslock_on));
 
-			if (!input.empty() && !input._Equal("\n"))
+			if (!input.empty() && input != "\n")
 				ProcessKeyEvent(input, evt.keycode);
 
 			return EVENT_UNHANDLED;
@@ -92,7 +97,7 @@ namespace mc
 				m_FirstTimeClick = false;
 			}
 
-			return EVENT_UNHANDLED;	
+			return EVENT_UNHANDLED;
 		});
 	}
 
@@ -191,8 +196,8 @@ namespace mc
 		}
 
 		// Main textbox area
-		// The offset is set to make the main area slightly smaller 
-		// to fit inside the highlighted area while the highlighted 
+		// The offset is set to make the main area slightly smaller
+		// to fit inside the highlighted area while the highlighted
 		// border can still fit inside the layer's area.
 		Graphics::DrawRectangle(
 			layer.frame.position.x + 1,
@@ -206,7 +211,7 @@ namespace mc
 		);
 
 		std::string PreCursorText = Text.substr(m_VisibleStartIndex, m_CursorIndex - m_VisibleStartIndex);
-		auto metrics = Graphics::CalculateTextMetrics(PreCursorText, TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
+		auto metrics = Graphics::CalculateTextMetrics(PreCursorText, textProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
 
 		// If the textbox is focused and active, draw the cursor
 		if (m_IsFocused)
@@ -253,7 +258,7 @@ namespace mc
 		m_Label->color.alpha = layer.color.alpha;
 
 		// Keeping label's text properties updated
-		m_Label->Properties = TextProperties;
+		m_Label->Properties = textProperties;
 
 		// Controlling the label's text and opacity in case
 		// the placeholder text is displayed.
@@ -278,7 +283,7 @@ namespace mc
 		while (!success)
 		{
 			auto VisibleText = Text.substr(m_VisibleStartIndex, m_CursorIndex - m_VisibleStartIndex);
-			auto metrics = Graphics::CalculateTextMetrics(VisibleText, TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
+			auto metrics = Graphics::CalculateTextMetrics(VisibleText, textProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
 
 			if (!IsTextAboveLengthLimit(metrics.WidthIncludingTrailingWhitespace))
 				success = true;
@@ -294,7 +299,7 @@ namespace mc
 
 	void UITextbox::SanitizeVisibleText()
 	{
-		auto metrics = Graphics::CalculateTextMetrics(Text, TextProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
+		auto metrics = Graphics::CalculateTextMetrics(Text, textProperties, layer.frame.size.width - 2, layer.frame.size.height - 2);
 
 		if (!IsTextAboveLengthLimit(metrics.WidthIncludingTrailingWhitespace))
 		{

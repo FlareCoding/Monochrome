@@ -1,10 +1,16 @@
 #include "KeyboardEvents.h"
 
+#if defined(_WIN32)
 #include <Windows.h>
+#endif
+
 #include <map>
 
 namespace mc
 {
+#define DEPRECATED_KEY 0
+
+#if defined(_WIN32)
 	static std::map<KeyCode, int> _monochrome_keyboard_keycode_bindings_ = {
 		{ KeyCode::KEY_0, 0x30 },
 		{ KeyCode::KEY_1, 0x31 },
@@ -58,7 +64,6 @@ namespace mc
 		{ KeyCode::KEY_F12, VK_F12 },
 
 		{ KeyCode::KEY_BACKSPACE,	VK_BACK				},
-		{ KeyCode::KEY_BACKSPACE,	VK_BACK				},
 		{ KeyCode::KEY_SPACE,		VK_SPACE			},
 		{ KeyCode::KEY_BACKTICK,	VkKeyScan('`')		},
 		{ KeyCode::KEY_ENTER,		VK_RETURN			},
@@ -87,6 +92,90 @@ namespace mc
 		{ KeyCode::KEY_BACKSLASH,			VkKeyScan('\\')		},
 		{ KeyCode::KEY_SLASH,				VkKeyScan('/')		},
 	};
+#elif defined(__linux__)
+// https://www.cl.cam.ac.uk/~mgk25/ucs/keysymdef.h
+	static std::map<KeyCode, int> _monochrome_keyboard_keycode_bindings_ = {
+		{ KeyCode::KEY_0, 0x30 },
+		{ KeyCode::KEY_1, 0x31 },
+		{ KeyCode::KEY_2, 0x32 },
+		{ KeyCode::KEY_3, 0x33 },
+		{ KeyCode::KEY_4, 0x34 },
+		{ KeyCode::KEY_5, 0x35 },
+		{ KeyCode::KEY_6, 0x36 },
+		{ KeyCode::KEY_7, 0x37 },
+		{ KeyCode::KEY_8, 0x38 },
+		{ KeyCode::KEY_9, 0x39 },
+
+		{ KeyCode::KEY_A, 0x61 },
+		{ KeyCode::KEY_B, 0x62 },
+		{ KeyCode::KEY_C, 0x63 },
+		{ KeyCode::KEY_D, 0x64 },
+		{ KeyCode::KEY_E, 0x65 },
+		{ KeyCode::KEY_F, 0x66 },
+		{ KeyCode::KEY_G, 0x67 },
+		{ KeyCode::KEY_H, 0x68 },
+		{ KeyCode::KEY_I, 0x69 },
+		{ KeyCode::KEY_J, 0x6A },
+		{ KeyCode::KEY_K, 0x6B },
+		{ KeyCode::KEY_L, 0x6C },
+		{ KeyCode::KEY_M, 0x6D },
+		{ KeyCode::KEY_N, 0x6E },
+		{ KeyCode::KEY_O, 0x6F },
+		{ KeyCode::KEY_P, 0x70 },
+		{ KeyCode::KEY_Q, 0x71 },
+		{ KeyCode::KEY_R, 0x72 },
+		{ KeyCode::KEY_S, 0x73 },
+		{ KeyCode::KEY_T, 0x74 },
+		{ KeyCode::KEY_U, 0x75 },
+		{ KeyCode::KEY_V, 0x76 },
+		{ KeyCode::KEY_W, 0x77 },
+		{ KeyCode::KEY_X, 0x78 },
+		{ KeyCode::KEY_Y, 0x79 },
+		{ KeyCode::KEY_Z, 0x7A },
+
+		{ KeyCode::KEY_F1, 0xffbe },
+		{ KeyCode::KEY_F2, 0xffbf },
+		{ KeyCode::KEY_F3, 0xffc0 },
+		{ KeyCode::KEY_F4, 0xffc1 },
+		{ KeyCode::KEY_F5, 0xffc2 },
+		{ KeyCode::KEY_F6, 0xffc3 },
+		{ KeyCode::KEY_F7, 0xffc4 },
+		{ KeyCode::KEY_F8, 0xffc5 },
+		{ KeyCode::KEY_F9, 0xffc6 },
+		{ KeyCode::KEY_F10, 0xffc7 },
+		{ KeyCode::KEY_F11, 0xffc8 },
+		{ KeyCode::KEY_F12, 0xffc9 },
+
+		{ KeyCode::KEY_BACKSPACE,	0xff08				},
+		{ KeyCode::KEY_SPACE,		0x0020				},
+		{ KeyCode::KEY_BACKTICK,	0x0060				},
+		{ KeyCode::KEY_ENTER,		0xff0d				},
+		{ KeyCode::KEY_CAPSLOCK,	0xffe5				},
+		{ KeyCode::KEY_TAB,			0xff09				},
+		{ KeyCode::KEY_LSHIFT,		0xffe1				},
+		{ KeyCode::KEY_RSHIFT,		0xffe2				},
+		{ KeyCode::KEY_LCONTROL,	0xffe3				},
+		{ KeyCode::KEY_RCONTROL,	0xffe4				},
+		{ KeyCode::KEY_ALT,			0xffe9				},
+		{ KeyCode::KEY_OPTION,		DEPRECATED_KEY		},
+
+		{ KeyCode::KEY_UP,		0xff52					},
+		{ KeyCode::KEY_DOWN,	0xff54					},
+		{ KeyCode::KEY_RIGHT,	0xff53					},
+		{ KeyCode::KEY_LEFT,	0xff51					},
+
+		{ KeyCode::KEY_MINUS,				0x002d		},
+		{ KeyCode::KEY_EQUALS,				0x003d		},
+		{ KeyCode::KEY_COMMA,				0x002c		},
+		{ KeyCode::KEY_PERIOD,				0x002e		},
+		{ KeyCode::KEY_SEMICOLON,			0x003b		},
+		{ KeyCode::KEY_TICK,				0x0027		},
+		{ KeyCode::KEY_SQUARE_BRACKET_RIGHT,0x005d		},
+		{ KeyCode::KEY_SQUARE_BRACKET_LEFT, 0x005b		},
+		{ KeyCode::KEY_BACKSLASH,			0x005c		},
+		{ KeyCode::KEY_SLASH,				0x002f		},
+	};
+#endif
 
 	static std::map<KeyCode, std::pair<char, char>> _monochrome_keyboard_keycode_capital_char_bindings_ = {
 		{ KeyCode::KEY_0, std::pair<char, char>('0', ')') },
@@ -169,16 +258,16 @@ namespace mc
 		{ KeyCode::KEY_SLASH,		std::pair<char, char>('/', '?')		},
 	};
 
-	KeyCode VkToMcKeycode(int vkkeycode)
+	KeyCode NativeToMcKeycode(int keycode)
 	{
 		for (auto it = _monochrome_keyboard_keycode_bindings_.begin(); it != _monochrome_keyboard_keycode_bindings_.end(); it++)
-			if (it->second == vkkeycode)
+			if (it->second == keycode)
 				return it->first;
 
 		return KeyCode::None;
 	}
 
-	int McToVkKeycode(KeyCode keycode)
+	int McToNativeKeycode(KeyCode keycode)
 	{
 		return _monochrome_keyboard_keycode_bindings_[keycode];
 	}

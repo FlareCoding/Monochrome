@@ -1,4 +1,6 @@
 #include "Bitmap.h"
+
+#if defined(_WIN32)
 #include <graphics/d2d_resources/CoreResources.h>
 
 namespace mc
@@ -16,9 +18,10 @@ namespace mc
 	{
 		return ((ID2D1Bitmap*)m_BmpData)->GetSize().width;
 	}
-	
+
 	float Bitmap::GetHeight() const
 	{
 		return ((ID2D1Bitmap*)m_BmpData)->GetSize().height;
 	}
 }
+#endif

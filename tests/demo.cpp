@@ -25,7 +25,7 @@ int main()
 	button->Label->Text = "Click Me";
 	button->AddEventHandler<EventType::MouseButtonClicked>([](Event& evt, UIView* sender) -> bool {
 		checkbox->Checked = !checkbox->Checked;
-		return EVENT_HANDLED; 
+		return EVENT_HANDLED;
 	});
 	window->AddView(button);
 
@@ -42,10 +42,10 @@ int main()
 
 	Ref<UITextbox> textbox = MakeRef<UITextbox>();
 	textbox->layer.frame = Frame(Position{ 220, 340 }, Size{ 260, 34 });
-	textbox->TextProperties.FontSize = 16;
+	textbox->textProperties.FontSize = 16;
 	textbox->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
 		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
-			MessageBoxA(0, "Text Entered!", "Textbox 1", 0);
+			printf("Text entered from Textbox 1!\n");
 
 		return EVENT_HANDLED;
 	});
@@ -53,11 +53,11 @@ int main()
 
 	Ref<UITextbox> textbox2 = MakeRef<UITextbox>();
 	textbox2->layer.frame = Frame(Position{ 220, 400 }, Size{ 260, 34 });
-	textbox2->TextProperties.FontSize = 16;
+	textbox2->textProperties.FontSize = 16;
 	textbox2->Placeholder = "Enter Username";
 	textbox2->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
 		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
-			MessageBoxA(0, "Username Entered!", "Textbox 2", 0);
+			printf("Text entered from Textbox 2!\n");
 
 		return EVENT_HANDLED;
 	});
@@ -94,7 +94,6 @@ int main()
 
 	window->StartWindowLoop();
 
-	MessageBoxA(0, "End of control flow reached\r\nClean up code should go here", "Ready to Return", 0);
-
+	printf("End of control flow reached, clean up code should go here\n");
 	return 0;
 }

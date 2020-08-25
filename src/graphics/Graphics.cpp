@@ -4,7 +4,7 @@
 #if defined(_WIN32)
 #include <platform/WindowsGraphics.h>
 #elif defined(__linux__)
-#error Monochrome is not yet supported on Linux
+#include <platform/LinuxGraphics.h>
 #elif defined(__APPLE__)
 #error Monochrome is not yet supported on OS X
 #else
@@ -18,7 +18,7 @@ namespace mc
 #if defined(_WIN32)
 		return WindowsGraphics::Initialize(reinterpret_cast<HWND>(native));
 #elif defined(__linux__)
-	
+		return LinuxGraphics::Initialize(native);
 #endif
 	}
 
@@ -27,8 +27,8 @@ namespace mc
 #if defined(_WIN32)
 		return WindowsGraphics::IsInitialized();
 #elif defined(__linux__)
-
-#endif	
+		return LinuxGraphics::IsInitialized();
+#endif
 	}
 
 	void Graphics::Shutdown()
@@ -36,7 +36,7 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::Shutdown();
 #elif defined(__linux__)
-
+		LinuxGraphics::Shutdown();
 #endif
 	}
 
@@ -45,52 +45,52 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::SetActiveTarget(reinterpret_cast<HWND>(native));
 #elif defined(__linux__)
-
+		LinuxGraphics::SetActiveTarget(native);
 #endif
 	}
-	
+
 	void Graphics::BeginFrame()
 	{
 #if defined(_WIN32)
 		WindowsGraphics::BeginFrame();
 #elif defined(__linux__)
-
+		LinuxGraphics::BeginFrame();
 #endif
 	}
-	
+
 	void Graphics::EndFrame()
 	{
 #if defined(_WIN32)
 		WindowsGraphics::EndFrame();
 #elif defined(__linux__)
-
+		LinuxGraphics::EndFrame();
 #endif
 	}
-	
+
 	void Graphics::ClearScreenColor(uint32_t r, uint32_t g, uint32_t b)
 	{
 #if defined(_WIN32)
 		WindowsGraphics::ClearScreenColor(r, g, b);
 #elif defined(__linux__)
-
+		LinuxGraphics::ClearScreenColor(r, g, b);
 #endif
 	}
-	
+
 	void Graphics::PushLayer(float x, float y, float width, float height)
 	{
 #if defined(_WIN32)
 		WindowsGraphics::PushLayer(x, y, width, height);
 #elif defined(__linux__)
-
+		LinuxGraphics::PushLayer(x, y, width, height);
 #endif
 	}
-	
+
 	void Graphics::PopLayer()
 	{
 #if defined(_WIN32)
 		WindowsGraphics::PopLayer();
 #elif defined(__linux__)
-
+		LinuxGraphics::PopLayer();
 #endif
 	}
 
@@ -99,7 +99,7 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::ResizeRenderTarget(reinterpret_cast<HWND>(native));
 #elif defined(__linux__)
-
+		LinuxGraphics::ResizeRenderTarget(native);
 #endif
 	}
 
@@ -114,8 +114,8 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::DrawLine(x1, y1, x2, y2, color, stroke);
 #elif defined(__linux__)
-
-#endif	
+		LinuxGraphics::DrawLine(x1, y1, x2, y2, color, stroke);
+#endif
 	}
 
 	void Graphics::DrawRectangle(
@@ -131,7 +131,7 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::DrawRectangle(x, y, width, height, color, corner_radius, filled, stroke);
 #elif defined(__linux__)
-
+		LinuxGraphics::DrawRectangle(x, y, width, height, color, corner_radius, filled, stroke);
 #endif
 	}
 
@@ -146,7 +146,7 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::DrawCircle(x, y, radius, color, filled, stroke);
 #elif defined(__linux__)
-
+		LinuxGraphics::DrawCircle(x, y, radius, color, filled, stroke);
 #endif
 	}
 
@@ -164,7 +164,7 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::DrawArc(start_x, start_y, end_x, end_y, size, color, clockwise, large_arc, stroke);
 #elif defined(__linux__)
-
+		LinuxGraphics::DrawArc(start_x, start_y, end_x, end_y, size, color, clockwise, large_arc, stroke);
 #endif
 	}
 
@@ -180,7 +180,7 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::DrawTextWideString(x, y, width, height, text, text_props, color);
 #elif defined(__linux__)
-
+		LinuxGraphics::DrawTextWideString(x, y, width, height, text, text_props, color);
 #endif
 	}
 
@@ -196,7 +196,7 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::DrawTextString(x, y, width, height, text, text_props, color);
 #elif defined(__linux__)
-
+		LinuxGraphics::DrawTextString(x, y, width, height, text, text_props, color);
 #endif
 	}
 
@@ -209,7 +209,7 @@ namespace mc
 #if defined(_WIN32)
 		return WindowsGraphics::CalculateTextMetrics(text, text_props, max_width, max_height);
 #elif defined(__linux__)
-
+		return LinuxGraphics::CalculateTextMetrics(text, text_props, max_width, max_height);
 #endif
 	}
 
@@ -218,7 +218,7 @@ namespace mc
 #if defined(_WIN32)
 		return WindowsGraphics::CreateBitmapFromFile(path);
 #elif defined(__linux__)
-
+		return LinuxGraphics::CreateBitmapFromFile(path);
 #endif
 	}
 
@@ -227,7 +227,7 @@ namespace mc
 #if defined(_WIN32)
 		return WindowsGraphics::CreateBitmap(data, size);
 #elif defined(__linux__)
-
+		return LinuxGraphics::CreateBitmap(data, size);
 #endif
 	}
 
@@ -243,7 +243,7 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::DrawBitmapImage(bmp, x, y, width, height, opacity);
 #elif defined(__linux__)
-
+		LinuxGraphics::DrawBitmapImage(bmp, x, y, width, height, opacity);
 #endif
 	}
 
@@ -252,7 +252,7 @@ namespace mc
 #if defined(_WIN32)
 		WindowsGraphics::Update(background, sm, clearBackgroundColor);
 #elif defined(__linux__)
-
+		LinuxGraphics::Update(background, sm, clearBackgroundColor);
 #endif
 	}
 }

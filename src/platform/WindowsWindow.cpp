@@ -61,7 +61,7 @@ namespace mc
 
 		if (((MouseButtonEvent&)event).button == MouseButton::Left)
 		{
-			// The window should be maximized if it's not already and 
+			// The window should be maximized if it's not already and
 			// should return to normal state if it was already maximized.
 			if (wndpl.showCmd == SW_MAXIMIZE)
 				ShowWindow(reinterpret_cast<HWND>(sender->srcwindow->GetNativeHandle()), SW_NORMAL);
@@ -108,7 +108,7 @@ namespace mc
 		// Set window DPI-Awareness mode to be aware of high dpi displays
 		if (DpiAwarenessProc)
 			DpiAwarenessProc(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
-#pragma warning( pop ) 
+#pragma warning( pop )
 
 		WindowInstancesCreated++;
 		std::wstring WindowClassName = std::wstring(MONOCHROME_70_WINDOW_CLASSNAME + std::to_wstring(WindowInstancesCreated));
@@ -182,7 +182,7 @@ namespace mc
 
 		m_IsOpened = true;
 		UpdateWindow(hwnd);
-#pragma warning( pop ) 
+#pragma warning( pop )
 
 		// Calculating window DPI for current monitor
 		m_Dpi = GetDpiForWindow(reinterpret_cast<HWND>(m_NativeHandle));
@@ -492,28 +492,28 @@ namespace mc
 			m_SceneManager.DispatchEvent(e);
 			break;
 		}
-		case  WM_MBUTTONDOWN:
+		case WM_MBUTTONDOWN:
 		{
 			auto clickpos = POINT{ (LONG)((float)GET_X_LPARAM(lParam) * (float)m_Dpi / 96.0f), (LONG)((float)GET_Y_LPARAM(lParam) * (float)m_Dpi / 96.0f) };
 			auto e = std::make_shared<MouseButtonPressedEvent>(Point{ (float)clickpos.x, (float)clickpos.y }, MouseButton::Middle);
 			m_SceneManager.DispatchEvent(e);
 			break;
 		}
-		case  WM_LBUTTONUP:
+		case WM_LBUTTONUP:
 		{
 			auto clickpos = POINT{ (LONG)((float)GET_X_LPARAM(lParam) * (float)m_Dpi / 96.0f), (LONG)((float)GET_Y_LPARAM(lParam) * (float)m_Dpi / 96.0f) };
 			auto e = std::make_shared<MouseButtonReleasedEvent>(Point{ (float)clickpos.x, (float)clickpos.y }, MouseButton::Left);
 			m_SceneManager.DispatchEvent(e);
 			break;
 		}
-		case  WM_RBUTTONUP:
+		case WM_RBUTTONUP:
 		{
 			auto clickpos = POINT{ (LONG)((float)GET_X_LPARAM(lParam) * (float)m_Dpi / 96.0f), (LONG)((float)GET_Y_LPARAM(lParam) * (float)m_Dpi / 96.0f) };
 			auto e = std::make_shared<MouseButtonReleasedEvent>(Point{ (float)clickpos.x, (float)clickpos.y }, MouseButton::Right);
 			m_SceneManager.DispatchEvent(e);
 			break;
 		}
-		case  WM_MBUTTONUP:
+		case WM_MBUTTONUP:
 		{
 			auto clickpos = POINT{ (LONG)((float)GET_X_LPARAM(lParam) * (float)m_Dpi / 96.0f), (LONG)((float)GET_Y_LPARAM(lParam) * (float)m_Dpi / 96.0f) };
 			auto e = std::make_shared<MouseButtonReleasedEvent>(Point{ (float)clickpos.x, (float)clickpos.y }, MouseButton::Middle);
@@ -562,7 +562,7 @@ namespace mc
 			bool shift_pressed = (bool)(GetKeyState(VK_SHIFT) & 0x8000);
 			bool capslock = (bool)(GetKeyState(VK_CAPITAL) & 0x0001);
 			bool repeated = (bool)(HIWORD(lParam) & KF_REPEAT);
-			KeyCode keycode = VkToMcKeycode(vk_keycode);
+			KeyCode keycode = NativeToMcKeycode(vk_keycode);
 
 			auto e = std::make_shared<KeyPressedEvent>(keycode, repeated, shift_pressed, capslock);
 			m_SceneManager.DispatchEvent(e);
@@ -571,7 +571,7 @@ namespace mc
 		case WM_KEYUP:
 		{
 			int vk_keycode = (int)wParam;
-			KeyCode keycode = VkToMcKeycode(vk_keycode);
+			KeyCode keycode = NativeToMcKeycode(vk_keycode);
 
 			auto e = std::make_shared<KeyReleasedEvent>(keycode);
 			m_SceneManager.DispatchEvent(e);

@@ -11,7 +11,7 @@ namespace mc
 
 		virtual ~RenderTarget() = default;
 
-		virtual inline void* const GetNativeHandle() const = 0;
+		virtual void* const GetNativeHandle() const = 0;
 
 		virtual void BeginDraw() = 0;
 		virtual void EndDraw() = 0;

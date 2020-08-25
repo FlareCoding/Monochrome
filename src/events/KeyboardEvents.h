@@ -18,11 +18,11 @@ namespace mc
 		KEY_MINUS, KEY_EQUALS, KEY_COMMA, KEY_PERIOD, KEY_SEMICOLON, KEY_TICK, KEY_SQUARE_BRACKET_RIGHT, KEY_SQUARE_BRACKET_LEFT, KEY_BACKSLASH, KEY_SLASH
 	};
 
-	/// Converts a Windows platform keycode to Monochrome's key code.
-	KeyCode VkToMcKeycode(int vkkeycode);
+	/// Converts a native platform keycode to Monochrome's key code.
+	KeyCode NativeToMcKeycode(int keycode);
 
-	/// Converts Monochrome's keycode to Windows platform key code.
-	int		McToVkKeycode(KeyCode keycode);
+	/// Converts Monochrome's keycode to a native platform key code.
+	int		McToNativeKeycode(KeyCode keycode);
 
 	/// Converts Monochrome's keycode to its character representation.
 	char	McKeycodeToChar(KeyCode keycode, bool capital, bool capslock_enabled);

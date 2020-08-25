@@ -109,7 +109,7 @@ namespace mc
 		}
 	}
 
-#pragma warning( pop ) 
+#pragma warning( pop )
 
 	static bool s_AreWindowsGraphicsInitialized = false;
 	static bool s_ShutdownRequired = false;
@@ -123,6 +123,7 @@ namespace mc
 		m_RenderTargetMap[hwnd] = RenderTarget::Create((void*)hwnd);
 		m_RenderTargetMap[hwnd]->Resize(hwnd);
 
+		s_AreWindowsGraphicsInitialized = true;
 		return true;
 	}
 
@@ -546,7 +547,7 @@ namespace mc
 		target->DrawBitmap((ID2D1Bitmap*)bmp->GetBmpData(), dest_rect, opacity, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, src_rect);
 	}
 
-#pragma warning( pop ) 
+#pragma warning( pop )
 
 	void WindowsGraphics::Update(const Color& background, SceneManager& sm, bool clearBackgroundColor)
 	{
