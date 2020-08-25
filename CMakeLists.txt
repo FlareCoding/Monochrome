@@ -2,11 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo")
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17 /EHsc")
-else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
-endif()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_definitions(-DUNICODE -D_UNICODE)
 
@@ -25,7 +23,7 @@ add_library(
     ${MC_SOURCES}
 )
 
-if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if (NOT MSVC)
     find_package(X11 REQUIRED)
     link_libraries(${X11_LIBRARIES})
     include_directories(${X11_INCLUDE_DIR})
@@ -44,6 +42,6 @@ endif()
 
 add_subdirectory(tests)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if (MSVC)
     add_subdirectory(editor)
 endif()

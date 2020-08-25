@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.0)
 add_executable(Demo demo.cpp)
 target_link_libraries(Demo PUBLIC Monochrome)
 
-add_executable(MultipleWindowsTest multiple_windows_test.cpp)
-target_link_libraries(MultipleWindowsTest PUBLIC Monochrome pthread)
+if (MSVC)
+    add_executable(MultipleWindowsTest multiple_windows_test.cpp)
+    target_link_libraries(MultipleWindowsTest PUBLIC Monochrome)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_executable(WindowControlTest window_control_test.cpp)
     target_link_libraries(WindowControlTest PUBLIC Monochrome)
 

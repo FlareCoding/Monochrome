@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if (MSVC)
     set(
         MC_PLATFORM_HEADERS
 

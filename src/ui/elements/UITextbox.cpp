@@ -3,6 +3,10 @@
 #include <window/UIWindow.h>
 #include <string.h>
 
+#if defined(_WIN32)
+	#include <Windows.h>
+#endif
+
 namespace mc
 {
 	static std::string GetClipboardText()
@@ -13,7 +17,7 @@ namespace mc
 			return "";
 
 		// Get handle of clipboard object for ANSI text
-		HANDLE hData = GetClipboardData(CF_TEXT);
+		HANDLE hData = GetClipboardData(1);
 		if (hData == nullptr)
 			return "";
 
