@@ -1,46 +1,51 @@
-#include "RenderTarget.h"
+#include "WindowsRenderTarget.h"
 
 namespace mc
 {
-	RenderTarget::RenderTarget(HWND hwnd)
+	Ref<RenderTarget> mc::RenderTarget::Create(void* native)
+	{
+		return Ref<RenderTarget>(new WindowsRenderTarget((HWND)native));
+	}
+
+	WindowsRenderTarget::WindowsRenderTarget(HWND hwnd)
 	{
 		if (!CoreResources::IsInitialized()) CoreResources::Initialize();
 
 		m_NativeHandle = CoreResources::CreateRenderTarget(hwnd);
 	}
 
-	void RenderTarget::BeginDraw()
+	void WindowsRenderTarget::BeginDraw()
 	{
 		m_NativeHandle->BeginDraw();
 	}
 
-	void RenderTarget::EndDraw()
+	void WindowsRenderTarget::EndDraw()
 	{
 		m_NativeHandle->EndDraw();
 	}
 
-	void RenderTarget::ClearScreen(uint32_t r, uint32_t g, uint32_t b)
+	void WindowsRenderTarget::ClearScreen(uint32_t r, uint32_t g, uint32_t b)
 	{
 		m_NativeHandle->Clear(D2D1::ColorF((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f));
 	}
 
-	void RenderTarget::PushLayer(float x, float y, float width, float height)
+	void WindowsRenderTarget::PushLayer(float x, float y, float width, float height)
 	{
 		D2D1_RECT_F bounds = D2D1::RectF(x, y, x + width, y + height);
 		m_NativeHandle->PushAxisAlignedClip(bounds, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
 	}
 
-	void RenderTarget::PopLayer()
+	void WindowsRenderTarget::PopLayer()
 	{
 		m_NativeHandle->PopAxisAlignedClip();
 	}
 
-	void RenderTarget::Resize(HWND hwnd)
+	void WindowsRenderTarget::Resize(void* hwnd)
 	{
 		RECT rect;
-		GetClientRect(hwnd, &rect);
+		GetClientRect((HWND)hwnd, &rect);
 
-		float window_dpi = (float)GetDpiForWindow(hwnd);
+		float window_dpi = (float)GetDpiForWindow((HWND)hwnd);
 		UINT width = (UINT)((float)(rect.right - rect.left) * window_dpi / 96.0f);
 		UINT height = (UINT)((float)(rect.bottom - rect.top) * window_dpi / 96.0f);
 

@@ -23,10 +23,10 @@ void VariableCodeProperties::InitPropertiesUI()
 	m_VariableVisibilityCombobox->AddItemChangedEventHandler([this](size_t index, UICombobox* sender) {
 		auto visibility = m_VariableVisibilityCombobox->GetItem(index);
 
-		m_VariableNameInput->Visible = !visibility._Equal("local");
-		m_VariableNameLabel->Visible = !visibility._Equal("local");
-		
-		if (visibility._Equal("local"))
+		m_VariableNameInput->Visible = (visibility != "local");
+		m_VariableNameLabel->Visible = (visibility != "local");
+
+		if (visibility == "local")
 			m_VariableNameInput->Text = "";
 
 		if (m_RegisteredElementProperties.find(m_TargetElement) != m_RegisteredElementProperties.end())
@@ -51,7 +51,7 @@ void VariableCodeProperties::InitPropertiesUI()
 	m_VariableNameInput->layer.color = Color(58, 58, 59, 1.0f);
 	m_VariableNameInput->TextColor = Color::white;
 	m_VariableNameInput->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_VariableNameInput->TextProperties.FontSize = 14;
+	m_VariableNameInput->textProperties.FontSize = 14;
 	m_VariableNameInput->Placeholder = "Enter Value";
 	m_VariableNameInput->Visible = false;
 	m_VariableNameInput->AddEventHandler<EventType::KeyPressed>([this](Event& e, UIView* sender) -> bool {
@@ -116,7 +116,7 @@ void VariableCodeProperties::InitPropertiesUI()
 	m_UseEventHandlerCheckbox->CheckedBoxColor = Color(108, 108, 109, 1);
 	m_UseEventHandlerCheckbox->CheckmarkColor = Color::white;
 	m_UseEventHandlerCheckbox->AddValueChangedEventHandler([this](bool checked, UICheckbox* sender) {
-		auto& EventTypeButton = std::dynamic_pointer_cast<UIButton>(m_EventHandlersPanel->ContentView->subviews[m_SelectedEventTypeIndex]);
+		auto EventTypeButton = std::dynamic_pointer_cast<UIButton>(m_EventHandlersPanel->ContentView->subviews[m_SelectedEventTypeIndex]);
 		EventTypeButton->Label->color = checked ? Color(0, 140, 0, 1) : Color(100, 0, 0, 1.0f);
 
 		auto& HandlerMap = m_RegisteredElementProperties[m_TargetElement].eventHandlerDataMap;
@@ -186,7 +186,7 @@ void VariableCodeProperties::InitPropertiesUI()
 	m_ClassFunctionNameInput->layer.color = Color(58, 58, 59, 1.0f);
 	m_ClassFunctionNameInput->TextColor = Color::white;
 	m_ClassFunctionNameInput->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_ClassFunctionNameInput->TextProperties.FontSize = 14;
+	m_ClassFunctionNameInput->textProperties.FontSize = 14;
 	m_ClassFunctionNameInput->Placeholder = "Enter name";
 	m_ClassFunctionNameInput->Visible = false;
 	m_ClassFunctionNameInput->AddEventHandler<EventType::KeyPressed>([this](Event& e, UIView* sender) -> bool {
@@ -230,7 +230,7 @@ void VariableCodeProperties::OnPropertiesOpened()
 	{
 		// Existing Element
 		auto& props = m_RegisteredElementProperties[m_TargetElement];
-		
+
 		m_VariableVisibilityCombobox->SelectItem(props.visibility);
 		m_VariableNameInput->Text = props.name;
 	}
@@ -267,7 +267,7 @@ void VariableCodeProperties::OpenEventHandlerSettingsUI(const std::string& event
 {
 	m_EventTypeSelectedLabel->Text = "Event Type Selected:  " + event_type;
 	auto& HandlerMap = m_RegisteredElementProperties[m_TargetElement].eventHandlerDataMap;
-	
+
 	m_UseEventHandlerCheckbox->Checked = (HandlerMap.find(event_type) != HandlerMap.end());
 	if (m_UseEventHandlerCheckbox->Checked)
 	{

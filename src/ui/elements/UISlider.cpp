@@ -3,12 +3,16 @@
 #include <events/Events.h>
 #include <window/UIWindow.h>
 
+#if defined(__linux__)
+#include <math.h>
+#endif
+
 namespace mc
 {
 	static float UISLIDER_RECTANGULAR_KNOB_WIDTH = 7.0f;
 
 	Frame UISlider::GetSliderKnobAbsoluteBoundingBox()
-	{	
+	{
 		Point box_location;
 		Size  box_size;
 
@@ -34,7 +38,7 @@ namespace mc
 		}
 
 		auto box = Frame(box_location, box_size);
-		
+
 		uint32_t window_dpi = 96;
 		if (UIWindow::GetCurrentActiveWindow())
 			window_dpi = UIWindow::GetCurrentActiveWindow()->GetDpi();
@@ -79,7 +83,7 @@ namespace mc
 	{
 		SetDefaultOptions();
 	}
-	
+
 	void UISlider::SetDefaultOptions()
 	{
 		CornerRadius = 0;

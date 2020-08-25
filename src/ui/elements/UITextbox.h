@@ -11,7 +11,7 @@ namespace mc
 		UITextbox();
 		UITextbox(Frame frame);
 		~UITextbox() = default;
-		
+
 		// Inherited via IDrawable
 		virtual void Draw() override;
 
@@ -27,7 +27,7 @@ namespace mc
 		std::string Placeholder;
 
 		/// Font and style of the text or placeholder in the textbox.
-		TextProperties TextProperties;
+		TextProperties textProperties;
 
 		/// Color of the text.
 		Color TextColor = Color::black;
@@ -54,7 +54,6 @@ namespace mc
 		size_t m_CursorIndex = 0;
 		size_t m_VisibleStartIndex = 0;
 		size_t m_VisibleEndIndex = 0;
-		uint32_t m_VisibleCharLimit = 0;
 
 		std::string m_VisibleText = "";
 		std::string m_OldText = "";

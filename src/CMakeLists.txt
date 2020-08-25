@@ -7,6 +7,7 @@ add_subdirectory(events)
 add_subdirectory(graphics)
 add_subdirectory(ui)
 add_subdirectory(window)
+add_subdirectory(platform)
 
 set(
     MC_HEADERS
@@ -16,6 +17,7 @@ set(
     ${MC_GRAPHICS_HEADERS}
     ${MC_UI_HEADERS}
     ${MC_WINDOW_HEADERS}
+    ${MC_PLATFORM_HEADERS}
 
     src/Monochrome.h
 
@@ -29,6 +31,7 @@ set(
     ${MC_GRAPHICS_SOURCES}
     ${MC_UI_SOURCES}
     ${MC_WINDOW_SOURCES}
+    ${MC_PLATFORM_SOURCES}
 
     PARENT_SCOPE
 )

@@ -1,33 +1,25 @@
 #pragma once
+#include <core/Core.h>
 #include <cinttypes>
-#include "d2d_resources/CoreResources.h"
-
-#include <wrl/client.h>
-using namespace Microsoft::WRL;
-
-struct ID2D1HwndRenderTarget;
 
 namespace mc
 {
 	class RenderTarget
 	{
 	public:
-		RenderTarget(HWND hwnd);
+		static Ref<RenderTarget> Create(void* native);
 
-		inline ID2D1HwndRenderTarget* const GetNativeHandle() const { return m_NativeHandle.Get(); }
+		virtual ~RenderTarget() = default;
 
-		void BeginDraw();
-		void EndDraw();
-		void ClearScreen(uint32_t r, uint32_t g, uint32_t b);
+		virtual void* const GetNativeHandle() const = 0;
 
-		void PushLayer(float x, float y, float width, float height);
-		void PopLayer();
+		virtual void BeginDraw() = 0;
+		virtual void EndDraw() = 0;
+		virtual void ClearScreen(uint32_t r, uint32_t g, uint32_t b) = 0;
 
-		void Resize(HWND hwnd);
+		virtual void PushLayer(float x, float y, float width, float height) = 0;
+		virtual void PopLayer() = 0;
 
-		~RenderTarget() = default;
-
-	private:
-		ComPtr<ID2D1HwndRenderTarget> m_NativeHandle;
+		virtual void Resize(void* native) = 0;
 	};
 }

@@ -31,8 +31,8 @@ int main()
 	Ref<UIButton> button = MakeRef<UIButton>();
 	button->layer.frame = Frame({ 280, 120 }, { 200, 36 });
 	button->Label->Text = "Click Me";
-	button->AddEventHandler<EventType::MouseButtonClicked>([](Event& evt, UIView* sender) -> bool {
-		MessageBoxA(0, "Clicked", "UIButton", 0);
+	button->AddEventHandler<EventType::MouseButtonClicked>([button](Event& evt, UIView* sender) -> bool {
+		button->Label->Text = "Parent Button Clicked";
 		return EVENT_HANDLED;
 	});
 	window->AddView(button);

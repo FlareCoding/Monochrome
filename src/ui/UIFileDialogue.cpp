@@ -8,14 +8,21 @@ namespace mc
 
 	void UIFileDialogueFilter::AddFilter(const std::wstring& name, const std::wstring& formats)
 	{
+#if defined(_WIN32)
 		m_FilterMap.insert({name, formats});
+#endif
 	}
 
 	bool UIFileDialogueFilter::HasFilters()
 	{
+#if defined(_WIN32)
 		return m_FilterMap.size();
+#else
+		return false;
+#endif
 	}
 
+#if defined(_WIN32)
 	std::vector<COMDLG_FILTERSPEC> UIFileDialogueFilter::GetComDlgFilterSpecs()
 	{
 		std::vector<COMDLG_FILTERSPEC> filters;
@@ -29,6 +36,7 @@ namespace mc
 
 		return filters;
 	}
+#endif
 
 	/// --------------------------------------------------------------------------
 	///	----------------------------- UIFileDialogue -----------------------------
@@ -36,24 +44,39 @@ namespace mc
 
 	std::string UIFileDialogue::ChooseDirectoryDialogue()
 	{
+#if defined(_WIN32)
 		return FireOpenFileDialogue(FOS_PICKFOLDERS | FOS_PATHMUSTEXIST, true);
+#else
+return "";
+#endif
 	}
 
 	std::string UIFileDialogue::ChooseFileDialogue()
 	{
+#if defined(_WIN32)
 		return FireOpenFileDialogue(FOS_FILEMUSTEXIST | FOS_PATHMUSTEXIST, true);
+#else
+return "";
+#endif
 	}
 
 	std::string UIFileDialogue::SaveFileDialogue()
 	{
+#if defined(_WIN32)
 		return FireOpenFileDialogue(FOS_PATHMUSTEXIST, false);
+#else
+return "";
+#endif
 	}
 
 	void UIFileDialogue::SetFilter(UIFileDialogueFilter filter)
 	{
+#if defined(_WIN32)
 		m_Filter = filter;
+#endif
 	}
 
+#if defined(_WIN32)
 	std::string UIFileDialogue::FireOpenFileDialogue(FILEOPENDIALOGOPTIONS options, bool open_dialogue)
 	{
 		std::string result = "";
@@ -108,4 +131,5 @@ namespace mc
 		m_pFileOpenDialogue->Release();
 		return result;
 	}
+#endif
 }

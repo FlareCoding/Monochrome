@@ -9,7 +9,7 @@ namespace mc
 		layer.frame = Frame(40, 40, 380, 480);
 		SetDefaultOptions();
 	}
-	
+
 	UITabView::UITabView(Frame frame) : UIView(frame)
 	{
 		SetDefaultOptions();
@@ -62,7 +62,7 @@ namespace mc
 		{
 			if (m_CurrentlyPlacedView) RemoveSubview(m_CurrentlyPlacedView);
 			m_CurrentlyPlacedView = m_SelectedView;
-			
+
 			if (m_CurrentlyPlacedView) AddSubview(m_CurrentlyPlacedView);
 
 			for (auto [name, tab, view] : m_Tabs)
@@ -126,7 +126,7 @@ namespace mc
 		Ref<UIButton> tab_btn = MakeRef<UIButton>();
 		tab_btn->CornerRadius = 0;
 		tab_btn->Label->Text = name;
-		
+
 		if (m_ChosenTabColor != Color::transparent)
 			tab_btn->layer.color = m_ChosenTabColor;
 		else
@@ -164,7 +164,7 @@ namespace mc
 	void UITabView::RemoveTab(const std::string& name)
 	{
 		for (size_t i = 0; i < m_Tabs.size(); i++)
-			if (std::get<0>(m_Tabs[i])._Equal(name))
+			if (std::get<0>(m_Tabs[i]) == name)
 				RemoveTab(i);
 	}
 
@@ -191,7 +191,7 @@ namespace mc
 	void UITabView::OpenTab(const std::string& name)
 	{
 		for (size_t i = 0; i < m_Tabs.size(); i++)
-			if (std::get<0>(m_Tabs[i])._Equal(name))
+			if (std::get<0>(m_Tabs[i]) == name)
 				return OpenTab(i);
 	}
 
@@ -222,7 +222,7 @@ namespace mc
 	Ref<UIView> UITabView::operator[](const std::string& name)
 	{
 		for (size_t i = 0; i < m_Tabs.size(); i++)
-			if (std::get<0>(m_Tabs[i])._Equal(name))
+			if (std::get<0>(m_Tabs[i]) == name)
 				return std::get<2>(m_Tabs[i]);
 
 		return nullptr;

@@ -1,21 +1,14 @@
 #pragma once
-#include <core/Core.h>
-#include "Color.h"
-#include "Shapes.h"
-#include "TextProperties.h"
-#include "Bitmap.h"
-#include "RenderTarget.h"
+#include <graphics/Graphics.h>
 
 namespace mc
 {
-	class SceneManager;
-
-	class Graphics
+	class LinuxGraphics
 	{
 	public:
-		static bool Initialize(void* native);
+		static bool Initialize(void* init_info);
 		static bool IsInitialized();
-	
+
 		static void Shutdown();
 
 		static void SetActiveTarget(void* native);
@@ -57,7 +50,7 @@ namespace mc
 		/// @param color Color to fill the rectangle with
 		/// @param corner_radius Specifies the radius of each corner of the rectangle
 		/// @param filled Specifies if the rectangle should be filled
-		/// @param stroke Specifies the border thickness
+		/// @param stroke Specifistatic std::map<HWND, Ref<RenderTarget>> m_RenderTargetMap;es the border thickness
 		///
 		static void DrawRectangle(
 			float x,
@@ -162,6 +155,17 @@ namespace mc
 			float max_height
 		);
 
+		/// Calculates how many characters would fit on a single line.
+		/// @param text_props Properties describing the text font and style
+		/// @param container_width Width of the container holding the text
+		/// @param container_height Height of the container holding the text
+		/// @returns Number of characters that would fit on the line
+		static uint32_t GetLineCharacterLimit(
+			TextProperties text_props,
+			float container_width,
+			float container_height
+		);
+
 		/// Returns a Bitmap object holding the image data from reading a file.
 		static Ref<Bitmap> CreateBitmapFromFile(const std::string& path);
 
@@ -186,5 +190,9 @@ namespace mc
 			float height,
 			float opacity = 1.0f
 		);
+
+	private:
+		static Ref<RenderTarget> m_RenderTarget;
+		static std::map<int, Ref<RenderTarget>> m_RenderTargetMap;
 	};
 }

@@ -58,7 +58,7 @@ inline void UIElementProperties<UIElement>::ForceUpdateProjectWindow()
 template<typename UIElement>
 inline void UIElementProperties<UIElement>::AssignFloatFromField(float& target, Ref<UITextbox>& src)
 {
-	try 
+	try
 	{
 		float val = std::stof(src->Text);
 		target = val;
@@ -113,7 +113,7 @@ inline Ref<UITextbox> UIElementProperties<UIElement>::AddInputField(std::string 
 	Input->layer.color = Color(58, 58, 59, 1.0f);
 	Input->TextColor = Color::white;
 	Input->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	Input->TextProperties.FontSize = font_size;
+	Input->textProperties.FontSize = font_size;
 	Input->Placeholder = "Enter Value";
 	Input->AddEventHandler<EventType::KeyPressed>([this, Input, input_handler](Event& e, UIView* sender) -> bool {
 		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)

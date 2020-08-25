@@ -1,15 +1,18 @@
 #include "UICursor.h"
-#include <Windows.h>
 #include <unordered_map>
 
-static void _set_cursor(LPCWSTR cursor)
-{
-	SetCursor(LoadCursorW(NULL, cursor));
-}
+#if defined(_WIN32)
+	#include <Windows.h>
+	static void _set_cursor(LPCWSTR cursor)
+	{
+		SetCursor(LoadCursorW(NULL, cursor));
+	}
+#endif
 
 namespace mc
 {
-	static std::unordered_map<CursorType, LPCWSTR> CursorNameMappings = 
+#if defined(_WIN32)
+	static std::unordered_map<CursorType, LPCWSTR> CursorNameMappings =
 	{
 		{ CursorType::AppStarting,	IDC_APPSTARTING },
 		{ CursorType::Arrow,		IDC_ARROW },
@@ -26,13 +29,16 @@ namespace mc
 		{ CursorType::UpArrow,		IDC_UPARROW },
 		{ CursorType::Wait,			IDC_WAIT },
 	};
+#endif
 
 	static CursorType s_ActiveCursorType = CursorType::Arrow;
 
 	void UICursor::ActivateCursor(CursorType type)
 	{
+#if defined(_WIN32)
 		if (type != CursorType::Unknown)
 			_set_cursor(CursorNameMappings[type]);
+#endif
 	}
 
 	void UICursor::SetCursor(CursorType type)

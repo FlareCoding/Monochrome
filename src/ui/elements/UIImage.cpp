@@ -1,11 +1,16 @@
 #include "UIImage.h"
 #include <graphics/Graphics.h>
 
+#ifdef _WIN32
+#include <Windows.h>
 #include <WinInet.h>
+#endif
 
 namespace mc
 {
+#if defined(_WIN32)
 	static void LoadWebImageData(const std::string& url, std::vector<char>& data);
+#endif
 
 	UIImage::UIImage()
 	{
@@ -23,7 +28,10 @@ namespace mc
 	bool UIImage::LoadWebImage(const std::string& url)
 	{
 		std::vector<char> data;
+
+#if defined(_WIN32)
 		LoadWebImageData(url, data);
+#endif
 
 		m_Bitmap = Graphics::CreateBitmap(&data[0], (uint32_t)data.size());
 		return m_Bitmap.get();
@@ -56,6 +64,7 @@ namespace mc
 
 	void LoadWebImageData(const std::string& url, std::vector<char>& data)
 	{
+#if defined(_WIN32)
 		HINTERNET hInternetSession;
 		HINTERNET hURL;
 
@@ -74,5 +83,6 @@ namespace mc
 		// Close down connections.
 		InternetCloseHandle(hURL);
 		InternetCloseHandle(hInternetSession);
+#endif
 	}
 }

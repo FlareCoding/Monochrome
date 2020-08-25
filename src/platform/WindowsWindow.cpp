@@ -1,4 +1,4 @@
-﻿#include "UIWindow.h"
+﻿#include "WindowsWindow.h"
 #include <graphics/Graphics.h>
 #include <ui/UIElements.h>
 #include <events/Events.h>
@@ -31,9 +31,11 @@ std::wstring ConvertStringToWstring(const std::string& str)
 
 namespace mc
 {
-	static UIWindow* s_CurrentActiveWindowInstance = nullptr;
+	typedef BOOL (__stdcall *SetProcessDpiAwarenessContextFn)(DPI_AWARENESS_CONTEXT);
 
-	static POINT _mc_uiwindow_static_previous_mouse_position_;
+	static WindowsWindow* s_CurrentActiveWindowInstance = nullptr;
+
+	static POINT _mc_WindowsWindow_static_previous_mouse_position_;
 
 	static bool s_MainWindowClosed = false;
 
@@ -42,11 +44,11 @@ namespace mc
 
 	LRESULT CALLBACK SetupWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT CALLBACK MsgRedirectWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	
+
 	static bool ModernWindowCloseButton_OnMouseClick(Event& event, UIView* sender)
 	{
 		if (((MouseButtonEvent&)event).button == MouseButton::Left)
-			SendMessage(sender->srcwindow->GetNativeHandle(), WM_CLOSE, 0, 0);
+			SendMessage(reinterpret_cast<HWND>(sender->srcwindow->GetNativeHandle()), WM_CLOSE, 0, 0);
 
 		return EVENT_HANDLED;
 	}
@@ -55,16 +57,16 @@ namespace mc
 	{
 		WINDOWPLACEMENT wndpl;
 		wndpl.length = sizeof(WINDOWPLACEMENT);
-		GetWindowPlacement(sender->srcwindow->GetNativeHandle(), &wndpl);
+		GetWindowPlacement(reinterpret_cast<HWND>(sender->srcwindow->GetNativeHandle()), &wndpl);
 
 		if (((MouseButtonEvent&)event).button == MouseButton::Left)
 		{
-			// The window should be maximized if it's not already and 
+			// The window should be maximized if it's not already and
 			// should return to normal state if it was already maximized.
 			if (wndpl.showCmd == SW_MAXIMIZE)
-				ShowWindow(sender->srcwindow->GetNativeHandle(), SW_NORMAL);
+				ShowWindow(reinterpret_cast<HWND>(sender->srcwindow->GetNativeHandle()), SW_NORMAL);
 			else
-				ShowWindow(sender->srcwindow->GetNativeHandle(), SW_MAXIMIZE);
+				ShowWindow(reinterpret_cast<HWND>(sender->srcwindow->GetNativeHandle()), SW_MAXIMIZE);
 		}
 
 		return EVENT_HANDLED;
@@ -73,7 +75,7 @@ namespace mc
 	static bool ModernWindowMinimizeButton_OnMouseClick(Event& event, UIView* sender)
 	{
 		if (((MouseButtonEvent&)event).button == MouseButton::Left)
-			ShowWindow(sender->srcwindow->GetNativeHandle(), SW_MINIMIZE);
+			ShowWindow(reinterpret_cast<HWND>(sender->srcwindow->GetNativeHandle()), SW_MINIMIZE);
 
 		return EVENT_HANDLED;
 	}
@@ -85,24 +87,28 @@ namespace mc
 
 	Ref<UIWindow> UIWindow::Create(WindowStyle style, uint32_t width, uint32_t height, const char* title)
 	{
-		return Ref<UIWindow>(new UIWindow(style, width, height, title));
+		return Ref<UIWindow>(new WindowsWindow(style, width, height, title));
 	}
 
-	Ref<UIView> UIWindow::GetViewRef(UIView* raw_address)
+	WindowsWindow::WindowsWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title)
 	{
-		return m_SceneManager.GetViewRef(raw_address);
-	}
-
-	UIWindow::UIWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title)
-		: m_WindowStyle(style), m_Width(width), m_Height(height), m_Title(title)
-	{
+		m_WindowStyle = style;
+		m_Width = width;
+		m_Height = height;
+		m_Title = title;
 		Init();
 	}
 
-	void UIWindow::Init()
+	void WindowsWindow::Init()
 	{
+#pragma warning( push )
+#pragma warning( disable : 6387 )
+		SetProcessDpiAwarenessContextFn DpiAwarenessProc = (SetProcessDpiAwarenessContextFn)GetProcAddress(LoadLibraryA("User32.dll"), "SetProcessDpiAwarenessContext");
+
 		// Set window DPI-Awareness mode to be aware of high dpi displays
-		SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
+		if (DpiAwarenessProc)
+			DpiAwarenessProc(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
+#pragma warning( pop )
 
 		WindowInstancesCreated++;
 		std::wstring WindowClassName = std::wstring(MONOCHROME_70_WINDOW_CLASSNAME + std::to_wstring(WindowInstancesCreated));
@@ -122,7 +128,7 @@ namespace mc
 		// Registering Win32 API Class
 		if (!RegisterClassEx(&wc))
 		{
-			MessageBoxA(0, "Failed to register Win32 window class", "UIWindow", 0);
+			MessageBoxA(0, "Failed to register Win32 window class", "WindowsWindow", 0);
 			return;
 		}
 
@@ -155,12 +161,12 @@ namespace mc
 			dwExStyle, WindowClassName.c_str(), ConvertStringToWstring(m_Title).c_str(), dwStyle,
 			window_rect.left, window_rect.top, window_rect.right - window_rect.left, window_rect.bottom - window_rect.top,
 			NULL, NULL, NULL,
-			this /* This parameter is crucial as it specifies the UIWindow pointer to be used in the WindowProc*/
+			this /* This parameter is crucial as it specifies the WindowsWindow pointer to be used in the WindowProc*/
 		);
 
 		if (hwnd == (HWND)nullptr)
 		{
-			MessageBoxA(0, "Failed to create window HWND", "UIWindow", 0);
+			MessageBoxA(0, "Failed to create window HWND", "WindowsWindow", 0);
 			return;
 		}
 
@@ -176,10 +182,10 @@ namespace mc
 
 		m_IsOpened = true;
 		UpdateWindow(hwnd);
-#pragma warning( pop ) 
+#pragma warning( pop )
 
 		// Calculating window DPI for current monitor
-		m_Dpi = GetDpiForWindow(m_NativeHandle);
+		m_Dpi = GetDpiForWindow(reinterpret_cast<HWND>(m_NativeHandle));
 
 		// If the window is of modern style
 		if (m_WindowStyle == WindowStyle::Modern)
@@ -192,7 +198,7 @@ namespace mc
 			m_IsMainWindow = true;
 	}
 
-	void UIWindow::SetupModernWindowViews()
+	void WindowsWindow::SetupModernWindowViews()
 	{
 		m_ModernWindowDragPanel = MakeRef<UIView>();
 		m_ModernWindowDragPanel->layer.frame = Frame(0, 0, (float)m_Width - 160, 60);
@@ -236,12 +242,12 @@ namespace mc
 		AddView(CastToUiView(m_ModernWindowTitleLabel));
 	}
 
-	void UIWindow::AdjustModernWindowViews()
+	void WindowsWindow::AdjustModernWindowViews()
 	{
-		if (m_ModernWindowDragPanel) 
+		if (m_ModernWindowDragPanel)
 			m_ModernWindowDragPanel->layer.frame = Frame(0, 0, (float)m_Width - 160, 60);
 
-		if (m_ModernWindowCloseButton) 
+		if (m_ModernWindowCloseButton)
 			m_ModernWindowCloseButton->layer.frame = Frame((float)m_Width - 46, 0, 46, 36);
 
 		if (m_ModernWindowMaximizeButton)
@@ -260,15 +266,15 @@ namespace mc
 		{
 		case WM_NCCREATE:
 		{
-			// Retrieves UIWindow pointer from the initial createstruct data and assigns it to the GWLP_USERDATA
+			// Retrieves WindowsWindow pointer from the initial createstruct data and assigns it to the GWLP_USERDATA
 			// so it can be accessed later from the main running WindowProc.
 			// It also sets MsgRedirectWindowProc as the new primary window procedure.
 
 			const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(lParam);
-			UIWindow* pWindow = reinterpret_cast<UIWindow*>(pCreate->lpCreateParams);
+			WindowsWindow* pWindow = reinterpret_cast<WindowsWindow*>(pCreate->lpCreateParams);
 			if (pWindow == nullptr)
 			{
-				MessageBoxA(0, "Critical Error: Pointer to WindowData is null during WM_NCCREATE", "UIWindow", 0);
+				MessageBoxA(0, "Critical Error: Pointer to WindowData is null during WM_NCCREATE", "WindowsWindow", 0);
 				return 0;
 			}
 			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWindow));
@@ -282,12 +288,12 @@ namespace mc
 
 	LRESULT CALLBACK MsgRedirectWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
-		// Retrieves UIWindow pointer from the GWL_USERDATA and calls the UIWindow's own window procedure.
-		UIWindow* pWindow = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+		// Retrieves WindowsWindow pointer from the GWL_USERDATA and calls the WindowsWindow's own window procedure.
+		WindowsWindow* pWindow = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 		return pWindow->WindowProc(hwnd, uMsg, wParam, lParam);
 	}
 
-	LRESULT UIWindow::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	LRESULT WindowsWindow::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (uMsg)
 		{
@@ -295,14 +301,14 @@ namespace mc
 		{
 			Graphics::Initialize(hwnd);
 			Graphics::SetActiveTarget(hwnd);
-			s_CurrentActiveWindowInstance = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			s_CurrentActiveWindowInstance = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 			break;
 		}
 		case WM_CLOSE:
 		{
-			// Retrieveing UIWindow pointer
-			UIWindow* pWindow = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			// Retrieveing WindowsWindow pointer
+			WindowsWindow* pWindow = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 			auto e = std::make_shared<WindowClosedEvent>(hwnd);
 			m_SceneManager.DispatchEvent(e);
@@ -325,8 +331,8 @@ namespace mc
 		}
 		case WM_ACTIVATE:
 		{
-			// Retrieveing UIWindow pointer
-			UIWindow* pWindow = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			// Retrieveing WindowsWindow pointer
+			WindowsWindow* pWindow = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 			unsigned short activation_flag = LOWORD(wParam);
 			if (activation_flag == WA_ACTIVE || activation_flag == WA_CLICKACTIVE)
@@ -356,8 +362,8 @@ namespace mc
 			INT nWidth = LOWORD(lParam);
 			INT nHeight = HIWORD(lParam);
 
-			// Retrieveing UIWindow pointer
-			UIWindow* pWindow = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			// Retrieveing WindowsWindow pointer
+			WindowsWindow* pWindow = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 			pWindow->m_Width = nWidth;
 			pWindow->m_Height = nHeight;
@@ -369,7 +375,7 @@ namespace mc
 			{
 				WINDOWPLACEMENT wndpl;
 				wndpl.length = sizeof(WINDOWPLACEMENT);
-				GetWindowPlacement(pWindow->m_NativeHandle, &wndpl);
+				GetWindowPlacement(reinterpret_cast<HWND>(pWindow->m_NativeHandle), &wndpl);
 
 				if (wndpl.showCmd == SW_MAXIMIZE)
 					pWindow->m_ModernWindowMaximizeButton->Label->WidestringText = L"🗗";
@@ -384,8 +390,8 @@ namespace mc
 		}
 		case WM_MOVE:
 		{
-			// Retrieveing UIWindow pointer
-			UIWindow* pWindow = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			// Retrieveing WindowsWindow pointer
+			WindowsWindow* pWindow = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 			pWindow->ForceUpdate();
 			break;
 		}
@@ -394,8 +400,8 @@ namespace mc
 			// Call the default window procedure for default handling.
 			const LRESULT result = DefWindowProc(hwnd, uMsg, wParam, lParam);
 
-			// Retrieveing UIWindow pointer
-			UIWindow* pWindow = reinterpret_cast<UIWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			// Retrieveing WindowsWindow pointer
+			WindowsWindow* pWindow = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 			if (pWindow->m_WindowStyle == WindowStyle::Modern)
 			{
@@ -406,8 +412,8 @@ namespace mc
 
 				const auto CheckForResizingConditions = [this, pWindow](POINT pt, LONG BorderWidth, LRESULT& result) -> bool {
 					RECT ClientArea;
-					GetClientRect(pWindow->GetNativeHandle(), &ClientArea);
-					ScreenToClient(pWindow->GetNativeHandle(), &pt);
+					GetClientRect(reinterpret_cast<HWND>(pWindow->GetNativeHandle()), &ClientArea);
+					ScreenToClient(reinterpret_cast<HWND>(pWindow->GetNativeHandle()), &pt);
 
 					/*top-left, top and top-right*/
 					if (pt.y < BorderWidth)
@@ -486,28 +492,28 @@ namespace mc
 			m_SceneManager.DispatchEvent(e);
 			break;
 		}
-		case  WM_MBUTTONDOWN:
+		case WM_MBUTTONDOWN:
 		{
 			auto clickpos = POINT{ (LONG)((float)GET_X_LPARAM(lParam) * (float)m_Dpi / 96.0f), (LONG)((float)GET_Y_LPARAM(lParam) * (float)m_Dpi / 96.0f) };
 			auto e = std::make_shared<MouseButtonPressedEvent>(Point{ (float)clickpos.x, (float)clickpos.y }, MouseButton::Middle);
 			m_SceneManager.DispatchEvent(e);
 			break;
 		}
-		case  WM_LBUTTONUP:
+		case WM_LBUTTONUP:
 		{
 			auto clickpos = POINT{ (LONG)((float)GET_X_LPARAM(lParam) * (float)m_Dpi / 96.0f), (LONG)((float)GET_Y_LPARAM(lParam) * (float)m_Dpi / 96.0f) };
 			auto e = std::make_shared<MouseButtonReleasedEvent>(Point{ (float)clickpos.x, (float)clickpos.y }, MouseButton::Left);
 			m_SceneManager.DispatchEvent(e);
 			break;
 		}
-		case  WM_RBUTTONUP:
+		case WM_RBUTTONUP:
 		{
 			auto clickpos = POINT{ (LONG)((float)GET_X_LPARAM(lParam) * (float)m_Dpi / 96.0f), (LONG)((float)GET_Y_LPARAM(lParam) * (float)m_Dpi / 96.0f) };
 			auto e = std::make_shared<MouseButtonReleasedEvent>(Point{ (float)clickpos.x, (float)clickpos.y }, MouseButton::Right);
 			m_SceneManager.DispatchEvent(e);
 			break;
 		}
-		case  WM_MBUTTONUP:
+		case WM_MBUTTONUP:
 		{
 			auto clickpos = POINT{ (LONG)((float)GET_X_LPARAM(lParam) * (float)m_Dpi / 96.0f), (LONG)((float)GET_Y_LPARAM(lParam) * (float)m_Dpi / 96.0f) };
 			auto e = std::make_shared<MouseButtonReleasedEvent>(Point{ (float)clickpos.x, (float)clickpos.y }, MouseButton::Middle);
@@ -520,8 +526,8 @@ namespace mc
 
 			auto click_location = Point{ (float)click_absolute_point.x, (float)click_absolute_point.y };
 			auto distance = Point{
-				click_location.x - (float)_mc_uiwindow_static_previous_mouse_position_.x,
-				click_location.y - (float)_mc_uiwindow_static_previous_mouse_position_.y
+				click_location.x - (float)_mc_WindowsWindow_static_previous_mouse_position_.x,
+				click_location.y - (float)_mc_WindowsWindow_static_previous_mouse_position_.y
 			};
 
 			MouseButton pressed_button = MouseButton::None;
@@ -537,7 +543,7 @@ namespace mc
 			m_SceneManager.DispatchEvent(hover_on_e);
 			m_SceneManager.DispatchEvent(hover_off_e);
 
-			_mc_uiwindow_static_previous_mouse_position_ = click_absolute_point;
+			_mc_WindowsWindow_static_previous_mouse_position_ = click_absolute_point;
 			break;
 		}
 		case WM_MOUSEWHEEL:
@@ -556,7 +562,7 @@ namespace mc
 			bool shift_pressed = (bool)(GetKeyState(VK_SHIFT) & 0x8000);
 			bool capslock = (bool)(GetKeyState(VK_CAPITAL) & 0x0001);
 			bool repeated = (bool)(HIWORD(lParam) & KF_REPEAT);
-			KeyCode keycode = VkToMcKeycode(vk_keycode);
+			KeyCode keycode = NativeToMcKeycode(vk_keycode);
 
 			auto e = std::make_shared<KeyPressedEvent>(keycode, repeated, shift_pressed, capslock);
 			m_SceneManager.DispatchEvent(e);
@@ -565,7 +571,7 @@ namespace mc
 		case WM_KEYUP:
 		{
 			int vk_keycode = (int)wParam;
-			KeyCode keycode = VkToMcKeycode(vk_keycode);
+			KeyCode keycode = NativeToMcKeycode(vk_keycode);
 
 			auto e = std::make_shared<KeyReleasedEvent>(keycode);
 			m_SceneManager.DispatchEvent(e);
@@ -581,10 +587,10 @@ namespace mc
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 
-	void UIWindow::Update()
+	void WindowsWindow::Update()
 	{
 		// Process all messages and events
-		while (PeekMessage(&msg, m_NativeHandle, 0, 0, PM_REMOVE))
+		while (PeekMessage(&msg, reinterpret_cast<HWND>(m_NativeHandle), 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
@@ -593,7 +599,7 @@ namespace mc
 		// If message is WM_NULL, check if window is destroyed and does not exist anymore
 		if (msg.message == WM_NULL)
 		{
-			if (!IsWindow(m_NativeHandle))
+			if (!IsWindow(reinterpret_cast<HWND>(m_NativeHandle)))
 			{
 				m_NativeHandle = NULL;
 				return;
@@ -601,11 +607,11 @@ namespace mc
 		}
 	}
 
-	void UIWindow::ForceUpdate(bool clear_screen)
+	void WindowsWindow::ForceUpdate(bool clear_screen)
 	{
-		UIWindow* TrueActiveWindowInstance = s_CurrentActiveWindowInstance;
+		WindowsWindow* TrueActiveWindowInstance = s_CurrentActiveWindowInstance;
 		s_CurrentActiveWindowInstance = this;
-		Graphics::SetActiveTarget(m_NativeHandle);
+		Graphics::SetActiveTarget(reinterpret_cast<HWND>(m_NativeHandle));
 
 		Update();
 		m_SceneManager.ProcessEvents(m_Dpi);
@@ -614,7 +620,7 @@ namespace mc
 		if (TrueActiveWindowInstance)
 		{
 			s_CurrentActiveWindowInstance = TrueActiveWindowInstance;
-			Graphics::SetActiveTarget(s_CurrentActiveWindowInstance->GetNativeHandle());
+			Graphics::SetActiveTarget(reinterpret_cast<HWND>(s_CurrentActiveWindowInstance->GetNativeHandle()));
 
 			s_CurrentActiveWindowInstance->Update();
 			s_CurrentActiveWindowInstance->m_SceneManager.ProcessEvents(m_Dpi);
@@ -622,7 +628,7 @@ namespace mc
 		}
 	}
 
-	void UIWindow::StartWindowLoop()
+	void WindowsWindow::StartWindowLoop()
 	{
 		while (IsOpened())
 		{
@@ -631,7 +637,7 @@ namespace mc
 
 			if (s_MainWindowClosed) return;
 
-			if (GetActiveWindow() != m_NativeHandle) continue;
+			if (GetActiveWindow() != reinterpret_cast<HWND>(m_NativeHandle)) continue;
 
 			s_CurrentActiveWindowInstance = this;
 
@@ -643,59 +649,59 @@ namespace mc
 			Graphics::Update(m_Background, m_SceneManager);
 			auto GraphicsRenderingTime = m_InternalTimer.elapsed();
 
-			auto e = std::make_shared<WindowUpdatedEvent>(m_NativeHandle, EventProcessingTime, GraphicsRenderingTime);
+			auto e = std::make_shared<WindowUpdatedEvent>(reinterpret_cast<HWND>(m_NativeHandle), EventProcessingTime, GraphicsRenderingTime);
 			m_SceneManager.DispatchEvent(e);
 			m_SceneManager.ProcessEvents(m_Dpi);
 		}
 	}
 
-	void UIWindow::SetSize(uint32_t width, uint32_t height)
+	void WindowsWindow::SetSize(uint32_t width, uint32_t height)
 	{
 		// Get window's current position and size
 		RECT rect;
-		GetWindowRect(m_NativeHandle, &rect);
+		GetWindowRect(reinterpret_cast<HWND>(m_NativeHandle), &rect);
 
 		// Set new window size
-		SetWindowPos(m_NativeHandle, NULL, rect.left, rect.top, width, height, 0);
+		SetWindowPos(reinterpret_cast<HWND>(m_NativeHandle), NULL, rect.left, rect.top, width, height, 0);
 
 		// Adjust modern window widget's position and size
 		if (m_WindowStyle == WindowStyle::Modern)
 			AdjustModernWindowViews();
 	}
 
-	void UIWindow::SetPos(uint32_t x, uint32_t y)
+	void WindowsWindow::SetPos(uint32_t x, uint32_t y)
 	{
 		// Get window's current position and size
 		RECT rect;
-		GetWindowRect(m_NativeHandle, &rect);
+		GetWindowRect(reinterpret_cast<HWND>(m_NativeHandle), &rect);
 
 		int width = (int)(rect.right - rect.left);
 		int height = (int)(rect.bottom - rect.top);
 
 		// Set new window position
-		SetWindowPos(m_NativeHandle, NULL, x, y, width, height, 0);
+		SetWindowPos(reinterpret_cast<HWND>(m_NativeHandle), NULL, x, y, width, height, 0);
 	}
 
-	void UIWindow::SetTitle(const char* title)
+	void WindowsWindow::SetTitle(const char* title)
 	{
-		SetWindowTextA(m_NativeHandle, title);
+		SetWindowTextA(reinterpret_cast<HWND>(m_NativeHandle), title);
 
 		if (m_WindowStyle == WindowStyle::Modern)
 			m_ModernWindowTitleLabel->Text = title;
 	}
 
-	void UIWindow::AddView(Ref<UIView> view)
+	void WindowsWindow::AddView(Ref<UIView> view)
 	{
 		view->srcwindow = this;
 		m_SceneManager.AddView(view);
 	}
 
-	void UIWindow::RemoveView(Ref<UIView> view)
+	void WindowsWindow::RemoveView(Ref<UIView> view)
 	{
 		m_SceneManager.RemoveView(view);
 	}
 
-	void UIWindow::SetModernWindowButtonsColor(Color color)
+	void WindowsWindow::SetModernWindowButtonsColor(Color color)
 	{
 		if (m_ModernWindowCloseButton)
 			m_ModernWindowCloseButton->layer.color = color;
@@ -707,7 +713,7 @@ namespace mc
 			m_ModernWindowMinimizeButton->layer.color = color;
 	}
 
-	void UIWindow::FocusView(Ref<UIView> view)
+	void WindowsWindow::FocusView(Ref<UIView> view)
 	{
 		if (m_FocusedView == view.get()) return;
 
@@ -735,7 +741,12 @@ namespace mc
 		}
 	}
 
-	Position UIWindow::GetMouseCursorPos()
+	Ref<UIView> WindowsWindow::GetViewRef(UIView* raw_address)
+	{
+		return m_SceneManager.GetViewRef(raw_address);
+	}
+
+	Position WindowsWindow::GetMouseCursorPos()
 	{
 		Position position = { -1, -1 };
 
@@ -743,14 +754,14 @@ namespace mc
 		if (!GetCursorPos(&p))
 			return position;
 
-		if (!ScreenToClient(m_NativeHandle, &p))
+		if (!ScreenToClient(reinterpret_cast<HWND>(reinterpret_cast<HWND>(m_NativeHandle)), &p))
 			return position;
 
 		position = { (float)p.x, (float)p.y };
 		return position;
 	}
 
-	Position UIWindow::GetAsboluteMouseCursorPos()
+	Position WindowsWindow::GetAsboluteMouseCursorPos()
 	{
 		Position position = { -1, -1 };
 
@@ -762,7 +773,7 @@ namespace mc
 		return position;
 	}
 
-	void UIWindow::RemoveAllViews()
+	void WindowsWindow::RemoveAllViews()
 	{
 		for (auto& view : m_SceneManager.GetViewsList())
 		{
