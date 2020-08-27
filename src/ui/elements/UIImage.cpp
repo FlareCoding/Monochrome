@@ -4,6 +4,8 @@
 #ifdef _WIN32
 #include <Windows.h>
 #include <WinInet.h>
+#elif defined(__APPLE__)
+#include <platform/OSXGraphics.h>
 #endif
 
 namespace mc
@@ -27,14 +29,18 @@ namespace mc
 
 	bool UIImage::LoadWebImage(const std::string& url)
 	{
-		std::vector<char> data;
-
 #if defined(_WIN32)
+		std::vector<char> data;
 		LoadWebImageData(url, data);
-#endif
 
 		m_Bitmap = Graphics::CreateBitmap(&data[0], (uint32_t)data.size());
 		return m_Bitmap.get();
+#elif defined(__APPLE__)
+		m_Bitmap = OSXGraphics::CreateBitmapFromURL(url.c_str());
+		return m_Bitmap.get();
+#else
+		return false;
+#endif
 	}
 
 	void UIImage::Draw()

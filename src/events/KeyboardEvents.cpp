@@ -175,7 +175,90 @@ namespace mc
 		{ KeyCode::KEY_BACKSLASH,			0x005c		},
 		{ KeyCode::KEY_SLASH,				0x002f		},
 	};
+#else
+	static std::map<KeyCode, int> _monochrome_keyboard_keycode_bindings_ = {
+		{ KeyCode::KEY_0, 29 },
+		{ KeyCode::KEY_1, 18 },
+		{ KeyCode::KEY_2, 19 },
+		{ KeyCode::KEY_3, 20 },
+		{ KeyCode::KEY_4, 21 },
+		{ KeyCode::KEY_5, 23 },
+		{ KeyCode::KEY_6, 22 },
+		{ KeyCode::KEY_7, 26 },
+		{ KeyCode::KEY_8, 28 },
+		{ KeyCode::KEY_9, 25 },
+
+		{ KeyCode::KEY_A, 0 	},
+		{ KeyCode::KEY_B, 11 	},
+		{ KeyCode::KEY_C, 8 	},
+		{ KeyCode::KEY_D, 2 	},
+		{ KeyCode::KEY_E, 14 	},
+		{ KeyCode::KEY_F, 3 	},
+		{ KeyCode::KEY_G, 5 	},
+		{ KeyCode::KEY_H, 4 	},
+		{ KeyCode::KEY_I, 34 	},
+		{ KeyCode::KEY_J, 38 	},
+		{ KeyCode::KEY_K, 40 	},
+		{ KeyCode::KEY_L, 37 	},
+		{ KeyCode::KEY_M, 46 	},
+		{ KeyCode::KEY_N, 45 	},
+		{ KeyCode::KEY_O, 31 	},
+		{ KeyCode::KEY_P, 35 	},
+		{ KeyCode::KEY_Q, 12 	},
+		{ KeyCode::KEY_R, 15 	},
+		{ KeyCode::KEY_S, 1 	},
+		{ KeyCode::KEY_T, 17 	},
+		{ KeyCode::KEY_U, 32 	},
+		{ KeyCode::KEY_V, 9 	},
+		{ KeyCode::KEY_W, 13 	},
+		{ KeyCode::KEY_X, 7 	},
+		{ KeyCode::KEY_Y, 16 	},
+		{ KeyCode::KEY_Z, 6 	},
+
+		{ KeyCode::KEY_F1, 122 	},
+		{ KeyCode::KEY_F2, 120 	},
+		{ KeyCode::KEY_F3, 99 	},
+		{ KeyCode::KEY_F4, 118 	},
+		{ KeyCode::KEY_F5, 96 	},
+		{ KeyCode::KEY_F6, 97 	},
+		{ KeyCode::KEY_F7, 98 	},
+		{ KeyCode::KEY_F8, 100 	},
+		{ KeyCode::KEY_F9, 101 	},
+		{ KeyCode::KEY_F10, 109 },
+		{ KeyCode::KEY_F11, 103 },
+		{ KeyCode::KEY_F12, 111 },
+
+		{ KeyCode::KEY_BACKSPACE,	51		},
+		{ KeyCode::KEY_SPACE,		49		},
+		{ KeyCode::KEY_BACKTICK,	50		},
+		{ KeyCode::KEY_ENTER,		36		},
+		{ KeyCode::KEY_CAPSLOCK,	57		},
+		{ KeyCode::KEY_TAB,			48		},
+		{ KeyCode::KEY_LSHIFT,		56		},
+		{ KeyCode::KEY_RSHIFT,		60		},
+		{ KeyCode::KEY_LCONTROL,	59		},
+		{ KeyCode::KEY_RCONTROL,	62		},
+		{ KeyCode::KEY_ALT,			58		},
+		{ KeyCode::KEY_OPTION,		58		},
+
+		{ KeyCode::KEY_UP,		126			},
+		{ KeyCode::KEY_DOWN,	125			},
+		{ KeyCode::KEY_RIGHT,	124			},
+		{ KeyCode::KEY_LEFT,	123			},
+
+		{ KeyCode::KEY_MINUS,				27		},
+		{ KeyCode::KEY_EQUALS,				24		},
+		{ KeyCode::KEY_COMMA,				43		},
+		{ KeyCode::KEY_PERIOD,				47		},
+		{ KeyCode::KEY_SEMICOLON,			41		},
+		{ KeyCode::KEY_TICK,				39		},
+		{ KeyCode::KEY_SQUARE_BRACKET_RIGHT,33		},
+		{ KeyCode::KEY_SQUARE_BRACKET_LEFT, 30		},
+		{ KeyCode::KEY_BACKSLASH,			42		},
+		{ KeyCode::KEY_SLASH,				44		},
+	};
 #endif
+
 
 	static std::map<KeyCode, std::pair<char, char>> _monochrome_keyboard_keycode_capital_char_bindings_ = {
 		{ KeyCode::KEY_0, std::pair<char, char>('0', ')') },
@@ -274,7 +357,7 @@ namespace mc
 
 	char McKeycodeToChar(KeyCode keycode, bool capital, bool capslock_enabled)
 	{
-		if (keycode > KeyCode::KEY_9&& keycode < KeyCode::KEY_F1 && (capital || capslock_enabled))
+		if (keycode > KeyCode::KEY_9 && keycode < KeyCode::KEY_F1 && (capital || capslock_enabled))
 			return _monochrome_keyboard_keycode_capital_char_bindings_[keycode].second;
 
 		if (capital)

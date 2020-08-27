@@ -1,4 +1,3 @@
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #include <Monochrome.h>
 using namespace mc;
 
@@ -15,7 +14,7 @@ int main()
 		UIFileDialogue fd;
 		auto path = fd.ChooseDirectoryDialogue();
 		if (!path.empty())
-			MessageBoxA(0, path.c_str(), "File Path", 0);
+			printf("Chosen Path: %s\n", path.c_str());
 
 		return EVENT_HANDLED;
 	});
@@ -28,7 +27,7 @@ int main()
 		UIFileDialogue fd;
 		auto path = fd.ChooseFileDialogue();
 		if (!path.empty())
-			MessageBoxA(0, path.c_str(), "File Path", 0);
+			printf("Chosen Path: %s\n", path.c_str());
 
 		return EVENT_HANDLED;
 	});
@@ -48,7 +47,7 @@ int main()
 
 		auto path = fd.SaveFileDialogue();
 		if (!path.empty())
-			MessageBoxA(0, path.c_str(), "File Path", 0);
+			printf("Chosen Path: %s\n", path.c_str());
 
 		return EVENT_HANDLED;
 	});

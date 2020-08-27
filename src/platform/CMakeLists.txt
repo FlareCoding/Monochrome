@@ -22,7 +22,7 @@ if (MSVC)
 
         PARENT_SCOPE
     )
-else()
+elif(CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(
         MC_PLATFORM_HEADERS
 
@@ -39,6 +39,28 @@ else()
         src/platform/LinuxWindow.cpp
         src/platform/LinuxRenderTarget.cpp
         src/platform/LinuxGraphics.cpp
+
+        PARENT_SCOPE
+    )
+else()
+    set(
+        MC_PLATFORM_HEADERS
+
+        src/platform/OSXNativeCore.h
+        src/platform/OSXWindow.h
+        src/platform/OSXRenderTarget.h
+        src/platform/OSXGraphics.h
+
+        PARENT_SCOPE
+    )
+
+    set(
+        MC_PLATFORM_SOURCES
+
+        src/platform/OSXNativeCore.mm
+        src/platform/OSXWindow.mm
+        src/platform/OSXRenderTarget.mm
+        src/platform/OSXGraphics.mm
 
         PARENT_SCOPE
     )

@@ -6,7 +6,7 @@
 #elif defined(__linux__)
 #include <platform/LinuxGraphics.h>
 #elif defined(__APPLE__)
-#error Monochrome is not yet supported on OS X
+#include <platform/OSXGraphics.h>
 #else
 #error Unknown platform
 #endif
@@ -19,6 +19,8 @@ namespace mc
 		return WindowsGraphics::Initialize(reinterpret_cast<HWND>(native));
 #elif defined(__linux__)
 		return LinuxGraphics::Initialize(native);
+#elif defined(__APPLE__)
+		return OSXGraphics::Initialize(native);
 #endif
 	}
 
@@ -28,6 +30,8 @@ namespace mc
 		return WindowsGraphics::IsInitialized();
 #elif defined(__linux__)
 		return LinuxGraphics::IsInitialized();
+#elif defined(__APPLE__)
+		return OSXGraphics::IsInitialized();
 #endif
 	}
 
@@ -37,6 +41,8 @@ namespace mc
 		WindowsGraphics::Shutdown();
 #elif defined(__linux__)
 		LinuxGraphics::Shutdown();
+	#elif defined(__APPLE__)
+		OSXGraphics::Shutdown();
 #endif
 	}
 
@@ -46,6 +52,8 @@ namespace mc
 		WindowsGraphics::SetActiveTarget(reinterpret_cast<HWND>(native));
 #elif defined(__linux__)
 		LinuxGraphics::SetActiveTarget(native);
+#elif defined(__APPLE__)
+		OSXGraphics::SetActiveTarget(native);
 #endif
 	}
 
@@ -55,6 +63,8 @@ namespace mc
 		WindowsGraphics::BeginFrame();
 #elif defined(__linux__)
 		LinuxGraphics::BeginFrame();
+#elif defined(__APPLE__)
+		OSXGraphics::BeginFrame();
 #endif
 	}
 
@@ -64,6 +74,8 @@ namespace mc
 		WindowsGraphics::EndFrame();
 #elif defined(__linux__)
 		LinuxGraphics::EndFrame();
+#elif defined(__APPLE__)
+		OSXGraphics::EndFrame();
 #endif
 	}
 
@@ -73,6 +85,8 @@ namespace mc
 		WindowsGraphics::ClearScreenColor(r, g, b);
 #elif defined(__linux__)
 		LinuxGraphics::ClearScreenColor(r, g, b);
+#elif defined(__APPLE__)
+		OSXGraphics::ClearScreenColor(r, g, b);
 #endif
 	}
 
@@ -82,6 +96,8 @@ namespace mc
 		WindowsGraphics::PushLayer(x, y, width, height);
 #elif defined(__linux__)
 		LinuxGraphics::PushLayer(x, y, width, height);
+#elif defined(__APPLE__)
+		OSXGraphics::PushLayer(x, y, width, height);
 #endif
 	}
 
@@ -91,6 +107,8 @@ namespace mc
 		WindowsGraphics::PopLayer();
 #elif defined(__linux__)
 		LinuxGraphics::PopLayer();
+#elif defined(__APPLE__)
+		OSXGraphics::PopLayer();
 #endif
 	}
 
@@ -100,6 +118,8 @@ namespace mc
 		WindowsGraphics::ResizeRenderTarget(reinterpret_cast<HWND>(native));
 #elif defined(__linux__)
 		LinuxGraphics::ResizeRenderTarget(native);
+#elif defined(__APPLE__)
+		OSXGraphics::ResizeRenderTarget(native);
 #endif
 	}
 
@@ -115,6 +135,8 @@ namespace mc
 		WindowsGraphics::DrawLine(x1, y1, x2, y2, color, stroke);
 #elif defined(__linux__)
 		LinuxGraphics::DrawLine(x1, y1, x2, y2, color, stroke);
+#elif defined(__APPLE__)
+		OSXGraphics::DrawLine(x1, y1, x2, y2, color, stroke);
 #endif
 	}
 
@@ -132,6 +154,8 @@ namespace mc
 		WindowsGraphics::DrawRectangle(x, y, width, height, color, corner_radius, filled, stroke);
 #elif defined(__linux__)
 		LinuxGraphics::DrawRectangle(x, y, width, height, color, corner_radius, filled, stroke);
+#elif defined(__APPLE__)
+		OSXGraphics::DrawRectangle(x, y, width, height, color, corner_radius, filled, stroke);
 #endif
 	}
 
@@ -147,6 +171,8 @@ namespace mc
 		WindowsGraphics::DrawCircle(x, y, radius, color, filled, stroke);
 #elif defined(__linux__)
 		LinuxGraphics::DrawCircle(x, y, radius, color, filled, stroke);
+#elif defined(__APPLE__)
+		OSXGraphics::DrawCircle(x, y, radius, color, filled, stroke);
 #endif
 	}
 
@@ -165,6 +191,8 @@ namespace mc
 		WindowsGraphics::DrawArc(start_x, start_y, end_x, end_y, size, color, clockwise, large_arc, stroke);
 #elif defined(__linux__)
 		LinuxGraphics::DrawArc(start_x, start_y, end_x, end_y, size, color, clockwise, large_arc, stroke);
+#elif defined(__APPLE__)
+		OSXGraphics::DrawArc(start_x, start_y, end_x, end_y, size, color, clockwise, large_arc, stroke);
 #endif
 	}
 
@@ -181,6 +209,8 @@ namespace mc
 		WindowsGraphics::DrawTextWideString(x, y, width, height, text, text_props, color);
 #elif defined(__linux__)
 		LinuxGraphics::DrawTextWideString(x, y, width, height, text, text_props, color);
+#elif defined(__APPLE__)
+		OSXGraphics::DrawTextWideString(x, y, width, height, text, text_props, color);
 #endif
 	}
 
@@ -197,6 +227,8 @@ namespace mc
 		WindowsGraphics::DrawTextString(x, y, width, height, text, text_props, color);
 #elif defined(__linux__)
 		LinuxGraphics::DrawTextString(x, y, width, height, text, text_props, color);
+#elif defined(__APPLE__)
+		OSXGraphics::DrawTextString(x, y, width, height, text, text_props, color);
 #endif
 	}
 
@@ -210,6 +242,8 @@ namespace mc
 		return WindowsGraphics::CalculateTextMetrics(text, text_props, max_width, max_height);
 #elif defined(__linux__)
 		return LinuxGraphics::CalculateTextMetrics(text, text_props, max_width, max_height);
+#elif defined(__APPLE__)
+		return OSXGraphics::CalculateTextMetrics(text, text_props, max_width, max_height);
 #endif
 	}
 
@@ -219,6 +253,8 @@ namespace mc
 		return WindowsGraphics::CreateBitmapFromFile(path);
 #elif defined(__linux__)
 		return LinuxGraphics::CreateBitmapFromFile(path);
+#elif defined(__APPLE__)
+		return OSXGraphics::CreateBitmapFromFile(path);
 #endif
 	}
 
@@ -228,6 +264,8 @@ namespace mc
 		return WindowsGraphics::CreateBitmap(data, size);
 #elif defined(__linux__)
 		return LinuxGraphics::CreateBitmap(data, size);
+#elif defined(__APPLE__)
+		return nullptr;
 #endif
 	}
 
@@ -244,6 +282,8 @@ namespace mc
 		WindowsGraphics::DrawBitmapImage(bmp, x, y, width, height, opacity);
 #elif defined(__linux__)
 		LinuxGraphics::DrawBitmapImage(bmp, x, y, width, height, opacity);
+#elif defined(__APPLE__)
+		OSXGraphics::DrawBitmapImage(bmp, x, y, width, height, opacity);
 #endif
 	}
 
@@ -253,6 +293,8 @@ namespace mc
 		WindowsGraphics::Update(background, sm, clearBackgroundColor);
 #elif defined(__linux__)
 		LinuxGraphics::Update(background, sm, clearBackgroundColor);
+#elif defined(__APPLE__)
+		OSXGraphics::Update(background, sm, clearBackgroundColor);
 #endif
 	}
 }

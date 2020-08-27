@@ -1,5 +1,6 @@
 # Directories
 .vs/
+.vscode/
 build/
 dist/
 __pycache__/
@@ -14,3 +15,6 @@ __pycache__/
 *.exe
 *.out
 *.app
+
+# Other
+*.DS_Store

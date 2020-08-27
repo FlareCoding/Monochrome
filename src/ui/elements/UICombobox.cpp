@@ -26,7 +26,7 @@ namespace mc
 
 		m_OpenSelectionArrowLabel = MakeRef<UILabel>();
 		m_OpenSelectionArrowLabel->UseWidestringText = true;
-		m_OpenSelectionArrowLabel->WidestringText = L"⯆";
+		m_OpenSelectionArrowLabel->WidestringText = L"▼";
 		AddSubview(m_OpenSelectionArrowLabel);
 
 		m_ItemPanel = MakeRef<UIScrollPanel>(Frame(0, SlotSize, layer.frame.size.width, 0));

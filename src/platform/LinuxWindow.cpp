@@ -260,7 +260,7 @@ namespace mc
         case ButtonPress:
         {
             XButtonEvent& be = reinterpret_cast<XButtonEvent&>(event);
-            MouseButton button = MouseButton::Left;
+            MouseButton button = MouseButton::None;
             switch (be.button)
             {
             case Button1: { button = MouseButton::Left; break; }
@@ -276,7 +276,7 @@ namespace mc
         case ButtonRelease:
         {
             XButtonEvent& be = reinterpret_cast<XButtonEvent&>(event.xbutton);
-            MouseButton button = MouseButton::Left;
+            MouseButton button = MouseButton::None;
             switch (be.button)
             {
             case Button1: { button = MouseButton::Left; break; }
@@ -313,7 +313,7 @@ namespace mc
                 click_location.y - (float)_mc_LinuxWindow_static_previous_mouse_position_.y
             };
 
-            MouseButton pressed_button = MouseButton::Left;
+            MouseButton pressed_button = MouseButton::None;
             switch (motion_e.state)
             {
             case Button1Mask: { pressed_button = MouseButton::Left; break; }

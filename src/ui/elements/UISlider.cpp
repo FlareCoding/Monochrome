@@ -3,7 +3,7 @@
 #include <events/Events.h>
 #include <window/UIWindow.h>
 
-#if defined(__linux__)
+#if defined(__linux__) || defined (__APPLE__)
 #include <math.h>
 #endif
 
