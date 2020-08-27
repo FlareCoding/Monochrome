@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <WinInet.h>
 #elif defined(__APPLE__)
-#include <platform/OSXGraphics.h>
+#include <platform/osx/OSXGraphics.h>
 #endif
 
 namespace mc

@@ -559,8 +559,8 @@ void MonochromeEditor::InitEditorUI()
 	m_SelectProjectPathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 		{
-			UIFileDialogue fd;
-			auto path = fd.ChooseDirectoryDialogue();
+			auto fd = UIFileDialogue::Create();
+			auto path = fd->ChooseDirectoryDialogue();
 
 			if (!path.empty())
 			{
@@ -638,8 +638,8 @@ void MonochromeEditor::InitEditorUI()
 	m_SelectMonochromeSourcePathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 		{
-			UIFileDialogue fd;
-			auto path = fd.ChooseDirectoryDialogue();
+			auto fd = UIFileDialogue::Create();
+			auto path = fd->ChooseDirectoryDialogue();
 
 			if (!path.empty())
 			{
@@ -672,8 +672,8 @@ void MonochromeEditor::InitEditorUI()
 	m_SelectMonochromeLibDbgPathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 		{
-			UIFileDialogue fd;
-			auto path = fd.ChooseDirectoryDialogue();
+			auto fd = UIFileDialogue::Create();
+			auto path = fd->ChooseDirectoryDialogue();
 
 			if (!path.empty())
 			{
@@ -706,8 +706,8 @@ void MonochromeEditor::InitEditorUI()
 	m_SelectMonochromeLibRelPathButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 		{
-			UIFileDialogue fd;
-			auto path = fd.ChooseDirectoryDialogue();
+			auto fd = UIFileDialogue::Create();
+			auto path = fd->ChooseDirectoryDialogue();
 
 			if (!path.empty())
 			{
@@ -735,15 +735,15 @@ void MonochromeEditor::InitEditorUI()
 	SelectFileButton->CornerRadius = 4;
 	SelectFileButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event &evt, UIView *sender) -> bool
 	{
-		UIFileDialogue fd;
+		auto fd = UIFileDialogue::Create();
 
 		// Set Filter, only mc Files are valid for now
 		UIFileDialogueFilter filter;
-		filter.AddFilter(L"FileType", L"*.mc");
-		fd.SetFilter(filter);
+		filter.AddFilter(L"MC Project", L"*.mc");
+		fd->SetFilter(filter);
 
 		// Load the file and then load the project, if file is loaded
-		auto path = fd.ChooseFileDialogue();
+		auto path = fd->ChooseFileDialogue();
 		if (!path.empty())
 		{
 			// File is valid, load the project

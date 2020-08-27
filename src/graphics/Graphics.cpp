@@ -2,11 +2,11 @@
 #include <window/SceneManager.h>
 
 #if defined(_WIN32)
-#include <platform/WindowsGraphics.h>
+#include <platform/windows/WindowsGraphics.h>
 #elif defined(__linux__)
-#include <platform/LinuxGraphics.h>
+#include <platform/linux/LinuxGraphics.h>
 #elif defined(__APPLE__)
-#include <platform/OSXGraphics.h>
+#include <platform/osx/OSXGraphics.h>
 #else
 #error Unknown platform
 #endif

@@ -18,7 +18,6 @@ set(
 
     src/graphics/Color.cpp
     src/graphics/Graphics.cpp
-    src/graphics/Bitmap.cpp
 
     PARENT_SCOPE
 )

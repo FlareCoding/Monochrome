@@ -4,10 +4,12 @@ if (MSVC)
     set(
         MC_PLATFORM_HEADERS
 
-        src/platform/WindowsWindow.h
-        src/platform/WindowsRenderTarget.h
-        src/platform/WindowsGraphics.h
-        src/graphics/d2d_resources/CoreResources.h
+        src/platform/windows/WindowsWindow.h
+        src/platform/windows/WindowsRenderTarget.h
+        src/platform/windows/WindowsGraphics.h
+        src/platform/windows/WindowsBitmap.h
+        src/platform/windows/WindowsFileDialogue.h
+        src/platform/windows/d2d_resources/CoreResources.h
 
         PARENT_SCOPE
     )
@@ -15,20 +17,22 @@ if (MSVC)
     set(
         MC_PLATFORM_SOURCES
 
-        src/platform/WindowsWindow.cpp
-        src/platform/WindowsRenderTarget.cpp
-        src/platform/WindowsGraphics.cpp
-        src/graphics/d2d_resources/CoreResources.cpp
+        src/platform/windows/WindowsWindow.cpp
+        src/platform/windows/WindowsRenderTarget.cpp
+        src/platform/windows/WindowsGraphics.cpp
+        src/platform/windows/WindowsBitmap.cpp
+        src/platform/windows/WindowsFileDialogue.cpp
+        src/platform/windows/d2d_resources/CoreResources.cpp
 
         PARENT_SCOPE
     )
-elif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(
         MC_PLATFORM_HEADERS
 
-        src/platform/LinuxWindow.h
-        src/platform/LinuxRenderTarget.h
-        src/platform/LinuxGraphics.h
+        src/platform/linux/LinuxWindow.h
+        src/platform/linux/LinuxRenderTarget.h
+        src/platform/linux/LinuxGraphics.h
 
         PARENT_SCOPE
     )
@@ -36,9 +40,9 @@ elif(CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(
         MC_PLATFORM_SOURCES
 
-        src/platform/LinuxWindow.cpp
-        src/platform/LinuxRenderTarget.cpp
-        src/platform/LinuxGraphics.cpp
+        src/platform/linux/LinuxWindow.cpp
+        src/platform/linux/LinuxRenderTarget.cpp
+        src/platform/linux/LinuxGraphics.cpp
 
         PARENT_SCOPE
     )
@@ -46,10 +50,12 @@ else()
     set(
         MC_PLATFORM_HEADERS
 
-        src/platform/OSXNativeCore.h
-        src/platform/OSXWindow.h
-        src/platform/OSXRenderTarget.h
-        src/platform/OSXGraphics.h
+        src/platform/osx/OSXNativeCore.h
+        src/platform/osx/OSXWindow.h
+        src/platform/osx/OSXRenderTarget.h
+        src/platform/osx/OSXGraphics.h
+        src/platform/osx/OSXBitmap.h
+        src/platform/osx/OSXFileDialogue.h
 
         PARENT_SCOPE
     )
@@ -57,10 +63,12 @@ else()
     set(
         MC_PLATFORM_SOURCES
 
-        src/platform/OSXNativeCore.mm
-        src/platform/OSXWindow.mm
-        src/platform/OSXRenderTarget.mm
-        src/platform/OSXGraphics.mm
+        src/platform/osx/OSXNativeCore.mm
+        src/platform/osx/OSXWindow.mm
+        src/platform/osx/OSXRenderTarget.mm
+        src/platform/osx/OSXGraphics.mm
+        src/platform/osx/OSXBitmap.mm
+        src/platform/osx/OSXFileDialogue.mm
 
         PARENT_SCOPE
     )

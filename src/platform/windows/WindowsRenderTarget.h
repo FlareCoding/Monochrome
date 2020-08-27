@@ -1,6 +1,6 @@
 #pragma once
-#include "graphics/RenderTarget.h"
-#include "graphics/d2d_resources/CoreResources.h"
+#include <graphics/RenderTarget.h>
+#include "d2d_resources/CoreResources.h"
 
 #include <wrl/client.h>
 using namespace Microsoft::WRL;

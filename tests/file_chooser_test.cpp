@@ -11,8 +11,8 @@ int main()
 	SelectDirectoryButton->layer.frame = Frame({ 370, 120 }, { 260, 36 });
 	SelectDirectoryButton->Label->Text = "Select Directory";
 	SelectDirectoryButton->AddEventHandler<EventType::MouseButtonClicked>([window](Event& evt, UIView* sender) -> bool {
-		UIFileDialogue fd;
-		auto path = fd.ChooseDirectoryDialogue();
+		auto fd = UIFileDialogue::Create();
+		auto path = fd->ChooseDirectoryDialogue();
 		if (!path.empty())
 			printf("Chosen Path: %s\n", path.c_str());
 
@@ -24,8 +24,8 @@ int main()
 	SelectFileButton->layer.frame = Frame({ 370, 180 }, { 260, 36 });
 	SelectFileButton->Label->Text = "Select File";
 	SelectFileButton->AddEventHandler<EventType::MouseButtonClicked>([window](Event& evt, UIView* sender) -> bool {
-		UIFileDialogue fd;
-		auto path = fd.ChooseFileDialogue();
+		auto fd = UIFileDialogue::Create();
+		auto path = fd->ChooseFileDialogue();
 		if (!path.empty())
 			printf("Chosen Path: %s\n", path.c_str());
 
@@ -37,15 +37,15 @@ int main()
 	SaveFileButton->layer.frame = Frame({ 370, 240 }, { 260, 36 });
 	SaveFileButton->Label->Text = "Save File";
 	SaveFileButton->AddEventHandler<EventType::MouseButtonClicked>([window](Event& evt, UIView* sender) -> bool {
-		UIFileDialogue fd;
+		auto fd = UIFileDialogue::Create();
 
 		UIFileDialogueFilter filter;
 		filter.AddFilter(L"All Files", L"*.*");
 		filter.AddFilter(L"Text", L"*.txt;");
 		filter.AddFilter(L"Image", L"*.png;*.jpg;*.jpeg");
-		fd.SetFilter(filter);
+		fd->SetFilter(filter);
 
-		auto path = fd.SaveFileDialogue();
+		auto path = fd->SaveFileDialogue();
 		if (!path.empty())
 			printf("Chosen Path: %s\n", path.c_str());
 

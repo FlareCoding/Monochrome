@@ -275,7 +275,7 @@ namespace mc
 	Ref<Bitmap> OSXGraphics::CreateBitmapFromFile(const std::string& path)
 	{
         NSImage* img = [NSImage imageNamed:[NSString stringWithUTF8String:path.c_str()]];
-		return MakeRef<Bitmap>(reinterpret_cast<void*>([ImageUtil flipImage:img]));
+		return Bitmap::Create(reinterpret_cast<void*>([ImageUtil flipImage:img]);
 	}
 
 	Ref<Bitmap> OSXGraphics::CreateBitmapFromURL(const char* url)
@@ -283,7 +283,7 @@ namespace mc
 		NSURL* imageURL = [NSURL URLWithString:[NSString stringWithUTF8String:url]];
 		NSImage* img = [[NSImage alloc] initWithContentsOfURL:imageURL];
 
-		return MakeRef<Bitmap>(reinterpret_cast<void*>([ImageUtil flipImage:img]));
+		return Bitmap::Create(reinterpret_cast<void*>([ImageUtil flipImage:img]);
 	}
 
 	void OSXGraphics::DrawBitmapImage(
