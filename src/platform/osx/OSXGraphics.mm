@@ -100,7 +100,7 @@ namespace mc
 		[[NSColor colorWithCalibratedRed:(float)color.r / 255.0f 
 									green:(float)color.g / 255.0f 
 									blue:(float)color.b / 255.0f 
-									alpha:1.0f] 
+									alpha:color.alpha] 
 									set];
 
 		NSBezierPath* path = [NSBezierPath bezierPath];
@@ -123,7 +123,7 @@ namespace mc
 		[[NSColor colorWithCalibratedRed:(float)color.r / 255.0f 
 									green:(float)color.g / 255.0f 
 									blue:(float)color.b / 255.0f 
-									alpha:1.0f] 
+									alpha:color.alpha] 
 									set];
 
 		NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:NSMakeRect(x, y, width, height)
@@ -152,7 +152,7 @@ namespace mc
 		[[NSColor colorWithCalibratedRed:(float)color.r / 255.0f 
 									green:(float)color.g / 255.0f 
 									blue:(float)color.b / 255.0f 
-									alpha:1.0f] 
+									alpha:color.alpha] 
 									set];
 
 		NSRect rect = NSMakeRect(x - radius, y - radius, radius * 2, radius * 2);
@@ -182,7 +182,7 @@ namespace mc
 		[[NSColor colorWithCalibratedRed:(float)color.r / 255.0f 
 									green:(float)color.g / 255.0f 
 									blue:(float)color.b / 255.0f 
-									alpha:1.0f] 
+									alpha:color.alpha] 
 									setFill];
 
 		// TO-DO
@@ -275,7 +275,7 @@ namespace mc
 	Ref<Bitmap> OSXGraphics::CreateBitmapFromFile(const std::string& path)
 	{
         NSImage* img = [NSImage imageNamed:[NSString stringWithUTF8String:path.c_str()]];
-		return Bitmap::Create(reinterpret_cast<void*>([ImageUtil flipImage:img]);
+		return Bitmap::Create(reinterpret_cast<void*>([ImageUtil flipImage:img]));
 	}
 
 	Ref<Bitmap> OSXGraphics::CreateBitmapFromURL(const char* url)
@@ -283,7 +283,7 @@ namespace mc
 		NSURL* imageURL = [NSURL URLWithString:[NSString stringWithUTF8String:url]];
 		NSImage* img = [[NSImage alloc] initWithContentsOfURL:imageURL];
 
-		return Bitmap::Create(reinterpret_cast<void*>([ImageUtil flipImage:img]);
+		return Bitmap::Create(reinterpret_cast<void*>([ImageUtil flipImage:img]));
 	}
 
 	void OSXGraphics::DrawBitmapImage(

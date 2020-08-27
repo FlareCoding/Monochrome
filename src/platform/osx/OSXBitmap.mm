@@ -1,4 +1,5 @@
 #include "OSXBitmap.h"
+#include "OSXNativeCore.h"
 
 namespace mc
 {
