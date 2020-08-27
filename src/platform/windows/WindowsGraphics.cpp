@@ -1,6 +1,6 @@
 #include "WindowsGraphics.h"
 #include <window/SceneManager.h>
-#include <graphics/d2d_resources/CoreResources.h>
+#include "d2d_resources/CoreResources.h"
 
 static std::wstring ConvertStringToWstring(const std::string& str)
 {
@@ -489,7 +489,7 @@ namespace mc
 			return nullptr;
 		}
 
-		Ref<Bitmap> bitmap = MakeRef<Bitmap>((void*)bmp);
+		Ref<Bitmap> bitmap = Bitmap::Create((void*)bmp);
 
 		WicConverter->Release();
 		WicFrame->Release();

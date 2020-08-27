@@ -23,7 +23,7 @@ add_library(
     ${MC_SOURCES}
 )
 
-if (NOT MSVC)
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(X11 REQUIRED)
     link_libraries(${X11_LIBRARIES})
     include_directories(${X11_INCLUDE_DIR})
@@ -38,6 +38,10 @@ if (NOT MSVC)
     )
 
     target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES} "-lcairo")
+endif()
+
+if (APPLE)
+    target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
 endif()
 
 add_subdirectory(tests)

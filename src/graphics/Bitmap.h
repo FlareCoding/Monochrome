@@ -1,19 +1,21 @@
 #pragma once
+#include <core/Core.h>
 
 namespace mc
 {
 	class Bitmap
 	{
 	public:
-		Bitmap() = default;
-		Bitmap(void* data);
-		~Bitmap();
+		static Ref<Bitmap> Create(void* data);
+
+		Bitmap(void* data) : m_BmpData(data) {}
+		virtual ~Bitmap() = default;
 
 		const void* GetBmpData() const { return m_BmpData; }
-		float GetWidth() const;
-		float GetHeight() const;
+		virtual float GetWidth() const = 0;
+		virtual float GetHeight() const = 0;
 
-	private:
+	protected:
 		void* m_BmpData = nullptr;
 	};
 }

@@ -1,9 +1,6 @@
 #include "Monochrome.h"
 using namespace mc;
 
-#pragma comment(lib, "wininet.lib")
-#include <WinInet.h>
-
 int main()
 {
 	auto window = UIWindow::Create(WindowStyle::Modern, 1220, 560, "UIImage Test");

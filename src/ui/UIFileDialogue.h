@@ -15,18 +15,16 @@ namespace mc
     class UIFileDialogueFilter
     {
     public:
-#if defined(_WIN32)
-        /// Returns the filter data in a format required by UIFileDialogue internal usage.
-        std::vector<COMDLG_FILTERSPEC> GetComDlgFilterSpecs();
-#endif
-
         /// Registers a filter for specific file format(s).
         /// @param name Describes the file formats being filtered.
         /// @param formats String of file formats separated by a semicolon, (i.e "*.png;*.jpg;*.jpeg;*.psd").
-        void AddFilter(const std::wstring& name, const std::wstring& formats);
+        virtual void AddFilter(const std::wstring& name, const std::wstring& formats);
 
         /// @returns Tells whether any filters have been registered.
         bool HasFilters();
+
+        /// Returns the list of all filters in a map form.
+        std::map<std::wstring, std::wstring>& GetFilters() { return m_FilterMap; };
 
     private:
         std::map<std::wstring, std::wstring> m_FilterMap;
@@ -36,29 +34,26 @@ namespace mc
     class UIFileDialogue
     {
     public:
-        UIFileDialogue() = default;
+        static Ref<UIFileDialogue> Create();
+
+        virtual ~UIFileDialogue() = default;
 
         /// Opens a dialogue to select an existing directory.
         /// @returns String containing the path of the chosen directory, empty if nothing was selected
-        std::string ChooseDirectoryDialogue();
+        virtual std::string ChooseDirectoryDialogue() = 0;
 
         /// Opens a dialogue to select an existing file.
         /// @returns String containing the path of the chosen file, empty if nothing was selected
-        std::string ChooseFileDialogue();
+        virtual std::string ChooseFileDialogue() = 0;
 
         /// Opens a dialogue to save a new file.
         /// @returns String containing the path to the new file, empty if nothing was selected
-        std::string SaveFileDialogue();
+        virtual std::string SaveFileDialogue() = 0;
 
         /// Sets a filter for file types to be shown.
-        void SetFilter(UIFileDialogueFilter filter);
+        void SetFilter(UIFileDialogueFilter filter) { m_Filter = filter; };
 
-    private:
-#if defined(_WIN32)
-        IFileOpenDialog* m_pFileOpenDialogue;
+    protected:
         UIFileDialogueFilter m_Filter;
-
-        std::string FireOpenFileDialogue(FILEOPENDIALOGOPTIONS options, bool open_dialogue);
-#endif
     };
 }
