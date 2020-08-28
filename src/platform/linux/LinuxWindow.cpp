@@ -15,7 +15,6 @@ namespace mc
 {
     typedef struct _LinuxGraphicsNativeInformation
     {
-        int         id;
         Display*    display;
         int         screen;
         Visual*     visual;
@@ -24,9 +23,7 @@ namespace mc
 		int			window_height;
     } LinuxGraphicsNativeInformation;
 
-    static std::vector<Window> s_RegisteredWindows;
     static LinuxWindow* s_CurrentActiveWindowInstance = nullptr;
-    static size_t s_ActiveWindowIndex = 0;
 
     static Point _mc_LinuxWindow_static_previous_mouse_position_ = { 0, 0 };
     
@@ -61,16 +58,13 @@ namespace mc
         m_Screen = DefaultScreen(m_Display);
         m_Visual = (void*)DefaultVisual(m_Display, m_Screen);
 
-        Window window = XCreateSimpleWindow(
+        m_WindowID = XCreateSimpleWindow(
             m_Display,
             RootWindow(m_Display, m_Screen),
             200, 200, m_Width, m_Height, 1,
             BlackPixel(m_Display, m_Screen),
             WhitePixel(m_Display, m_Screen)
         );
-
-        m_RegisteredWindowIndex = s_RegisteredWindows.size();
-        s_RegisteredWindows.push_back(window);
 
         int mask =  ExposureMask | KeyPressMask | ButtonPressMask |
                     StructureNotifyMask | ButtonReleaseMask |
@@ -82,23 +76,22 @@ namespace mc
         {
             Atom window_type = XInternAtom(m_Display, "_NET_WM_WINDOW_TYPE", False);
             long value = XInternAtom(m_Display, "_NET_WM_WINDOW_TYPE_DOCK", False);
-            XChangeProperty(m_Display, window, window_type, XA_ATOM, 32, PropModeReplace, (unsigned char*)&value, 1);
+            XChangeProperty(m_Display, m_WindowID, window_type, XA_ATOM, 32, PropModeReplace, (unsigned char*)&value, 1);
         }
 
-        XSelectInput(m_Display, window, mask);
-        XMapWindow(m_Display, window);
+        XSelectInput(m_Display, m_WindowID, mask);
+        XMapWindow(m_Display, m_WindowID);
 
         SetTitle(m_Title);
 
         Atom WM_DELETE_WINDOW = XInternAtom(m_Display, "WM_DELETE_WINDOW", False);
-        XSetWMProtocols(m_Display, window, &WM_DELETE_WINDOW, 1);
+        XSetWMProtocols(m_Display, m_WindowID, &WM_DELETE_WINDOW, 1);
 
         LinuxGraphicsNativeInformation init_info;
-        init_info.id = m_RegisteredWindowIndex;
         init_info.display = m_Display;
         init_info.screen = m_Screen;
         init_info.visual = reinterpret_cast<Visual*>(m_Visual);
-        init_info.window = window;
+        init_info.window = m_WindowID;
         init_info.window_width = m_Width;
         init_info.window_height = m_Height;
         Graphics::Initialize(&init_info);
@@ -111,7 +104,7 @@ namespace mc
 			SetupModernWindowViews();
 		}
 
-        s_ActiveWindowIndex = m_RegisteredWindowIndex;
+        s_CurrentActiveWindowInstance = this;
         m_IsOpened = true;
     }
 
@@ -137,7 +130,6 @@ namespace mc
         }
         case FocusIn:
         {
-            s_ActiveWindowIndex = m_RegisteredWindowIndex;
             auto e = std::make_shared<WindowGainedFocusEvent>(nullptr);
             m_SceneManager.DispatchEvent(e);
             break;
@@ -157,11 +149,10 @@ namespace mc
                 m_Height = xce.height;
 
                 LinuxGraphicsNativeInformation info;
-                info.id = m_RegisteredWindowIndex;
                 info.display = m_Display;
                 info.screen = m_Screen;
                 info.visual = reinterpret_cast<Visual*>(m_Visual);
-                info.window = s_RegisteredWindows[m_RegisteredWindowIndex];
+                info.window = m_WindowID;
                 info.window_width = m_Width;
                 info.window_height = m_Height;
                 Graphics::ResizeRenderTarget(&info);
@@ -286,7 +277,7 @@ namespace mc
         XEvent event;
         XNextEvent(m_Display, &event);
 
-        if (s_RegisteredWindows[m_RegisteredWindowIndex] == reinterpret_cast<XAnyEvent&>(event.xany).window)
+        if (m_WindowID == reinterpret_cast<XAnyEvent&>(event.xany).window)
         {
             ProcessEvents(&event);
         }
@@ -305,7 +296,7 @@ namespace mc
             usleep(16);
             Update();
 
-            if (m_RegisteredWindowIndex != s_ActiveWindowIndex) continue;
+            if (s_CurrentActiveWindowInstance != this) continue;
 
             m_InternalTimer.reset();
 			m_SceneManager.ProcessEvents(m_Dpi);
@@ -320,7 +311,7 @@ namespace mc
 			m_SceneManager.ProcessEvents(m_Dpi);
         }
 
-        Window window = s_RegisteredWindows[m_RegisteredWindowIndex];
+        Window window = m_WindowID;
         XDestroyWindow(m_Display, window);
         XCloseDisplay(m_Display);
     }
@@ -329,7 +320,7 @@ namespace mc
     {
         XResizeWindow(
             m_Display,
-            s_RegisteredWindows[m_RegisteredWindowIndex],
+            m_WindowID,
             width,
             height
         );
@@ -337,14 +328,14 @@ namespace mc
 
     void LinuxWindow::SetPos(uint32_t x, uint32_t y)
     {
-        XMoveWindow(m_Display, s_RegisteredWindows[m_RegisteredWindowIndex], (int)x, (int)y);
+        XMoveWindow(m_Display, m_WindowID, (int)x, (int)y);
     }
 
     void LinuxWindow::SetTitle(const char* title)
     {
         XChangeProperty(
             m_Display, 
-            s_RegisteredWindows[m_RegisteredWindowIndex],
+            m_WindowID,
             XInternAtom(m_Display, "_NET_WM_NAME", False),
             XInternAtom(m_Display, "UTF8_STRING", False),
             8, 
@@ -360,7 +351,7 @@ namespace mc
             class_hint->res_name = class_hint->res_class = (char*)title;
             XSetClassHint(
                 m_Display, 
-                s_RegisteredWindows[m_RegisteredWindowIndex],
+                m_WindowID,
                 class_hint
             );
             XFree(class_hint);
@@ -438,7 +429,7 @@ namespace mc
 
         XQueryPointer(
             m_Display,
-            s_RegisteredWindows[m_RegisteredWindowIndex],
+            m_WindowID,
             &root_return,
             &child_return,
             &root_x_return,
@@ -460,7 +451,7 @@ namespace mc
 
         XQueryPointer(
             m_Display,
-            s_RegisteredWindows[m_RegisteredWindowIndex],
+            m_WindowID,
             &root_return,
             &child_return,
             &root_x_return,

@@ -4,7 +4,6 @@ namespace mc
 {
 	typedef struct _LinuxGraphicsNativeInformation
 	{
-		int         id;
 		Display*    display;
 		int         screen;
 		Visual*     visual;

@@ -28,7 +28,7 @@ namespace mc
 		_XDisplay* 	m_Display = nullptr;
 		void* 		m_Visual = nullptr;
 		int 		m_Screen = -1;
-		size_t  	m_RegisteredWindowIndex = 0;
+		unsigned int m_WindowID = 0;
 
 	private:
 		virtual void Init() override;

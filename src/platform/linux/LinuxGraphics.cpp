@@ -1,5 +1,8 @@
 #include "LinuxGraphics.h"
 #include <window/SceneManager.h>
+#include "LinuxBitmap.h"
+#include "LinuxWindow.h"
+#include "stbimage/stb_image.h"
 
 #include <X11/Xlib.h>
 #include <cairo.h>
@@ -14,7 +17,6 @@ namespace mc
 {
     typedef struct _LinuxGraphicsNativeInformation
     {
-        int         id;
         Display*    display;
         int         screen;
         Visual*     visual;
@@ -25,15 +27,15 @@ namespace mc
 
     static bool s_AreLinuxGraphicsInitialized = false;
     Ref<RenderTarget> LinuxGraphics::m_RenderTarget = nullptr;
-    std::map<int, Ref<RenderTarget>> LinuxGraphics::m_RenderTargetMap;
+    std::map<unsigned int, Ref<RenderTarget>> LinuxGraphics::m_RenderTargetMap;
 
     static double DEG = 3.141592653589 / 180.0;
 
     bool LinuxGraphics::Initialize(void* init_info)
 	{
         LinuxGraphicsNativeInformation* inf = reinterpret_cast<LinuxGraphicsNativeInformation*>(init_info);
-        m_RenderTargetMap[inf->id] = RenderTarget::Create(init_info);
-		m_RenderTargetMap[inf->id]->Resize(init_info);
+        m_RenderTargetMap[inf->window] = RenderTarget::Create(init_info);
+		m_RenderTargetMap[inf->window]->Resize(init_info);
 
         s_AreLinuxGraphicsInitialized = true;
 		return true;
@@ -51,7 +53,7 @@ namespace mc
 	void LinuxGraphics::SetActiveTarget(void* native)
 	{
         LinuxGraphicsNativeInformation* inf = reinterpret_cast<LinuxGraphicsNativeInformation*>(native);
-        m_RenderTarget = m_RenderTargetMap[inf->id];
+        m_RenderTarget = m_RenderTargetMap[inf->window];
 	}
 
     void LinuxGraphics::BeginFrame()
@@ -259,12 +261,36 @@ namespace mc
 
 	Ref<Bitmap> LinuxGraphics::CreateBitmapFromFile(const std::string& path)
 	{
-        return nullptr;
+       	// int width, height, comp;
+		// Byte* image_data = stbi_load(path.c_str(), &width, &height, &comp, STBI_rgb);
+
+		// LinuxWindow* window = reinterpret_cast<LinuxWindow*>(UIWindow::GetCurrentActiveWindow());
+		// XImage* image = XCreateImage(
+		// 	window->m_Display,
+		// 	reinterpret_cast<Visual*>(window->m_Visual),
+		// 	DefaultDepth(window->m_Display, window->m_Screen),
+		// 	XYBitmap,
+		// 	0,
+		// 	(char*)image_data,
+		// 	width,
+		// 	height,
+		// 	24,
+		// 	0
+		// );
+
+		// stbi_image_free(image_data);
+
+		// auto bmp = Bitmap::Create(reinterpret_cast<void*>(image));
+		// std::dynamic_pointer_cast<LinuxBitmap>(bmp)->SetSize(width, height);
+
+		// return bmp;
+
+		return nullptr;
 	}
 
 	Ref<Bitmap> LinuxGraphics::CreateBitmap(const char* data, uint32_t size)
 	{
-        return nullptr;
+		return nullptr;
 	}
 
 	void LinuxGraphics::DrawBitmapImage(
@@ -276,6 +302,35 @@ namespace mc
 		float opacity
 	)
 	{
+		// LinuxWindow* window = reinterpret_cast<LinuxWindow*>(UIWindow::GetCurrentActiveWindow());
+		// Pixmap pixmap = XCreatePixmap(
+		// 	window->m_Display, 
+		// 	window->m_WindowID, 
+		// 	width, height, 
+		// 	DefaultDepth(window->m_Display, window->m_Screen)
+		// );
+
+		// XGCValues values;
+		// values.foreground = BlackPixel(window->m_Display, window->m_Screen);
+		// values.background = WhitePixel(window->m_Display, window->m_Screen);
+		// values.graphics_exposures = 0;
+
+		// GC gc = XCreateGC(
+		// 	window->m_Display, 
+		// 	window->m_WindowID, 
+		// 	GCForeground | GCBackground | GCGraphicsExposures,
+		// 	&values
+		// );
+
+		// XPutImage(
+		// 	window->m_Display,
+		// 	pixmap, 
+		// 	gc, 
+		// 	(XImage*)bmp->GetBmpData(), 
+		// 	0, 0, 
+		// 	x, y, 
+		// 	width, height
+		// );
 	}
 
     void LinuxGraphics::Update(const Color& background, SceneManager& sm, bool clearBackgroundColor)
