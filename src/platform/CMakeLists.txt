@@ -33,6 +33,8 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
         src/platform/linux/LinuxWindow.h
         src/platform/linux/LinuxRenderTarget.h
         src/platform/linux/LinuxGraphics.h
+        src/platform/linux/LinuxBitmap.h
+        src/platform/linux/LinuxFileDialogue.h
 
         PARENT_SCOPE
     )
@@ -43,6 +45,8 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
         src/platform/linux/LinuxWindow.cpp
         src/platform/linux/LinuxRenderTarget.cpp
         src/platform/linux/LinuxGraphics.cpp
+        src/platform/linux/LinuxBitmap.cpp
+        src/platform/linux/LinuxFileDialogue.cpp
 
         PARENT_SCOPE
     )

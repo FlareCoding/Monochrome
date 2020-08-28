@@ -1,10 +1,12 @@
 # Monochrome
 
-Monochrome is a GUI library aimed at C++ developers to help make the process of GUI development much easier. Monochrome offers modern style window and UI elements.
-The windowing system depends on Win32 API and graphics drawing is done by Direct2D and DirectWrite.
+Monochrome is a cross-platform GUI library aimed at C++ developers to help make the process of GUI development much easier. Monochrome offers modern style window and UI elements. The windowing and graphics systems depend on platform-dependent native APIs to operate at highest efficiency.
 
 ## Platform
-Monochrome is currently only supported on Windows.
+
+| Linux | Windows | MacOS |
+|:--------:| :-: | :-: |
+| ✓    | ✓ | ✓
 
 ## Installation
 
@@ -16,6 +18,21 @@ cmake ..
 ```
 
 The Visual Studio solution will be generated in the build directory.
+
+## Dependencies
+
+Installing additional dependencies is only required on **Linux**.  
+The following dependencies are required:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- **X11** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Window Management)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- **Cairo** &nbsp;&nbsp;&nbsp;&nbsp;(General Graphics)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- **Pango** &nbsp;&nbsp;(Text Rendering)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- **Glib** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Required by Pango)  
+
+***System commands for installation:***  
+**X11:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```sudo apt-get install -y libx11-dev```  
+**Cairo:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```sudo apt-get install -y libcairo2-dev```  
+**Pango:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```sudo apt-get install -y libsdl-pango-dev```  
+**Glib:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```sudo apt-get install -y libglib2.0-dev```  
 
 ## Sample Code
 

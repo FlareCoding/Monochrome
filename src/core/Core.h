@@ -4,6 +4,14 @@
 #include <map>
 #include <thread>
 
+#if defined(_WIN32)
+	#define MC_SUPPORTS_MULTIPLE_WINDOWS
+#elif defined(__linux__)
+	// Multiple windows not supported yet.
+#elif defined(__APPLE__)
+	// Multiple windows not supported yet.
+#endif
+
 namespace mc
 {
 	using Byte = unsigned char;

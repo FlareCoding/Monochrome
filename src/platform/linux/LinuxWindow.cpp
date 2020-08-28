@@ -4,10 +4,12 @@
 #include <events/Events.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <X11/Xutil.h>
 
 #include <locale>
 #include <codecvt>
 #include <unistd.h>
+#include <string.h>
 
 namespace mc
 {
@@ -27,52 +29,7 @@ namespace mc
     static size_t s_ActiveWindowIndex = 0;
 
     static Point _mc_LinuxWindow_static_previous_mouse_position_ = { 0, 0 };
-    static Point _mc_LinuxWindow_static_drag_panel_click_position = { 0, 0 };
-
-    static bool ModernWindowCloseButton_OnMouseClick(Event& event, UIView* sender)
-    {
-        size_t window_idx = dynamic_cast<LinuxWindow*>(sender->srcwindow)->m_RegisteredWindowIndex;
-        Window handle = s_RegisteredWindows[window_idx];
-        Display* display = dynamic_cast<LinuxWindow*>(sender->srcwindow)->m_Display;
-
-        XEvent evtclose;
-        evtclose.xclient.type = ClientMessage;
-        evtclose.xclient.window = handle;
-        evtclose.xclient.message_type = XInternAtom(display, "WM_PROTOCOLS", True);
-        evtclose.xclient.format = 32;
-        evtclose.xclient.data.l[0] = XInternAtom(display, "WM_DELETE_WINDOW", False);
-        evtclose.xclient.data.l[1] = CurrentTime;
-        XSendEvent(display, handle, False, NoEventMask, &evtclose);
-        return EVENT_HANDLED;
-    }
-
-    static bool ModernWindowMaximizeButton_OnMouseClick(Event& event, UIView* sender)
-    {
-
-        return EVENT_HANDLED;
-    }
-
-    static bool ModernWindowMinimizeButton_OnMouseClick(Event& event, UIView* sender)
-    {
-
-        return EVENT_HANDLED;
-    }
-
-    static void PerformDragPanelCollision(Display* display, Window window, Size position)
-    {
-        XWindowAttributes xwa;
-        XGetWindowAttributes(display, window, &xwa);
-
-        Size delta = {
-            position.x - _mc_LinuxWindow_static_drag_panel_click_position.x,
-            position.y - _mc_LinuxWindow_static_drag_panel_click_position.y
-        };
-
-        XMoveWindow(display, window, (int)(xwa.x + delta.x), (int)(xwa.y + delta.y));
-
-        _mc_LinuxWindow_static_drag_panel_click_position = position;
-    }
-
+    
     UIWindow* UIWindow::GetCurrentActiveWindow()
     {
         return s_CurrentActiveWindowInstance;
@@ -131,6 +88,8 @@ namespace mc
         XSelectInput(m_Display, window, mask);
         XMapWindow(m_Display, window);
 
+        SetTitle(m_Title);
+
         Atom WM_DELETE_WINDOW = XInternAtom(m_Display, "WM_DELETE_WINDOW", False);
         XSetWMProtocols(m_Display, window, &WM_DELETE_WINDOW, 1);
 
@@ -158,68 +117,10 @@ namespace mc
 
     void LinuxWindow::SetupModernWindowViews()
     {
-        m_ModernWindowDragPanel = MakeRef<UIView>();
-        m_ModernWindowDragPanel->layer.frame = Frame(0, 0, (float)m_Width - 160, 60);
-        m_ModernWindowDragPanel->layer.color = Color::transparent;
-        m_ModernWindowDragPanel->AddEventHandler<EventType::MouseButtonPressed>([this](Event& e, UIView* sender) -> bool {
-            _mc_LinuxWindow_static_drag_panel_click_position = sender->srcwindow->GetAsboluteMouseCursorPos();
-            return EVENT_HANDLED;
-        });
-        m_ModernWindowDragPanel->SetZIndex(10000);
-        AddView(m_ModernWindowDragPanel);
-
-        m_ModernWindowCloseButton = MakeRef<UIButton>();
-        m_ModernWindowCloseButton->layer.frame = Frame((float)m_Width - 46, 0, 46, 36);
-        m_ModernWindowCloseButton->CornerRadius = 0;
-        m_ModernWindowCloseButton->Label->Text = "X";
-        m_ModernWindowCloseButton->HoverOnColor = Color::red;
-        m_ModernWindowCloseButton->SetZIndex(20000);
-        m_ModernWindowCloseButton->AddEventHandler<EventType::MouseButtonReleased>(ModernWindowCloseButton_OnMouseClick);
-        AddView(CastToUiView(m_ModernWindowCloseButton));
-
-        m_ModernWindowMaximizeButton = MakeRef<UIButton>();
-        m_ModernWindowMaximizeButton->layer.frame = Frame((float)m_Width - 46 * 2, 0, 46, 36);
-        m_ModernWindowMaximizeButton->CornerRadius = 0;
-        m_ModernWindowMaximizeButton->Label->UseWidestringText = true;
-        m_ModernWindowMaximizeButton->Label->WidestringText = L"⬜";
-        m_ModernWindowMaximizeButton->SetZIndex(20000);
-        m_ModernWindowMaximizeButton->AddEventHandler<EventType::MouseButtonReleased>(ModernWindowMaximizeButton_OnMouseClick);
-        AddView(CastToUiView(m_ModernWindowMaximizeButton));
-
-        m_ModernWindowMinimizeButton = MakeRef<UIButton>();
-        m_ModernWindowMinimizeButton->layer.frame = Frame((float)m_Width - 46 * 3, 0, 46, 36);
-        m_ModernWindowMinimizeButton->CornerRadius = 0;
-        m_ModernWindowMinimizeButton->Label->Text = "_";
-        m_ModernWindowMinimizeButton->SetZIndex(20000);
-        m_ModernWindowMinimizeButton->AddEventHandler<EventType::MouseButtonReleased>(ModernWindowMinimizeButton_OnMouseClick);
-        AddView(CastToUiView(m_ModernWindowMinimizeButton));
-
-        m_ModernWindowTitleLabel = MakeRef<UILabel>();
-        m_ModernWindowTitleLabel->layer.frame = Frame(10, 8, 300, 26);
-        m_ModernWindowTitleLabel->layer.color = Color::black;
-        m_ModernWindowTitleLabel->Text = m_Title;
-        m_ModernWindowTitleLabel->Properties.Allignment = TextAlignment::LEADING;
-        m_ModernWindowTitleLabel->color = Color::white;
-        m_ModernWindowTitleLabel->SetZIndex(10000);
-        AddView(CastToUiView(m_ModernWindowTitleLabel));
     }
 
     void LinuxWindow::AdjustModernWindowViews()
     {
-        if (m_ModernWindowDragPanel)
-            m_ModernWindowDragPanel->layer.frame = Frame(0, 0, (float)m_Width - 160, 60);
-
-        if (m_ModernWindowCloseButton)
-            m_ModernWindowCloseButton->layer.frame = Frame((float)m_Width - 46, 0, 46, 36);
-
-        if (m_ModernWindowMaximizeButton)
-            m_ModernWindowMaximizeButton->layer.frame = Frame((float)m_Width - 46 * 2, 0, 46, 36);
-
-        if (m_ModernWindowMinimizeButton)
-            m_ModernWindowMinimizeButton->layer.frame = Frame((float)m_Width - 46 * 3, 0, 46, 36);
-
-        if (m_ModernWindowTitleLabel)
-            m_ModernWindowTitleLabel->layer.frame = Frame(10, 8, 300, 26);
     }
 
     void LinuxWindow::ProcessEvents(void* evt)
@@ -230,11 +131,21 @@ namespace mc
         case ClientMessage:
         {
             m_IsOpened = false;
+            auto e = std::make_shared<WindowClosedEvent>(nullptr);
+            m_SceneManager.DispatchEvent(e);
             return;
         }
         case FocusIn:
         {
             s_ActiveWindowIndex = m_RegisteredWindowIndex;
+            auto e = std::make_shared<WindowGainedFocusEvent>(nullptr);
+            m_SceneManager.DispatchEvent(e);
+            break;
+        }
+        case FocusOut:
+        {
+            auto e = std::make_shared<WindowLostFocusEvent>(nullptr);
+            m_SceneManager.DispatchEvent(e);
             break;
         }
         case ConfigureNotify:
@@ -254,13 +165,16 @@ namespace mc
                 info.window_width = m_Width;
                 info.window_height = m_Height;
                 Graphics::ResizeRenderTarget(&info);
+
+                auto e = std::make_shared<WindowResizedEvent>(nullptr, m_Width, m_Height);
+			    m_SceneManager.DispatchEvent(e);
             }
             break;
         }
         case ButtonPress:
         {
             XButtonEvent& be = reinterpret_cast<XButtonEvent&>(event);
-            MouseButton button = MouseButton::None;
+            MouseButton button = (MouseButton)0;
             switch (be.button)
             {
             case Button1: { button = MouseButton::Left; break; }
@@ -269,6 +183,10 @@ namespace mc
             default: break;
             }
 
+            // Do not count mouse wheel scroll as button click
+            if (be.button == Button4 || be.button == Button5)
+                return;
+
 			auto e = std::make_shared<MouseButtonPressedEvent>(Point{ (float)be.x, (float)be.y }, button);
 			m_SceneManager.DispatchEvent(e);
             break;
@@ -276,7 +194,7 @@ namespace mc
         case ButtonRelease:
         {
             XButtonEvent& be = reinterpret_cast<XButtonEvent&>(event.xbutton);
-            MouseButton button = MouseButton::None;
+            MouseButton button = (MouseButton)0;
             switch (be.button)
             {
             case Button1: { button = MouseButton::Left; break; }
@@ -313,7 +231,7 @@ namespace mc
                 click_location.y - (float)_mc_LinuxWindow_static_previous_mouse_position_.y
             };
 
-            MouseButton pressed_button = MouseButton::None;
+            MouseButton pressed_button = (MouseButton)0;
             switch (motion_e.state)
             {
             case Button1Mask: { pressed_button = MouseButton::Left; break; }
@@ -321,21 +239,6 @@ namespace mc
             case Button3Mask: { pressed_button = MouseButton::Right; break; }
             default: break;
             }
-
-            /*
-            // Checking for window drag panel collision
-            if (motion_e.state == Button1Mask && m_WindowStyle == WindowStyle::Modern)
-            {
-                Frame absolute_drag_frame = Frame(m_ModernWindowDragPanel->GetAbsolutePosition(), m_ModernWindowDragPanel->layer.frame.size);
-        		absolute_drag_frame.AdjustToDpi(m_Dpi);
-
-                if (absolute_drag_frame.DoesContain(click_location))
-                {
-                    PerformDragPanelCollision(m_Display, s_RegisteredWindows[m_RegisteredWindowIndex], GetAsboluteMouseCursorPos());
-                    return;
-                }
-            }
-            */
 
 			auto mouse_moved_e = std::make_shared<MouseMovedEvent>(click_location, distance, pressed_button);
 			auto hover_on_e = std::make_shared<MouseHoverOnEvent>(click_location, distance, pressed_button);
@@ -424,7 +327,12 @@ namespace mc
 
     void LinuxWindow::SetSize(uint32_t width, uint32_t height)
     {
-
+        XResizeWindow(
+            m_Display,
+            s_RegisteredWindows[m_RegisteredWindowIndex],
+            width,
+            height
+        );
     }
 
     void LinuxWindow::SetPos(uint32_t x, uint32_t y)
@@ -434,6 +342,33 @@ namespace mc
 
     void LinuxWindow::SetTitle(const char* title)
     {
+        XChangeProperty(
+            m_Display, 
+            s_RegisteredWindows[m_RegisteredWindowIndex],
+            XInternAtom(m_Display, "_NET_WM_NAME", False),
+            XInternAtom(m_Display, "UTF8_STRING", False),
+            8, 
+            PropModeReplace, 
+            (unsigned char*)title, 
+            strlen(title)
+        );
+
+        XClassHint* class_hint = XAllocClassHint();
+    
+        if (class_hint)
+        {
+            class_hint->res_name = class_hint->res_class = (char*)title;
+            XSetClassHint(
+                m_Display, 
+                s_RegisteredWindows[m_RegisteredWindowIndex],
+                class_hint
+            );
+            XFree(class_hint);
+        }
+
+        
+        m_Title = title;
+
         if (m_WindowStyle == WindowStyle::Modern)
             m_ModernWindowTitleLabel->Text = title;
     }
