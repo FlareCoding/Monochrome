@@ -193,6 +193,6 @@ namespace mc
 
 	private:
 		static Ref<RenderTarget> m_RenderTarget;
-		static std::map<int, Ref<RenderTarget>> m_RenderTargetMap;
+		static std::map<unsigned int, Ref<RenderTarget>> m_RenderTargetMap;
 	};
 }

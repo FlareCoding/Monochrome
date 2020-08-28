@@ -35,6 +35,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
         src/platform/linux/LinuxGraphics.h
         src/platform/linux/LinuxBitmap.h
         src/platform/linux/LinuxFileDialogue.h
+        src/platform/linux/stbimage/stb_image.h
 
         PARENT_SCOPE
     )
@@ -47,6 +48,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
         src/platform/linux/LinuxGraphics.cpp
         src/platform/linux/LinuxBitmap.cpp
         src/platform/linux/LinuxFileDialogue.cpp
+        src/platform/linux/stbimage/stb_image.cpp
 
         PARENT_SCOPE
     )

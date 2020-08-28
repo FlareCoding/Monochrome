@@ -17,11 +17,17 @@ namespace mc
 
 	float LinuxBitmap::GetWidth() const
 	{
-		return 0;
+		return m_Width;
 	}
 
 	float LinuxBitmap::GetHeight() const
 	{
-		return 0;
+		return m_Height;
+	}
+
+	void LinuxBitmap::SetSize(uint32_t width, uint32_t height)
+	{
+		m_Width = width;
+		m_Height = height;
 	}
 }
