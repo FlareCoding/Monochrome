@@ -72,6 +72,9 @@ namespace mc
 	void UITextbox::SetupEventHandlers()
 	{
 		AddEventHandler<EventType::KeyPressed>([this](Event& event, UIView* sender) -> bool {
+			if (ReadOnly)
+				return EVENT_UNHANDLED;
+
 			KeyPressedEvent& evt = reinterpret_cast<KeyPressedEvent&>(event);
 			auto input = std::string(1, McKeycodeToChar(evt.keycode, evt.capital, evt.capslock_on));
 
@@ -82,6 +85,9 @@ namespace mc
 		});
 
 		AddEventHandler<EventType::KeyReleased>([this](Event& event, UIView* sender) -> bool {
+			if (ReadOnly)
+				return EVENT_UNHANDLED;
+
 			KeyReleasedEvent& evt = reinterpret_cast<KeyReleasedEvent&>(event);
 			if (evt.keycode == KeyCode::KEY_LCONTROL)
 				m_CtrlPressed = false;
@@ -90,11 +96,17 @@ namespace mc
 		});
 
 		AddEventHandler<EventType::FocusChanged>([this](Event& event, UIView* sender) -> bool {
+			if (ReadOnly)
+				return EVENT_UNHANDLED;
+
 			m_IsFocused = ((FocusChangedEvent&)event).GainedFocus;
 			return EVENT_UNHANDLED;
 		});
 
 		AddEventHandler<EventType::MouseButtonPressed>([this](Event& event, UIView* sender) -> bool {
+			if (ReadOnly)
+				return EVENT_UNHANDLED;
+
 			if (m_FirstTimeClick)
 			{
 				if (Text.size()) m_CursorIndex = Text.size();

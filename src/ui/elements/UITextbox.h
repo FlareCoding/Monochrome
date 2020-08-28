@@ -32,6 +32,9 @@ namespace mc
 		/// Color of the text.
 		Color TextColor = Color::black;
 
+		/// Determines if user can type inside the textbox.
+		bool ReadOnly = false;
+
 	private:
 		void SetDefaultOptions();
 		void SetupEventHandlers();
