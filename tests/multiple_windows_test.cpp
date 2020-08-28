@@ -24,6 +24,7 @@ void StartSecondWindow()
 
 int main()
 {
+#ifdef MC_SUPPORTS_MULTIPLE_WINDOWS
 	auto window = UIWindow::Create(WindowStyle::Modern, 1000, 670, "Parent Window");
 	window->SetBackgroundColor(Color(28, 21, 31, 1.0f));
 	window->SetModernWindowButtonsColor(Color(28, 21, 31, 1.0f));
@@ -42,4 +43,8 @@ int main()
 
 	window->StartWindowLoop();
     return 0;
+#else
+	printf("Multiple windows is not supported on this platform yet.\n");
+	return 0;
+#endif
 }

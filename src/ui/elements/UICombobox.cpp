@@ -40,6 +40,8 @@ namespace mc
 	{
 		AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 			MouseButtonClickedEvent& mbce = reinterpret_cast<MouseButtonClickedEvent&>(e);
+			if (mbce.button != MouseButton::Left)
+				return EVENT_UNHANDLED;
 
 			uint32_t dpi = 96;
 			if (UIWindow::GetCurrentActiveWindow())
@@ -113,6 +115,10 @@ namespace mc
 		ItemButton->layer.color = m_ItemBackgroundColor;
 		ItemButton->Label->color = m_ItemTextColor;
 		ItemButton->AddEventHandler<EventType::MouseButtonClicked>([this, item](Event& e, UIView* sender) -> bool {
+			MouseButtonClickedEvent& mbce = reinterpret_cast<MouseButtonClickedEvent&>(e);
+			if (mbce.button != MouseButton::Left)
+				return EVENT_UNHANDLED;
+			
 			// This check has to be done since the scroll panel
 			// will receive events regardless of whether or not
 			// the scroll panel is opened.

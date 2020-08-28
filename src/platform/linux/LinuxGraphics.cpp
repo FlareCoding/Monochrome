@@ -4,7 +4,11 @@
 #include <X11/Xlib.h>
 #include <cairo.h>
 #include <cairo-xlib.h>
+#include <pango/pangocairo.h>
+
 #include <math.h>
+#include <locale>
+#include <codecvt>
 
 namespace mc
 {
@@ -97,7 +101,7 @@ namespace mc
         cairo_line_to(ctx, x2, y2);
 
         cairo_set_source_rgba(ctx, (double)color.r / 255, (double)color.g / 255, (double)color.b / 255, (double)color.alpha);
-        cairo_fill(ctx);
+        cairo_stroke(ctx);
 	}
 
 	void LinuxGraphics::DrawRectangle(
@@ -156,6 +160,7 @@ namespace mc
 		bool large_arc,
 		float stroke)
 	{
+		// TO-DO
 	}
 
 	void LinuxGraphics::DrawTextWideString(
@@ -167,6 +172,39 @@ namespace mc
 		TextProperties text_props,
 		Color color)
 	{
+		auto* ctx = reinterpret_cast<cairo_t*>(m_RenderTarget->GetNativeHandle());
+
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>,wchar_t> convert;
+		std::string dest = convert.to_bytes(text.c_str()); 
+		const char* str = dest.c_str();  
+
+		char szFontDescription[32];
+		memset(&szFontDescription[0], 0, sizeof(szFontDescription));
+		snprintf(szFontDescription, sizeof(szFontDescription) - 1, "%s %.1f", text_props.Font.c_str(), (float)text_props.FontSize);
+
+		PangoFontDescription* pFontDescription = pango_font_description_from_string(szFontDescription);
+
+        PangoLayout* layout = pango_cairo_create_layout(ctx);
+		pango_layout_set_text(layout, str, -1);
+		pango_layout_set_font_description(layout, pFontDescription);
+
+		int text_width;
+		int text_height;
+		pango_layout_get_pixel_size(layout, &text_width, &text_height);
+
+		float x_pos = 0;
+		if (text_props.Allignment == TextAlignment::CENTERED)
+			x_pos = x + (width - text_width) / 2; 
+		else if (text_props.Allignment == TextAlignment::LEADING)
+			x_pos = x; 
+		else if (text_props.Allignment == TextAlignment::TRAILING)
+			x_pos = x + width - text_width;
+
+		cairo_move_to(ctx, x_pos, y + height / 2 - text_height / 2);
+
+		cairo_set_source_rgba(ctx, (double)color.r / 255, (double)color.g / 255, (double)color.b / 255, (double)color.alpha);
+		cairo_set_antialias(ctx, CAIRO_ANTIALIAS_BEST);
+		pango_cairo_show_layout(ctx, layout);
 	}
 
 	void LinuxGraphics::DrawTextString(
@@ -178,15 +216,8 @@ namespace mc
 		TextProperties text_props,
 		Color color)
 	{
-        auto* ctx = reinterpret_cast<cairo_t*>(m_RenderTarget->GetNativeHandle());
-
-        cairo_text_extents_t extents;
-        cairo_text_extents(ctx, text.c_str(), &extents);
-
-        cairo_set_source_rgba (ctx, (double)color.r / 255, (double)color.g / 255, (double)color.b / 255, (double)color.alpha);
-        cairo_move_to(ctx, x + width / 2 - extents.width / 2 + 4, y + height / 2 + 4);
-        cairo_show_text(ctx, text.c_str());
-	}
+		DrawTextWideString(x, y, width, height, std::wstring(text.begin(), text.end()), text_props, color);
+    }
 
 	TextMetrics LinuxGraphics::CalculateTextMetrics(
 		const std::string& text,
@@ -195,6 +226,29 @@ namespace mc
 		float max_height)
 	{
 		TextMetrics metrics = { 0 };
+		static float static_text_metric_offset = 5.0f;
+
+		auto* ctx = reinterpret_cast<cairo_t*>(m_RenderTarget->GetNativeHandle());
+
+		char szFontDescription[32];
+		memset(&szFontDescription[0], 0, sizeof(szFontDescription));
+		snprintf(szFontDescription, sizeof(szFontDescription) - 1, "%s %.1f", text_props.Font.c_str(), (float)text_props.FontSize);
+
+		PangoFontDescription* pFontDescription = pango_font_description_from_string(szFontDescription);
+
+        PangoLayout* layout = pango_cairo_create_layout(ctx);
+		pango_layout_set_text(layout, text.c_str(), -1);
+		pango_layout_set_font_description(layout, pFontDescription);
+
+		int text_width;
+		int text_height;
+		pango_layout_get_pixel_size(layout, &text_width, &text_height);
+
+		metrics.Width = text_width + static_text_metric_offset;
+		metrics.WidthIncludingTrailingWhitespace = text_width + static_text_metric_offset;
+		metrics.Height = text_height;
+		metrics.LineCount = 1;
+
 		return metrics;
 	}
 
