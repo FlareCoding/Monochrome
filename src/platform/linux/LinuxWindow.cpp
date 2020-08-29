@@ -294,7 +294,6 @@ namespace mc
     {
         while (m_IsOpened)
         {
-            XFlush(m_Display);
             usleep(16);
             Update();
 
@@ -311,6 +310,8 @@ namespace mc
 			auto e = std::make_shared<WindowUpdatedEvent>(nullptr, EventProcessingTime, GraphicsRenderingTime);
 			m_SceneManager.DispatchEvent(e);
 			m_SceneManager.ProcessEvents(m_Dpi);
+
+            XFlush(m_Display);
         }
 
         Window window = m_WindowID;
