@@ -1,19 +1,9 @@
 var searchData=
 [
-  ['uibutton_157',['UIButton',['../classmc_1_1_u_i_button.html',1,'mc']]],
-  ['uicheckbox_158',['UICheckbox',['../classmc_1_1_u_i_checkbox.html',1,'mc']]],
-  ['uicombobox_159',['UICombobox',['../classmc_1_1_u_i_combobox.html',1,'mc']]],
-  ['uicursor_160',['UICursor',['../classmc_1_1_u_i_cursor.html',1,'mc']]],
-  ['uifiledialogue_161',['UIFileDialogue',['../classmc_1_1_u_i_file_dialogue.html',1,'mc']]],
-  ['uifiledialoguefilter_162',['UIFileDialogueFilter',['../classmc_1_1_u_i_file_dialogue_filter.html',1,'mc']]],
-  ['uiimage_163',['UIImage',['../classmc_1_1_u_i_image.html',1,'mc']]],
-  ['uilabel_164',['UILabel',['../classmc_1_1_u_i_label.html',1,'mc']]],
-  ['uiscrollpanel_165',['UIScrollPanel',['../classmc_1_1_u_i_scroll_panel.html',1,'mc']]],
-  ['uislider_166',['UISlider',['../classmc_1_1_u_i_slider.html',1,'mc']]],
-  ['uitabview_167',['UITabView',['../classmc_1_1_u_i_tab_view.html',1,'mc']]],
-  ['uitextbox_168',['UITextbox',['../classmc_1_1_u_i_textbox.html',1,'mc']]],
-  ['uiview_169',['UIView',['../classmc_1_1_u_i_view.html',1,'mc']]],
-  ['uiwindow_170',['UIWindow',['../classmc_1_1_u_i_window.html',1,'mc']]],
-  ['update_171',['Update',['../classmc_1_1_u_i_window.html#a98fcb989f2dadc8edfb564daa4344121',1,'mc::UIWindow']]],
-  ['usewidestringtext_172',['UseWidestringText',['../classmc_1_1_u_i_label.html#a0ee3f7e6a462d493201eece5c21a58f2',1,'mc::UILabel']]]
+  ['text_177',['Text',['../classmc_1_1_u_i_label.html#a14e4c24202f892824691d90797205f66',1,'mc::UILabel::Text()'],['../classmc_1_1_u_i_text_area.html#ad130f4294424747d177995b12507e2e2',1,'mc::UITextArea::Text()'],['../classmc_1_1_u_i_textbox.html#a5fb016ddea68ea9fdfc4023722bbed12',1,'mc::UITextbox::Text()']]],
+  ['textcolor_178',['TextColor',['../classmc_1_1_u_i_text_area.html#a5a967c4ad4562ee9ef40f6c7dd7c95e3',1,'mc::UITextArea::TextColor()'],['../classmc_1_1_u_i_textbox.html#ac9f330f7a5110c392f15893584727a93',1,'mc::UITextbox::TextColor()']]],
+  ['textmetrics_179',['TextMetrics',['../structmc_1_1_text_metrics.html',1,'mc']]],
+  ['textproperties_180',['TextProperties',['../structmc_1_1_text_properties.html',1,'mc::TextProperties'],['../classmc_1_1_u_i_textbox.html#acfead28ef6384b5103f79ab29d4d402f',1,'mc::UITextbox::textProperties()']]],
+  ['topmargins_181',['TopMargins',['../classmc_1_1_u_i_text_area.html#a15ed49a3db5979d12708b18ceb7f3f08',1,'mc::UITextArea']]],
+  ['tostring_182',['ToString',['../classmc_1_1_event.html#adf91eb31a3c8952120bd7507f9000e2c',1,'mc::Event::ToString()'],['../classmc_1_1_key_pressed_event.html#a089ffd9c712d183a3fb35e619a759268',1,'mc::KeyPressedEvent::ToString()'],['../classmc_1_1_key_released_event.html#a937b0a88cb8f6379b89f98e361c0b994',1,'mc::KeyReleasedEvent::ToString()'],['../classmc_1_1_mouse_button_pressed_event.html#aba502a8e23f776072f8de43638af097a',1,'mc::MouseButtonPressedEvent::ToString()'],['../classmc_1_1_mouse_button_released_event.html#abed63d899dca590b2509dae4837b9d66',1,'mc::MouseButtonReleasedEvent::ToString()'],['../classmc_1_1_mouse_moved_event.html#a3d8beeb16bc444a21667d1103596f5cf',1,'mc::MouseMovedEvent::ToString()'],['../classmc_1_1_window_resized_event.html#aba83d21fd5657e6f9cad31b5a0f0319d',1,'mc::WindowResizedEvent::ToString()']]]
 ];

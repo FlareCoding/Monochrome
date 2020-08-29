@@ -96,38 +96,53 @@ $(document).ready(function(){initNavTree('classmc_1_1_render_target.html',''); i
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classmc_1_1_render_target-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">mc::RenderTarget Class Reference</div>  </div>
+<div class="title">mc::RenderTarget Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Inheritance diagram for mc::RenderTarget:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classmc_1_1_render_target.png" usemap="#mc::RenderTarget_map" alt=""/>
+  <map id="mc::RenderTarget_map" name="mc::RenderTarget_map">
+<area href="classmc_1_1_linux_render_target.html" alt="mc::LinuxRenderTarget" shape="rect" coords="0,56,161,80"/>
+<area href="classmc_1_1_o_s_x_render_target.html" alt="mc::OSXRenderTarget" shape="rect" coords="171,56,332,80"/>
+<area href="classmc_1_1_windows_render_target.html" alt="mc::WindowsRenderTarget" shape="rect" coords="342,56,503,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adc43df4043049ab65d5f53973b01537d"><td class="memItemLeft" align="right" valign="top"><a id="adc43df4043049ab65d5f53973b01537d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RenderTarget</b> (HWND hwnd)</td></tr>
-<tr class="separator:adc43df4043049ab65d5f53973b01537d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b0b8b61ec8cfc4fa8e231bc1ba917fa"><td class="memItemLeft" align="right" valign="top"><a id="a1b0b8b61ec8cfc4fa8e231bc1ba917fa"></a>
-ID2D1HwndRenderTarget *const&#160;</td><td class="memItemRight" valign="bottom"><b>GetNativeHandle</b> () const</td></tr>
-<tr class="separator:a1b0b8b61ec8cfc4fa8e231bc1ba917fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50db235a5ee1f09598e8e52474cd3791"><td class="memItemLeft" align="right" valign="top"><a id="a50db235a5ee1f09598e8e52474cd3791"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BeginDraw</b> ()</td></tr>
-<tr class="separator:a50db235a5ee1f09598e8e52474cd3791"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade5f726f2d10be607ac6438acb34975a"><td class="memItemLeft" align="right" valign="top"><a id="ade5f726f2d10be607ac6438acb34975a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>EndDraw</b> ()</td></tr>
-<tr class="separator:ade5f726f2d10be607ac6438acb34975a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73b75aab379fea756a049229694aa753"><td class="memItemLeft" align="right" valign="top"><a id="a73b75aab379fea756a049229694aa753"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearScreen</b> (uint32_t r, uint32_t g, uint32_t b)</td></tr>
-<tr class="separator:a73b75aab379fea756a049229694aa753"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab403591791b87c45a045c67a0f579bb"><td class="memItemLeft" align="right" valign="top"><a id="aab403591791b87c45a045c67a0f579bb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>PushLayer</b> (float x, float y, float width, float height)</td></tr>
-<tr class="separator:aab403591791b87c45a045c67a0f579bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add8a08f33706e9b92a094a8ce5bd5413"><td class="memItemLeft" align="right" valign="top"><a id="add8a08f33706e9b92a094a8ce5bd5413"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>PopLayer</b> ()</td></tr>
-<tr class="separator:add8a08f33706e9b92a094a8ce5bd5413"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23a3bc768e90e9653d14851be0d8bf5a"><td class="memItemLeft" align="right" valign="top"><a id="a23a3bc768e90e9653d14851be0d8bf5a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Resize</b> (HWND hwnd)</td></tr>
-<tr class="separator:a23a3bc768e90e9653d14851be0d8bf5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed275be772710da7a7f5902858930f1e"><td class="memItemLeft" align="right" valign="top"><a id="aed275be772710da7a7f5902858930f1e"></a>
+virtual void *const&#160;</td><td class="memItemRight" valign="bottom"><b>GetNativeHandle</b> () const =0</td></tr>
+<tr class="separator:aed275be772710da7a7f5902858930f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1191d24d5e995e22c10528d7a3c98ef"><td class="memItemLeft" align="right" valign="top"><a id="ae1191d24d5e995e22c10528d7a3c98ef"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>BeginDraw</b> ()=0</td></tr>
+<tr class="separator:ae1191d24d5e995e22c10528d7a3c98ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56ad6b297516d9ae2f748f96a6937c24"><td class="memItemLeft" align="right" valign="top"><a id="a56ad6b297516d9ae2f748f96a6937c24"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>EndDraw</b> ()=0</td></tr>
+<tr class="separator:a56ad6b297516d9ae2f748f96a6937c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c3eed206e735e89c3484e63e8972377"><td class="memItemLeft" align="right" valign="top"><a id="a6c3eed206e735e89c3484e63e8972377"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearScreen</b> (uint32_t r, uint32_t g, uint32_t b)=0</td></tr>
+<tr class="separator:a6c3eed206e735e89c3484e63e8972377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3afb98ce9b9c47d4541da9a18deb7ea9"><td class="memItemLeft" align="right" valign="top"><a id="a3afb98ce9b9c47d4541da9a18deb7ea9"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PushLayer</b> (float x, float y, float width, float height)=0</td></tr>
+<tr class="separator:a3afb98ce9b9c47d4541da9a18deb7ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcba1e15ee3e6ddf9f8e0159ba769c81"><td class="memItemLeft" align="right" valign="top"><a id="afcba1e15ee3e6ddf9f8e0159ba769c81"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PopLayer</b> ()=0</td></tr>
+<tr class="separator:afcba1e15ee3e6ddf9f8e0159ba769c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab52b717d9df029a92d80bdb2194bc601"><td class="memItemLeft" align="right" valign="top"><a id="ab52b717d9df029a92d80bdb2194bc601"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Resize</b> (void *native)=0</td></tr>
+<tr class="separator:ab52b717d9df029a92d80bdb2194bc601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a055502ab10b56a692dc4cee3d07e0051"><td class="memItemLeft" align="right" valign="top"><a id="a055502ab10b56a692dc4cee3d07e0051"></a>
+static Ref&lt; <a class="el" href="classmc_1_1_render_target.html">RenderTarget</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (void *native)</td></tr>
+<tr class="separator:a055502ab10b56a692dc4cee3d07e0051"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

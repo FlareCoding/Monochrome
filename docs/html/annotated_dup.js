@@ -1,6 +1,7 @@
 var annotated_dup =
 [
     [ "mc", null, [
+      [ "_LinuxGraphicsNativeInformation", "structmc_1_1___linux_graphics_native_information.html", "structmc_1_1___linux_graphics_native_information" ],
       [ "Bitmap", "classmc_1_1_bitmap.html", "classmc_1_1_bitmap" ],
       [ "Circle", "classmc_1_1_circle.html", "classmc_1_1_circle" ],
       [ "Color", "classmc_1_1_color.html", "classmc_1_1_color" ],
@@ -16,6 +17,11 @@ var annotated_dup =
       [ "KeyPressedEvent", "classmc_1_1_key_pressed_event.html", "classmc_1_1_key_pressed_event" ],
       [ "KeyReleasedEvent", "classmc_1_1_key_released_event.html", "classmc_1_1_key_released_event" ],
       [ "Layer", "classmc_1_1_layer.html", "classmc_1_1_layer" ],
+      [ "LinuxBitmap", "classmc_1_1_linux_bitmap.html", "classmc_1_1_linux_bitmap" ],
+      [ "LinuxFileDialogue", "classmc_1_1_linux_file_dialogue.html", "classmc_1_1_linux_file_dialogue" ],
+      [ "LinuxGraphics", "classmc_1_1_linux_graphics.html", null ],
+      [ "LinuxRenderTarget", "classmc_1_1_linux_render_target.html", "classmc_1_1_linux_render_target" ],
+      [ "LinuxWindow", "classmc_1_1_linux_window.html", "classmc_1_1_linux_window" ],
       [ "MouseButtonEvent", "classmc_1_1_mouse_button_event.html", "classmc_1_1_mouse_button_event" ],
       [ "MouseButtonPressedEvent", "classmc_1_1_mouse_button_pressed_event.html", "classmc_1_1_mouse_button_pressed_event" ],
       [ "MouseButtonReleasedEvent", "classmc_1_1_mouse_button_released_event.html", "classmc_1_1_mouse_button_released_event" ],
@@ -24,6 +30,11 @@ var annotated_dup =
       [ "MouseHoverOnEvent", "classmc_1_1_mouse_hover_on_event.html", "classmc_1_1_mouse_hover_on_event" ],
       [ "MouseMovedEvent", "classmc_1_1_mouse_moved_event.html", "classmc_1_1_mouse_moved_event" ],
       [ "MouseScrolledEvent", "classmc_1_1_mouse_scrolled_event.html", "classmc_1_1_mouse_scrolled_event" ],
+      [ "OSXBitmap", "classmc_1_1_o_s_x_bitmap.html", "classmc_1_1_o_s_x_bitmap" ],
+      [ "OSXFileDialogue", "classmc_1_1_o_s_x_file_dialogue.html", "classmc_1_1_o_s_x_file_dialogue" ],
+      [ "OSXGraphics", "classmc_1_1_o_s_x_graphics.html", null ],
+      [ "OSXRenderTarget", "classmc_1_1_o_s_x_render_target.html", "classmc_1_1_o_s_x_render_target" ],
+      [ "OSXWindow", "classmc_1_1_o_s_x_window.html", "classmc_1_1_o_s_x_window" ],
       [ "Point", "structmc_1_1_point.html", "structmc_1_1_point" ],
       [ "Rectangle", "classmc_1_1_rectangle.html", "classmc_1_1_rectangle" ],
       [ "RenderTarget", "classmc_1_1_render_target.html", "classmc_1_1_render_target" ],
@@ -41,6 +52,7 @@ var annotated_dup =
       [ "UIScrollPanel", "classmc_1_1_u_i_scroll_panel.html", "classmc_1_1_u_i_scroll_panel" ],
       [ "UISlider", "classmc_1_1_u_i_slider.html", "classmc_1_1_u_i_slider" ],
       [ "UITabView", "classmc_1_1_u_i_tab_view.html", "classmc_1_1_u_i_tab_view" ],
+      [ "UITextArea", "classmc_1_1_u_i_text_area.html", "classmc_1_1_u_i_text_area" ],
       [ "UITextbox", "classmc_1_1_u_i_textbox.html", "classmc_1_1_u_i_textbox" ],
       [ "UIView", "classmc_1_1_u_i_view.html", "classmc_1_1_u_i_view" ],
       [ "UIWindow", "classmc_1_1_u_i_window.html", "classmc_1_1_u_i_window" ],
@@ -49,6 +61,16 @@ var annotated_dup =
       [ "WindowGainedFocusEvent", "classmc_1_1_window_gained_focus_event.html", "classmc_1_1_window_gained_focus_event" ],
       [ "WindowLostFocusEvent", "classmc_1_1_window_lost_focus_event.html", "classmc_1_1_window_lost_focus_event" ],
       [ "WindowResizedEvent", "classmc_1_1_window_resized_event.html", "classmc_1_1_window_resized_event" ],
+      [ "WindowsBitmap", "classmc_1_1_windows_bitmap.html", "classmc_1_1_windows_bitmap" ],
+      [ "WindowsFileDialogue", "classmc_1_1_windows_file_dialogue.html", "classmc_1_1_windows_file_dialogue" ],
+      [ "WindowsGraphics", "classmc_1_1_windows_graphics.html", null ],
+      [ "WindowsRenderTarget", "classmc_1_1_windows_render_target.html", "classmc_1_1_windows_render_target" ],
+      [ "WindowsWindow", "classmc_1_1_windows_window.html", "classmc_1_1_windows_window" ],
       [ "WindowUpdatedEvent", "classmc_1_1_window_updated_event.html", "classmc_1_1_window_updated_event" ]
-    ] ]
+    ] ],
+    [ "ImageUtil", "interface_image_util.html", null ],
+    [ "OSXCocoaNativeObject", "struct_o_s_x_cocoa_native_object.html", "struct_o_s_x_cocoa_native_object" ],
+    [ "OSXWindowContentViewDelegate", "interface_o_s_x_window_content_view_delegate.html", "interface_o_s_x_window_content_view_delegate" ],
+    [ "OSXWindowDelegate", "interface_o_s_x_window_delegate.html", "interface_o_s_x_window_delegate" ],
+    [ "stbi_io_callbacks", "structstbi__io__callbacks.html", "structstbi__io__callbacks" ]
 ];

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['scrolldistance_356',['ScrollDistance',['../classmc_1_1_mouse_scrolled_event.html#a622d2cd90bb25cba45680251c3d5c3ba',1,'mc::MouseScrolledEvent']]],
-  ['slotsize_357',['SlotSize',['../classmc_1_1_u_i_combobox.html#a8045c31dcf95fd6d5a0721a59426008f',1,'mc::UICombobox']]],
-  ['srcwindow_358',['srcwindow',['../classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162',1,'mc::UIView']]],
-  ['subviews_359',['subviews',['../classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4',1,'mc::UIView']]]
+  ['parent_414',['parent',['../classmc_1_1_u_i_view.html#a16263f2d249fa426f2ecd8b6c8baa823',1,'mc::UIView']]],
+  ['placeholder_415',['Placeholder',['../classmc_1_1_u_i_textbox.html#a2b4cde47c31d50c8fdded26dda7fe4f9',1,'mc::UITextbox']]],
+  ['properties_416',['Properties',['../classmc_1_1_u_i_label.html#a2000920a7232fd72f22e3792222ce404',1,'mc::UILabel::Properties()'],['../classmc_1_1_u_i_text_area.html#a6bc80d2fb334dae1ad2fda22652f961d',1,'mc::UITextArea::Properties()']]]
 ];

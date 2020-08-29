@@ -1,6 +1,11 @@
 var hierarchy =
 [
-    [ "mc::Bitmap", "classmc_1_1_bitmap.html", null ],
+    [ "mc::_LinuxGraphicsNativeInformation", "structmc_1_1___linux_graphics_native_information.html", null ],
+    [ "mc::Bitmap", "classmc_1_1_bitmap.html", [
+      [ "mc::LinuxBitmap", "classmc_1_1_linux_bitmap.html", null ],
+      [ "mc::OSXBitmap", "classmc_1_1_o_s_x_bitmap.html", null ],
+      [ "mc::WindowsBitmap", "classmc_1_1_windows_bitmap.html", null ]
+    ] ],
     [ "mc::Circle", "classmc_1_1_circle.html", null ],
     [ "mc::Color", "classmc_1_1_color.html", null ],
     [ "mc::CoreResources", "classmc_1_1_core_resources.html", null ],
@@ -42,6 +47,7 @@ var hierarchy =
         [ "mc::UIScrollPanel", "classmc_1_1_u_i_scroll_panel.html", null ],
         [ "mc::UISlider", "classmc_1_1_u_i_slider.html", null ],
         [ "mc::UITabView", "classmc_1_1_u_i_tab_view.html", null ],
+        [ "mc::UITextArea", "classmc_1_1_u_i_text_area.html", null ],
         [ "mc::UITextbox", "classmc_1_1_u_i_textbox.html", null ]
       ] ]
     ] ],
@@ -49,14 +55,40 @@ var hierarchy =
       [ "mc::UIView", "classmc_1_1_u_i_view.html", null ]
     ] ],
     [ "mc::Layer", "classmc_1_1_layer.html", null ],
+    [ "mc::LinuxGraphics", "classmc_1_1_linux_graphics.html", null ],
+    [ "NSObject", null, [
+      [ "ImageUtil", "interface_image_util.html", null ]
+    ] ],
+    [ "NSView", null, [
+      [ "OSXWindowContentViewDelegate", "interface_o_s_x_window_content_view_delegate.html", null ]
+    ] ],
+    [ "NSWindow", null, [
+      [ "OSXWindowDelegate", "interface_o_s_x_window_delegate.html", null ]
+    ] ],
+    [ "OSXCocoaNativeObject", "struct_o_s_x_cocoa_native_object.html", null ],
+    [ "mc::OSXGraphics", "classmc_1_1_o_s_x_graphics.html", null ],
     [ "mc::Point", "structmc_1_1_point.html", null ],
     [ "mc::Rectangle", "classmc_1_1_rectangle.html", null ],
-    [ "mc::RenderTarget", "classmc_1_1_render_target.html", null ],
+    [ "mc::RenderTarget", "classmc_1_1_render_target.html", [
+      [ "mc::LinuxRenderTarget", "classmc_1_1_linux_render_target.html", null ],
+      [ "mc::OSXRenderTarget", "classmc_1_1_o_s_x_render_target.html", null ],
+      [ "mc::WindowsRenderTarget", "classmc_1_1_windows_render_target.html", null ]
+    ] ],
     [ "mc::SceneManager", "classmc_1_1_scene_manager.html", null ],
+    [ "stbi_io_callbacks", "structstbi__io__callbacks.html", null ],
     [ "mc::TextMetrics", "structmc_1_1_text_metrics.html", null ],
     [ "mc::TextProperties", "structmc_1_1_text_properties.html", null ],
     [ "mc::UICursor", "classmc_1_1_u_i_cursor.html", null ],
-    [ "mc::UIFileDialogue", "classmc_1_1_u_i_file_dialogue.html", null ],
+    [ "mc::UIFileDialogue", "classmc_1_1_u_i_file_dialogue.html", [
+      [ "mc::LinuxFileDialogue", "classmc_1_1_linux_file_dialogue.html", null ],
+      [ "mc::OSXFileDialogue", "classmc_1_1_o_s_x_file_dialogue.html", null ],
+      [ "mc::WindowsFileDialogue", "classmc_1_1_windows_file_dialogue.html", null ]
+    ] ],
     [ "mc::UIFileDialogueFilter", "classmc_1_1_u_i_file_dialogue_filter.html", null ],
-    [ "mc::UIWindow", "classmc_1_1_u_i_window.html", null ]
+    [ "mc::UIWindow", "classmc_1_1_u_i_window.html", [
+      [ "mc::LinuxWindow", "classmc_1_1_linux_window.html", null ],
+      [ "mc::OSXWindow", "classmc_1_1_o_s_x_window.html", null ],
+      [ "mc::WindowsWindow", "classmc_1_1_windows_window.html", null ]
+    ] ],
+    [ "mc::WindowsGraphics", "classmc_1_1_windows_graphics.html", null ]
 ];

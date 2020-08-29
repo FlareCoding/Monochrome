@@ -8,5 +8,6 @@ var dir_350bf8165b0b3325544874bcab6ec667 =
     [ "UIScrollPanel.h", "_u_i_scroll_panel_8h_source.html", null ],
     [ "UISlider.h", "_u_i_slider_8h_source.html", null ],
     [ "UITabView.h", "_u_i_tab_view_8h_source.html", null ],
+    [ "UITextArea.h", "_u_i_text_area_8h_source.html", null ],
     [ "UITextbox.h", "_u_i_textbox_8h_source.html", null ]
 ];

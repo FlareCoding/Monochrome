@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['gainedfocus_341',['GainedFocus',['../classmc_1_1_focus_changed_event.html#a89c186256aff7dc6f8bb1073ecf36ea5',1,'mc::FocusChangedEvent']]],
-  ['graphicsrenderingtime_342',['GraphicsRenderingTime',['../classmc_1_1_window_updated_event.html#a462907ec64d8c22650b4c113b586b04e',1,'mc::WindowUpdatedEvent']]]
+  ['focusedhighlightcolor_400',['FocusedHighlightColor',['../classmc_1_1_u_i_textbox.html#ae9cca477c80adba77dc9f30a2b77f172',1,'mc::UITextbox']]]
 ];
