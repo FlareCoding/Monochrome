@@ -41,6 +41,7 @@ namespace mc
         m_NativeObject->window = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 300, m_Width, m_Height)
                                                             styleMask:NSWindowStyleMaskTitled
                                 | NSWindowStyleMaskClosable
+                                | NSWindowStyleMaskMiniaturizable
                                 | NSWindowStyleMaskResizable
                                                             backing:NSBackingStoreBuffered defer:NO];
         
