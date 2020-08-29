@@ -35,7 +35,8 @@ namespace mc
 		std::string		Font = "Arial";
 		unsigned int	FontSize = 12;
 
-		TextAlignment	Allignment = TextAlignment::CENTERED;
+		TextAlignment	Alignment = TextAlignment::CENTERED;
+		TextAlignment	VerticalAlignment = TextAlignment::CENTERED;
 		TextStyle		Style = TextStyle::DEFAULT;
 		WordWrapping	Wrapping = WordWrapping::NORMAL_WRAP;
 	};

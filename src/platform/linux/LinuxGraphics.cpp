@@ -195,11 +195,11 @@ namespace mc
 		pango_layout_get_pixel_size(layout, &text_width, &text_height);
 
 		float x_pos = 0;
-		if (text_props.Allignment == TextAlignment::CENTERED)
+		if (text_props.Alignment == TextAlignment::CENTERED)
 			x_pos = x + (width - text_width) / 2; 
-		else if (text_props.Allignment == TextAlignment::LEADING)
+		else if (text_props.Alignment == TextAlignment::LEADING)
 			x_pos = x; 
-		else if (text_props.Allignment == TextAlignment::TRAILING)
+		else if (text_props.Alignment == TextAlignment::TRAILING)
 			x_pos = x + width - text_width;
 
 		cairo_move_to(ctx, x_pos, y + height / 2 - text_height / 2);

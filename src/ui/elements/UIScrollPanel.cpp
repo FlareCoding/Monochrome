@@ -53,7 +53,7 @@ namespace mc
 
 		AddEventHandler<EventType::MouseMoved>([this](Event& e, UIView* sender) -> bool {
 			MouseMovedEvent& evt = reinterpret_cast<MouseMovedEvent&>(e);
-			if (evt.button == MouseButton::Left && m_VerticalScrollbarMousePressed)
+			if (evt.button == MouseButton::Left && m_VerticalScrollbarMousePressed && m_IsFocused)
 				ScrollContent(evt.distance.y * 1.6f);
 
 			return EVENT_UNHANDLED;
@@ -66,7 +66,9 @@ namespace mc
 
 		m_VerticalScrollbar->AddEventHandler<EventType::MouseScrolled>([this](Event& e, UIView* sender) -> bool {
 			MouseScrolledEvent& evt = reinterpret_cast<MouseScrolledEvent&>(e);	
-			ScrollContent(-evt.ScrollDistance / 2.0f);
+			
+			if (m_IsFocused)
+				ScrollContent(-evt.ScrollDistance / 2.0f);
 
 			return EVENT_UNHANDLED;
 		});
@@ -84,8 +86,6 @@ namespace mc
 
 	void UIScrollPanel::ScrollContent(float distance)
 	{
-		if (!m_IsFocused) return;
-
 		ContentView->layer.frame.position.y -= distance;
 
 		if (ContentView->layer.frame.position.y > 0)
@@ -127,6 +127,16 @@ namespace mc
 
 		// Scrollbar
 		ProcessScrollbar();
+	}
+
+	void UIScrollPanel::ScrollToTop()
+	{
+		ScrollContent(-100000000.0f);
+	}
+
+	void UIScrollPanel::ScrollToBottom()
+	{
+		ScrollContent(100000000.0f);
 	}
 
 	float UIScrollPanel::GetMaximumVerticalScrollAmount()

@@ -202,28 +202,47 @@ namespace mc
 									blue:(float)color.b / 255.0f 
 									alpha:color.alpha];
 
+		NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+		if (text_props.Wrapping == WordWrapping::NO_WRAP)
+			[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+		else if (text_props.Wrapping == WordWrapping::CHARACTER_WRAP)
+			[paragraphStyle setLineBreakMode:NSLineBreakByCharWrapping];
+		else if (text_props.Wrapping == WordWrapping::WORD_WRAP)
+			[paragraphStyle setLineBreakMode:NSLineBreakByWordWrapping];
+
 		NSFont* font = [NSFont fontWithName:[NSString stringWithUTF8String: text_props.Font.c_str()] size:text_props.FontSize];
 		NSDictionary* attribs = @{ 
 									NSForegroundColorAttributeName : textColor,
 									NSFontAttributeName : font,
+									NSParagraphStyleAttributeName: paragraphStyle
 								};
 
 		NSString* str = [[NSString alloc] initWithBytes:text.c_str() length:text.size() * sizeof(wchar_t) encoding:NSUTF32LittleEndianStringEncoding];
-		NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:str attributes:attribs];
+		CGRect frame = [str boundingRectWithSize:NSMakeSize(width, height)
+                                          	options:NSStringDrawingUsesLineFragmentOrigin
+                                       		attributes:attribs
+                                          	context:nil];
 
+        CGSize stringSize = CGSizeMake(frame.size.width, frame.size.height + 1);
 		NSRect layerRect = NSMakeRect(x, y, width, height);
-		CGSize stringSize = [str sizeWithAttributes:attribs];
 
 		float x_pos = 0;
-		if (text_props.Allignment == TextAlignment::CENTERED)
+		if (text_props.Alignment == TextAlignment::CENTERED)
 			x_pos = layerRect.origin.x + (layerRect.size.width - stringSize.width) / 2; 
-		else if (text_props.Allignment == TextAlignment::LEADING)
+		else if (text_props.Alignment == TextAlignment::LEADING)
 			x_pos = layerRect.origin.x; 
-		else if (text_props.Allignment == TextAlignment::TRAILING)
+		else if (text_props.Alignment == TextAlignment::TRAILING)
 			x_pos = layerRect.origin.x + layerRect.size.width - stringSize.width;
 
-		float y_pos = (layerRect.size.height - stringSize.height) / 2;
-		[str drawAtPoint:CGPointMake(x_pos, layerRect.origin.y + y_pos) withAttributes:attribs];
+		float y_pos = 0;
+		if (text_props.VerticalAlignment == TextAlignment::CENTERED)
+			y_pos = layerRect.origin.y + (layerRect.size.height - stringSize.height) / 2;
+		else if (text_props.VerticalAlignment == TextAlignment::LEADING)
+			y_pos = layerRect.origin.y; 
+		else if (text_props.VerticalAlignment == TextAlignment::TRAILING)
+			y_pos = layerRect.origin.y + layerRect.size.height - stringSize.height;
+
+		[str drawInRect:NSMakeRect(x_pos, y_pos, width, height) withAttributes:attribs];
 	}
 
 	void OSXGraphics::DrawTextString(
@@ -246,18 +265,29 @@ namespace mc
 	{
 		TextMetrics metrics = { 0 };
 		static float static_text_metric_offset = 5.0f;
-		
+
+		NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+		if (text_props.Wrapping == WordWrapping::NO_WRAP)
+			[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+		else if (text_props.Wrapping == WordWrapping::CHARACTER_WRAP)
+			[paragraphStyle setLineBreakMode:NSLineBreakByCharWrapping];
+		else if (text_props.Wrapping == WordWrapping::WORD_WRAP)
+			[paragraphStyle setLineBreakMode:NSLineBreakByWordWrapping];
+
 		NSString* fontName = [NSString stringWithUTF8String:text_props.Font.c_str()];
 		NSFont* font = [NSFont fontWithName:fontName size:text_props.FontSize];
 		NSDictionary* attribs = @{ 
 									NSFontAttributeName : font,
+									NSParagraphStyleAttributeName: paragraphStyle
 								};
 
 		NSString* str = [NSString stringWithUTF8String:text.c_str()];
-		NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:str attributes:attribs];
+		CGRect frame = [str boundingRectWithSize:NSMakeSize(max_width, max_height)
+                                          	options:NSStringDrawingUsesLineFragmentOrigin
+                                       		attributes:attribs
+                                          	context:nil];
 
-		NSRect layerRect = NSMakeRect(0, 0, max_width, max_height);
-		CGSize stringSize = [str sizeWithAttributes:attribs];
+        CGSize stringSize = CGSizeMake(frame.size.width, frame.size.height + 1);
 
 		metrics.Width = stringSize.width + static_text_metric_offset;
 		metrics.WidthIncludingTrailingWhitespace = stringSize.width + static_text_metric_offset;

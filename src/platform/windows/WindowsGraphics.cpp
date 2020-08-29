@@ -26,7 +26,7 @@ namespace mc
 {
 #pragma warning( push )
 #pragma warning( disable : 26812 )
-	static std::pair<DWRITE_TEXT_ALIGNMENT, DWRITE_PARAGRAPH_ALIGNMENT> TextAllignmentToDwriteAlignment(TextAlignment alignment)
+	static std::pair<DWRITE_TEXT_ALIGNMENT, DWRITE_PARAGRAPH_ALIGNMENT> TextAlignmentToDwriteAlignment(TextAlignment alignment)
 	{
 		switch (alignment)
 		{
@@ -341,7 +341,7 @@ namespace mc
 			&format
 		);
 
-		auto [ta, pa] = TextAllignmentToDwriteAlignment(text_props.Allignment);
+		auto [ta, pa] = TextAlignmentToDwriteAlignment(text_props.Alignment);
 		format->SetTextAlignment(ta);
 		format->SetParagraphAlignment(pa);
 		format->SetWordWrapping(McWordWrappingToDwriteWrapping(text_props.Wrapping));
@@ -392,7 +392,7 @@ namespace mc
 			return metrics;
 		}
 
-		auto [ta, pa] = TextAllignmentToDwriteAlignment(text_props.Allignment);
+		auto [ta, pa] = TextAlignmentToDwriteAlignment(text_props.Alignment);
 		format->SetTextAlignment(ta);
 		format->SetParagraphAlignment(pa);
 		format->SetWordWrapping(McWordWrappingToDwriteWrapping(text_props.Wrapping));

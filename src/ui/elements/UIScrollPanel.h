@@ -28,12 +28,19 @@ namespace mc
 		/// View containing all the scrollable content.
 		Ref<UIView> ContentView;
 
+		/// Scrolls the content to the top-most area.
+		void ScrollToTop();
+
+		/// Scrolls the content to the bottom-most area.
+		void ScrollToBottom();
+
+		/// Scrolls the content by the specified amount in pixels.
+		void ScrollContent(float distance);
+
 	private:
 		void SetDefaultOptions();
 		void SetupEventHandlers();
 		void Update();
-
-		void ScrollContent(float distance);
 
 	private:
 		float m_ScrollbarWidth = 10.0f;

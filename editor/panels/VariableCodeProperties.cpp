@@ -103,7 +103,7 @@ void VariableCodeProperties::InitPropertiesUI()
 	m_EventTypeSelectedLabel->color = Color::white;
 	m_EventTypeSelectedLabel->Text = "Event Type Selected:  " + EventTypes[0];
 	m_EventTypeSelectedLabel->Properties.FontSize = 14;
-	m_EventTypeSelectedLabel->Properties.Allignment = TextAlignment::LEADING;
+	m_EventTypeSelectedLabel->Properties.Alignment = TextAlignment::LEADING;
 	m_EventTypeSelectedLabel->Properties.Style = TextStyle::BOLD;
 	m_PropertiesList.push_back(m_EventTypeSelectedLabel);
 

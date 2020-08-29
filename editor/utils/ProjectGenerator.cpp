@@ -309,7 +309,7 @@ namespace utils
         };
 
         xml_node<>* alignment_node = doc->allocate_node(node_element, "alignment");
-        alignment_node->value(doc->allocate_string(alignment_to_string(label->Properties.Allignment).c_str()));
+        alignment_node->value(doc->allocate_string(alignment_to_string(label->Properties.Alignment).c_str()));
         text_properties_node->append_node(alignment_node);
 
         xml_node<>* style_node = doc->allocate_node(node_element, "style");
@@ -522,7 +522,7 @@ namespace utils
         label->layer.frame.size.width = frameSizeWidth;
         label->layer.frame.size.height = frameSizeHeight;
         label->SetZIndex(zIndex);
-        label->Properties.Allignment = alignment;
+        label->Properties.Alignment = alignment;
         label->Properties.Font = fontName;
         label->Properties.FontSize = fontSize;
         label->Properties.Style = style;
@@ -635,7 +635,7 @@ namespace utils
         button->Label->Visible = labelVisibility;
         button->Label->Properties.Font = labelFontName;
         button->Label->Properties.FontSize = labelFontSize;
-        button->Label->Properties.Allignment = labelAlignment;
+        button->Label->Properties.Alignment = labelAlignment;
         button->Label->Properties.Style = labelStyle;
         button->Label->Properties.Wrapping = labelWrapping;
 
@@ -839,7 +839,7 @@ namespace utils
         checkbox->Label->Visible = labelVisibility;
         checkbox->Label->Properties.Font = labelFontName;
         checkbox->Label->Properties.FontSize = labelFontSize;
-        checkbox->Label->Properties.Allignment = labelAlignment;
+        checkbox->Label->Properties.Alignment = labelAlignment;
         checkbox->Label->Properties.Style = labelStyle;
         checkbox->Label->Properties.Wrapping = labelWrapping;
         checkbox->Label->SetZIndex(labelZIndex);

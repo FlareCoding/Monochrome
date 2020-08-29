@@ -26,7 +26,7 @@ namespace mc
 		Label->color = Color::white;
 		Label->layer.frame = Frame(BoxSize + LabelMargins, 0, layer.frame.size.width - BoxSize, layer.frame.size.height);
 		Label->Text = "Checkbox";
-		Label->Properties.Allignment = TextAlignment::LEADING;
+		Label->Properties.Alignment = TextAlignment::LEADING;
 		subviews.push_back(Label);
 
 		SetupEventHandlers();

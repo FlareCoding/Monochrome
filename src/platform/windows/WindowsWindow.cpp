@@ -236,7 +236,7 @@ namespace mc
 		m_ModernWindowTitleLabel->layer.frame = Frame(10, 8, 300, 26);
 		m_ModernWindowTitleLabel->layer.color = Color::black;
 		m_ModernWindowTitleLabel->Text = m_Title;
-		m_ModernWindowTitleLabel->Properties.Allignment = TextAlignment::LEADING;
+		m_ModernWindowTitleLabel->Properties.Alignment = TextAlignment::LEADING;
 		m_ModernWindowTitleLabel->color = Color::white;
 		m_ModernWindowTitleLabel->SetZIndex(10000);
 		AddView(CastToUiView(m_ModernWindowTitleLabel));

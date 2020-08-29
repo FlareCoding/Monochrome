@@ -322,7 +322,7 @@ void MonochromeEditor::InitEditorUI()
 	auto GridSizeLabel = MakeRef<UILabel>(Frame(Position{ 60, 70 }, Size{ 160, 30 }));
 	GridSizeLabel->Text = "Grid Size: ";
 	GridSizeLabel->Properties.FontSize = 14;
-	GridSizeLabel->Properties.Allignment = TextAlignment::LEADING;
+	GridSizeLabel->Properties.Alignment = TextAlignment::LEADING;
 	GridSizeLabel->color = Color::white;
 	m_EditorSettingsView->AddSubview(GridSizeLabel);
 
@@ -384,7 +384,7 @@ void MonochromeEditor::InitEditorUI()
 	auto AutoSavingIntervalLabel = MakeRef<UILabel>(Frame(Position{ 380, 70 }, Size{ 180, 30 }));
 	AutoSavingIntervalLabel->Text = "Auto-Saving Interval (sec.): ";
 	AutoSavingIntervalLabel->Properties.FontSize = 14;
-	AutoSavingIntervalLabel->Properties.Allignment = TextAlignment::LEADING;
+	AutoSavingIntervalLabel->Properties.Alignment = TextAlignment::LEADING;
 	AutoSavingIntervalLabel->color = Color::white;
 	m_EditorSettingsView->AddSubview(AutoSavingIntervalLabel);
 
@@ -422,7 +422,7 @@ void MonochromeEditor::InitEditorUI()
 	auto ProjectWindowWidthLabel = MakeRef<UILabel>(Frame(Position{ 80, 120 }, Size{ 160, 40 }));
 	ProjectWindowWidthLabel->Text = "Window Width: ";
 	ProjectWindowWidthLabel->Properties.FontSize = 14;
-	ProjectWindowWidthLabel->Properties.Allignment = TextAlignment::LEADING;
+	ProjectWindowWidthLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectWindowWidthLabel->color = Color::white;
 	m_EditorWindow->AddView(ProjectWindowWidthLabel);
 
@@ -440,7 +440,7 @@ void MonochromeEditor::InitEditorUI()
 	auto ProjectWindowHeightLabel = MakeRef<UILabel>(Frame(Position{ 80, 150 }, Size{ 160, 40 }));
 	ProjectWindowHeightLabel->Text = "Window Height: ";
 	ProjectWindowHeightLabel->Properties.FontSize = 14;
-	ProjectWindowHeightLabel->Properties.Allignment = TextAlignment::LEADING;
+	ProjectWindowHeightLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectWindowHeightLabel->color = Color::white;
 	m_EditorWindow->AddView(ProjectWindowHeightLabel);
 
@@ -458,7 +458,7 @@ void MonochromeEditor::InitEditorUI()
 	auto ProjectWindowTitleLabel = MakeRef<UILabel>(Frame(Position{ 80, 180 }, Size{ 160, 40 }));
 	ProjectWindowTitleLabel->Text = "Window Title: ";
 	ProjectWindowTitleLabel->Properties.FontSize = 14;
-	ProjectWindowTitleLabel->Properties.Allignment = TextAlignment::LEADING;
+	ProjectWindowTitleLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectWindowTitleLabel->color = Color::white;
 	m_EditorWindow->AddView(ProjectWindowTitleLabel);
 
@@ -476,7 +476,7 @@ void MonochromeEditor::InitEditorUI()
 	auto ProjectWindowColorLabel = MakeRef<UILabel>(Frame(Position{ 80, 210 }, Size{ 160, 40 }));
 	ProjectWindowColorLabel->Text = "Window Color: ";
 	ProjectWindowColorLabel->Properties.FontSize = 14;
-	ProjectWindowColorLabel->Properties.Allignment = TextAlignment::LEADING;
+	ProjectWindowColorLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectWindowColorLabel->color = Color::white;
 	m_EditorWindow->AddView(ProjectWindowColorLabel);
 
@@ -518,7 +518,7 @@ void MonochromeEditor::InitEditorUI()
 	auto ProjectNameLabel = MakeRef<UILabel>(Frame(Position{ 80, 600 }, Size{ 160, 40 }));
 	ProjectNameLabel->Text = "Project Name: ";
 	ProjectNameLabel->Properties.FontSize = 14;
-	ProjectNameLabel->Properties.Allignment = TextAlignment::LEADING;
+	ProjectNameLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectNameLabel->color = Color::white;
 	m_EditorWindow->AddView(ProjectNameLabel);
 
@@ -536,7 +536,7 @@ void MonochromeEditor::InitEditorUI()
 	auto ProjectPathLabel = MakeRef<UILabel>(Frame(Position{ 80, 630 }, Size{ 160, 40 }));
 	ProjectPathLabel->Text = "Project Location: ";
 	ProjectPathLabel->Properties.FontSize = 14;
-	ProjectPathLabel->Properties.Allignment = TextAlignment::LEADING;
+	ProjectPathLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectPathLabel->color = Color::white;
 	m_EditorWindow->AddView(ProjectPathLabel);
 
@@ -577,7 +577,7 @@ void MonochromeEditor::InitEditorUI()
 	auto UIClassNameLabel = MakeRef<UILabel>(Frame(Position{ 80, 695 }, Size{ 160, 40 }));
 	UIClassNameLabel->Text = "UI Class Name: ";
 	UIClassNameLabel->Properties.FontSize = 14;
-	UIClassNameLabel->Properties.Allignment = TextAlignment::LEADING;
+	UIClassNameLabel->Properties.Alignment = TextAlignment::LEADING;
 	UIClassNameLabel->color = Color::white;
 	m_EditorWindow->AddView(UIClassNameLabel);
 

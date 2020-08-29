@@ -58,7 +58,7 @@ namespace mc
 
 		Text = "";
 		Placeholder = "Enter text ...";
-		textProperties.Allignment = TextAlignment::LEADING;
+		textProperties.Alignment = TextAlignment::LEADING;
 		textProperties.Wrapping = WordWrapping::NO_WRAP;
 
 		m_Label = MakeRef<UILabel>();

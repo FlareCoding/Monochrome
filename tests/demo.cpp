@@ -3,6 +3,7 @@ using namespace mc;
 
 Ref<UICheckbox> checkbox;
 Ref<UISlider> slider;
+Ref<UITextArea> textArea;
 
 void Checkbox_ValueChanged(bool checked, UICheckbox* sender)
 {
@@ -59,6 +60,8 @@ int main()
 		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
 			printf("Text entered from Textbox 2!\n");
 
+		textArea->Text += McKeycodeToChar(((KeyPressedEvent&)e).keycode, false, false);
+
 		return EVENT_HANDLED;
 	});
 	window->AddView(textbox2);
@@ -91,6 +94,12 @@ int main()
 		printf("Selected \"%s\" at index %zu\n", sender->GetItem(index).c_str(), index);
 	});
 	window->AddView(combobox);
+
+	textArea = MakeRef<UITextArea>();
+	textArea->layer.frame = Frame(Position{ 140, 470 }, Size{ 320, 220 });
+	textArea->RightMargins = 4.0f;
+	textArea->LeftMargins = 4.0f;
+	window->AddView(textArea);
 
 	window->StartWindowLoop();
 

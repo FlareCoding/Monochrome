@@ -8,3 +8,4 @@
 #include "elements/UICombobox.h"
 #include "elements/UITabView.h"
 #include "elements/UIImage.h"
+#include "elements/UITextArea.h"

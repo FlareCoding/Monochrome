@@ -11,19 +11,19 @@ int main()
 	static uint64_t ViewCount = 8;
 
 	auto ViewCountLabel = MakeRef<UILabel>(Frame(360, 150, 260, 30));
-	ViewCountLabel->Properties.Allignment = TextAlignment::TRAILING;
+	ViewCountLabel->Properties.Alignment = TextAlignment::TRAILING;
 	ViewCountLabel->Text = "View Count: " + std::to_string(ViewCount);
 	ViewCountLabel->color = Color::white;
 	window->AddView(ViewCountLabel);
 
 	auto EventProcessingTimeLabel = MakeRef<UILabel>(Frame(360, 180, 260, 30));
-	EventProcessingTimeLabel->Properties.Allignment = TextAlignment::TRAILING;
+	EventProcessingTimeLabel->Properties.Alignment = TextAlignment::TRAILING;
 	EventProcessingTimeLabel->Text = "Event Processing Time: " + std::to_string(0) + " seconds";
 	EventProcessingTimeLabel->color = Color::white;
 	window->AddView(EventProcessingTimeLabel);
 
 	auto GraphcisRenderingTimeLabel = MakeRef<UILabel>(Frame(360, 210, 260, 30));
-	GraphcisRenderingTimeLabel->Properties.Allignment = TextAlignment::TRAILING;
+	GraphcisRenderingTimeLabel->Properties.Alignment = TextAlignment::TRAILING;
 	GraphcisRenderingTimeLabel->Text = "Graphics Rendering Time: " + std::to_string(0) + " seconds";
 	GraphcisRenderingTimeLabel->color = Color::white;
 	window->AddView(GraphcisRenderingTimeLabel);

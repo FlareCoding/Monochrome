@@ -179,7 +179,7 @@ class MCLayoutReader:
         source += "{}->color = {};\n".format(name, props['color'])
         source += "{}->Properties.Font = \"{}\";\n".format(name, props['text_properties']['font'])
         source += "{}->Properties.FontSize = {};\n".format(name, props['text_properties']['font_size'])
-        source += "{}->Properties.Allignment = {};\n".format(name, props['text_properties']['alignment'])
+        source += "{}->Properties.Alignment = {};\n".format(name, props['text_properties']['alignment'])
         source += "{}->Properties.Style = {};\n".format(name, props['text_properties']['style'])
         source += "{}->Properties.Wrapping = {};\n".format(name, props['text_properties']['wrapping'])
 
