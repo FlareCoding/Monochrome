@@ -60,8 +60,6 @@ int main()
 		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
 			printf("Text entered from Textbox 2!\n");
 
-		textArea->Text += McKeycodeToChar(((KeyPressedEvent&)e).keycode, false, false);
-
 		return EVENT_HANDLED;
 	});
 	window->AddView(textbox2);

@@ -189,6 +189,16 @@ namespace mc
         PangoLayout* layout = pango_cairo_create_layout(ctx);
 		pango_layout_set_text(layout, str, -1);
 		pango_layout_set_font_description(layout, pFontDescription);
+		pango_font_description_free(pFontDescription);
+		
+		pango_layout_set_width(layout, PANGO_SCALE * width);
+
+		if (text_props.Wrapping == WordWrapping::CHARACTER_WRAP)
+			pango_layout_set_wrap(layout, PANGO_WRAP_CHAR);
+		else if (text_props.Wrapping == WordWrapping::WORD_WRAP)
+			pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+		else if (text_props.Wrapping == WordWrapping::NO_WRAP)
+			pango_layout_set_width(layout, -1);
 
 		int text_width;
 		int text_height;
@@ -202,7 +212,15 @@ namespace mc
 		else if (text_props.Alignment == TextAlignment::TRAILING)
 			x_pos = x + width - text_width;
 
-		cairo_move_to(ctx, x_pos, y + height / 2 - text_height / 2);
+		float y_pos = 0;
+		if (text_props.VerticalAlignment == TextAlignment::CENTERED)
+			y_pos = y + (height - text_height) / 2;
+		else if (text_props.VerticalAlignment == TextAlignment::LEADING)
+			y_pos = y; 
+		else if (text_props.VerticalAlignment == TextAlignment::TRAILING)
+			y_pos = y + height - text_height;
+
+		cairo_move_to(ctx, x_pos, y_pos);
 
 		cairo_set_source_rgba(ctx, (double)color.r / 255, (double)color.g / 255, (double)color.b / 255, (double)color.alpha);
 		cairo_set_antialias(ctx, CAIRO_ANTIALIAS_BEST);
@@ -241,6 +259,15 @@ namespace mc
         PangoLayout* layout = pango_cairo_create_layout(ctx);
 		pango_layout_set_text(layout, text.c_str(), -1);
 		pango_layout_set_font_description(layout, pFontDescription);
+		pango_font_description_free(pFontDescription);
+
+		pango_layout_set_width(layout, PANGO_SCALE * max_width);
+		if (text_props.Wrapping == WordWrapping::CHARACTER_WRAP)
+			pango_layout_set_wrap(layout, PANGO_WRAP_CHAR);
+		else if (text_props.Wrapping == WordWrapping::WORD_WRAP)
+			pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+		else if (text_props.Wrapping == WordWrapping::NO_WRAP)
+			pango_layout_set_width(layout, -1);
 
 		int text_width;
 		int text_height;
@@ -249,7 +276,7 @@ namespace mc
 		metrics.Width = text_width + static_text_metric_offset;
 		metrics.WidthIncludingTrailingWhitespace = text_width + static_text_metric_offset;
 		metrics.Height = text_height;
-		metrics.LineCount = 1;
+		metrics.LineCount = pango_layout_get_line_count(layout);
 
 		return metrics;
 	}
