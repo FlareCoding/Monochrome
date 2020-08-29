@@ -13,6 +13,7 @@ set(
     src/ui/elements/UITabView.h
     src/ui/elements/UIImage.h
     src/ui/elements/UITextArea.h
+    src/ui/elements/UIProgressBar.h
 
     PARENT_SCOPE
 )
@@ -30,6 +31,7 @@ set(
     src/ui/elements/UITabView.cpp
     src/ui/elements/UIImage.cpp
     src/ui/elements/UITextArea.cpp
+    src/ui/elements/UIProgressBar.cpp
 
     PARENT_SCOPE
 )

@@ -9,3 +9,4 @@
 #include "elements/UITabView.h"
 #include "elements/UIImage.h"
 #include "elements/UITextArea.h"
+#include "elements/UIProgressBar.h"
