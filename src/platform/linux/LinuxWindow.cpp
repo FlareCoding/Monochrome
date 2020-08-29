@@ -274,18 +274,20 @@ namespace mc
 
     void LinuxWindow::Update()
     {
-        XEvent event;
-        XNextEvent(m_Display, &event);
-
-        if (m_WindowID == reinterpret_cast<XAnyEvent&>(event.xany).window)
+        while (XPending(m_Display))
         {
-            ProcessEvents(&event);
+            XEvent event;
+            XNextEvent(m_Display, &event);
+
+            if (m_WindowID == reinterpret_cast<XAnyEvent&>(event.xany).window)
+            {
+                ProcessEvents(&event);
+            }
         }
     }
 
     void LinuxWindow::ForceUpdate(bool clear_screen)
     {
-
     }
 
     void LinuxWindow::StartWindowLoop()
