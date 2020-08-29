@@ -14,6 +14,7 @@ set(
     src/ui/elements/UIImage.h
     src/ui/elements/UITextArea.h
     src/ui/elements/UIProgressBar.h
+    src/ui/elements/UICircularProgressBar.h
 
     PARENT_SCOPE
 )
@@ -32,6 +33,7 @@ set(
     src/ui/elements/UIImage.cpp
     src/ui/elements/UITextArea.cpp
     src/ui/elements/UIProgressBar.cpp
+    src/ui/elements/UICircularProgressBar.cpp
 
     PARENT_SCOPE
 )
