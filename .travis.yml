@@ -8,4 +8,4 @@ language: cpp
 
 script:
   - cmake .
-  - cmake --build . -- -j2
+  - cmake --build .
