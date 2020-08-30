@@ -3,15 +3,25 @@ os:
   - osx
   - windows
 
-sudo: false
+sudo: enabled
 language: cpp
 
+compiler:
+    - g++
+
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y libx11-dev
-  - sudo apt-get install -y libcairo2-dev
-  - sudo apt-get install -y libsdl-pango-dev
-  - sudo apt-get install -y libglib2.0-dev
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo apt update; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo apt-get install gcc-8 g++-8; fi
+
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 60; fi
+
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo apt-get update; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo apt-get install -y libx11-dev; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo apt-get install -y libcairo2-dev; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo apt-get install -y libsdl-pango-dev; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; sudo apt-get install -y libglib2.0-dev; fi
 
 script:
   - cmake .
