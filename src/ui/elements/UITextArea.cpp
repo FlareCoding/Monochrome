@@ -57,7 +57,6 @@ namespace mc
         m_TextSource->layer.frame.position.y = TopMargins;
         m_TextSource->layer.frame.size.width = layer.frame.size.width - (RightMargins + LeftMargins);
         m_TextSource->color = TextColor;
-        m_TextSource->Text = Text;
         m_TextSource->Properties = Properties;
 
         if (Text != m_PreviousText)
@@ -68,6 +67,8 @@ namespace mc
 
     void UITextArea::OnTextChanged()
     {
+        m_TextSource->Text = Text;
+
         auto text_metrics = Graphics::CalculateTextMetrics(
             Text,
             Properties,
