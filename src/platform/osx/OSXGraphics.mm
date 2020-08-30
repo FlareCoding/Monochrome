@@ -1,6 +1,9 @@
 #include "OSXGraphics.h"
 #include <window/SceneManager.h>
 #include "OSXNativeCore.h"
+#include <math.h>
+
+#define RAD2DEG(radians) ((radians) * (180.0 / M_PI))
 
 @interface ImageUtil : NSObject
 +(NSImage*)flipImage:(NSImage*)image;
@@ -173,19 +176,33 @@ namespace mc
 		float start_y,
 		float end_x,
 		float end_y,
+		float angle,
 		float size,
 		Color color,
 		bool clockwise,
 		bool large_arc,
 		float stroke)
 	{
-		[[NSColor colorWithCalibratedRed:(float)color.r / 255.0f 
-									green:(float)color.g / 255.0f 
-									blue:(float)color.b / 255.0f 
-									alpha:color.alpha] 
-									setFill];
+		NSPoint center = { start_x, start_y + size };
 
-		// TO-DO
+		NSBezierPath* path = [NSBezierPath bezierPath];
+		[path appendBezierPathWithArcWithCenter:
+									center
+									radius: size
+									startAngle: -90
+									endAngle: (-90 + (float)RAD2DEG(angle))
+									clockwise:!clockwise];
+
+		[path moveToPoint: center];
+		[path closePath];
+
+		[[NSColor colorWithCalibratedRed:(float)color.r / 255.0f
+									green:(float)color.g / 255.0f
+									blue:(float)color.b / 255.0f
+									alpha:color.alpha]
+									set];
+		[path setLineWidth:4.0f];
+		[path stroke];
 	}
 
 	void OSXGraphics::DrawTextWideString(

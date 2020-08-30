@@ -86,6 +86,7 @@ namespace mc
 		/// @param start_y y-coordinate of the location of the first endpoint
 		/// @param end_x x-coordinate of the location of the second endpoint
 		/// @param end_y y-coordinate of the location of the second endpoint
+		/// @param angle angle between the start and end points
 		/// @param size The x-radius and y-radius of the arc.
 		/// @param color Color to fill the arc with
 		/// @param clockwise Specifies whether the arc should bend in the clockwise direction
@@ -97,6 +98,7 @@ namespace mc
 			float start_y,
 			float end_x,
 			float end_y,
+			float angle,
 			float size = 4,
 			Color color = Color::gray,
 			bool clockwise = true,

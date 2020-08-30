@@ -156,13 +156,22 @@ namespace mc
 		float start_y,
 		float end_x,
 		float end_y,
+		float angle,
 		float size,
 		Color color,
 		bool clockwise,
 		bool large_arc,
 		float stroke)
 	{
-		// TO-DO
+		auto* ctx = reinterpret_cast<cairo_t*>(m_RenderTarget->GetNativeHandle());
+
+		float start_angle = -90.0f * M_PI / 180.0f;
+		float end_angle = (-90.0f + angle);
+
+		cairo_set_source_rgba(ctx, (double)color.r / 255, (double)color.g / 255, (double)color.b / 255, (double)color.alpha);
+		cairo_set_line_width(ctx, stroke);
+		cairo_arc(ctx, start_x, start_y + size, size, start_angle, end_angle);
+		cairo_stroke(ctx);
 	}
 
 	void LinuxGraphics::DrawTextWideString(

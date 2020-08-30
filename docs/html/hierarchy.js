@@ -41,9 +41,11 @@ var hierarchy =
       [ "mc::UIView", "classmc_1_1_u_i_view.html", [
         [ "mc::UIButton", "classmc_1_1_u_i_button.html", null ],
         [ "mc::UICheckbox", "classmc_1_1_u_i_checkbox.html", null ],
+        [ "mc::UICircularProgressBar", "classmc_1_1_u_i_circular_progress_bar.html", null ],
         [ "mc::UICombobox", "classmc_1_1_u_i_combobox.html", null ],
         [ "mc::UIImage", "classmc_1_1_u_i_image.html", null ],
         [ "mc::UILabel", "classmc_1_1_u_i_label.html", null ],
+        [ "mc::UIProgressBar", "classmc_1_1_u_i_progress_bar.html", null ],
         [ "mc::UIScrollPanel", "classmc_1_1_u_i_scroll_panel.html", null ],
         [ "mc::UISlider", "classmc_1_1_u_i_slider.html", null ],
         [ "mc::UITabView", "classmc_1_1_u_i_tab_view.html", null ],

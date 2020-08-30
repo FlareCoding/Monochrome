@@ -4,6 +4,8 @@ using namespace mc;
 Ref<UICheckbox> checkbox;
 Ref<UISlider> slider;
 Ref<UITextArea> textArea;
+Ref<UIProgressBar> progressBar;
+Ref<UICircularProgressBar> circularProgressBar;
 
 void Checkbox_ValueChanged(bool checked, UICheckbox* sender)
 {
@@ -13,6 +15,22 @@ void Checkbox_ValueChanged(bool checked, UICheckbox* sender)
 void Slider_ValueChanged(float value, UISlider* sender)
 {
 	printf("Slider Value: %f\n", value);
+}
+
+void ChangeProgressBarValue()
+{
+	while (true)
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		progressBar->Value += 1;
+		circularProgressBar->Value += 1;
+
+		if (progressBar->Value > 100)
+		{
+			progressBar->Value = 0;
+			circularProgressBar->Value = 0;
+		}
+	}
 }
 
 int main()
@@ -98,6 +116,20 @@ int main()
 	textArea->RightMargins = 4.0f;
 	textArea->LeftMargins = 4.0f;
 	window->AddView(textArea);
+
+	progressBar = MakeRef<UIProgressBar>();
+	progressBar->layer.frame = Frame(Position { 600, 660 }, Size { 240, 12 });
+	progressBar->Value = 0;
+	window->AddView(progressBar);
+
+	circularProgressBar = MakeRef<UICircularProgressBar>();
+	circularProgressBar->layer.frame = Frame(Position{ 980, 460 }, Size{ 80, 80 });
+	circularProgressBar->Value = 0;
+	circularProgressBar->layer.color = Color(64, 64, 66, 1.0f);
+	circularProgressBar->ProgressColor = Color::green;
+	window->AddView(circularProgressBar);
+	std::thread progressBarThread(ChangeProgressBarValue);
+	progressBarThread.detach();
 
 	window->StartWindowLoop();
 

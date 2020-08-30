@@ -48,6 +48,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "Linux")
         ${CAIRO_LIBRARIES} 
         ${Pango_LIBRARIES} "-lpangocairo-1.0"
         ${GLIB_LDFLAGS}
+        "-lpthread"
     )
 endif()
 

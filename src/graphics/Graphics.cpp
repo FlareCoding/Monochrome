@@ -181,6 +181,7 @@ namespace mc
 		float start_y,
 		float end_x,
 		float end_y,
+		float angle,
 		float size,
 		Color color,
 		bool clockwise,
@@ -188,11 +189,11 @@ namespace mc
 		float stroke)
 	{
 #if defined(_WIN32)
-		WindowsGraphics::DrawArc(start_x, start_y, end_x, end_y, size, color, clockwise, large_arc, stroke);
+		WindowsGraphics::DrawArc(start_x, start_y, end_x, end_y, angle, size, color, clockwise, large_arc, stroke);
 #elif defined(__linux__)
-		LinuxGraphics::DrawArc(start_x, start_y, end_x, end_y, size, color, clockwise, large_arc, stroke);
+		LinuxGraphics::DrawArc(start_x, start_y, end_x, end_y, angle, size, color, clockwise, large_arc, stroke);
 #elif defined(__APPLE__)
-		OSXGraphics::DrawArc(start_x, start_y, end_x, end_y, size, color, clockwise, large_arc, stroke);
+		OSXGraphics::DrawArc(start_x, start_y, end_x, end_y, angle, size, color, clockwise, large_arc, stroke);
 #endif
 	}
 

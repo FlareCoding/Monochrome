@@ -157,86 +157,87 @@ $(document).ready(function(){initNavTree('_windows_graphics_8h_source.html','');
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordtype">float</span> stroke = 2</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        );</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_windows_graphics.html#aa104527be32617e7e51494d49db0b2f2">DrawArc</a>(</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordtype">float</span> start_x,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordtype">float</span> start_y,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordtype">float</span> end_x,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordtype">float</span> end_y,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordtype">float</span> size = 4,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <a class="code" href="classmc_1_1_color.html">Color</a> color = Color::gray,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordtype">bool</span> clockwise = <span class="keyword">true</span>,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordtype">bool</span> large_arc = <span class="keyword">false</span>,</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordtype">float</span> stroke = 2</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        );</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_windows_graphics.html#ac2e4fbb53e4019ba417670674494b7cb">DrawTextWideString</a>(</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordtype">float</span> x,</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keywordtype">float</span> y,</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <span class="keywordtype">float</span> width,</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordtype">float</span> height,</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <span class="keyword">const</span> std::wstring&amp; text,</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a> text_props = <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a>(),</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <a class="code" href="classmc_1_1_color.html">Color</a> color = Color::black</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        );</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_windows_graphics.html#a48c6e1d4a3b23290c1119270e333270b">DrawTextString</a>(</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="keywordtype">float</span> x,</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keywordtype">float</span> y,</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordtype">float</span> width,</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keywordtype">float</span> height,</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            <span class="keyword">const</span> std::string&amp; text,</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a> text_props = <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a>(),</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <a class="code" href="classmc_1_1_color.html">Color</a> color = Color::black</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        );</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keyword">static</span> <a class="code" href="structmc_1_1_text_metrics.html">TextMetrics</a> <a class="code" href="classmc_1_1_windows_graphics.html#a6abc9542957d44acd7d18fc2c0ce0373">CalculateTextMetrics</a>(</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <span class="keyword">const</span> std::string&amp; text,</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a> text_props,</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keywordtype">float</span> max_width,</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            <span class="keywordtype">float</span> max_height</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        );</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keyword">static</span> uint32_t <a class="code" href="classmc_1_1_windows_graphics.html#a92755cd7449cace2b9aadfbbe0c4081f">GetLineCharacterLimit</a>(</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a> text_props,</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordtype">float</span> container_width,</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            <span class="keywordtype">float</span> container_height</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        );</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keyword">static</span> Ref&lt;Bitmap&gt; <a class="code" href="classmc_1_1_windows_graphics.html#a168a90cc7584b9fabfe08170e364c6f6">CreateBitmapFromFile</a>(<span class="keyword">const</span> std::string&amp; path);</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keyword">static</span> Ref&lt;Bitmap&gt; <a class="code" href="classmc_1_1_windows_graphics.html#a85d53a7f87c7f6688a618cc492e2e30f">CreateBitmap</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* data, uint32_t size);</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_windows_graphics.html#a7065a7ec8e9021148fa05b94245fee7c">DrawBitmapImage</a>(</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            Ref&lt;Bitmap&gt;&amp; bmp,</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="keywordtype">float</span> x,</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="keywordtype">float</span> y,</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="keywordtype">float</span> width,</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            <span class="keywordtype">float</span> height,</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keywordtype">float</span> opacity = 1.0f</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        );</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keyword">static</span> Ref&lt;RenderTarget&gt; m_RenderTarget;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keyword">static</span> std::map&lt;HWND, Ref&lt;RenderTarget&gt;&gt; m_RenderTargetMap;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    };</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;}</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_windows_graphics.html#a1d83208d852ab82aadd698d90a93d0e0">DrawArc</a>(</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordtype">float</span> start_x,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordtype">float</span> start_y,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordtype">float</span> end_x,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordtype">float</span> end_y,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keywordtype">float</span> angle,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordtype">float</span> size = 4,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <a class="code" href="classmc_1_1_color.html">Color</a> color = Color::gray,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordtype">bool</span> clockwise = <span class="keyword">true</span>,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordtype">bool</span> large_arc = <span class="keyword">false</span>,</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordtype">float</span> stroke = 2</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        );</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_windows_graphics.html#ac2e4fbb53e4019ba417670674494b7cb">DrawTextWideString</a>(</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <span class="keywordtype">float</span> x,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordtype">float</span> y,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <span class="keywordtype">float</span> width,</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordtype">float</span> height,</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keyword">const</span> std::wstring&amp; text,</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a> text_props = <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a>(),</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <a class="code" href="classmc_1_1_color.html">Color</a> color = Color::black</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        );</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_windows_graphics.html#a48c6e1d4a3b23290c1119270e333270b">DrawTextString</a>(</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordtype">float</span> x,</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keywordtype">float</span> y,</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            <span class="keywordtype">float</span> width,</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordtype">float</span> height,</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <span class="keyword">const</span> std::string&amp; text,</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a> text_props = <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a>(),</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <a class="code" href="classmc_1_1_color.html">Color</a> color = Color::black</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        );</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keyword">static</span> <a class="code" href="structmc_1_1_text_metrics.html">TextMetrics</a> <a class="code" href="classmc_1_1_windows_graphics.html#a6abc9542957d44acd7d18fc2c0ce0373">CalculateTextMetrics</a>(</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keyword">const</span> std::string&amp; text,</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a> text_props,</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <span class="keywordtype">float</span> max_width,</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordtype">float</span> max_height</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        );</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keyword">static</span> uint32_t <a class="code" href="classmc_1_1_windows_graphics.html#a92755cd7449cace2b9aadfbbe0c4081f">GetLineCharacterLimit</a>(</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            <a class="code" href="structmc_1_1_text_properties.html">TextProperties</a> text_props,</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            <span class="keywordtype">float</span> container_width,</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            <span class="keywordtype">float</span> container_height</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        );</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="keyword">static</span> Ref&lt;Bitmap&gt; <a class="code" href="classmc_1_1_windows_graphics.html#a168a90cc7584b9fabfe08170e364c6f6">CreateBitmapFromFile</a>(<span class="keyword">const</span> std::string&amp; path);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="keyword">static</span> Ref&lt;Bitmap&gt; <a class="code" href="classmc_1_1_windows_graphics.html#a85d53a7f87c7f6688a618cc492e2e30f">CreateBitmap</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* data, uint32_t size);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_windows_graphics.html#a7065a7ec8e9021148fa05b94245fee7c">DrawBitmapImage</a>(</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            Ref&lt;Bitmap&gt;&amp; bmp,</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="keywordtype">float</span> x,</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            <span class="keywordtype">float</span> y,</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keywordtype">float</span> width,</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            <span class="keywordtype">float</span> height,</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keywordtype">float</span> opacity = 1.0f</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        );</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keyword">static</span> Ref&lt;RenderTarget&gt; m_RenderTarget;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="keyword">static</span> std::map&lt;HWND, Ref&lt;RenderTarget&gt;&gt; m_RenderTargetMap;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    };</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassmc_1_1_windows_graphics_html_a406ac8e64e33dd6e67af1221e6af5353"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a406ac8e64e33dd6e67af1221e6af5353">mc::WindowsGraphics::DrawLine</a></div><div class="ttdeci">static void DrawLine(float x1, float y1, float x2, float y2, Color color=Color::black, float stroke=2)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:184</div></div>
-<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a7065a7ec8e9021148fa05b94245fee7c"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a7065a7ec8e9021148fa05b94245fee7c">mc::WindowsGraphics::DrawBitmapImage</a></div><div class="ttdeci">static void DrawBitmapImage(Ref&lt; Bitmap &gt; &amp;bmp, float x, float y, float width, float height, float opacity=1.0f)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:532</div></div>
+<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a7065a7ec8e9021148fa05b94245fee7c"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a7065a7ec8e9021148fa05b94245fee7c">mc::WindowsGraphics::DrawBitmapImage</a></div><div class="ttdeci">static void DrawBitmapImage(Ref&lt; Bitmap &gt; &amp;bmp, float x, float y, float width, float height, float opacity=1.0f)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:533</div></div>
 <div class="ttc" id="aclassmc_1_1_windows_graphics_html"><div class="ttname"><a href="classmc_1_1_windows_graphics.html">mc::WindowsGraphics</a></div><div class="ttdef"><b>Definition:</b> WindowsGraphics.h:8</div></div>
-<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a168a90cc7584b9fabfe08170e364c6f6"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a168a90cc7584b9fabfe08170e364c6f6">mc::WindowsGraphics::CreateBitmapFromFile</a></div><div class="ttdeci">static Ref&lt; Bitmap &gt; CreateBitmapFromFile(const std::string &amp;path)</div><div class="ttdoc">Returns a Bitmap object holding the image data from reading a file.</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:501</div></div>
+<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a168a90cc7584b9fabfe08170e364c6f6"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a168a90cc7584b9fabfe08170e364c6f6">mc::WindowsGraphics::CreateBitmapFromFile</a></div><div class="ttdeci">static Ref&lt; Bitmap &gt; CreateBitmapFromFile(const std::string &amp;path)</div><div class="ttdoc">Returns a Bitmap object holding the image data from reading a file.</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:502</div></div>
 <div class="ttc" id="aclassmc_1_1_color_html"><div class="ttname"><a href="classmc_1_1_color.html">mc::Color</a></div><div class="ttdef"><b>Definition:</b> Color.h:7</div></div>
 <div class="ttc" id="aclassmc_1_1_scene_manager_html"><div class="ttname"><a href="classmc_1_1_scene_manager.html">mc::SceneManager</a></div><div class="ttdef"><b>Definition:</b> SceneManager.h:8</div></div>
 <div class="ttc" id="aclassmc_1_1_windows_graphics_html_a85d34005fd2e90da8c12d99b648ddbc5"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a85d34005fd2e90da8c12d99b648ddbc5">mc::WindowsGraphics::DrawCircle</a></div><div class="ttdeci">static void DrawCircle(float x, float y, float radius, Color color=Color::gray, bool filled=true, float stroke=2)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:241</div></div>
 <div class="ttc" id="aclassmc_1_1_windows_graphics_html_a77c7ff0a08c78ac56e38ace728f94f10"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a77c7ff0a08c78ac56e38ace728f94f10">mc::WindowsGraphics::DrawRectangle</a></div><div class="ttdeci">static void DrawRectangle(float x, float y, float width, float height, Color color=Color::gray, float corner_radius=0, bool filled=true, float stroke=2)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:203</div></div>
-<div class="ttc" id="aclassmc_1_1_windows_graphics_html_ac2e4fbb53e4019ba417670674494b7cb"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#ac2e4fbb53e4019ba417670674494b7cb">mc::WindowsGraphics::DrawTextWideString</a></div><div class="ttdeci">static void DrawTextWideString(float x, float y, float width, float height, const std::wstring &amp;text, TextProperties text_props=TextProperties(), Color color=Color::black)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:315</div></div>
-<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a48c6e1d4a3b23290c1119270e333270b"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a48c6e1d4a3b23290c1119270e333270b">mc::WindowsGraphics::DrawTextString</a></div><div class="ttdeci">static void DrawTextString(float x, float y, float width, float height, const std::string &amp;text, TextProperties text_props=TextProperties(), Color color=Color::black)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:353</div></div>
-<div class="ttc" id="aclassmc_1_1_windows_graphics_html_aa104527be32617e7e51494d49db0b2f2"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#aa104527be32617e7e51494d49db0b2f2">mc::WindowsGraphics::DrawArc</a></div><div class="ttdeci">static void DrawArc(float start_x, float start_y, float end_x, float end_y, float size=4, Color color=Color::gray, bool clockwise=true, bool large_arc=false, float stroke=2)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:263</div></div>
-<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a92755cd7449cace2b9aadfbbe0c4081f"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a92755cd7449cace2b9aadfbbe0c4081f">mc::WindowsGraphics::GetLineCharacterLimit</a></div><div class="ttdeci">static uint32_t GetLineCharacterLimit(TextProperties text_props, float container_width, float container_height)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:429</div></div>
-<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a6abc9542957d44acd7d18fc2c0ce0373"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a6abc9542957d44acd7d18fc2c0ce0373">mc::WindowsGraphics::CalculateTextMetrics</a></div><div class="ttdeci">static TextMetrics CalculateTextMetrics(const std::string &amp;text, TextProperties text_props, float max_width, float max_height)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:366</div></div>
+<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a1d83208d852ab82aadd698d90a93d0e0"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a1d83208d852ab82aadd698d90a93d0e0">mc::WindowsGraphics::DrawArc</a></div><div class="ttdeci">static void DrawArc(float start_x, float start_y, float end_x, float end_y, float angle, float size=4, Color color=Color::gray, bool clockwise=true, bool large_arc=false, float stroke=2)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:263</div></div>
+<div class="ttc" id="aclassmc_1_1_windows_graphics_html_ac2e4fbb53e4019ba417670674494b7cb"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#ac2e4fbb53e4019ba417670674494b7cb">mc::WindowsGraphics::DrawTextWideString</a></div><div class="ttdeci">static void DrawTextWideString(float x, float y, float width, float height, const std::wstring &amp;text, TextProperties text_props=TextProperties(), Color color=Color::black)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:316</div></div>
+<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a48c6e1d4a3b23290c1119270e333270b"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a48c6e1d4a3b23290c1119270e333270b">mc::WindowsGraphics::DrawTextString</a></div><div class="ttdeci">static void DrawTextString(float x, float y, float width, float height, const std::string &amp;text, TextProperties text_props=TextProperties(), Color color=Color::black)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:354</div></div>
+<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a92755cd7449cace2b9aadfbbe0c4081f"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a92755cd7449cace2b9aadfbbe0c4081f">mc::WindowsGraphics::GetLineCharacterLimit</a></div><div class="ttdeci">static uint32_t GetLineCharacterLimit(TextProperties text_props, float container_width, float container_height)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:430</div></div>
+<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a6abc9542957d44acd7d18fc2c0ce0373"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a6abc9542957d44acd7d18fc2c0ce0373">mc::WindowsGraphics::CalculateTextMetrics</a></div><div class="ttdeci">static TextMetrics CalculateTextMetrics(const std::string &amp;text, TextProperties text_props, float max_width, float max_height)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:367</div></div>
 <div class="ttc" id="astructmc_1_1_text_metrics_html"><div class="ttname"><a href="structmc_1_1_text_metrics.html">mc::TextMetrics</a></div><div class="ttdef"><b>Definition:</b> TextProperties.h:45</div></div>
-<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a85d53a7f87c7f6688a618cc492e2e30f"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a85d53a7f87c7f6688a618cc492e2e30f">mc::WindowsGraphics::CreateBitmap</a></div><div class="ttdeci">static Ref&lt; Bitmap &gt; CreateBitmap(const char *data, uint32_t size)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:518</div></div>
+<div class="ttc" id="aclassmc_1_1_windows_graphics_html_a85d53a7f87c7f6688a618cc492e2e30f"><div class="ttname"><a href="classmc_1_1_windows_graphics.html#a85d53a7f87c7f6688a618cc492e2e30f">mc::WindowsGraphics::CreateBitmap</a></div><div class="ttdeci">static Ref&lt; Bitmap &gt; CreateBitmap(const char *data, uint32_t size)</div><div class="ttdef"><b>Definition:</b> WindowsGraphics.cpp:519</div></div>
 <div class="ttc" id="astructmc_1_1_text_properties_html"><div class="ttname"><a href="structmc_1_1_text_properties.html">mc::TextProperties</a></div><div class="ttdef"><b>Definition:</b> TextProperties.h:34</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -143,8 +143,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeRenderTa
 <tr class="separator:a77c7ff0a08c78ac56e38ace728f94f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85d34005fd2e90da8c12d99b648ddbc5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_windows_graphics.html#a85d34005fd2e90da8c12d99b648ddbc5">DrawCircle</a> (float x, float y, float radius, <a class="el" href="classmc_1_1_color.html">Color</a> color=Color::gray, bool filled=true, float stroke=2)</td></tr>
 <tr class="separator:a85d34005fd2e90da8c12d99b648ddbc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa104527be32617e7e51494d49db0b2f2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_windows_graphics.html#aa104527be32617e7e51494d49db0b2f2">DrawArc</a> (float start_x, float start_y, float end_x, float end_y, float size=4, <a class="el" href="classmc_1_1_color.html">Color</a> color=Color::gray, bool clockwise=true, bool large_arc=false, float stroke=2)</td></tr>
-<tr class="separator:aa104527be32617e7e51494d49db0b2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d83208d852ab82aadd698d90a93d0e0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_windows_graphics.html#a1d83208d852ab82aadd698d90a93d0e0">DrawArc</a> (float start_x, float start_y, float end_x, float end_y, float angle, float size=4, <a class="el" href="classmc_1_1_color.html">Color</a> color=Color::gray, bool clockwise=true, bool large_arc=false, float stroke=2)</td></tr>
+<tr class="separator:a1d83208d852ab82aadd698d90a93d0e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2e4fbb53e4019ba417670674494b7cb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_windows_graphics.html#ac2e4fbb53e4019ba417670674494b7cb">DrawTextWideString</a> (float x, float y, float width, float height, const std::wstring &amp;text, <a class="el" href="structmc_1_1_text_properties.html">TextProperties</a> text_props=<a class="el" href="structmc_1_1_text_properties.html">TextProperties</a>(), <a class="el" href="classmc_1_1_color.html">Color</a> color=Color::black)</td></tr>
 <tr class="separator:ac2e4fbb53e4019ba417670674494b7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48c6e1d4a3b23290c1119270e333270b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_windows_graphics.html#a48c6e1d4a3b23290c1119270e333270b">DrawTextString</a> (float x, float y, float width, float height, const std::string &amp;text, <a class="el" href="structmc_1_1_text_properties.html">TextProperties</a> text_props=<a class="el" href="structmc_1_1_text_properties.html">TextProperties</a>(), <a class="el" href="classmc_1_1_color.html">Color</a> color=Color::black)</td></tr>
@@ -264,8 +264,8 @@ static Ref&lt; <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> &gt;&#160
 
 </div>
 </div>
-<a id="aa104527be32617e7e51494d49db0b2f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa104527be32617e7e51494d49db0b2f2">&#9670;&nbsp;</a></span>DrawArc()</h2>
+<a id="a1d83208d852ab82aadd698d90a93d0e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d83208d852ab82aadd698d90a93d0e0">&#9670;&nbsp;</a></span>DrawArc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -296,6 +296,12 @@ static Ref&lt; <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> &gt;&#160
           <td></td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>end_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>angle</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -345,6 +351,7 @@ static Ref&lt; <a class="el" href="classmc_1_1_bitmap.html">Bitmap</a> &gt;&#160
     <tr><td class="paramname">start_y</td><td>y-coordinate of the location of the first endpoint </td></tr>
     <tr><td class="paramname">end_x</td><td>x-coordinate of the location of the second endpoint </td></tr>
     <tr><td class="paramname">end_y</td><td>y-coordinate of the location of the second endpoint </td></tr>
+    <tr><td class="paramname">angle</td><td>angle between the start and end points </td></tr>
     <tr><td class="paramname">size</td><td>The x-radius and y-radius of the arc. </td></tr>
     <tr><td class="paramname">color</td><td><a class="el" href="classmc_1_1_color.html">Color</a> to fill the arc with </td></tr>
     <tr><td class="paramname">clockwise</td><td>Specifies whether the arc should bend in the clockwise direction </td></tr>

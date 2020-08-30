@@ -274,25 +274,26 @@ namespace mc
 
     void LinuxWindow::Update()
     {
-        XEvent event;
-        XNextEvent(m_Display, &event);
-
-        if (m_WindowID == reinterpret_cast<XAnyEvent&>(event.xany).window)
+        while (XPending(m_Display))
         {
-            ProcessEvents(&event);
+            XEvent event;
+            XNextEvent(m_Display, &event);
+
+            if (m_WindowID == reinterpret_cast<XAnyEvent&>(event.xany).window)
+            {
+                ProcessEvents(&event);
+            }
         }
     }
 
     void LinuxWindow::ForceUpdate(bool clear_screen)
     {
-
     }
 
     void LinuxWindow::StartWindowLoop()
     {
         while (m_IsOpened)
         {
-            XFlush(m_Display);
             usleep(16);
             Update();
 
@@ -309,6 +310,8 @@ namespace mc
 			auto e = std::make_shared<WindowUpdatedEvent>(nullptr, EventProcessingTime, GraphicsRenderingTime);
 			m_SceneManager.DispatchEvent(e);
 			m_SceneManager.ProcessEvents(m_Dpi);
+
+            XFlush(m_Display);
         }
 
         Window window = m_WindowID;

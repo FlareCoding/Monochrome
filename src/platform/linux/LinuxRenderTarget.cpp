@@ -45,8 +45,7 @@ namespace mc
 	void LinuxRenderTarget::ClearScreen(uint32_t r, uint32_t g, uint32_t b)
 	{
 		cairo_set_source_rgb(m_Context, (double)r / 255, (double)g / 255, (double)b / 255);
-	    cairo_rectangle(m_Context, 0, 0, m_Width, m_Height);
-	    cairo_fill(m_Context);
+	    cairo_paint(m_Context);
 	}
 
 	void LinuxRenderTarget::PushLayer(float x, float y, float width, float height)
@@ -64,10 +63,7 @@ namespace mc
 	void LinuxRenderTarget::Resize(void* native)
 	{
 		LinuxGraphicsNativeInformation* inf = reinterpret_cast<LinuxGraphicsNativeInformation*>(native);
-
-		m_Surface = cairo_xlib_surface_create(inf->display, inf->window, inf->visual, inf->window_width, inf->window_height);
-	 	cairo_xlib_surface_set_size(m_Surface, inf->window_width, inf->window_height);
-		
-		cairo_set_source_surface(m_Context, m_Surface, 0, 0);
+		cairo_xlib_surface_set_size(m_Surface, inf->window_width, inf->window_height);
+		cairo_paint(m_Context);
 	}
 }
