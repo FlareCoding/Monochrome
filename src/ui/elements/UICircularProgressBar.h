@@ -40,6 +40,7 @@ namespace mc
         Point m_ArcEndPoint = { 0, 0 };
         bool m_IsLargeArc = false;
 
+        float m_Angle = 0;
         float m_Radius = 0;
         float m_PercentCompleted = 0;
         

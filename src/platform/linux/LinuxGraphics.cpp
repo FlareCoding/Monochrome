@@ -156,6 +156,7 @@ namespace mc
 		float start_y,
 		float end_x,
 		float end_y,
+		float angle,
 		float size,
 		Color color,
 		bool clockwise,

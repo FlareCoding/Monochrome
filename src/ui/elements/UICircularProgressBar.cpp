@@ -1,6 +1,10 @@
 #include "UICircularProgressBar.h"
 #include <graphics/Graphics.h>
 
+#if defined(__linux__) || defined(__APPLE__)
+    #include <math.h>
+#endif
+
 namespace mc
 {
     UICircularProgressBar::UICircularProgressBar()
@@ -33,12 +37,13 @@ namespace mc
             false,
             Stroke
         );
-
+        
         Graphics::DrawArc(
             layer.frame.position.x + layer.frame.size.width / 2.0f,
             layer.frame.position.y + Stroke * 2.0f,
             m_ArcEndPoint.x,
             m_ArcEndPoint.y,
+            m_Angle,
             m_Radius,
             ProgressColor,
             true,
@@ -68,10 +73,10 @@ namespace mc
         else
             m_IsLargeArc = true;
 
-        float angle = 2 * 3.14f * m_PercentCompleted;
+        m_Angle = 2 * 3.14f * m_PercentCompleted;
 
-        float x_coord = layer.frame.position.x + sinf(angle) * m_Radius + layer.frame.size.width / 2.0f;
-        float y_coord = layer.frame.position.y - cosf(angle) * m_Radius + layer.frame.size.height / 2.0f;
+        float x_coord = layer.frame.position.x + sinf(m_Angle) * m_Radius + layer.frame.size.width / 2.0f;
+        float y_coord = layer.frame.position.y - cosf(m_Angle) * m_Radius + layer.frame.size.height / 2.0f;
 
         m_ArcEndPoint = { x_coord, y_coord };
     }
