@@ -10,6 +10,7 @@
 #include <pango/pangocairo.h>
 
 #include <math.h>
+#include <string.h>
 #include <locale>
 #include <codecvt>
 
