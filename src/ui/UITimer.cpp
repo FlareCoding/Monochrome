@@ -26,8 +26,11 @@ namespace mc
 
     void UITimer::Schedule(uint32_t wait_time, uint32_t intervals)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(wait_time));
-        Start(intervals);
+        std::thread scheduler_thread([this, wait_time, intervals]() {
+            std::this_thread::sleep_for(std::chrono::milliseconds(wait_time));
+            Start(intervals);
+        });
+        scheduler_thread.detach();
     }
 
     void UITimer::Stop()
