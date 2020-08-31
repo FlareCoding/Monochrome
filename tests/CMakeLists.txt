@@ -26,3 +26,6 @@ target_link_libraries(FileChooserTest PUBLIC Monochrome)
 
 add_executable(MultipleWindowsTest multiple_windows_test.cpp)
 target_link_libraries(MultipleWindowsTest PUBLIC Monochrome)
+
+add_executable(AnimationsTest animations_test.cpp)
+target_link_libraries(AnimationsTest PUBLIC Monochrome)

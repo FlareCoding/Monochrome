@@ -13,6 +13,7 @@ set(
     src/ui/UIView.h
     src/ui/UIFileDialogue.h
     src/ui/UICursor.h
+    src/ui/UITimer.h
 
     PARENT_SCOPE
 )
@@ -24,6 +25,7 @@ set(
     src/ui/UIView.cpp
     src/ui/UIFileDialogue.cpp
     src/ui/UICursor.cpp
+    src/ui/UITimer.cpp
 
     PARENT_SCOPE
 )
