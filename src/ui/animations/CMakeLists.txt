@@ -9,6 +9,7 @@ set(
     src/ui/animations/FadeInAnimation.h
     src/ui/animations/TranslationAnimation.h
     src/ui/animations/ScaleAnimation.h
+    src/ui/animations/CustomAnimation.h
 
     PARENT_SCOPE
 )
@@ -21,6 +22,7 @@ set(
     src/ui/animations/FadeInAnimation.cpp
     src/ui/animations/TranslationAnimation.cpp
     src/ui/animations/ScaleAnimation.cpp
+    src/ui/animations/CustomAnimation.cpp
 
     PARENT_SCOPE
 )

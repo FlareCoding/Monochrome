@@ -50,6 +50,11 @@ namespace mc
             instance = MakeRef<ScaleAnimation>();
             break;
         }
+        case AnimationType::Custom:
+        {
+            instance = MakeRef<CustomAnimation>();
+            break;
+        }
         default: break;
         }
 

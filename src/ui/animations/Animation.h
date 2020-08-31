@@ -9,7 +9,8 @@ namespace mc
         FadeOut,
         FadeIn,
         Translation,
-        Scale
+        Scale,
+        Custom
     };
 
 #define ANIMATION_INSTANCE_CONSTRUCTOR \

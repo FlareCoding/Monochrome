@@ -27,14 +27,12 @@ bool StartAnimBtn_OnClick(Event& event, UIView* sender)
         auto scaleup = Animation::Create(AnimationType::Scale, cpb.get());
         AnimCast(ScaleAnimation, scaleup)->SetTargetSize({ 100.0f, 100.0f });
         scaleup->Animate(200, []() {
-            std::thread progressbar_thread([]() {
-                while (cpb->Value < 100.0f)
-                {
-                    cpb->Value++;
-                    std::this_thread::sleep_for(std::chrono::milliseconds(16));
-                }
+            auto cpb_anim = Animation::Create(AnimationType::Custom, 0);
+            AnimCast(CustomAnimation, cpb_anim)->SetAnimationFunction([](uint32_t tick) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(16));
+                cpb->Value++;
             });
-            progressbar_thread.detach();
+            cpb_anim->Animate(100);
         });
     });
 

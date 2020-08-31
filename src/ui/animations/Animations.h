@@ -3,3 +3,4 @@
 #include "FadeInAnimation.h"
 #include "TranslationAnimation.h"
 #include "ScaleAnimation.h"
+#include "CustomAnimation.h"
