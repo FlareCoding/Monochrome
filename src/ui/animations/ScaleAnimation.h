@@ -30,7 +30,7 @@ namespace mc
         void OnTick(uint32_t tick, UITimer* timer) override;
 
     private:
-        float m_Duration = 0.0f;
+        uint32_t m_Duration = 0.0f;
         Size m_TargetSize = { 0.0f, 0.0f };
         Size m_ScaleStep = { 0.0f, 0.0f };
     };

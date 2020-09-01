@@ -64,7 +64,7 @@ int main()
     label->color = Color::white;
     label->layer.color.alpha = 0.0f;
     label->Visible = false;
-    label->Properties.FontSize = 20.0f;
+    label->Properties.FontSize = 20;
     label->Text = "Animation Finished";
     window->AddView(label);
 
