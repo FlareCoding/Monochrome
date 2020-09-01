@@ -259,9 +259,6 @@ namespace mc
 		if (m_CursorIndex > Text.size() && m_CursorIndex > 0)
 			m_CursorIndex = Text.size() - 1;
 
-		if (m_CursorIndex < 0)
-			m_CursorIndex = 0;
-
 		// Sanitizing visible text indices
 		SanitizeVisibleText();
 
@@ -292,7 +289,7 @@ namespace mc
 	void UITextbox::RecalculateVisibleText()
 	{
 		// Extra edge-case sanitization
-		if (m_VisibleStartIndex > Text.size() || m_VisibleEndIndex < 0)
+		if (m_VisibleStartIndex > Text.size())
 			return;
 
 		bool success = false;
@@ -324,9 +321,6 @@ namespace mc
 		}
 		else
 		{
-			if (m_VisibleStartIndex < 0)
-				m_VisibleStartIndex = 0;
-
 			if (m_VisibleEndIndex > Text.size())
 				m_VisibleEndIndex = Text.size();
 		}

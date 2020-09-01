@@ -107,7 +107,7 @@ namespace mc
 
 	void UICombobox::InsertItem(const std::string& item, size_t index)
 	{
-		if (index < 0 || index > m_Items.size()) return;
+		if (index > m_Items.size()) return;
 
 		auto ItemButton = MakeRef<UIButton>();
 		ItemButton->Label->Text = item;
@@ -172,7 +172,7 @@ namespace mc
 
 	std::string UICombobox::GetItem(size_t index)
 	{
-		if (index < 0 || index >= m_Items.size())
+		if (index >= m_Items.size())
 			return "";
 		else
 			return m_Items[index].first;
@@ -180,7 +180,7 @@ namespace mc
 
 	void UICombobox::RemoveItem(size_t index)
 	{
-		if (index < 0 || index >= m_Items.size()) return;
+		if (index >= m_Items.size()) return;
 
 		auto& button = m_Items[index].second;
 		m_Items.erase(m_Items.begin() + index);
@@ -189,7 +189,7 @@ namespace mc
 		RecalculateItemPositions();
 
 		size_t display_item_index = IndexOf(m_DisplayItemLabel->Text);
-		if (display_item_index < 0 || display_item_index > m_Items.size())
+		if (display_item_index > m_Items.size())
 		{
 			if (!m_Items.size())
 				m_DisplayItemLabel->Text = "";
@@ -222,7 +222,7 @@ namespace mc
 
 	void UICombobox::SelectItem(size_t index)
 	{
-		if (index < 0 || index > m_Items.size() || !m_Items.size()) return;
+		if (index > m_Items.size() || !m_Items.size()) return;
 
 		if (index != m_SelectedIndex)
 		{

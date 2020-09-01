@@ -149,7 +149,7 @@ namespace mc
 
 	void UITabView::RemoveTab(size_t index)
 	{
-		if (!m_Tabs.size() || index < 0 || index > m_Tabs.size()) return;
+		if (!m_Tabs.size() || index > m_Tabs.size()) return;
 
 		auto [name, tab_btn, view] = m_Tabs[index];
 		m_Tabs.erase(m_Tabs.begin() + index);
@@ -180,7 +180,7 @@ namespace mc
 
 	void UITabView::OpenTab(size_t index)
 	{
-		if (!m_Tabs.size() || index < 0 || index > m_Tabs.size()) return;
+		if (!m_Tabs.size() || index > m_Tabs.size()) return;
 
 		auto [name, button, view] = m_Tabs[index];
 		m_SelectedView = view;
@@ -213,7 +213,7 @@ namespace mc
 
 	Ref<UIView> UITabView::operator[](size_t index)
 	{
-		if (!m_Tabs.size() || index < 0 || index > m_Tabs.size()) return nullptr;
+		if (!m_Tabs.size() || index > m_Tabs.size()) return nullptr;
 
 		auto [name, button, view] = m_Tabs[index];
 		return view;

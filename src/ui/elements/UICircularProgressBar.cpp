@@ -54,6 +54,8 @@ namespace mc
 
     void UICircularProgressBar::Update()
     {
+        ProgressColor.alpha = layer.color.alpha;
+
         if (Value != m_PreviousValue)
             for (auto& cb : m_ValueChangedCallbacks)
                 cb(Value, this);
