@@ -1,6 +1,8 @@
 # Monochrome
 
-Monochrome is a cross-platform GUI library aimed at C++ developers to help make the process of GUI development much easier. Monochrome offers modern style window and UI elements. The windowing and graphics systems depend on platform-dependent native APIs to operate at highest efficiency.
+[![Build Status](https://travis-ci.org/FlareCoding/Monochrome.svg?branch=master)](https://travis-ci.org/FlareCoding/Monochrome)
+
+Monochrome is an open source cross-platform GUI library and framework aimed primarily at C++ developers to help make the process of desktop GUI development much easier. Monochrome offers modern style window and UI elements. The windowing and graphics systems depend on platform-dependent native APIs to operate at highest efficiency.
 
 ## Platform
 
