@@ -31,7 +31,7 @@ namespace mc
         void OnTick(uint32_t tick, UITimer* timer) override;
 
     private:
-        uint32_t m_Duration = 0.0f;
+        uint32_t m_Duration = 0;
         std::function<void(uint32_t)> m_UserOnTick;
     };
 }

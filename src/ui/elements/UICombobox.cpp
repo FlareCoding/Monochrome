@@ -189,7 +189,7 @@ namespace mc
 		RecalculateItemPositions();
 
 		size_t display_item_index = IndexOf(m_DisplayItemLabel->Text);
-		if (display_item_index < 0 || display_item_index > m_Items.size())
+		if (display_item_index > m_Items.size())
 		{
 			if (!m_Items.size())
 				m_DisplayItemLabel->Text = "";
