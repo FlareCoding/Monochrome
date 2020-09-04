@@ -1,0 +1,19 @@
+@class UIView
+@subclass_of IResponder
+
+@class_methods_start
+AddSubview
+RemoveSubview
+@class_methods_end
+
+@class_getters_start
+Visible
+Layer
+ZIndex
+@class_getters_end
+
+@class_setters_start
+Visible
+ZIndex
+@class_setters_end
+

@@ -1,0 +1,13 @@
+@class KeyReleasedEvent
+@subclass_of null
+
+@class_methods_start
+@class_methods_end
+
+@class_getters_start
+Keycode
+@class_getters_end
+
+@class_setters_start
+@class_setters_end
+

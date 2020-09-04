@@ -1,0 +1,7 @@
+@class UIWindow
+@subclass_of null
+
+@class_methods_start
+StartWindowLoop
+AddView
+@class_methods_end
