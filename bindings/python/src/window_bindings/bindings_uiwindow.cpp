@@ -18,7 +18,7 @@ PyObject* UIWindowObject_New(PyTypeObject* type, PyObject* args, PyObject* kwds)
         PyErr_SetString(PyExc_Exception, "Invalid parameter. (Parameters are: width, height, title)");
         return NULL;
     }
-
+    
     self->handle = UIWindow::Create(WindowStyle::Modern, width, height, title);
     return (PyObject*)self;
 }

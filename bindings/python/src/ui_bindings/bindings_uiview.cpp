@@ -1,8 +1,9 @@
 #include "bindings_uiview.h"
+#include "../window_bindings/bindings_uiwindow.h"
 
 PyTypeObject& UIViewObject_GetType()
 {
-    return UIViewObject_Type;
+	return UIViewObject_Type;
 }
 
 PyObject* UIViewObject_New(PyTypeObject* type, PyObject* args, PyObject* kwds)
@@ -40,7 +41,10 @@ PyObject* UIViewObject_AddSubview(UIViewObject* self, PyObject* args)
 {
 	UIViewObject* view;
     if (!PyArg_ParseTuple(args, "O", &view))
-        return NULL;
+    {
+		PyErr_SetString(PyExc_TypeError, "Value must be an instance of UIView");
+		return NULL;
+	}
 
     self->handle->AddSubview(view->handle);
     return Py_None;
@@ -50,10 +54,18 @@ PyObject* UIViewObject_RemoveSubview(UIViewObject* self, PyObject* args)
 {
 	UIViewObject* view;
     if (!PyArg_ParseTuple(args, "O", &view))
-        return NULL;
+    {
+		PyErr_SetString(PyExc_TypeError, "Value must be an instance of UIView");
+		return NULL;
+	}
 
     self->handle->RemoveSubview(view->handle);
     return Py_None;
+}
+
+PyObject* UIViewObject_GetAbsolutePosition(UIViewObject* self, PyObject* args)
+{
+	return Py_None;
 }
 
 //================================= //
@@ -65,6 +77,16 @@ PyObject* UIViewObject_GetVisible(UIViewObject* self, void* closure)
 	return (self->handle->Visible) ? Py_True : Py_False;
 }
 
+PyObject* UIViewObject_GetZIndex(UIViewObject* self, void* closure)
+{
+	return Py_BuildValue("i", self->handle->GetZIndex());
+}
+
+PyObject* UIViewObject_GetCornerRadius(UIViewObject* self, void* closure)
+{
+	return Py_BuildValue("f", self->handle->CornerRadius);
+}
+
 PyObject* UIViewObject_GetLayer(UIViewObject* self, void* closure)
 {
 	return PyObject_CallFunction(
@@ -74,9 +96,40 @@ PyObject* UIViewObject_GetLayer(UIViewObject* self, void* closure)
 	);
 }
 
-PyObject* UIViewObject_GetZIndex(UIViewObject* self, void* closure)
+PyObject* UIViewObject_GetParent(UIViewObject* self, void* closure)
 {
-	return Py_BuildValue("i", self->handle->GetZIndex());
+	if (self->handle->parent)
+	{
+		return PyObject_CallFunction(
+			(PyObject*)&UIViewObject_GetType(), 
+			"K", 
+			(unsigned long long)self->handle->parent
+		);
+	}
+	else
+		return Py_None;
+}
+
+PyObject* UIViewObject_GetSrcwindow(UIViewObject* self, void* closure)
+{
+	if (self->handle->srcwindow)
+	{
+		// UIWindowObject* obj = (UIWindowObject*)PyObject_CallFunction((PyObject*)&UIWindowObject_GetType(), NULL);
+		// //obj->handle.reset(self->handle->srcwindow);
+
+		// return (PyObject*)obj;
+
+		
+		// TO-DO
+		return Py_None;
+	}
+	else
+		return Py_None;
+}
+
+PyObject* UIViewObject_GetCursor(UIViewObject* self, void* closure)
+{
+	return Py_BuildValue("I", (uint32_t)self->handle->cursor);
 }
 
 //================================= //
@@ -98,14 +151,40 @@ int UIViewObject_SetVisible(UIViewObject* self, PyObject* value, void* closure)
 
 int UIViewObject_SetZIndex(UIViewObject* self, PyObject* value, void* closure)
 {
-	int index = 0;
-	if (!PyArg_Parse(value, "i", &index))
+	unsigned int index = 0;
+	if (!PyArg_Parse(value, "I", &index))
 	{
-		PyErr_SetString(PyExc_TypeError, "Value must be an integer");
+		PyErr_SetString(PyExc_TypeError, "Value must be an unsigned integer");
 		return -1;
 	}
 
 	self->handle->SetZIndex(index);
+	return 0;
+}
+
+int UIViewObject_SetCornerRadius(UIViewObject* self, PyObject* value, void* closure)
+{
+	float radius = 0;
+	if (!PyArg_Parse(value, "f", &radius))
+	{
+		PyErr_SetString(PyExc_TypeError, "Value must be a float");
+		return -1;
+	}
+
+	self->handle->CornerRadius = radius;
+	return 0;
+}
+
+int UIViewObject_SetCursor(UIViewObject* self, PyObject* value, void* closure)
+{
+	unsigned int cursor = 0;
+	if (!PyArg_Parse(value, "I", &cursor))
+	{
+		PyErr_SetString(PyExc_TypeError, "Value must be an unsigned integer");
+		return -1;
+	}
+
+	self->handle->cursor = (CursorType)cursor;
 	return 0;
 }
 

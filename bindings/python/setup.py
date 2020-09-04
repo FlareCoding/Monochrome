@@ -7,7 +7,6 @@ import os
 if platform.system() == 'Darwin':
     os.environ['LDFLAGS'] = '-framework Cocoa'
 
-os.environ['LDFLAGS'] = '-framework Cocoa'
 os.environ['CFLAGS'] = '-std=c++17'
 os.environ['CC'] = 'g++'
 
