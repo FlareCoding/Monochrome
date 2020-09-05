@@ -2,15 +2,20 @@ from Monochrome import *
 
 def on_mouse_click(event, sender):
     print("Mouse Button Released: " + str(event.button))
-    sender.layer.frame.position = (sender.layer.frame.position[0] + 2, sender.layer.frame.position[1])
-    sender.layer.frame.size = (sender.layer.frame.size[0], sender.layer.frame.size[1] + 2)
-    color = sender.layer.color
-    sender.layer.color = (color[0] - 10, color[1], color[2] - 16)
+    sender.layer.frame.position.x += 2
+    sender.layer.frame.size.y += 2
+    sender.layer.color.r -= 5
+    sender.layer.color.g -= 10
 
 window = UIWindow(700, 420, "MonoPy")
 
-view = UIView()
-view.add_mouse_clicked_event_handler(on_mouse_click)
-window.add_view(view)
+button = UIButton()
+button.label.text = "Cool Button"
+button.label.properties.font = "Impact"
+button.label.color.b -= 120
+button.on_mouse_press_color = Color(40, 0, 0)
+button.hover_on_color = Color(70, 0, 0)
+button.add_mouse_clicked_event_handler(on_mouse_click)
+window.add_view(button)
 
 window.start_window_loop()

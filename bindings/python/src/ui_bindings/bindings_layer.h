@@ -1,5 +1,6 @@
 #pragma once
 #include "bindings_frame.h"
+#include "bindings_color.h"
 
 typedef struct _LayerObject {
 	PyObject_HEAD
@@ -15,10 +16,11 @@ PyObject* LayerObject_GetFrame(LayerObject* self, void* closure);
 
 //============ Setters ============ //
 int LayerObject_SetColor(LayerObject* self, PyObject* value, void* closure);
+int LayerObject_SetFrame(LayerObject* self, PyObject* value, void* closure);
 
 static PyGetSetDef LayerObjectGettersSetters[] = {
 	{ "color", (getter)LayerObject_GetColor, (setter)LayerObject_SetColor, "color", NULL },
-	{ "frame", (getter)LayerObject_GetFrame, (setter)0, "frame", NULL },
+	{ "frame", (getter)LayerObject_GetFrame, (setter)LayerObject_SetFrame, "frame", NULL },
 	{ NULL, NULL, 0, NULL }
 };
 

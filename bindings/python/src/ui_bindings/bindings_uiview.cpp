@@ -65,7 +65,8 @@ PyObject* UIViewObject_RemoveSubview(UIViewObject* self, PyObject* args)
 
 PyObject* UIViewObject_GetAbsolutePosition(UIViewObject* self, PyObject* args)
 {
-	return Py_None;
+	Position pos = self->handle->GetAbsolutePosition();
+	return Py_BuildValue("(f, f)", pos.x, pos.y);
 }
 
 //================================= //
@@ -145,7 +146,7 @@ int UIViewObject_SetVisible(UIViewObject* self, PyObject* value, void* closure)
 	}
 
 	bool visible = PyObject_IsTrue(value);
-	self->handle->Visible = (bool)visible;
+	self->handle->Visible = visible;
 	return 0;
 }
 
@@ -172,6 +173,19 @@ int UIViewObject_SetCornerRadius(UIViewObject* self, PyObject* value, void* clos
 	}
 
 	self->handle->CornerRadius = radius;
+	return 0;
+}
+
+int UIViewObject_SetLayer(UIViewObject* self, PyObject* value, void* closure)
+{
+	LayerObject* obj;
+    if (!PyArg_Parse(value, "O", &obj))
+    {
+		PyErr_SetString(PyExc_Exception, "Value must be an instance of Layer");
+		return -1;
+	}
+
+	self->handle->layer = *obj->handle.get();
 	return 0;
 }
 

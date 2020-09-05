@@ -1,16 +1,16 @@
-@class Layer
+@class Point
 @subclass_of null
 
 @class_methods_start
 @class_methods_end
 
 @class_getters_start
-Color
-Frame
+X
+Y
 @class_getters_end
 
 @class_setters_start
-Color
-Frame
+X
+Y
 @class_setters_end
 

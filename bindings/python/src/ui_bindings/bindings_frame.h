@@ -1,7 +1,5 @@
 #pragma once
-#include <Python.h>
-#include <Monochrome.h>
-using namespace mc;
+#include "bindings_point.h"
 
 typedef struct _FrameObject {
 	PyObject_HEAD

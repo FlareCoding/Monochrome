@@ -22,8 +22,13 @@ mod_sources = [
         "src/window_bindings/bindings_uiwindow.cpp",
         "src/ui_bindings/bindings_iresponder.cpp",
         "src/ui_bindings/bindings_frame.cpp",
+        "src/ui_bindings/bindings_point.cpp",
+        "src/ui_bindings/bindings_color.cpp",
         "src/ui_bindings/bindings_layer.cpp",
+        "src/ui_bindings/bindings_textproperties.cpp",
         "src/ui_bindings/bindings_uiview.cpp",
+        "src/ui_bindings/bindings_uilabel.cpp",
+        "src/ui_bindings/bindings_uibutton.cpp",
 
         "src/events_bindings/bindings_mousebuttonpressedevent.cpp",
         "src/events_bindings/bindings_mousebuttonreleasedevent.cpp",

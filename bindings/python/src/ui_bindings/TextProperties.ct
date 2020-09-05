@@ -1,16 +1,24 @@
-@class Layer
+@class TextProperties
 @subclass_of null
 
 @class_methods_start
 @class_methods_end
 
 @class_getters_start
-Color
-Frame
+Font
+FontSize
+Alignment
+VerticalAlignment
+Style
+Wrapping
 @class_getters_end
 
 @class_setters_start
-Color
-Frame
+Font
+FontSize
+Alignment
+VerticalAlignment
+Style
+Wrapping
 @class_setters_end
 

@@ -1,4 +1,6 @@
 #include "window_bindings/bindings_uiwindow.h"
+#include "ui_bindings/bindings_uilabel.h"
+#include "ui_bindings/bindings_uibutton.h"
 
 static PyTypeObject MonochromeObject = {
     PyVarObject_HEAD_INIT(NULL, 0)
@@ -76,9 +78,15 @@ static int MonochromeModuleExec(PyObject* mod)
 
     // UI
     MODULE_REGISTER_CLASS(mod, "IResponder", &IResponderObject_GetType());
+    MODULE_REGISTER_CLASS(mod, "Point", &PointObject_GetType());
+    MODULE_REGISTER_CLASS(mod, "Size", &PointObject_GetType());
     MODULE_REGISTER_CLASS(mod, "Frame", &FrameObject_GetType());
+    MODULE_REGISTER_CLASS(mod, "Color", &ColorObject_GetType());
     MODULE_REGISTER_CLASS(mod, "Layer", &LayerObject_GetType());
+    MODULE_REGISTER_CLASS(mod, "TextProperties", &TextPropertiesObject_GetType());
     MODULE_REGISTER_CLASS(mod, "UIView", &UIViewObject_GetType());
+    MODULE_REGISTER_CLASS(mod, "UILabel", &UILabelObject_GetType());
+    MODULE_REGISTER_CLASS(mod, "UIButton", &UIButtonObject_GetType());
 
     return 0;
 }

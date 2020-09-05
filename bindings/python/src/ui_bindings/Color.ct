@@ -1,16 +1,20 @@
-@class Layer
+@class Color
 @subclass_of null
 
 @class_methods_start
 @class_methods_end
 
 @class_getters_start
-Color
-Frame
+R
+G
+B
+Alpha
 @class_getters_end
 
 @class_setters_start
-Color
-Frame
+R
+G
+B
+Alpha
 @class_setters_end
 

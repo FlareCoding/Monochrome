@@ -35,13 +35,14 @@ PyObject* UIViewObject_GetCursor(UIViewObject* self, void* closure);
 int UIViewObject_SetVisible(UIViewObject* self, PyObject* value, void* closure);
 int UIViewObject_SetZIndex(UIViewObject* self, PyObject* value, void* closure);
 int UIViewObject_SetCornerRadius(UIViewObject* self, PyObject* value, void* closure);
+int UIViewObject_SetLayer(UIViewObject* self, PyObject* value, void* closure);
 int UIViewObject_SetCursor(UIViewObject* self, PyObject* value, void* closure);
 
 static PyGetSetDef UIViewObjectGettersSetters[] = {
 	{ "visible", (getter)UIViewObject_GetVisible, (setter)UIViewObject_SetVisible, "visible", NULL },
 	{ "z_index", (getter)UIViewObject_GetZIndex, (setter)UIViewObject_SetZIndex, "z_index", NULL },
 	{ "corner_radius", (getter)UIViewObject_GetCornerRadius, (setter)UIViewObject_SetCornerRadius, "corner_radius", NULL },
-	{ "layer", (getter)UIViewObject_GetLayer, (setter)0, "layer", NULL },
+	{ "layer", (getter)UIViewObject_GetLayer, (setter)UIViewObject_SetLayer, "layer", NULL },
 	{ "parent", (getter)UIViewObject_GetParent, (setter)0, "parent", NULL },
 	{ "srcwindow", (getter)UIViewObject_GetSrcwindow, (setter)0, "srcwindow", NULL },
 	{ "cursor", (getter)UIViewObject_GetCursor, (setter)UIViewObject_SetCursor, "cursor", NULL },

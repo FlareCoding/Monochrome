@@ -12,13 +12,17 @@ PyObject* FrameObject_New(PyTypeObject* type, PyObject* args, PyObject* kwds)
         return NULL;
 
 	unsigned long long native_ptr = 0;
-    if (!PyArg_ParseTuple(args, "K", &native_ptr))
+    if (!PyArg_ParseTuple(args, "|K", &native_ptr))
     {
         PyErr_SetString(PyExc_Exception, "Invalid parameter.");
         return NULL;
     }
 
-	self->handle = Ref<Frame>((Frame*)native_ptr);
+	if (native_ptr)
+		self->handle = Ref<Frame>((Frame*)native_ptr);
+	else
+		self->handle = MakeRef<Frame>();
+
     return (PyObject*)self;
 }
 
@@ -37,12 +41,22 @@ int FrameObject_Init(FrameObject* type, PyObject* args, PyObject* kwds)
 
 PyObject* FrameObject_GetPosition(FrameObject* self, void* closure)
 {
-	return Py_BuildValue("(f, f)", self->handle->position.x, self->handle->position.y);
+	return PyObject_CallFunction(
+		(PyObject*)&PointObject_GetType(), 
+		"ffK", 
+		0.0f, 0.0f,
+		(unsigned long long)&self->handle->position
+	);
 }
 
 PyObject* FrameObject_GetSize(FrameObject* self, void* closure)
 {
-	return Py_BuildValue("(f, f)", self->handle->size.x, self->handle->size.y);
+	return PyObject_CallFunction(
+		(PyObject*)&PointObject_GetType(), 
+		"ffK", 
+		0.0f, 0.0f,
+		(unsigned long long)&self->handle->size
+	);
 }
 
 //================================= //
@@ -51,27 +65,27 @@ PyObject* FrameObject_GetSize(FrameObject* self, void* closure)
 
 int FrameObject_SetPosition(FrameObject* self, PyObject* value, void* closure)
 {
-	Position position = self->handle->position;
-	if (!PyArg_ParseTuple(value, "ff", &position.x, &position.y))
+	PointObject* obj;
+    if (!PyArg_Parse(value, "O", &obj))
     {
-        PyErr_SetString(PyExc_Exception, "Invalid parameter. Parameters: (float, float)");
-        return -1;
-    }
+		PyErr_SetString(PyExc_Exception, "Invalid parameter.");
+		return -1;
+	}
 
-	self->handle->position = position;
+	self->handle->position = *obj->handle.get();
 	return 0;
 }
 
 int FrameObject_SetSize(FrameObject* self, PyObject* value, void* closure)
 {
-	Size size = self->handle->size;
-	if (!PyArg_ParseTuple(value, "ff", &size.x, &size.y))
+	PointObject* obj;
+    if (!PyArg_Parse(value, "O", &obj))
     {
-        PyErr_SetString(PyExc_Exception, "Invalid parameter. Parameters: (float, float)");
-        return -1;
-    }
+		PyErr_SetString(PyExc_Exception, "Invalid parameter.");
+		return -1;
+	}
 
-	self->handle->size = size;
+	self->handle->size = *obj->handle.get();
 	return 0;
 }
 
