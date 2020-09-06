@@ -25,7 +25,7 @@ int ColorObject_SetAlpha(ColorObject* self, PyObject* value, void* closure);
 
 static PyGetSetDef ColorObjectGettersSetters[] = {
 	{ "r", (getter)ColorObject_GetR, (setter)ColorObject_SetR, "r", NULL },
-	{ "g", (getter)ColorObject_GetR, (setter)ColorObject_SetG, "g", NULL },
+	{ "g", (getter)ColorObject_GetG, (setter)ColorObject_SetG, "g", NULL },
 	{ "b", (getter)ColorObject_GetB, (setter)ColorObject_SetB, "b", NULL },
 	{ "alpha", (getter)ColorObject_GetAlpha, (setter)ColorObject_SetAlpha, "alpha", NULL },
 	{ NULL, NULL, 0, NULL }

@@ -18,6 +18,7 @@ if platform.system() == 'Darwin':
 
 mod_sources = [
         "src/monochrome_module.cpp",
+        "src/core/python_bindings_core.cpp",
 
         "src/window_bindings/bindings_uiwindow.cpp",
         "src/ui_bindings/bindings_iresponder.cpp",
