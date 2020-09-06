@@ -1,7 +1,5 @@
 #pragma once
-#include <Python.h>
-#include <Monochrome.h>
-using namespace mc;
+#include "../core/python_bindings_core.h"
 
 typedef struct _ColorObject {
 	PyObject_HEAD

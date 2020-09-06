@@ -1,6 +1,8 @@
 #include "window_bindings/bindings_uiwindow.h"
 #include "ui_bindings/bindings_uilabel.h"
 #include "ui_bindings/bindings_uibutton.h"
+#include "ui_bindings/bindings_uicheckbox.h"
+#include "ui_bindings/bindings_uislider.h"
 
 static PyTypeObject MonochromeObject = {
     PyVarObject_HEAD_INIT(NULL, 0)
@@ -45,11 +47,6 @@ static PyTypeObject MonochromeObject = {
     0,                          /*tp_is_gc*/
 };
 
-#define MODULE_REGISTER_CLASS(mod, name, ptype) if (PyType_Ready(ptype) < 0) { \
-                                            Py_XDECREF(mod); \
-                                            return -1; } \
-                                         PyModule_AddObject(mod, name, (PyObject*)ptype);
-
 static int MonochromeModuleExec(PyObject* mod)
 {
     if (PyType_Ready(&MonochromeObject) < 0)
@@ -87,6 +84,8 @@ static int MonochromeModuleExec(PyObject* mod)
     MODULE_REGISTER_CLASS(mod, "UIView", &UIViewObject_GetType());
     MODULE_REGISTER_CLASS(mod, "UILabel", &UILabelObject_GetType());
     MODULE_REGISTER_CLASS(mod, "UIButton", &UIButtonObject_GetType());
+    MODULE_REGISTER_CLASS(mod, "UICheckbox", &UICheckboxObject_GetType());
+    MODULE_REGISTER_CLASS(mod, "UISlider", &UISliderObject_GetType());
 
     return 0;
 }

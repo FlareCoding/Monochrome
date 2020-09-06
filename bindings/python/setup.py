@@ -30,6 +30,8 @@ mod_sources = [
         "src/ui_bindings/bindings_uiview.cpp",
         "src/ui_bindings/bindings_uilabel.cpp",
         "src/ui_bindings/bindings_uibutton.cpp",
+        "src/ui_bindings/bindings_uicheckbox.cpp",
+        "src/ui_bindings/bindings_uislider.cpp",
 
         "src/events_bindings/bindings_mousebuttonpressedevent.cpp",
         "src/events_bindings/bindings_mousebuttonreleasedevent.cpp",
