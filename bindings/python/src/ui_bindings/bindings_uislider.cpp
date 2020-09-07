@@ -54,7 +54,7 @@ PyObject* UISliderObject_AddValueChangedEventHandler(UISliderObject* self, PyObj
     Py_INCREF(Py_None);
 
     self->handle->AddValueChangedEventHandler([callback, self](float value, UISlider* sender) {
-		UIViewObject* pysender = (UIViewObject*)PyObject_CallFunction(
+		UISliderObject* pysender = (UISliderObject*)PyObject_CallFunction(
 			(PyObject*)&UISliderObject_GetType(), 
 			"K", 
 			(unsigned long long)sender

@@ -5,6 +5,7 @@
 #include "ui_bindings/bindings_uislider.h"
 #include "ui_bindings/bindings_uitextbox.h"
 #include "ui_bindings/bindings_uiscrollpanel.h"
+#include "ui_bindings/bindings_uicombobox.h"
 
 static PyTypeObject MonochromeObject = {
     PyVarObject_HEAD_INIT(NULL, 0)
@@ -90,6 +91,7 @@ static int MonochromeModuleExec(PyObject* mod)
     MODULE_REGISTER_CLASS(mod, "UISlider", &UISliderObject_GetType());
     MODULE_REGISTER_CLASS(mod, "UITextbox", &UITextboxObject_GetType());
     MODULE_REGISTER_CLASS(mod, "UIScrollPanel", &UIScrollPanelObject_GetType());
+    MODULE_REGISTER_CLASS(mod, "UICombobox", &UIComboboxObject_GetType());
 
     return 0;
 }

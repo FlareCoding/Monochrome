@@ -22,6 +22,9 @@ def textbox2_textentered(event, sender):
     if event.keycode == 52:
         print("Text entered from Textbox 2!")
 
+def combobox_item_changed(index, sender):
+    print("Selected \"" + sender.get_item(index) + "\" at index " + str(index))
+
 if __name__ == '__main__':
     global checkbox, slider
 
@@ -77,6 +80,19 @@ if __name__ == '__main__':
         btn.layer.frame.size = Size(200, 36)
         btn.label.text = "Button " + str(i + 1)
         scrollPanel.add_child(btn)
+
+    combobox = UICombobox()
+    combobox.layer.frame.position = Point(960, 100)
+    combobox.layer.frame.size = Size(180, 100)
+    items = ["Red", "Green", "Blue", "Purple", "Cyan", "Pink", "Brown"]
+    combobox.set_items(items)
+    combobox.set_item_background_color(Color(58, 58, 59))
+    combobox.set_item_text_color(Color(255, 255, 255))
+    combobox.set_dropdown_arrow_color(Color(255, 255, 255))
+    combobox.set_selected_item_color(Color(255, 255, 255))
+    combobox.layer.color = Color(62, 62, 63)
+    combobox.add_item_changed_event_handler(combobox_item_changed)
+    window.add_view(combobox)
 
     window.start_window_loop()
     print("End of control flow reached, clean up code should go here")

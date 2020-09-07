@@ -60,7 +60,7 @@ PyObject* UICheckboxObject_AddValueChangedEventHandler(UICheckboxObject* self, P
     Py_INCREF(Py_None);
 
     self->handle->AddValueChangedEventHandler([callback, self](bool checked, UICheckbox* sender) {
-		UIViewObject* pysender = (UIViewObject*)PyObject_CallFunction(
+		UICheckboxObject* pysender = (UICheckboxObject*)PyObject_CallFunction(
 			(PyObject*)&UICheckboxObject_GetType(), 
 			"K", 
 			(unsigned long long)sender
