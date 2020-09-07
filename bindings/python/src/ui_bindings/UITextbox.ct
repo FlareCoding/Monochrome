@@ -1,0 +1,25 @@
+@class UITextbox
+@subclass_of UIView
+
+@class_methods_start
+@class_methods_end
+
+@class_getters_start
+Stroke
+FocusedHighlightColor
+Text
+Placeholder
+textProperties
+TextColor
+ReadOnly
+@class_getters_end
+
+@class_setters_start
+Stroke
+FocusedHighlightColor
+Text
+Placeholder
+TextColor
+ReadOnly
+@class_setters_end
+

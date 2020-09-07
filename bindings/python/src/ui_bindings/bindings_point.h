@@ -22,6 +22,8 @@ int PointObject_SetY(PointObject* self, PyObject* value, void* closure);
 static PyGetSetDef PointObjectGettersSetters[] = {
 	{ "x", (getter)PointObject_GetX, (setter)PointObject_SetX, "x", NULL },
 	{ "y", (getter)PointObject_GetY, (setter)PointObject_SetY, "y", NULL },
+	{ "width", (getter)PointObject_GetX, (setter)PointObject_SetX, "width", NULL },
+	{ "height", (getter)PointObject_GetY, (setter)PointObject_SetY, "height", NULL },
 	{ NULL, NULL, 0, NULL }
 };
 

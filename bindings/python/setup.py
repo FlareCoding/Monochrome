@@ -27,11 +27,14 @@ mod_sources = [
         "src/ui_bindings/bindings_color.cpp",
         "src/ui_bindings/bindings_layer.cpp",
         "src/ui_bindings/bindings_textproperties.cpp",
+
         "src/ui_bindings/bindings_uiview.cpp",
         "src/ui_bindings/bindings_uilabel.cpp",
         "src/ui_bindings/bindings_uibutton.cpp",
         "src/ui_bindings/bindings_uicheckbox.cpp",
         "src/ui_bindings/bindings_uislider.cpp",
+        "src/ui_bindings/bindings_uitextbox.cpp",
+        "src/ui_bindings/bindings_uiscrollpanel.cpp",
 
         "src/events_bindings/bindings_mousebuttonpressedevent.cpp",
         "src/events_bindings/bindings_mousebuttonreleasedevent.cpp",

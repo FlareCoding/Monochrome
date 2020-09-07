@@ -92,21 +92,21 @@ PyObject* UISliderObject_GetSliderBarHeight(UISliderObject* self, void* closure)
 
 PyObject* UISliderObject_GetSliderKnobColor(UISliderObject* self, void* closure)
 {
-	Color color = self->handle->SliderKnobColor;
 	return PyObject_CallFunction(
 		(PyObject*)&ColorObject_GetType(),
-		"IIIf",
-		color.r, color.g, color.b, color.alpha
+		"IIIfK",
+		255, 255, 255, 1.0f,
+		(unsigned long long)&self->handle->SliderKnobColor
 	);
 }
 
 PyObject* UISliderObject_GetTickmarksColor(UISliderObject* self, void* closure)
 {
-	Color color = self->handle->TickmarksColor;
 	return PyObject_CallFunction(
 		(PyObject*)&ColorObject_GetType(),
-		"IIIf",
-		color.r, color.g, color.b, color.alpha
+		"IIIfK",
+		255, 255, 255, 1.0f,
+		(unsigned long long)&self->handle->TickmarksColor
 	);
 }
 

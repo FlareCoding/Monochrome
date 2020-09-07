@@ -103,21 +103,21 @@ PyObject* UICheckboxObject_GetLabelMargins(UICheckboxObject* self, void* closure
 
 PyObject* UICheckboxObject_GetCheckmarkColor(UICheckboxObject* self, void* closure)
 {
-	Color color = self->handle->CheckmarkColor;
 	return PyObject_CallFunction(
 		(PyObject*)&ColorObject_GetType(),
-		"IIIf",
-		color.r, color.g, color.b, color.alpha
+		"IIIfK",
+		255, 255, 255, 1.0f,
+		(unsigned long long)&self->handle->CheckmarkColor
 	);
 }
 
 PyObject* UICheckboxObject_GetCheckedBoxColor(UICheckboxObject* self, void* closure)
 {
-	Color color = self->handle->CheckedBoxColor;
 	return PyObject_CallFunction(
 		(PyObject*)&ColorObject_GetType(),
-		"IIIf",
-		color.r, color.g, color.b, color.alpha
+		"IIIfK",
+		255, 255, 255, 1.0f,
+		(unsigned long long)&self->handle->CheckedBoxColor
 	);
 }
 
