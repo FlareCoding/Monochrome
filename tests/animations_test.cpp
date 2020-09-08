@@ -26,6 +26,7 @@ bool StartAnimBtn_OnClick(Event& event, UIView* sender)
 
         auto scaleup = Animation::Create(AnimationType::Scale, cpb.get());
         AnimCast(ScaleAnimation, scaleup)->SetTargetSize({ 100.0f, 100.0f });
+        cpb->Visible = true;
         scaleup->Animate(200, []() {
             auto cpb_anim = Animation::Create(AnimationType::Custom, 0);
             AnimCast(CustomAnimation, cpb_anim)->SetAnimationFunction([](uint32_t tick) {
@@ -42,7 +43,7 @@ bool StartAnimBtn_OnClick(Event& event, UIView* sender)
 int main()
 {
     auto window = UIWindow::Create(WindowStyle::Modern, 400, 660, "Animations Test");
-	window->SetBackgroundColor(Color(6, 47, 103, 1));
+	window->SetBackgroundColor(Color(46, 147, 203, 1));
 	window->SetModernWindowButtonsColor(Color(46, 147, 203, 1));
 
     auto button = MakeRef<UIButton>(Frame(120, 200, 160, 50));
@@ -52,7 +53,8 @@ int main()
     button->AddEventHandler<EventType::MouseButtonClicked>(StartAnimBtn_OnClick);
     window->AddView(button);
 
-    cpb = MakeRef<UICircularProgressBar>(Frame(150, 200, 0, 0));
+    cpb = MakeRef<UICircularProgressBar>(Frame(150, 200, 25, 25));
+    cpb->Visible = false;
     cpb->layer.color = Color(16, 17, 13, 1.0f);
     cpb->ProgressColor = Color::green;
     cpb->Stroke = 6.0f;
