@@ -2,7 +2,7 @@ from Monochrome import *
 
 def button_onclick(event, sender):
     global checkbox
-    checkbox.checked = not ccheckbox.checked
+    checkbox.checked = not checkbox.checked
 
 def checkbox_value_changed(checked, sender):
     global slider
@@ -24,9 +24,10 @@ def textbox2_textentered(event, sender):
 
 def combobox_item_changed(index, sender):
     print("Selected \"" + sender.get_item(index) + "\" at index " + str(index))
+        
 
 if __name__ == '__main__':
-    global checkbox, slider
+    global checkbox, slider, progressBar, circularProgressBar
 
     window = UIWindow(1220, 760, "Demo App")
     window.set_background_color(Color(28, 21, 31))
@@ -94,5 +95,26 @@ if __name__ == '__main__':
     combobox.add_item_changed_event_handler(combobox_item_changed)
     window.add_view(combobox)
 
+    textArea = UITextArea()
+    textArea.layer.frame.position = Point(140, 470)
+    textArea.layer.frame.size = Size(320, 220)
+    textArea.left_margins = 4
+    textArea.right_margins = 4
+    window.add_view(textArea)
+
+    progressBar = UIProgressBar()
+    progressBar.layer.frame.position = Point(600, 660)
+    progressBar.layer.frame.size = Size(240, 12)
+    progressBar.value = 40
+    window.add_view(progressBar)
+
+    circularProgressBar = UICircularProgressBar()
+    circularProgressBar.layer.frame.position = Point(980, 460)
+    circularProgressBar.layer.frame.size = Size(80, 80)
+    circularProgressBar.value = 40
+    circularProgressBar.layer.color = Color(64, 64, 66)
+    circularProgressBar.progress_color = Color(0, 255, 0)
+    window.add_view(circularProgressBar)
+    
     window.start_window_loop()
     print("End of control flow reached, clean up code should go here")

@@ -36,6 +36,11 @@ mod_sources = [
         "src/ui_bindings/bindings_uitextbox.cpp",
         "src/ui_bindings/bindings_uiscrollpanel.cpp",
         "src/ui_bindings/bindings_uicombobox.cpp",
+        "src/ui_bindings/bindings_uitextarea.cpp",
+        "src/ui_bindings/bindings_uiprogressbar.cpp",
+        "src/ui_bindings/bindings_uicircularprogressbar.cpp",
+        "src/ui_bindings/bindings_uitabview.cpp",
+        "src/ui_bindings/bindings_uiimage.cpp",
 
         "src/events_bindings/bindings_mousebuttonpressedevent.cpp",
         "src/events_bindings/bindings_mousebuttonreleasedevent.cpp",

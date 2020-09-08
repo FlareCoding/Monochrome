@@ -1,0 +1,19 @@
+@class UIImage
+@subclass_of UIView
+
+@class_methods_start
+LoadImageFromFile
+LoadWebImage
+IsImageLoaded
+GetWidth
+GetHeight
+@class_methods_end
+
+@class_getters_start
+Opacity
+@class_getters_end
+
+@class_setters_start
+Opacity
+@class_setters_end
+
