@@ -1,0 +1,32 @@
+@class UITabView
+@subclass_of UIView
+
+@class_methods_start
+AddTab
+RemoveTabByIndex
+RemoveTab
+GetTabByIndex
+GetTab
+OpenTabByIndex
+OpenTab
+GetOpenedTab
+GetTabCount
+StyleTabButtons
+@class_methods_end
+
+@class_getters_start
+TabAreaHeight
+TabWidth
+UnderlineTabs
+TabUnderlineColor
+SelectedTabColor
+@class_getters_end
+
+@class_setters_start
+TabAreaHeight
+TabWidth
+UnderlineTabs
+TabUnderlineColor
+SelectedTabColor
+@class_setters_end
+

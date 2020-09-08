@@ -1,0 +1,27 @@
+@class UIView
+@subclass_of IResponder
+
+@class_methods_start
+AddSubview
+RemoveSubview
+GetAbsolutePosition
+@class_methods_end
+
+@class_getters_start
+Visible
+ZIndex
+CornerRadius
+Layer
+Parent
+Srcwindow
+Cursor
+@class_getters_end
+
+@class_setters_start
+Visible
+ZIndex
+CornerRadius
+Layer
+Cursor
+@class_setters_end
+

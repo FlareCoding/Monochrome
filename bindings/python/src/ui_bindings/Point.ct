@@ -1,0 +1,20 @@
+@class Point
+@subclass_of null
+
+@class_methods_start
+@class_methods_end
+
+@class_getters_start
+X
+Y
+Width
+Height
+@class_getters_end
+
+@class_setters_start
+X
+Y
+Width
+Height
+@class_setters_end
+

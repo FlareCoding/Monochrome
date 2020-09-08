@@ -1,0 +1,31 @@
+@class UISlider
+@subclass_of UIView
+
+@class_methods_start
+AddValueChangedEventHandler
+@class_methods_end
+
+@class_getters_start
+SliderKnobShape
+SliderBarHeight
+SliderKnobColor
+TickmarksColor
+MaxValue
+MinValue
+Value
+Intervals
+VisibleTickmarks
+@class_getters_end
+
+@class_setters_start
+SliderKnobShape
+SliderBarHeight
+SliderKnobColor
+TickmarksColor
+MaxValue
+MinValue
+Value
+Intervals
+VisibleTickmarks
+@class_setters_end
+

@@ -1,0 +1,32 @@
+@class UIWindow
+@subclass_of null
+
+@class_methods_start
+GetNativeHandle
+GetWidth
+GetHeight
+GetTitle
+GetDpi
+SetSize
+SetPos
+SetTitle
+AddView
+RemoveView
+Update
+ForceUpdate
+StartWindowLoop
+IsOpened
+GetBackgroundColor
+SetBackgroundColor
+GetCloseButtonRef
+GetMaximizeButtonRef
+GetMinimizeButtonRef
+GetWindowTitleLabelRef
+SetModernWindowButtonsColor
+FocusView
+GetFocusedView
+IsViewFocused
+GetMouseCursorPos
+GetAbsoluteMouseCursorPos
+RemoveAllViews
+@class_methods_end
