@@ -7,7 +7,12 @@ import os
 if platform.system() == 'Darwin':
     os.environ['LDFLAGS'] = '-framework Cocoa'
 
-os.environ['CFLAGS'] = '-std=c++17'
+
+if platform.system() == "Windows":
+        os.environ['CFLAGS'] = '/std=c++17'
+else:
+        os.environ['CFLAGS'] = '-std=c++17'
+
 os.environ['CC'] = 'g++'
 
 if platform.system() == 'Darwin':
@@ -61,13 +66,21 @@ mod_include_dirs = [
         "../../src",
 ]
 
-mod_library_dirs = [
-        "../../build"
-]
+mod_library_dirs = []
+
+if platform.system() == "Windows":
+        mod_library_dirs.append("../../build/Release")
+else:
+        mod_library_dirs.append("../../build")
 
 mod_libraries = [
         "Monochrome"
 ]
+
+if platform.system() == "Windows":
+        mod_libraries.append("user32")
+        mod_libraries.append("ole32")
+        mod_libraries.append("oleaut32")
 
 module = Extension('Monochrome', 
                 sources=mod_sources,
