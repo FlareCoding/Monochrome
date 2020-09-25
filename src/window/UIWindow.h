@@ -5,6 +5,8 @@
 #include "SceneManager.h"
 #include <chrono>
 
+#include "window/FileMenuBar.h"
+
 namespace mc
 {
 	class UILabel;
@@ -59,6 +61,9 @@ namespace mc
 		/// Starts the continous window loop which ends when the window closes
 		virtual void StartWindowLoop() = 0;
 
+		/// Sets a Menubar, which is going to be updated per frame
+		virtual void SetMenuBar(const Ref<FileMenuBar> &menuBar) = 0;
+
 		/// Returns whether or not the window was opened and still exists.
 		/// If the window is manually hidden but hasn't been destroyed yet, returned result will still be true.
 		inline bool const IsOpened() const { return m_IsOpened; }
@@ -98,17 +103,20 @@ namespace mc
 		/// @returns Returns whether or not the following view is in focused state
 		bool IsViewFocused(UIView* view) { return view == m_FocusedView; }
 
-		/// Returns a shared_ptr to the uiview with the specified address.
+		/// @returns Returns a shared_ptr to the uiview with the specified address.
 		virtual Ref<UIView> GetViewRef(UIView* raw_address) = 0;
 
-		/// Returns the position of the mouse cursor relative to the top left corner of the window.
+		/// @returns Returns the position of the mouse cursor relative to the top left corner of the window.
 		virtual Position GetMouseCursorPos() = 0;
 
-		/// Returns the position of the mouse cursor relative to the top left corner of the monitor.
+		/// @returns Returns the position of the mouse cursor relative to the top left corner of the monitor.
 		virtual Position GetAsboluteMouseCursorPos() = 0;
 
 		/// Removes all current views from the window's view hierarchy.
 		virtual void RemoveAllViews() = 0;
+		
+		/// @returns Returns the position of the last ViewElement from the ViewList
+		virtual const std::pair<float, float> GetLastViewPosition() = 0;
 
 	protected:
 		void* m_NativeHandle = nullptr;
