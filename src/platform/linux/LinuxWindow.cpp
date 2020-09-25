@@ -284,6 +284,11 @@ namespace mc
                 ProcessEvents(&event);
             }
         }
+
+        if (HasMenuBar)
+            {
+            MenuBar->Update();
+            }
     }
 
     void LinuxWindow::ForceUpdate(bool clear_screen)
@@ -480,4 +485,21 @@ namespace mc
             RemoveView(view);
         }
     }
+
+    void LinuxWindow::SetMenuBar(const Ref<FileMenuBar> &menuBar)
+    {
+        HasMenuBar = true;
+        MenuBar = menuBar;
+    }
+
+    const std::pair<float, float> LinuxWindow::GetLastViewPosition()
+    {
+        auto &view = m_SceneManager.GetViewsList().back();
+        if (view == nullptr)
+            return { 0.0f, 0.0f };
+
+        return { view->layer.frame.position.x, view->layer.frame.position.y };
+    }
+
+
 }
