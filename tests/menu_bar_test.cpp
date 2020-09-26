@@ -8,7 +8,6 @@ int main()
 	auto window = UIWindow::Create(WindowStyle::Modern, 1000, 670, "MenuBar Test");
 	window->SetBackgroundColor(Color(38, 38, 39, 1.0f));
 	window->SetModernWindowButtonsColor(Color(38, 38, 39, 1.0f));
-	std::cout << "TestApp" << std::endl;
 
 	Ref<FileMenu> fileMenu = FileMenu::Create("File");
 	fileMenu->AddMenuItem("New Project", []() { std::cout << "New Project Callback" << std::endl; });

@@ -108,7 +108,6 @@ namespace mc
 	
 	void FileMenu::Update()
 	{
-		// Render Name of the File Menu
 	}
 	
 	bool FileMenu::operator==(const FileMenu& other)
