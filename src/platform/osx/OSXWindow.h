@@ -24,6 +24,8 @@ namespace mc
 		virtual Position GetMouseCursorPos() override;
 		virtual Position GetAsboluteMouseCursorPos() override;
 		virtual void RemoveAllViews() override;
+		virtual void SetMenuBar(const Ref<FileMenuBar> &menuBar) override;
+		virtual const std::pair<float, float> GetLastViewPosition() override;
 
 		void DispatchEvent(EventPtr event);
 		void ProcessImmediateEvents();
@@ -59,5 +61,7 @@ namespace mc
 		};
 
 		InternalTimer m_InternalTimer;
+		Ref<FileMenuBar> MenuBar = nullptr;
+		bool HasMenuBar = false;
 	};
 }

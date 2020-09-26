@@ -605,6 +605,11 @@ namespace mc
 				return;
 			}
 		}
+
+		if (HasMenuBar)
+		{
+			MenuBar->Update();
+		}
 	}
 
 	void WindowsWindow::ForceUpdate(bool clear_screen)
@@ -785,5 +790,20 @@ namespace mc
 
 			RemoveView(view);
 		}
+	}
+
+	void WindowsWindow::SetMenuBar(const Ref<FileMenuBar>& menuBar)
+	{
+		MenuBar = menuBar;
+		HasMenuBar = true;
+	}
+	
+	const std::pair<float, float> WindowsWindow::GetLastViewPosition()
+	{
+		auto &view = m_SceneManager.GetViewsList().back();
+		if (view == nullptr)
+			return { 0.0f, 0.0f };
+
+		return { view->layer.frame.position.x, view->layer.frame.position.y };
 	}
 }

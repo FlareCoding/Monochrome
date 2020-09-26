@@ -96,6 +96,11 @@ namespace mc
         auto e = std::make_shared<WindowUpdatedEvent>(nullptr, EventProcessingTime, GraphicsRenderingTime);
         m_SceneManager.DispatchEvent(e);
         m_SceneManager.ProcessEvents(m_Dpi);
+
+		if (HasMenuBar)
+		{
+			MenuBar->Update();
+		}
     }
 
     void OSXWindow::StartWindowLoop()
@@ -217,4 +222,19 @@ namespace mc
             RemoveView(view);
         }
     }
+
+    void OSXWindow::SetMenuBar(const Ref<FileMenuBar>& menuBar)
+	{
+		MenuBar = menuBar;
+		HasMenuBar = true;
+	}
+	
+	const std::pair<float, float> OSXWindow::GetLastViewPosition()
+	{
+		auto &view = m_SceneManager.GetViewsList().back();
+		if (view == nullptr)
+			return { 0.0f, 0.0f };
+
+		return { view->layer.frame.position.x, view->layer.frame.position.y };
+	}
 }
