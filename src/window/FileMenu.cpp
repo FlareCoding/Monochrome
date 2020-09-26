@@ -9,9 +9,6 @@ namespace mc
 		MenuButtons.clear();
 		MenuButtons.shrink_to_fit();
 
-		uint32_t width = UIWindow::GetCurrentActiveWindow()->GetWidth();
-		uint32_t height = UIWindow::GetCurrentActiveWindow()->GetHeight();
-
 		float xOffset = 0.0f;
 		float yOffset = 0.0f;
 		for (FileMenuItem& item : MenuItems)
