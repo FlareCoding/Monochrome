@@ -2,6 +2,7 @@
 #include <core/Core.h>
 #include "IDrawable.h"
 #include "Layer.h"
+#include "Anchor.h"
 #include "UICursor.h"
 #include <events/IResponder.h>
 
@@ -51,6 +52,10 @@ namespace mc
 		/// Cursor icon to be used when hovered over the view.
 		CursorType cursor = CursorType::Arrow;
 
+		/// Refers to the side of the parent this view should be docked to.
+		/// @note This only gets applied when parent view is of type UIDockPanel.
+		Anchor anchor = Anchor::None;
+
 		/// Adds a child subview.
 		/// Children subviews have position relative to their parent view's position.
 		template <typename T>
@@ -60,6 +65,7 @@ namespace mc
 			subview->srcwindow = srcwindow;
 			subviews.push_back(std::dynamic_pointer_cast<UIView>(subview));
 			SortElements();
+			OnSubviewAdded(subview);
 		}
 
 		/// Removes a child view.
@@ -71,6 +77,8 @@ namespace mc
 			{
 				(*it)->parent = nullptr;
 				subviews.erase(it);
+
+				OnSubviewRemoved(subview);
 			}
 
 			SortElements();
@@ -88,6 +96,10 @@ namespace mc
 
 		/// Sorts all subviews by their zIndex in increasing order.
 		void SortElements();
+
+	protected:
+		virtual void OnSubviewAdded(const Ref<UIView>&) {}
+		virtual void OnSubviewRemoved(const Ref<UIView>&) {}
 	};
 
 #define CastToUiView(elem) std::dynamic_pointer_cast<UIView>(elem)

@@ -11,6 +11,7 @@ set(
 
     src/ui/IDrawable.h
     src/ui/Layer.h
+    src/ui/Anchor.h
     src/ui/UIElements.h
     src/ui/UIView.h
     src/ui/UIFileDialogue.h

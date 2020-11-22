@@ -37,6 +37,9 @@ namespace mc
 		/// @returns Window-specific DPI
 		inline uint32_t GetDpi() const { return m_Dpi; }
 
+		/// @returns The style of the window that it was created with
+		inline WindowStyle GetWindowStyle() const { return m_WindowStyle; }
+
 		/// Sets the size of the window.
 		virtual void SetSize(uint32_t width, uint32_t height) = 0;
 
@@ -117,6 +120,10 @@ namespace mc
 		
 		/// @returns Returns the position of the last ViewElement from the ViewList
 		virtual const std::pair<float, float> GetLastViewPosition() = 0;
+
+		/// @returns The window's instance of scene manager responsible for event processing and graphics rendering.
+		/// @note Most common use would be to get the scene manager and artificially dispatch certain events.
+		SceneManager& GetInternalSceneManager() { return m_SceneManager; }
 
 	protected:
 		void* m_NativeHandle = nullptr;

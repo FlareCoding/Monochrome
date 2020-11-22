@@ -8,8 +8,8 @@
 
 namespace mc
 {
-#define EVENT_HANDLED	true;
-#define EVENT_UNHANDLED false;
+#define EVENT_HANDLED	true
+#define EVENT_UNHANDLED false
 
 	enum class EventType
 	{
