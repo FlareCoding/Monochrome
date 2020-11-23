@@ -12,7 +12,7 @@ int main()
 	Ref<FileMenu> fileMenu = FileMenu::Create("File");
 	fileMenu->AddMenuItem("New Project", []() { std::cout << "New Project Callback" << std::endl; });
 	fileMenu->AddMenuSeperator();
-	fileMenu->AddMenuItem("Open Project", []() { std::cout << "Open Project Callback" << std::endl; });
+	fileMenu->AddMenuItem("Open Project...", []() { std::cout << "Open Project Callback" << std::endl; });
 	fileMenu->AddMenuItem("Save Project", []() { std::cout << "Save Project Callback" << std::endl; });
 	fileMenu->AddMenuItem("Save Project as..", []() { std::cout << "Save Project as Callback" << std::endl; });
 	fileMenu->AddMenuSeperator();
@@ -21,7 +21,7 @@ int main()
 	Ref<FileMenu> helpMenu = FileMenu::Create("Help");
 	helpMenu->AddMenuItem("About Monochrome", []() { std::cout << "About Callback" << std::endl; });
 	helpMenu->AddMenuSeperator();
-	helpMenu->AddMenuItem("Check for Updates...", []() { std::cout << "Check for Updates Callback" << std::endl; });
+	helpMenu->AddMenuItem("Check for Updates", []() { std::cout << "Check for Updates Callback" << std::endl; });
 	helpMenu->AddMenuItem("Go to Documentation", []() { std::cout << "Documentation Callback" << std::endl; });
 	helpMenu->AddMenuItem("Go to Forum", []() { std::cout << "Forum Callback" << std::endl; });
 
