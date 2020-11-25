@@ -108,8 +108,8 @@ $(document).ready(function(){initNavTree('_event_8h_source.html',''); initResiza
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>mc</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define EVENT_HANDLED   true;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define EVENT_UNHANDLED false;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define EVENT_HANDLED   true</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define EVENT_UNHANDLED false</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">enum class</span> EventType</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
@@ -117,53 +117,55 @@ $(document).ready(function(){initNavTree('_event_8h_source.html',''); initResiza
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        MouseButtonPressed, MouseButtonReleased, MouseButtonClicked = MouseButtonReleased, MouseMoved, MouseHoverOn, MouseHoverOff, MouseScrolled,</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        KeyDown, KeyPressed = KeyDown, KeyReleased,</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        FocusChanged,</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        WindowResized, WindowClosed, WindowGainedFocus, WindowLostFocus, WindowUpdated</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    };</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">enum</span> EventCategory</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        None = 0,</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        EventCategoryWindow         = BIT(0),</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        EventCategoryInput          = BIT(1),</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        EventCategoryKeyboard       = BIT(2),</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        EventCategoryMouse          = BIT(3),</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        EventCategoryMouseButton    = BIT(4)</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    };</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define REGISTER_EVT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">                                virtual EventType GetEventType() const override { return GetStaticType(); }\</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">                                virtual const char* GetName() const override { return #type; }</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define REGISTER_EVT_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        WindowResized, WindowClosed, WindowGainedFocus, WindowLostFocus, WindowUpdated,</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        DockingUpdate</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    };</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">enum</span> EventCategory</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        None = 0,</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        EventCategoryWindow         = BIT(0),</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        EventCategoryInput          = BIT(1),</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        EventCategoryKeyboard       = BIT(2),</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        EventCategoryMouse          = BIT(3),</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        EventCategoryMouseButton    = BIT(4),</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        EventCategoryApplication    = BIT(5)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    };</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define REGISTER_EVT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">                                virtual EventType GetEventType() const override { return GetStaticType(); }\</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">                                virtual const char* GetName() const override { return #type; }</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html">   40</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmc_1_1_event.html">Event</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#ad7d6b2cbb9f1e2f6aeff676ce2cad892">   44</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classmc_1_1_event.html#ad7d6b2cbb9f1e2f6aeff676ce2cad892">Handled</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#abf342ac2e6347e95af86a045a88063d8">   47</a></span>&#160;        <span class="keyword">virtual</span> EventType <a class="code" href="classmc_1_1_event.html#abf342ac2e6347e95af86a045a88063d8">GetEventType</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce">   50</a></span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce">GetName</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#a3a9d82acb9cfca1e87f9a3066a51b74d">   53</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="classmc_1_1_event.html#a3a9d82acb9cfca1e87f9a3066a51b74d">GetCategoryFlags</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#adf91eb31a3c8952120bd7507f9000e2c">   56</a></span>&#160;        <span class="keyword">virtual</span> std::string <a class="code" href="classmc_1_1_event.html#adf91eb31a3c8952120bd7507f9000e2c">ToString</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce">GetName</a>(); }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#pragma warning( push )</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#pragma warning( disable : 26812 )</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="classmc_1_1_event.html#aa95a2163fb99880fa497a52f2866323a">IsInCategory</a>(EventCategory category) { <span class="keywordflow">return</span> <a class="code" href="classmc_1_1_event.html#a3a9d82acb9cfca1e87f9a3066a51b74d">GetCategoryFlags</a>() &amp; category; }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#pragma warning( pop )</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    };</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">using</span> EventPtr = Ref&lt;Event&gt;;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define REGISTER_EVT_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html">   42</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmc_1_1_event.html">Event</a></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#ad7d6b2cbb9f1e2f6aeff676ce2cad892">   46</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classmc_1_1_event.html#ad7d6b2cbb9f1e2f6aeff676ce2cad892">Handled</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#abf342ac2e6347e95af86a045a88063d8">   49</a></span>&#160;        <span class="keyword">virtual</span> EventType <a class="code" href="classmc_1_1_event.html#abf342ac2e6347e95af86a045a88063d8">GetEventType</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce">   52</a></span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce">GetName</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#a3a9d82acb9cfca1e87f9a3066a51b74d">   55</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="classmc_1_1_event.html#a3a9d82acb9cfca1e87f9a3066a51b74d">GetCategoryFlags</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classmc_1_1_event.html#adf91eb31a3c8952120bd7507f9000e2c">   58</a></span>&#160;        <span class="keyword">virtual</span> std::string <a class="code" href="classmc_1_1_event.html#adf91eb31a3c8952120bd7507f9000e2c">ToString</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce">GetName</a>(); }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#pragma warning( push )</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#pragma warning( disable : 26812 )</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="classmc_1_1_event.html#aa95a2163fb99880fa497a52f2866323a">IsInCategory</a>(EventCategory category) { <span class="keywordflow">return</span> <a class="code" href="classmc_1_1_event.html#a3a9d82acb9cfca1e87f9a3066a51b74d">GetCategoryFlags</a>() &amp; category; }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#pragma warning( pop )</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    };</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">using</span> EventPtr = Ref&lt;Event&gt;;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclassmc_1_1_event_html_ad7d6b2cbb9f1e2f6aeff676ce2cad892"><div class="ttname"><a href="classmc_1_1_event.html#ad7d6b2cbb9f1e2f6aeff676ce2cad892">mc::Event::Handled</a></div><div class="ttdeci">bool Handled</div><div class="ttdoc">Tells the event handling system if it should drop the event if it's handled.</div><div class="ttdef"><b>Definition:</b> Event.h:44</div></div>
-<div class="ttc" id="aclassmc_1_1_event_html_adf91eb31a3c8952120bd7507f9000e2c"><div class="ttname"><a href="classmc_1_1_event.html#adf91eb31a3c8952120bd7507f9000e2c">mc::Event::ToString</a></div><div class="ttdeci">virtual std::string ToString() const</div><div class="ttdef"><b>Definition:</b> Event.h:56</div></div>
+<div class="ttc" id="aclassmc_1_1_event_html_ad7d6b2cbb9f1e2f6aeff676ce2cad892"><div class="ttname"><a href="classmc_1_1_event.html#ad7d6b2cbb9f1e2f6aeff676ce2cad892">mc::Event::Handled</a></div><div class="ttdeci">bool Handled</div><div class="ttdoc">Tells the event handling system if it should drop the event if it's handled.</div><div class="ttdef"><b>Definition:</b> Event.h:46</div></div>
+<div class="ttc" id="aclassmc_1_1_event_html_adf91eb31a3c8952120bd7507f9000e2c"><div class="ttname"><a href="classmc_1_1_event.html#adf91eb31a3c8952120bd7507f9000e2c">mc::Event::ToString</a></div><div class="ttdeci">virtual std::string ToString() const</div><div class="ttdef"><b>Definition:</b> Event.h:58</div></div>
 <div class="ttc" id="aclassmc_1_1_event_html_abf342ac2e6347e95af86a045a88063d8"><div class="ttname"><a href="classmc_1_1_event.html#abf342ac2e6347e95af86a045a88063d8">mc::Event::GetEventType</a></div><div class="ttdeci">virtual EventType GetEventType() const =0</div></div>
-<div class="ttc" id="aclassmc_1_1_event_html_aa95a2163fb99880fa497a52f2866323a"><div class="ttname"><a href="classmc_1_1_event.html#aa95a2163fb99880fa497a52f2866323a">mc::Event::IsInCategory</a></div><div class="ttdeci">bool IsInCategory(EventCategory category)</div><div class="ttdef"><b>Definition:</b> Event.h:61</div></div>
-<div class="ttc" id="aclassmc_1_1_event_html"><div class="ttname"><a href="classmc_1_1_event.html">mc::Event</a></div><div class="ttdoc">Base class for any system event.</div><div class="ttdef"><b>Definition:</b> Event.h:41</div></div>
+<div class="ttc" id="aclassmc_1_1_event_html_aa95a2163fb99880fa497a52f2866323a"><div class="ttname"><a href="classmc_1_1_event.html#aa95a2163fb99880fa497a52f2866323a">mc::Event::IsInCategory</a></div><div class="ttdeci">bool IsInCategory(EventCategory category)</div><div class="ttdef"><b>Definition:</b> Event.h:63</div></div>
+<div class="ttc" id="aclassmc_1_1_event_html"><div class="ttname"><a href="classmc_1_1_event.html">mc::Event</a></div><div class="ttdoc">Base class for any system event.</div><div class="ttdef"><b>Definition:</b> Event.h:43</div></div>
 <div class="ttc" id="aclassmc_1_1_event_html_ab12e106b9856dacb5654a9a662ed5fce"><div class="ttname"><a href="classmc_1_1_event.html#ab12e106b9856dacb5654a9a662ed5fce">mc::Event::GetName</a></div><div class="ttdeci">virtual const char * GetName() const =0</div></div>
 <div class="ttc" id="aclassmc_1_1_event_html_a3a9d82acb9cfca1e87f9a3066a51b74d"><div class="ttname"><a href="classmc_1_1_event.html#a3a9d82acb9cfca1e87f9a3066a51b74d">mc::Event::GetCategoryFlags</a></div><div class="ttdeci">virtual int GetCategoryFlags() const =0</div></div>
 <!-- start footer part -->
