@@ -121,9 +121,9 @@ namespace mc
 		/// @returns Returns the position of the last ViewElement from the ViewList
 		virtual const std::pair<float, float> GetLastViewPosition() = 0;
 
-		/// @returns The window's instance of scene manager responsible for event processing and graphics rendering.
-		/// @note Most common use would be to get the scene manager and artificially dispatch certain events.
-		SceneManager& GetInternalSceneManager() { return m_SceneManager; }
+		/// Allows to register a new event to be processed during the next update cycle (next frame).
+		/// @param e Shared pointer to the event that will be dispatched and processed.
+		void DispatchEvent(EventPtr e) { m_SceneManager.DispatchEvent(e); }
 
 	protected:
 		void* m_NativeHandle = nullptr;

@@ -4,11 +4,11 @@ namespace mc
 {
     enum class Anchor
     {
-        None,
         Left,
         Right,
         Top,
         Bottom,
-        Center
+        Center,
+        None
     };
 }

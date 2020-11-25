@@ -26,6 +26,9 @@ private:
 	uint32_t m_EditorHeight = 980;
 
 private:
+	// Main Dock Panel
+	Ref<UIDockPanel> m_DockPanel;
+
 	// Workspace
 	Ref<UITabView> m_WorkspaceTabView;
 

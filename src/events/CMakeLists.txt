@@ -11,6 +11,7 @@ set(
     src/events/MouseEvents.h
     src/events/WindowEvents.h
     src/events/FocusChangedEvent.h
+    src/events/CustomEvents.h
 
     PARENT_SCOPE
 )

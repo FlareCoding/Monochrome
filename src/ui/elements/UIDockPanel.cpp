@@ -2,10 +2,17 @@
 #include <graphics/Graphics.h>
 #include <window/UIWindow.h>
 #include <events/WindowEvents.h>
+#include <events/CustomEvents.h>
 #include <algorithm>
 
 namespace mc
 {
+    template <typename T>
+    bool CheckType(UIView* view)
+    {
+        return dynamic_cast<T*>(view);
+    }
+
     UIDockPanel::UIDockPanel()
     {
         layer.frame = Frame(40, 40, 200, 200);
@@ -86,7 +93,7 @@ namespace mc
                     srcwindow->GetHeight()
                 );
 
-                srcwindow->GetInternalSceneManager().DispatchEvent(resize_event);
+                srcwindow->DispatchEvent(resize_event);
             }
         }
 
@@ -120,7 +127,7 @@ namespace mc
 
         Frame available_space_frame = Frame(0, 0, 0, 0);
         available_space_frame.size = layer.frame.size;
-        
+
         for (auto& subview : subviews)
         {
             switch (subview->anchor)
@@ -189,6 +196,16 @@ namespace mc
 
             if (subview->layer.frame.size.height < 0)
                 subview->layer.frame.size.height = 0;
+
+            // If the element is a dock panel as well, update its own docked views.
+            if (CheckType<UIDockPanel>(subview.get()))
+            {
+                std::dynamic_pointer_cast<UIDockPanel>(subview)->UpdateAnchoredViews();
+            }
+
+            // Finally, dispatch a docking update event to notify the subviews.
+            auto e = MakeRef<DockingUpdateEvent>(this);
+            srcwindow->DispatchEvent(e);
         }
     }
 }

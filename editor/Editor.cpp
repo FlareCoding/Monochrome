@@ -72,18 +72,61 @@ void MonochromeEditor::CreateEditorWindow()
 
 void MonochromeEditor::InitEditorUI()
 {
+#pragma region Dock Panel
+
+	m_DockPanel = MakeRef<UIDockPanel>();
+	m_DockPanel->layer.color = Color::transparent;
+	m_DockPanel->SetAnchoredToWindow(true);
+	m_EditorWindow->AddView(m_DockPanel);
+
+#pragma endregion
+
+#pragma region Right Docked Panel
+
+	auto RightDockedPanel = MakeRef<UIDockPanel>();
+	RightDockedPanel->anchor = Anchor::Right;
+	RightDockedPanel->layer.frame.size.width = 300;
+	RightDockedPanel->layer.color = Color::transparent;
+	m_DockPanel->AddSubview(RightDockedPanel);
+
+#pragma endregion
+
+#pragma region Left Docked Panel
+
+	auto LeftDockedPanel = MakeRef<UIDockPanel>();
+	LeftDockedPanel->anchor = Anchor::Left;
+	LeftDockedPanel->layer.frame.size.width = 450;
+	LeftDockedPanel->layer.color = Color::transparent;
+	m_DockPanel->AddSubview(LeftDockedPanel);
+
+#pragma endregion
+
+#pragma region Middle Docked Panel
+
+	auto MiddleDockedPanel = MakeRef<UIDockPanel>();
+	MiddleDockedPanel->anchor = Anchor::Center;
+	MiddleDockedPanel->layer.color = Color::transparent;
+	m_DockPanel->AddSubview(MiddleDockedPanel);
+
+#pragma endregion
+
 #pragma region Toolbox
 
-	auto ToolboxLabel = MakeRef<UILabel>(Frame(Position{ (float)m_EditorWidth - 300, 60 }, Size{ 300, 40 }));
+	auto ToolboxLabel = MakeRef<UILabel>(Frame(Position{ (float)m_EditorWidth - 300, 60 }, Size{ 300, 60 }));
+	ToolboxLabel->anchor = Anchor::Top;
 	ToolboxLabel->Text = "Widgets";
 	ToolboxLabel->Properties.FontSize = 18;
 	ToolboxLabel->color = Color::white;
-	m_EditorWindow->AddView(ToolboxLabel);
+	RightDockedPanel->AddSubview(ToolboxLabel);
 
 	m_Toolbox = MakeRef<UIScrollPanel>();
 	m_Toolbox->layer.frame = Frame(Position{ (float)m_EditorWidth - 300, 120 }, Size{ 300, (float)m_EditorHeight - 120 });
 	m_Toolbox->layer.color = Color::transparent;
-	m_Toolbox->ContentView->layer.frame.size.height = (float)m_EditorHeight - 120;
+	m_Toolbox->anchor = Anchor::Center;
+	m_Toolbox->ContentView->AddEventHandler<EventType::WindowResized>([this](Event&, UIView*) -> bool {
+		m_Toolbox->ContentView->layer.frame.size.height = (float)m_EditorWindow->GetHeight() - 120;
+		return EVENT_HANDLED;
+	});
 	m_Toolbox->ContentView->layer.color = Color(51, 51, 52, 1.0f);
 
 	const auto MakeToolboxWidgetButton = [this](const std::string& name, std::function<void()> click_cb) -> Ref<UIButton> {
@@ -166,29 +209,54 @@ void MonochromeEditor::InitEditorUI()
 		OpenElementProperties(widget);
 	});
 
-	m_EditorWindow->AddView(m_Toolbox);
+	RightDockedPanel->AddSubview(m_Toolbox);
 
 #pragma endregion
 
 #pragma region Workspace
 
-	m_WorkspaceTabView = MakeRef<UITabView>(Frame((float)m_EditorWidth / 2.0f - 500, 60, 1000, 916));
+	m_WorkspaceTabView = MakeRef<UITabView>(Frame(0, 0, 1000, 916));
+	m_WorkspaceTabView->anchor = Anchor::Center;
 	m_WorkspaceTabView->UnderlineTabs = true;
 	m_WorkspaceTabView->AddTab("Editor")->layer.color = m_EditorWindow->GetBackgroundColor();
 	m_WorkspaceTabView->AddTab("Settings")->layer.color = m_EditorWindow->GetBackgroundColor();
 	m_WorkspaceTabView->OpenTab("Editor");
+	m_WorkspaceTabView->SelectedTabColor = Color(61, 61, 62, 1.0f);
 	m_WorkspaceTabView->StyleTabButtons([this](Ref<UIButton>& tab) {
 		tab->layer.color = m_EditorWindow->GetBackgroundColor();
 	});
-	m_WorkspaceTabView->SelectedTabColor = Color(61, 61, 62, 1.0f);
-	m_EditorWindow->AddView(m_WorkspaceTabView);
+	MiddleDockedPanel->AddSubview(m_WorkspaceTabView);
+
+	m_WorkspaceTabView->AddEventHandler<EventType::DockingUpdate>([this, MiddleDockedPanel](Event& e, UIView* sender) -> bool {
+		if (reinterpret_cast<DockingUpdateEvent&>(e).SourcePanel == MiddleDockedPanel.get())
+		{
+			m_ElementPreviewArea->layer.frame.position = Position{ m_WorkspaceTabView->layer.frame.size.width / 2.0f - 448, m_WorkspaceTabView->layer.frame.size.height - 450 };
+
+			Position AddElemToProjWindowBtnPosition = Position{ m_ElementPreviewArea->layer.frame.size.width - 160, 2 };
+			AddElemToProjWindowBtnPosition += m_ElementPreviewArea->layer.frame.position;
+			m_AddElementToProjectWindowButton->layer.frame.position = AddElemToProjWindowBtnPosition;
+
+			m_PropertiesView->layer.frame = Frame(Position{ 0, 0 }, Size{ m_WorkspaceTabView->layer.frame.size.width - 40, 440 });
+
+			Position ShowVariablePropertiesBtnPosition = m_PropertiesView->layer.frame.position + m_PropertiesView->layer.frame.size;
+			ShowVariablePropertiesBtnPosition -= { 160, 42 };
+			m_OpenVariablePropertiesButton->layer.frame.position = ShowVariablePropertiesBtnPosition;
+
+			Position DeleteElementBtnPosition = m_PropertiesView->layer.frame.position + m_PropertiesView->layer.frame.size;
+			DeleteElementBtnPosition -= { 322, 42 };
+			m_DeleteElementButton->layer.frame.position = DeleteElementBtnPosition;
+		}
+
+		return EVENT_HANDLED;
+		});
 
 #pragma endregion
 
 #pragma region Element Preview Area
 
 	m_ElementPreviewArea = MakeRef<UIView>();
-	m_ElementPreviewArea->layer.frame = Frame(Position{ m_WorkspaceTabView->layer.frame.size.width / 2.0f - 448, m_WorkspaceTabView->layer.frame.size.height - 450 }, Size{ 896, 448 });
+	//m_ElementPreviewArea->layer.frame = Frame(Position{ m_WorkspaceTabView->layer.frame.size.width / 2.0f - 448, m_WorkspaceTabView->layer.frame.size.height - 450 }, Size{ 896, 448 });
+	m_ElementPreviewArea->layer.frame = Frame(Position{ 0, 0 }, Size{ 896, 448 });
 	m_ElementPreviewArea->layer.color = Color(51, 51, 52, 1.0f);
 	m_WorkspaceTabView->GetTab("Editor")->AddSubview(m_ElementPreviewArea);
 
@@ -412,21 +480,21 @@ void MonochromeEditor::InitEditorUI()
 
 #pragma region Window Editing Area
 
-	auto WindowEditingAreaLabel = MakeRef<UILabel>(Frame(Position{ 80, 60 }, Size{ 260, 40 }));
+	auto WindowEditingAreaLabel = MakeRef<UILabel>(Frame(Position{ 80, 0 }, Size{ 260, 40 }));
 	WindowEditingAreaLabel->Text = "Project Window Settings";
 	WindowEditingAreaLabel->Properties.FontSize = 18;
 	WindowEditingAreaLabel->color = Color::white;
-	m_EditorWindow->AddView(WindowEditingAreaLabel);
+	m_DockPanel->AddSubview(WindowEditingAreaLabel);
 
 	// Window Width
-	auto ProjectWindowWidthLabel = MakeRef<UILabel>(Frame(Position{ 80, 120 }, Size{ 160, 40 }));
+	auto ProjectWindowWidthLabel = MakeRef<UILabel>(Frame(Position{ 80, 60 }, Size{ 160, 40 }));
 	ProjectWindowWidthLabel->Text = "Window Width: ";
 	ProjectWindowWidthLabel->Properties.FontSize = 14;
 	ProjectWindowWidthLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectWindowWidthLabel->color = Color::white;
-	m_EditorWindow->AddView(ProjectWindowWidthLabel);
+	m_DockPanel->AddSubview(ProjectWindowWidthLabel);
 
-	m_ProjectWindowWidthTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 130 }, Size{ 140, 20 }));
+	m_ProjectWindowWidthTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 70 }, Size{ 140, 20 }));
 	m_ProjectWindowWidthTextbox->Placeholder = "Enter width";
 	m_ProjectWindowWidthTextbox->Text = "1000";
 	m_ProjectWindowWidthTextbox->textProperties.FontSize = 14;
@@ -434,17 +502,17 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowWidthTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowWidthTextbox->TextColor = Color::white;
 	m_ProjectWindowWidthTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_ProjectWindowWidthTextbox);
+	m_DockPanel->AddSubview(m_ProjectWindowWidthTextbox);
 
 	// Window Height
-	auto ProjectWindowHeightLabel = MakeRef<UILabel>(Frame(Position{ 80, 150 }, Size{ 160, 40 }));
+	auto ProjectWindowHeightLabel = MakeRef<UILabel>(Frame(Position{ 80, 90 }, Size{ 160, 40 }));
 	ProjectWindowHeightLabel->Text = "Window Height: ";
 	ProjectWindowHeightLabel->Properties.FontSize = 14;
 	ProjectWindowHeightLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectWindowHeightLabel->color = Color::white;
-	m_EditorWindow->AddView(ProjectWindowHeightLabel);
+	m_DockPanel->AddSubview(ProjectWindowHeightLabel);
 
-	m_ProjectWindowHeightTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 160 }, Size{ 140, 20 }));
+	m_ProjectWindowHeightTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 100 }, Size{ 140, 20 }));
 	m_ProjectWindowHeightTextbox->Placeholder = "Enter height";
 	m_ProjectWindowHeightTextbox->Text = "670";
 	m_ProjectWindowHeightTextbox->textProperties.FontSize = 14;
@@ -452,17 +520,17 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowHeightTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowHeightTextbox->TextColor = Color::white;
 	m_ProjectWindowHeightTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_ProjectWindowHeightTextbox);
+	m_DockPanel->AddSubview(m_ProjectWindowHeightTextbox);
 
 	// Window Title
-	auto ProjectWindowTitleLabel = MakeRef<UILabel>(Frame(Position{ 80, 180 }, Size{ 160, 40 }));
+	auto ProjectWindowTitleLabel = MakeRef<UILabel>(Frame(Position{ 80, 120 }, Size{ 160, 40 }));
 	ProjectWindowTitleLabel->Text = "Window Title: ";
 	ProjectWindowTitleLabel->Properties.FontSize = 14;
 	ProjectWindowTitleLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectWindowTitleLabel->color = Color::white;
-	m_EditorWindow->AddView(ProjectWindowTitleLabel);
+	m_DockPanel->AddSubview(ProjectWindowTitleLabel);
 
-	m_ProjectWindowTitleTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 190 }, Size{ 140, 20 }));
+	m_ProjectWindowTitleTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 130 }, Size{ 140, 20 }));
 	m_ProjectWindowTitleTextbox->Placeholder = "Enter title";
 	m_ProjectWindowTitleTextbox->Text = "Monochrome App";
 	m_ProjectWindowTitleTextbox->textProperties.FontSize = 14;
@@ -470,17 +538,17 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowTitleTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowTitleTextbox->TextColor = Color::white;
 	m_ProjectWindowTitleTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_ProjectWindowTitleTextbox);
+	m_DockPanel->AddSubview(m_ProjectWindowTitleTextbox);
 
 	// Window Color
-	auto ProjectWindowColorLabel = MakeRef<UILabel>(Frame(Position{ 80, 210 }, Size{ 160, 40 }));
+	auto ProjectWindowColorLabel = MakeRef<UILabel>(Frame(Position{ 80, 150 }, Size{ 160, 40 }));
 	ProjectWindowColorLabel->Text = "Window Color: ";
 	ProjectWindowColorLabel->Properties.FontSize = 14;
 	ProjectWindowColorLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectWindowColorLabel->color = Color::white;
-	m_EditorWindow->AddView(ProjectWindowColorLabel);
+	m_DockPanel->AddSubview(ProjectWindowColorLabel);
 
-	m_ProjectWindowColorTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 220 }, Size{ 140, 20 }));
+	m_ProjectWindowColorTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 160 }, Size{ 140, 20 }));
 	m_ProjectWindowColorTextbox->Placeholder = "100 250 255";
 	m_ProjectWindowColorTextbox->Text = utils::ColorToString(Color::gray);
 	m_ProjectWindowColorTextbox->textProperties.FontSize = 14;
@@ -488,9 +556,9 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowColorTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowColorTextbox->TextColor = Color::white;
 	m_ProjectWindowColorTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_ProjectWindowColorTextbox);
+	m_DockPanel->AddSubview(m_ProjectWindowColorTextbox);
 
-	m_OpenProjectWindowButton = MakeRef<UIButton>(Frame(Position{ 120, 270 }, Size{180, 36}));
+	m_OpenProjectWindowButton = MakeRef<UIButton>(Frame(Position{ 120, 210 }, Size{180, 36}));
 	m_OpenProjectWindowButton->Label->Text = "Open Window";
 	m_OpenProjectWindowButton->Label->color = Color::white;
 	m_OpenProjectWindowButton->Label->Properties.FontSize = 14;
@@ -502,27 +570,27 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(m_OpenProjectWindowButton);
+	m_DockPanel->AddSubview(m_OpenProjectWindowButton);
 
 #pragma endregion
 
 #pragma region Project Saving Area
 
-	auto ProjectEditingAreaLabel = MakeRef<UILabel>(Frame(Position{ 80, 540 }, Size{ 260, 40 }));
+	auto ProjectEditingAreaLabel = MakeRef<UILabel>(Frame(Position{ 80, 480 }, Size{ 260, 40 }));
 	ProjectEditingAreaLabel->Text = "Project Settings";
 	ProjectEditingAreaLabel->Properties.FontSize = 18;
 	ProjectEditingAreaLabel->color = Color::white;
-	m_EditorWindow->AddView(ProjectEditingAreaLabel);
+	m_DockPanel->AddSubview(ProjectEditingAreaLabel);
 
 	// Project Name
-	auto ProjectNameLabel = MakeRef<UILabel>(Frame(Position{ 80, 600 }, Size{ 160, 40 }));
+	auto ProjectNameLabel = MakeRef<UILabel>(Frame(Position{ 80, 540 }, Size{ 160, 40 }));
 	ProjectNameLabel->Text = "Project Name: ";
 	ProjectNameLabel->Properties.FontSize = 14;
 	ProjectNameLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectNameLabel->color = Color::white;
-	m_EditorWindow->AddView(ProjectNameLabel);
+	m_DockPanel->AddSubview(ProjectNameLabel);
 
-	m_ProjectNameTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 610 }, Size{ 160, 20 }));
+	m_ProjectNameTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 550 }, Size{ 160, 20 }));
 	m_ProjectNameTextbox->Placeholder = "Enter project name";
 	m_ProjectNameTextbox->Text = "Project 1";
 	m_ProjectNameTextbox->textProperties.FontSize = 14;
@@ -530,17 +598,17 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectNameTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectNameTextbox->TextColor = Color::white;
 	m_ProjectNameTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_ProjectNameTextbox);
+	m_DockPanel->AddSubview(m_ProjectNameTextbox);
 
 	// Project Path
-	auto ProjectPathLabel = MakeRef<UILabel>(Frame(Position{ 80, 630 }, Size{ 160, 40 }));
+	auto ProjectPathLabel = MakeRef<UILabel>(Frame(Position{ 80, 570 }, Size{ 160, 40 }));
 	ProjectPathLabel->Text = "Project Location: ";
 	ProjectPathLabel->Properties.FontSize = 14;
 	ProjectPathLabel->Properties.Alignment = TextAlignment::LEADING;
 	ProjectPathLabel->color = Color::white;
-	m_EditorWindow->AddView(ProjectPathLabel);
+	m_DockPanel->AddSubview(ProjectPathLabel);
 
-	m_ProjectPathTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 640 }, Size{ 160, 20 }));
+	m_ProjectPathTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 580 }, Size{ 160, 20 }));
 	m_ProjectPathTextbox->Placeholder = "Project path";
 	m_ProjectPathTextbox->Text = "";
 	m_ProjectPathTextbox->textProperties.FontSize = 14;
@@ -548,9 +616,9 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectPathTextbox->TextColor = Color::white;
 	m_ProjectPathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_ProjectPathTextbox);
+	m_DockPanel->AddSubview(m_ProjectPathTextbox);
 
-	m_SelectProjectPathButton = MakeRef<UIButton>(Frame(Position{ 230, 665 }, Size{ 120, 20 }));
+	m_SelectProjectPathButton = MakeRef<UIButton>(Frame(Position{ 230, 605 }, Size{ 120, 20 }));
 	m_SelectProjectPathButton->Label->Text = "Select ...";
 	m_SelectProjectPathButton->Label->color = Color::white;
 	m_SelectProjectPathButton->Label->Properties.FontSize = 12;
@@ -571,17 +639,17 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(m_SelectProjectPathButton);
+	m_DockPanel->AddSubview(m_SelectProjectPathButton);
 
 	// UI Class Name
-	auto UIClassNameLabel = MakeRef<UILabel>(Frame(Position{ 80, 695 }, Size{ 160, 40 }));
+	auto UIClassNameLabel = MakeRef<UILabel>(Frame(Position{ 80, 635 }, Size{ 160, 40 }));
 	UIClassNameLabel->Text = "UI Class Name: ";
 	UIClassNameLabel->Properties.FontSize = 14;
 	UIClassNameLabel->Properties.Alignment = TextAlignment::LEADING;
 	UIClassNameLabel->color = Color::white;
-	m_EditorWindow->AddView(UIClassNameLabel);
+	m_DockPanel->AddSubview(UIClassNameLabel);
 
-	m_UIClassNameTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 705 }, Size{ 160, 20 }));
+	m_UIClassNameTextbox = MakeRef<UITextbox>(Frame(Position{ 190, 645 }, Size{ 160, 20 }));
 	m_UIClassNameTextbox->Placeholder = "Name";
 	m_UIClassNameTextbox->Text = "UserInterface";
 	m_UIClassNameTextbox->textProperties.FontSize = 14;
@@ -589,9 +657,9 @@ void MonochromeEditor::InitEditorUI()
 	m_UIClassNameTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_UIClassNameTextbox->TextColor = Color::white;
 	m_UIClassNameTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_UIClassNameTextbox);
+	m_DockPanel->AddSubview(m_UIClassNameTextbox);
 
-	m_GenerateSourceAndVSSolution = MakeRef<UIButton>(Frame(Position{ 120, 770 }, Size{ 200, 34 }));
+	m_GenerateSourceAndVSSolution = MakeRef<UIButton>(Frame(Position{ 120, 710 }, Size{ 200, 34 }));
 	m_GenerateSourceAndVSSolution->Label->Text = "Generate Source and VS Project";
 	m_GenerateSourceAndVSSolution->Label->color = Color::white;
 	m_GenerateSourceAndVSSolution->Label->Properties.FontSize = 12;
@@ -603,9 +671,9 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(m_GenerateSourceAndVSSolution);
+	m_DockPanel->AddSubview(m_GenerateSourceAndVSSolution);
 
-	m_GenerateProjectSourceFiles = MakeRef<UIButton>(Frame(Position{ 120, 816 }, Size{ 200, 34 }));
+	m_GenerateProjectSourceFiles = MakeRef<UIButton>(Frame(Position{ 120, 756 }, Size{ 200, 34 }));
 	m_GenerateProjectSourceFiles->Label->Text = "Generate Source Files";
 	m_GenerateProjectSourceFiles->Label->color = Color::white;
 	m_GenerateProjectSourceFiles->Label->Properties.FontSize = 12;
@@ -617,9 +685,9 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 		});
-	m_EditorWindow->AddView(m_GenerateProjectSourceFiles);
+	m_DockPanel->AddSubview(m_GenerateProjectSourceFiles);
 
-	m_MonochromeSourcePathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 370 }, Size{ 240, 20 }));
+	m_MonochromeSourcePathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 310 }, Size{ 240, 20 }));
 	m_MonochromeSourcePathTextbox->Placeholder = "Monochrome Source Path";
 	m_MonochromeSourcePathTextbox->Text = "";
 	m_MonochromeSourcePathTextbox->textProperties.FontSize = 14;
@@ -627,9 +695,9 @@ void MonochromeEditor::InitEditorUI()
 	m_MonochromeSourcePathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_MonochromeSourcePathTextbox->TextColor = Color::white;
 	m_MonochromeSourcePathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_MonochromeSourcePathTextbox);
+	m_DockPanel->AddSubview(m_MonochromeSourcePathTextbox);
 
-	m_SelectMonochromeSourcePathButton = MakeRef<UIButton>(Frame(Position{ 300, 370 }, Size{ 100, 20 }));
+	m_SelectMonochromeSourcePathButton = MakeRef<UIButton>(Frame(Position{ 300, 310 }, Size{ 100, 20 }));
 	m_SelectMonochromeSourcePathButton->Label->Text = "Select ...";
 	m_SelectMonochromeSourcePathButton->Label->color = Color::white;
 	m_SelectMonochromeSourcePathButton->Label->Properties.FontSize = 12;
@@ -651,9 +719,9 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(m_SelectMonochromeSourcePathButton);
+	m_DockPanel->AddSubview(m_SelectMonochromeSourcePathButton);
 
-	m_MonochromeLibDbgPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 400 }, Size{ 240, 20 }));
+	m_MonochromeLibDbgPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 340 }, Size{ 240, 20 }));
 	m_MonochromeLibDbgPathTextbox->Placeholder = "Monochrome Library Debug Path";
 	m_MonochromeLibDbgPathTextbox->Text = "";
 	m_MonochromeLibDbgPathTextbox->textProperties.FontSize = 14;
@@ -661,9 +729,9 @@ void MonochromeEditor::InitEditorUI()
 	m_MonochromeLibDbgPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_MonochromeLibDbgPathTextbox->TextColor = Color::white;
 	m_MonochromeLibDbgPathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_MonochromeLibDbgPathTextbox);
+	m_DockPanel->AddSubview(m_MonochromeLibDbgPathTextbox);
 
-	m_SelectMonochromeLibDbgPathButton = MakeRef<UIButton>(Frame(Position{ 300, 400 }, Size{ 100, 20 }));
+	m_SelectMonochromeLibDbgPathButton = MakeRef<UIButton>(Frame(Position{ 300, 340 }, Size{ 100, 20 }));
 	m_SelectMonochromeLibDbgPathButton->Label->Text = "Select ...";
 	m_SelectMonochromeLibDbgPathButton->Label->color = Color::white;
 	m_SelectMonochromeLibDbgPathButton->Label->Properties.FontSize = 12;
@@ -685,9 +753,9 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(m_SelectMonochromeLibDbgPathButton);
+	m_DockPanel->AddSubview(m_SelectMonochromeLibDbgPathButton);
 
-	m_MonochromeLibRelPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 430 }, Size{ 240, 20 }));
+	m_MonochromeLibRelPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 370 }, Size{ 240, 20 }));
 	m_MonochromeLibRelPathTextbox->Placeholder = "Monochrome Library Release Path";
 	m_MonochromeLibRelPathTextbox->Text = "";
 	m_MonochromeLibRelPathTextbox->textProperties.FontSize = 14;
@@ -695,9 +763,9 @@ void MonochromeEditor::InitEditorUI()
 	m_MonochromeLibRelPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_MonochromeLibRelPathTextbox->TextColor = Color::white;
 	m_MonochromeLibRelPathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
-	m_EditorWindow->AddView(m_MonochromeLibRelPathTextbox);
+	m_DockPanel->AddSubview(m_MonochromeLibRelPathTextbox);
 
-	m_SelectMonochromeLibRelPathButton = MakeRef<UIButton>(Frame(Position{ 300, 430 }, Size{ 100, 20 }));
+	m_SelectMonochromeLibRelPathButton = MakeRef<UIButton>(Frame(Position{ 300, 370 }, Size{ 100, 20 }));
 	m_SelectMonochromeLibRelPathButton->Label->Text = "Select ...";
 	m_SelectMonochromeLibRelPathButton->Label->color = Color::white;
 	m_SelectMonochromeLibRelPathButton->Label->Properties.FontSize = 12;
@@ -719,7 +787,7 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(m_SelectMonochromeLibRelPathButton);
+	m_DockPanel->AddSubview(m_SelectMonochromeLibRelPathButton);
 
 #pragma endregion
 
@@ -727,7 +795,7 @@ void MonochromeEditor::InitEditorUI()
 
 	// TEMP: This is going to move into the FileMenu once it exists
 	Ref<UIButton> SelectFileButton = MakeRef<UIButton>();
-	SelectFileButton->layer.frame = Frame({ 120, 860 }, { 200, 34 });
+	SelectFileButton->layer.frame = Frame({ 120, 800 }, { 200, 34 });
 	SelectFileButton->Label->Text = "Load Project";
 	SelectFileButton->Label->color = Color::white;
 	SelectFileButton->Label->Properties.FontSize = 12;
@@ -780,7 +848,7 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
-	m_EditorWindow->AddView(SelectFileButton);
+	m_DockPanel->AddSubview(SelectFileButton);
 
 #pragma endregion
 
