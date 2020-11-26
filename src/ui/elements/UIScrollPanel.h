@@ -34,8 +34,17 @@ namespace mc
 		/// Scrolls the content to the bottom-most area.
 		void ScrollToBottom();
 
-		/// Scrolls the content by the specified amount in pixels.
+		/// Scrolls the content to the right-most area.
+		void ScrollToRight();
+
+		/// Scrolls the content to the left-most area.
+		void ScrollToLeft();
+
+		/// Scrolls the content vertically by the specified amount in pixels.
 		void ScrollContent(float distance);
+
+		/// Scrolls the content horizontally by the specified amount in pixels.
+		void ScrollContentHorizontally(float distance);
 
 	private:
 		void SetDefaultOptions();
@@ -43,14 +52,20 @@ namespace mc
 		void Update();
 
 	private:
-		float m_ScrollbarWidth = 10.0f;
+		const float m_ScrollbarThickness = 10.0f;
 		Ref<UIButton> m_VerticalScrollbar;
+		Ref<UIButton> m_HorizontalScrollbar;
 
 		float GetMaximumVerticalScrollAmount();
 		float GetVerticalScrollAmount();
+
+		float GetMaximumHorizontalScrollAmount();
+		float GetHorizontalScrollAmount();
+
 		void ProcessScrollbar();
 		
 		bool m_IsFocused = false;
 		bool m_VerticalScrollbarMousePressed = false;
+		bool m_HorizontalScrollbarMousePressed = false;
 	};
 }
