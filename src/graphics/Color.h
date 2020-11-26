@@ -8,7 +8,6 @@ namespace mc
 	public:
 		Color() {}
 		Color(uint32_t r, uint32_t g, uint32_t b, float alpha = 1.0f) : r(r), g(g), b(b), alpha(alpha) {}
-		Color(uint32_t r, uint32_t g, uint32_t b) : r(r), g(g), b(b), alpha(1.0f) {}
 		uint32_t r = 0, g = 0, b = 0;
 		float alpha = 1.0f;
 

@@ -4,6 +4,7 @@ var dir_350bf8165b0b3325544874bcab6ec667 =
     [ "UICheckbox.h", "_u_i_checkbox_8h_source.html", null ],
     [ "UICircularProgressBar.h", "_u_i_circular_progress_bar_8h_source.html", null ],
     [ "UICombobox.h", "_u_i_combobox_8h_source.html", null ],
+    [ "UIDockPanel.h", "_u_i_dock_panel_8h_source.html", null ],
     [ "UIImage.h", "_u_i_image_8h_source.html", null ],
     [ "UILabel.h", "_u_i_label_8h_source.html", null ],
     [ "UIProgressBar.h", "_u_i_progress_bar_8h_source.html", null ],

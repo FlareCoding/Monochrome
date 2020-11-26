@@ -8,8 +8,8 @@
 
 namespace mc
 {
-#define EVENT_HANDLED	true;
-#define EVENT_UNHANDLED false;
+#define EVENT_HANDLED	true
+#define EVENT_UNHANDLED false
 
 	enum class EventType
 	{
@@ -17,7 +17,8 @@ namespace mc
 		MouseButtonPressed, MouseButtonReleased, MouseButtonClicked = MouseButtonReleased, MouseMoved, MouseHoverOn, MouseHoverOff, MouseScrolled,
 		KeyDown, KeyPressed = KeyDown, KeyReleased,
 		FocusChanged,
-		WindowResized, WindowClosed, WindowGainedFocus, WindowLostFocus, WindowUpdated
+		WindowResized, WindowClosed, WindowGainedFocus, WindowLostFocus, WindowUpdated,
+		DockingUpdate
 	};
 
 	enum EventCategory
@@ -27,7 +28,8 @@ namespace mc
 		EventCategoryInput			= BIT(1),
 		EventCategoryKeyboard		= BIT(2),
 		EventCategoryMouse			= BIT(3),
-		EventCategoryMouseButton	= BIT(4)
+		EventCategoryMouseButton	= BIT(4),
+		EventCategoryApplication	= BIT(5)
 	};
 
 #define REGISTER_EVT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\

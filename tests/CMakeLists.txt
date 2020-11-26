@@ -29,3 +29,6 @@ target_link_libraries(MultipleWindowsTest PUBLIC Monochrome)
 
 add_executable(AnimationsTest animations_test.cpp)
 target_link_libraries(AnimationsTest PUBLIC Monochrome)
+
+add_executable(DockingDemo docking_demo.cpp)
+target_link_libraries(DockingDemo PUBLIC Monochrome)

@@ -11,3 +11,4 @@
 #include "elements/UITextArea.h"
 #include "elements/UIProgressBar.h"
 #include "elements/UICircularProgressBar.h"
+#include "elements/UIDockPanel.h"
