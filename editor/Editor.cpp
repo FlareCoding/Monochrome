@@ -502,6 +502,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowWidthTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowWidthTextbox->TextColor = Color::white;
 	m_ProjectWindowWidthTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_ProjectWindowWidthTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_ProjectWindowWidthTextbox);
 
 	// Window Height
@@ -520,6 +521,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowHeightTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowHeightTextbox->TextColor = Color::white;
 	m_ProjectWindowHeightTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_ProjectWindowHeightTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_ProjectWindowHeightTextbox);
 
 	// Window Title
@@ -538,6 +540,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowTitleTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowTitleTextbox->TextColor = Color::white;
 	m_ProjectWindowTitleTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_ProjectWindowTitleTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_ProjectWindowTitleTextbox);
 
 	// Window Color
@@ -556,6 +559,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectWindowColorTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectWindowColorTextbox->TextColor = Color::white;
 	m_ProjectWindowColorTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_ProjectWindowColorTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_ProjectWindowColorTextbox);
 
 	m_OpenProjectWindowButton = MakeRef<UIButton>(Frame(Position{ 120, 210 }, Size{180, 36}));
@@ -564,6 +568,7 @@ void MonochromeEditor::InitEditorUI()
 	m_OpenProjectWindowButton->Label->Properties.FontSize = 14;
 	m_OpenProjectWindowButton->layer.color = Color(49, 49, 50, 1.0f);
 	m_OpenProjectWindowButton->CornerRadius = 4;
+	m_OpenProjectWindowButton->SetZIndex(1);
 	m_OpenProjectWindowButton->AddEventHandler<EventType::MouseButtonClicked>([this](Event& e, UIView* sender) -> bool {
 		if (((MouseButtonClickedEvent&)e).button == MouseButton::Left)
 			OpenProjectWindow();
@@ -598,6 +603,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectNameTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectNameTextbox->TextColor = Color::white;
 	m_ProjectNameTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_ProjectNameTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_ProjectNameTextbox);
 
 	// Project Path
@@ -616,6 +622,7 @@ void MonochromeEditor::InitEditorUI()
 	m_ProjectPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_ProjectPathTextbox->TextColor = Color::white;
 	m_ProjectPathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_ProjectPathTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_ProjectPathTextbox);
 
 	m_SelectProjectPathButton = MakeRef<UIButton>(Frame(Position{ 230, 605 }, Size{ 120, 20 }));
@@ -639,6 +646,7 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
+	m_SelectProjectPathButton->SetZIndex(1);
 	m_DockPanel->AddSubview(m_SelectProjectPathButton);
 
 	// UI Class Name
@@ -657,6 +665,7 @@ void MonochromeEditor::InitEditorUI()
 	m_UIClassNameTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_UIClassNameTextbox->TextColor = Color::white;
 	m_UIClassNameTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_UIClassNameTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_UIClassNameTextbox);
 
 	m_GenerateSourceAndVSSolution = MakeRef<UIButton>(Frame(Position{ 120, 710 }, Size{ 200, 34 }));
@@ -671,6 +680,7 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
+	m_GenerateSourceAndVSSolution->SetZIndex(1);
 	m_DockPanel->AddSubview(m_GenerateSourceAndVSSolution);
 
 	m_GenerateProjectSourceFiles = MakeRef<UIButton>(Frame(Position{ 120, 756 }, Size{ 200, 34 }));
@@ -684,7 +694,8 @@ void MonochromeEditor::InitEditorUI()
 			GenerateProjectSolution();
 
 		return EVENT_HANDLED;
-		});
+	});
+	m_GenerateProjectSourceFiles->SetZIndex(1);
 	m_DockPanel->AddSubview(m_GenerateProjectSourceFiles);
 
 	m_MonochromeSourcePathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 310 }, Size{ 240, 20 }));
@@ -695,6 +706,7 @@ void MonochromeEditor::InitEditorUI()
 	m_MonochromeSourcePathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_MonochromeSourcePathTextbox->TextColor = Color::white;
 	m_MonochromeSourcePathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_MonochromeSourcePathTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_MonochromeSourcePathTextbox);
 
 	m_SelectMonochromeSourcePathButton = MakeRef<UIButton>(Frame(Position{ 300, 310 }, Size{ 100, 20 }));
@@ -719,6 +731,7 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
+	m_SelectMonochromeSourcePathButton->SetZIndex(1);
 	m_DockPanel->AddSubview(m_SelectMonochromeSourcePathButton);
 
 	m_MonochromeLibDbgPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 340 }, Size{ 240, 20 }));
@@ -729,6 +742,7 @@ void MonochromeEditor::InitEditorUI()
 	m_MonochromeLibDbgPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_MonochromeLibDbgPathTextbox->TextColor = Color::white;
 	m_MonochromeLibDbgPathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_MonochromeLibDbgPathTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_MonochromeLibDbgPathTextbox);
 
 	m_SelectMonochromeLibDbgPathButton = MakeRef<UIButton>(Frame(Position{ 300, 340 }, Size{ 100, 20 }));
@@ -753,6 +767,7 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
+	m_SelectMonochromeLibDbgPathButton->SetZIndex(1);
 	m_DockPanel->AddSubview(m_SelectMonochromeLibDbgPathButton);
 
 	m_MonochromeLibRelPathTextbox = MakeRef<UITextbox>(Frame(Position{ 50, 370 }, Size{ 240, 20 }));
@@ -763,6 +778,7 @@ void MonochromeEditor::InitEditorUI()
 	m_MonochromeLibRelPathTextbox->layer.color = Color(58, 58, 59, 1.0f);
 	m_MonochromeLibRelPathTextbox->TextColor = Color::white;
 	m_MonochromeLibRelPathTextbox->FocusedHighlightColor = Color(28, 28, 29, 1.0f);
+	m_MonochromeLibRelPathTextbox->SetZIndex(1);
 	m_DockPanel->AddSubview(m_MonochromeLibRelPathTextbox);
 
 	m_SelectMonochromeLibRelPathButton = MakeRef<UIButton>(Frame(Position{ 300, 370 }, Size{ 100, 20 }));
@@ -787,6 +803,7 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
+	m_SelectMonochromeLibRelPathButton->SetZIndex(1);
 	m_DockPanel->AddSubview(m_SelectMonochromeLibRelPathButton);
 
 #pragma endregion
@@ -848,6 +865,7 @@ void MonochromeEditor::InitEditorUI()
 
 		return EVENT_HANDLED;
 	});
+	SelectFileButton->SetZIndex(1);
 	m_DockPanel->AddSubview(SelectFileButton);
 
 #pragma endregion
