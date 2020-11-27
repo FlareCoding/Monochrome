@@ -125,6 +125,7 @@ void MonochromeEditor::InitEditorUI()
 	m_Toolbox->anchor = Anchor::Center;
 	m_Toolbox->ContentView->AddEventHandler<EventType::WindowResized>([this](Event&, UIView*) -> bool {
 		m_Toolbox->ContentView->layer.frame.size.height = (float)m_EditorWindow->GetHeight() - 120;
+		m_Toolbox->ContentView->layer.frame.size.width = m_Toolbox->layer.frame.size.width;
 		return EVENT_HANDLED;
 	});
 	m_Toolbox->ContentView->layer.color = Color(51, 51, 52, 1.0f);
