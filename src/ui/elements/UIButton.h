@@ -30,7 +30,10 @@ namespace mc
 		void Update();
 
 	private:
-		Color m_PreHoverOnColor = { 0, 0, 0, 0 };
-		Color m_PreMousePressColor = { 0, 0, 0, 0 };
+		Color m_PreHoverOnColor = Color::transparent;
+		Color m_PostHoverOnColor = Color::transparent;
+		Color m_PreMousePressColor = Color::transparent;
+
+		bool m_IsMousePressed = false;
 	};
 }

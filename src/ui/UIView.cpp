@@ -1,5 +1,6 @@
 #include "UIView.h"
 #include <graphics/Graphics.h>
+#include <window/UIWindow.h>
 #include <algorithm>
 
 namespace mc
@@ -33,6 +34,24 @@ namespace mc
 			v = v->parent;
 		}
 		return pos;
+	}
+
+	const uint32_t UIView::GetHighestLayerZIndex() const
+	{
+		if (!srcwindow && !parent)
+			return GetZIndex();
+
+		if (!parent)
+			return srcwindow->GetHighestLayerZIndex();
+
+		uint32_t idx = 0;
+		for (auto& view : parent->subviews)
+		{
+			if (view->GetZIndex() > idx)
+				idx = view->GetZIndex();
+		}
+
+		return idx;
 	}
 
 	void UIView::SortElements()

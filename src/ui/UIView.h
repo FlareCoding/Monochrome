@@ -84,6 +84,25 @@ namespace mc
 			SortElements();
 		}
 
+		/// Removes a child view without calling OnSubviewRemoved.
+		void RemoveSubview(UIView* subview)
+		{
+			for (auto& view : subviews)
+			{
+				if (view.get() == subview)
+				{
+					subviews.erase(std::find(subviews.begin(), subviews.end(), view));
+					subview->parent = nullptr;
+					break;
+				}
+			}
+
+			SortElements();
+		}
+
+		/// @brief Returns the highest z-index out of all elements on the current layer.
+		const uint32_t GetHighestLayerZIndex() const;
+
 	private:
 		friend class EventValidator;
 

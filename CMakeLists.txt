@@ -60,4 +60,5 @@ add_subdirectory(tests)
 
 if (MSVC)
     add_subdirectory(editor)
+    add_subdirectory(mcstudio)
 endif()

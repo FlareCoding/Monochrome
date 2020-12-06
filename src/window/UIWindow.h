@@ -125,6 +125,17 @@ namespace mc
 		/// @param e Shared pointer to the event that will be dispatched and processed.
 		void DispatchEvent(EventPtr e) { m_SceneManager.DispatchEvent(e); }
 
+		/// @brief Returns the highest z-index out of all elements in the top layer.
+		const uint32_t GetHighestLayerZIndex()
+		{
+			uint32_t idx = 1;
+			for (auto& view : m_SceneManager.GetViewsList())
+				if (view->GetZIndex() > idx)
+					idx = view->GetZIndex();
+
+			return idx;
+		}
+
 	protected:
 		void* m_NativeHandle = nullptr;
 

@@ -7,7 +7,7 @@ namespace mc
 {
 	UICombobox::UICombobox()
 	{
-		layer.frame = Frame(40, 40, 180, 150);
+		layer.frame = Frame(40, 40, 180, 40);
 		SetDefaultOptions();
 	}
 
@@ -18,6 +18,7 @@ namespace mc
 
 	void UICombobox::SetDefaultOptions()
 	{
+		SlotSize = layer.frame.size.height;
 		CornerRadius = 4;
 
 		m_DisplayItemLabel = MakeRef<UILabel>();
@@ -53,7 +54,21 @@ namespace mc
 			hittest_frame.AdjustToDpi(dpi);
 
 			if (hittest_frame.DoesContain(mbce.location))
+			{
 				m_ItemSelectionOpened = !m_ItemSelectionOpened;
+
+				if (m_ItemSelectionOpened)
+				{
+					// Increase the Z-index to be at the top of all elements
+					// to prevent graphics from being overlayed.
+					m_UnopenedZIndex = GetZIndex();
+					SetZIndex(GetHighestLayerZIndex() + 1);
+				}
+				else
+					SetZIndex(m_UnopenedZIndex);
+
+				RecalculateItemPositions();
+			}
 
 			return EVENT_UNHANDLED;
 		});
@@ -61,7 +76,11 @@ namespace mc
 		AddEventHandler<EventType::FocusChanged>([this](Event& e, UIView* sender) -> bool {
 			FocusChangedEvent& fce = reinterpret_cast<FocusChangedEvent&>(e);
 			if (!fce.GainedFocus)
+			{
 				m_ItemSelectionOpened = false;
+				RecalculateItemPositions();
+				SetZIndex(m_UnopenedZIndex);
+			}
 
 			return EVENT_UNHANDLED;
 		});
@@ -127,13 +146,19 @@ namespace mc
 				m_DisplayItemLabel->Text = item;
 				m_ItemSelectionOpened = false;
 
+				RecalculateItemPositions();
+				SetZIndex(m_UnopenedZIndex);
+
 				size_t item_idx = IndexOf(item);
 				if (item_idx != m_SelectedIndex)
 				{
 					m_SelectedIndex = item_idx;
 					CallItemChangedEventHandlers();
 				}
+
+				return EVENT_HANDLED;
 			}
+
 			return EVENT_UNHANDLED;
 		});
 
@@ -250,6 +275,8 @@ namespace mc
 
 	void UICombobox::RecalculateItemPositions()
 	{
+		layer.frame.size.height = SlotSize;
+
 		Position ItemPosition = { 0, 0 };
 		m_ItemPanel->Clear();
 
@@ -259,6 +286,9 @@ namespace mc
 			m_ItemPanel->AddChild(button);
 
 			ItemPosition.y += SlotSize;
+
+			if (m_ItemSelectionOpened)
+				layer.frame.size.height += SlotSize;
 		}
 
 		m_ItemPanel->ContentView->layer.frame.size.height = ItemPosition.y;

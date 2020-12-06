@@ -204,8 +204,11 @@ namespace mc
             }
 
             // Finally, dispatch a docking update event to notify the subviews.
-            auto e = MakeRef<DockingUpdateEvent>(this);
-            srcwindow->DispatchEvent(e);
+            if (srcwindow)
+            {
+                auto e = MakeRef<DockingUpdateEvent>(this);
+                srcwindow->DispatchEvent(e);
+            }
         }
     }
 }

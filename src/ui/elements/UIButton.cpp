@@ -41,11 +41,16 @@ namespace mc
 			else
 				layer.color = OnMousePressColor;
 
+			m_PostHoverOnColor = layer.color;
+			m_IsMousePressed = true;
 			return EVENT_UNHANDLED;
 		});
 
 		AddEventHandler<EventType::MouseButtonReleased>([this](Event& event, UIView* sender) -> bool {
 			layer.color = m_PreMousePressColor;
+			m_PostHoverOnColor = layer.color;
+
+			m_IsMousePressed = false;
 			return EVENT_UNHANDLED;
 		});
 
@@ -61,11 +66,16 @@ namespace mc
 			else
 				layer.color = HoverOnColor;
 
+			m_PostHoverOnColor = layer.color;
 			return EVENT_UNHANDLED;
 		});
 
 		AddEventHandler<EventType::MouseHoverOff>([this](Event& event, UIView* sender) -> bool {
-			layer.color = m_PreHoverOnColor;
+			if (layer.color == m_PostHoverOnColor)
+				layer.color = m_PreHoverOnColor;
+			
+			m_PostHoverOnColor = Color::transparent;
+			m_IsMousePressed = false;
 			return EVENT_UNHANDLED;
 		});
 	}

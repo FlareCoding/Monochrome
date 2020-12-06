@@ -91,6 +91,9 @@ namespace mc
 	private:
 		void Update();
 
+		// Z-index before unrolling the item panel
+		uint32_t m_UnopenedZIndex = 1;
+
 		// Displays the currently selected item
 		Ref<UILabel> m_DisplayItemLabel;
 
