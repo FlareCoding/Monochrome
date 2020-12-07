@@ -110,17 +110,20 @@ void ProjectView::AddWidget(WidgetType type)
 	widget->AddEventHandler<EventType::KeyPressed>([this](Event& e, UIView* sender) {
 		if (reinterpret_cast<KeyPressedEvent&>(e).keycode == KeyCode::KEY_BACKSPACE)
 		{
-			for (auto view : ContentView->subviews)
+			if (srcwindow)
 			{
-				if (view.get() == sender)
+				for (auto& view : ContentView->subviews)
 				{
-					ContentView->RemoveSubview(view);
-					break;
+					if (view.get() == sender)
+					{
+						RemoveChild(view);
+						break;
+					}
 				}
-			}
 
-			//ContentView->RemoveSubview(sender);
-			m_PropertiesPanel->Clear();
+				m_PropertiesPanel->Clear();
+				srcwindow->FocusView(nullptr);
+			}
 		}
 
 		return EVENT_HANDLED;
