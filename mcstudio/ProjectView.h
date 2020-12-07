@@ -36,4 +36,11 @@ private:
 
 	bool m_MouseButtonReleasedFromView = true;
 	Point m_ViewClickedLocationOffset = { 0, 0 };
+
+private:
+	void CheckEmbeddingNecessity();
+
+	bool UnembedViewIfNeeded(Ref<UIView> view);
+	bool CheckIfViewNeedsEmbedding(Ref<UIView>& view_being_checked, std::vector<Ref<UIView>>& elements, Ref<UIView>& embeddable);
+	void EmbedView(Ref<UIView> src, Ref<UIView> dest);
 };

@@ -318,6 +318,11 @@ namespace mc
 		return m_ItemBackgroundColor;
 	}
 
+	Color UICombobox::GetDropdownArrowColor()
+	{
+		return m_OpenSelectionArrowLabel->color;
+	}
+
 	void UICombobox::SetItemTextColor(Color color)
 	{
 		m_ItemTextColor = color;

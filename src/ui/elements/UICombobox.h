@@ -63,6 +63,9 @@ namespace mc
 		/// Returns the background color of items in the selection list.
 		Color GetItemBackgroundColor();
 
+		/// Returns the color of the dropdown arrow.
+		Color GetDropdownArrowColor();
+
 		/// Sets the text color of items in the selection list.
 		void SetItemTextColor(Color color);
 

@@ -11,6 +11,7 @@ enum class WidgetType
 	Checkbox,
 	Slider,
     Textbox,
+	Combobox,
 	TextArea,
     Image,
     ScrollPanel,

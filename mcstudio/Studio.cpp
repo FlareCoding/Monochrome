@@ -293,6 +293,7 @@ void MonochromeStudio::InitStudioUI()
 	MakeToolboxWidgetButton("Checkbox",			WidgetType::Checkbox);
 	MakeToolboxWidgetButton("Slider",			WidgetType::Slider);
 	MakeToolboxWidgetButton("Textbox",			WidgetType::Textbox);
+	MakeToolboxWidgetButton("Combobox",			WidgetType::Combobox);
 	MakeToolboxWidgetButton("Text Area",		WidgetType::TextArea);
 	MakeToolboxWidgetButton("Image",			WidgetType::Image);
 	MakeToolboxWidgetButton("Scroll Panel",		WidgetType::ScrollPanel);

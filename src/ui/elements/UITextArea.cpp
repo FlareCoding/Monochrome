@@ -76,6 +76,7 @@ namespace mc
             10000000
         );
 
+        m_ContentPanel->ContentView->layer.frame.size.width = layer.frame.size.width;
         m_ContentPanel->ContentView->layer.frame.size.height = text_metrics.Height + BottomMargins + TopMargins + 20;
 
         m_TextSource->layer.frame.position.x = LeftMargins;
