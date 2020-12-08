@@ -1,4 +1,4 @@
-#include "Studio.h"
+﻿#include "Studio.h"
 
 void MonochromeStudio::Start()
 {
@@ -125,16 +125,16 @@ void MonochromeStudio::InitStudioUI()
 	ProjectWidthLabel->Properties.FontSize = 12;
 	m_ProjectSettingsBar->AddSubview(ProjectWidthLabel);
 
-	auto ProjectWidthTextbox = MakeRef<UITextbox>(Frame(100, 15, 100, 20));
-	ProjectWidthTextbox->Placeholder = "Enter width";
-	ProjectWidthTextbox->Text = "900";
-	ProjectWidthTextbox->textProperties.FontSize = 14;
-	ProjectWidthTextbox->CornerRadius = 2;
-	ProjectWidthTextbox->layer.color = Color(58, 58, 59);
-	ProjectWidthTextbox->TextColor = Color::white;
-	ProjectWidthTextbox->FocusedHighlightColor = Color(28, 28, 29);
-	ProjectWidthTextbox->SetZIndex(1);
-	ProjectWidthTextbox->AddEventHandler<EventType::FocusChanged>([this](Event& e, UIView* sender) {
+	m_ProjectWidthTextbox = MakeRef<UITextbox>(Frame(100, 15, 100, 20));
+	m_ProjectWidthTextbox->Placeholder = "Enter width";
+	m_ProjectWidthTextbox->Text = "900";
+	m_ProjectWidthTextbox->textProperties.FontSize = 14;
+	m_ProjectWidthTextbox->CornerRadius = 2;
+	m_ProjectWidthTextbox->layer.color = Color(58, 58, 59);
+	m_ProjectWidthTextbox->TextColor = Color::white;
+	m_ProjectWidthTextbox->FocusedHighlightColor = Color(28, 28, 29);
+	m_ProjectWidthTextbox->SetZIndex(1);
+	m_ProjectWidthTextbox->AddEventHandler<EventType::FocusChanged>([this](Event& e, UIView* sender) {
 		if (!reinterpret_cast<FocusChangedEvent&>(e).GainedFocus)
 		{
 			try {
@@ -146,7 +146,7 @@ void MonochromeStudio::InitStudioUI()
 
 		return EVENT_HANDLED;
 	});
-	ProjectWidthTextbox->AddEventHandler<EventType::KeyPressed>([this](Event& e, UIView* sender) {
+	m_ProjectWidthTextbox->AddEventHandler<EventType::KeyPressed>([this](Event& e, UIView* sender) {
 		if (reinterpret_cast<KeyPressedEvent&>(e).keycode == KeyCode::KEY_ENTER)
 		{
 			try {
@@ -158,7 +158,7 @@ void MonochromeStudio::InitStudioUI()
 
 		return EVENT_HANDLED;
 	});
-	m_ProjectSettingsBar->AddSubview(ProjectWidthTextbox);
+	m_ProjectSettingsBar->AddSubview(m_ProjectWidthTextbox);
 
 	auto ProjectHeightLabel = MakeRef<UILabel>(Frame(210, 0, 100, 50));
 	ProjectHeightLabel->color = Color::white;
@@ -166,16 +166,16 @@ void MonochromeStudio::InitStudioUI()
 	ProjectHeightLabel->Properties.FontSize = 12;
 	m_ProjectSettingsBar->AddSubview(ProjectHeightLabel);
 
-	auto ProjectHeightTextbox = MakeRef<UITextbox>(Frame(310, 15, 100, 20));
-	ProjectHeightTextbox->Placeholder = "Enter Height";
-	ProjectHeightTextbox->Text = "800";
-	ProjectHeightTextbox->textProperties.FontSize = 14;
-	ProjectHeightTextbox->CornerRadius = 2;
-	ProjectHeightTextbox->layer.color = Color(58, 58, 59);
-	ProjectHeightTextbox->TextColor = Color::white;
-	ProjectHeightTextbox->FocusedHighlightColor = Color(28, 28, 29);
-	ProjectHeightTextbox->SetZIndex(1);
-	ProjectHeightTextbox->AddEventHandler<EventType::FocusChanged>([this](Event& e, UIView* sender) {
+	m_ProjectHeightTextbox = MakeRef<UITextbox>(Frame(310, 15, 100, 20));
+	m_ProjectHeightTextbox->Placeholder = "Enter Height";
+	m_ProjectHeightTextbox->Text = "800";
+	m_ProjectHeightTextbox->textProperties.FontSize = 14;
+	m_ProjectHeightTextbox->CornerRadius = 2;
+	m_ProjectHeightTextbox->layer.color = Color(58, 58, 59);
+	m_ProjectHeightTextbox->TextColor = Color::white;
+	m_ProjectHeightTextbox->FocusedHighlightColor = Color(28, 28, 29);
+	m_ProjectHeightTextbox->SetZIndex(1);
+	m_ProjectHeightTextbox->AddEventHandler<EventType::FocusChanged>([this](Event& e, UIView* sender) {
 		if (!reinterpret_cast<FocusChangedEvent&>(e).GainedFocus)
 		{
 			try {
@@ -187,7 +187,7 @@ void MonochromeStudio::InitStudioUI()
 
 		return EVENT_HANDLED;
 	});
-	ProjectHeightTextbox->AddEventHandler<EventType::KeyPressed>([this](Event& e, UIView* sender) {
+	m_ProjectHeightTextbox->AddEventHandler<EventType::KeyPressed>([this](Event& e, UIView* sender) {
 		if (reinterpret_cast<KeyPressedEvent&>(e).keycode == KeyCode::KEY_ENTER)
 		{
 			try {
@@ -199,7 +199,7 @@ void MonochromeStudio::InitStudioUI()
 
 		return EVENT_HANDLED;
 	});
-	m_ProjectSettingsBar->AddSubview(ProjectHeightTextbox);
+	m_ProjectSettingsBar->AddSubview(m_ProjectHeightTextbox);
 
 	auto ProjectColorLabel = MakeRef<UILabel>(Frame(420, 0, 100, 50));
 	ProjectColorLabel->color = Color::white;
@@ -215,7 +215,7 @@ void MonochromeStudio::InitStudioUI()
 	ProjectColorTextbox->layer.color = Color(58, 58, 59);
 	ProjectColorTextbox->TextColor = Color::white;
 	ProjectColorTextbox->FocusedHighlightColor = Color(28, 28, 29);
-	ProjectHeightTextbox->SetZIndex(1);
+	ProjectColorTextbox->SetZIndex(1);
 	ProjectColorTextbox->AddEventHandler<EventType::FocusChanged>([this](Event& e, UIView* sender) {
 		if (!reinterpret_cast<FocusChangedEvent&>(e).GainedFocus)
 			m_ProjectView->layer.color = Color::FromRGBString(reinterpret_cast<UITextbox*>(sender)->Text.c_str());
@@ -232,9 +232,40 @@ void MonochromeStudio::InitStudioUI()
 
 #pragma endregion
 
+#pragma region Project View Resizing Label
+
+	m_ProjectViewResizeLabel = MakeRef<UILabel>(Frame(0, 0, 40, 40));
+	m_ProjectViewResizeLabel->SetZIndex(30);
+	m_ProjectViewResizeLabel->cursor = CursorType::SizeNWE;
+	m_ProjectViewResizeLabel->color = Color::white;
+	m_ProjectViewResizeLabel->UseWidestringText = true;
+	m_ProjectViewResizeLabel->WidestringText = L"■";
+
+	m_ProjectViewResizeLabel->AddEventHandler<EventType::MouseButtonPressed>([this](Event& e, UIView* sender) {
+		m_MouseButtonReleasedFromView = false;
+		m_ViewClickedLocationOffset = sender->srcwindow->GetMouseCursorPos() - sender->GetAbsolutePosition();
+		
+		std::thread dragging_thread(&MonochromeStudio::DragResizeLabel, this);
+		dragging_thread.detach();
+
+		return EVENT_HANDLED;
+	});
+	m_ProjectViewResizeLabel->AddEventHandler<EventType::MouseButtonReleased>([this](Event& e, UIView* sender) {
+		m_MouseButtonReleasedFromView = true;
+		return EVENT_HANDLED;
+	});
+	m_ProjectViewResizeLabel->AddEventHandler<EventType::FocusChanged>([this](Event& e, UIView* sender) {
+		m_MouseButtonReleasedFromView = true;
+		return EVENT_HANDLED;
+	});
+
+	EditorTab->AddSubview(m_ProjectViewResizeLabel);
+
+#pragma endregion
+
 #pragma region Project View
 
-	m_ProjectView = MakeRef<ProjectView>(m_PropertiesPanel);
+	m_ProjectView = MakeRef<ProjectView>(m_PropertiesPanel, m_ProjectViewResizeLabel);
 	EditorTab->AddSubview(m_ProjectView);
 	m_ProjectView->Initialize(); // must be called after being added to the parent view
 
@@ -302,4 +333,30 @@ void MonochromeStudio::InitStudioUI()
 
 #pragma endregion
 
+}
+
+void MonochromeStudio::DragResizeLabel()
+{
+	Position PreviousMousePosition = 
+		m_ProjectView->srcwindow ? m_ProjectView->srcwindow->GetMouseCursorPos() : Position{ 0, 0 };
+
+	while (!m_MouseButtonReleasedFromView)
+	{
+		Point current_pos = m_ProjectViewResizeLabel->layer.frame.position;
+		auto cursor_pos = m_ProjectViewResizeLabel->srcwindow->GetMouseCursorPos();
+
+		Size MouseMovedDistance = cursor_pos - PreviousMousePosition;
+		PreviousMousePosition = cursor_pos;
+
+		float new_width = m_ProjectView->layer.frame.size.width + MouseMovedDistance.x;
+		float new_height = m_ProjectView->layer.frame.size.height + MouseMovedDistance.y;
+
+		m_ProjectView->SetProjectWidth(new_width);
+		m_ProjectView->SetProjectHeight(new_height);
+
+		m_ProjectWidthTextbox->Text = std::to_string((uint32_t)new_width);
+		m_ProjectHeightTextbox->Text = std::to_string((uint32_t)new_height);
+
+		Sleep(1);
+	}
 }

@@ -5,7 +5,7 @@
 class ProjectView : public UIScrollPanel
 {
 public:
-	ProjectView(Ref<UIScrollPanel> PropertiesPanel);
+	ProjectView(Ref<UIScrollPanel> PropertiesPanel, Ref<UILabel> ResizeLabel);
 	void Initialize();
 
 	void SetProjectWidth(float width);
@@ -20,6 +20,7 @@ private:
 private:
 	Ref<UIView> m_BackgroundView;
 	Ref<UIScrollPanel> m_PropertiesPanel;
+	Ref<UILabel> m_ResizeLabel;
 
 	void OpenWidgetProperties(WidgetType widget_type);
 
@@ -39,8 +40,4 @@ private:
 
 private:
 	void CheckEmbeddingNecessity();
-
-	bool UnembedViewIfNeeded(Ref<UIView> view);
-	bool CheckIfViewNeedsEmbedding(Ref<UIView>& view_being_checked, std::vector<Ref<UIView>>& elements, Ref<UIView>& embeddable);
-	void EmbedView(Ref<UIView> src, Ref<UIView> dest);
 };

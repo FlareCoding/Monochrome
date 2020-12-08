@@ -4,10 +4,11 @@
 										Frame(placement_position.x, placement_position.y, width, height) \
 									);
 
-ProjectView::ProjectView(Ref<UIScrollPanel> PropertiesPanel)
+ProjectView::ProjectView(Ref<UIScrollPanel> PropertiesPanel, Ref<UILabel> ResizeLabel)
 	: UIScrollPanel(Frame(0, 50, 0, 0))
 {
 	m_PropertiesPanel = PropertiesPanel;
+	m_ResizeLabel = ResizeLabel;
 	WidgetProperties::CreatePropertiesList();
 
 	layer.color = Color(170, 170, 170);
@@ -54,6 +55,9 @@ void ProjectView::UpdateSize()
 	}
 
 	m_BackgroundView->layer.frame.size = layer.frame.size;
+
+	m_ResizeLabel->layer.frame.position.x = layer.frame.size.width - 20;
+	m_ResizeLabel->layer.frame.position.y = layer.frame.size.height + 30.0f;
 }
 
 void ProjectView::SetProjectWidth(float width)
