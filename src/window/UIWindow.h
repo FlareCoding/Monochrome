@@ -22,6 +22,10 @@ namespace mc
 		/// @returns Pointer to the newly created window
 		static Ref<UIWindow> Create(WindowStyle style = WindowStyle::Default, uint32_t width = 1270, uint32_t height = 920, const char* title = "Monochrome 7.2 Window");
 
+		/// Creates a transparent overlay UIWindow instance and returns shared_ptr to it.
+		/// @returns Pointer to the newly created window
+		static Ref<UIWindow> CreateOverlayWindow(const char* targetWindow, const char* title = "Monochrome 7.2 Window");
+
 		/// @returns Win32 handle to the native window
 		inline void* GetNativeHandle() const { return m_NativeHandle; }
 

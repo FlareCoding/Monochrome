@@ -85,7 +85,7 @@ int main()
 	Ref<UIScrollPanel> scrollPanel = MakeRef<UIScrollPanel>();
 	scrollPanel->layer.frame = Frame(Position{ 560, 100 }, Size{ 340, 500 });
 	scrollPanel->layer.color = Color(200, 200, 200, 1.0f);
-	scrollPanel->ContentView->layer.frame.size.height = 800;
+	scrollPanel->ContentView->layer.frame.size = { 340, 800 };
 	scrollPanel->ContentView->layer.color = Color::gray;
 	window->AddView(scrollPanel);
 

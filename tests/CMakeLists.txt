@@ -35,3 +35,6 @@ target_link_libraries(DockingDemo PUBLIC Monochrome)
 
 add_executable(ScrollPanelTest scrollpanel_test.cpp)
 target_link_libraries(ScrollPanelTest PUBLIC Monochrome)
+
+add_executable(TransparentOverlayTest overlay_test.cpp)
+target_link_libraries(TransparentOverlayTest PUBLIC Monochrome)
