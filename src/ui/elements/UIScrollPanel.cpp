@@ -156,6 +156,9 @@ namespace mc
 	
 	void UIScrollPanel::Update()
 	{
+		// Keeping the srcwindow field updated
+		ContentView->srcwindow = srcwindow;
+
 		if (ContentView->layer.frame.position.x > 0)
 			ContentView->layer.frame.position.x = 0;
 
@@ -252,7 +255,6 @@ namespace mc
 		if (layer.frame.size.height > ContentView->layer.frame.size.height)
 		{
 			m_VerticalScrollbar->layer.frame.size.height = 0;
-			return;
 		}
 		else
 		{
@@ -265,7 +267,6 @@ namespace mc
 		if (layer.frame.size.width > ContentView->layer.frame.size.width)
 		{
 			m_HorizontalScrollbar->layer.frame.size.width = 0;
-			return;
 		}
 		else
 		{

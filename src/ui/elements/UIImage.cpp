@@ -56,6 +56,18 @@ namespace mc
 				Opacity
 			);
 		}
+		else
+		{
+			Graphics::DrawRectangle(
+				layer.frame.position.x,
+				layer.frame.position.y,
+				layer.frame.size.width,
+				layer.frame.size.height,
+				layer.color,
+				CornerRadius,
+				true
+			);
+		}
 	}
 
 	float UIImage::GetWidth()

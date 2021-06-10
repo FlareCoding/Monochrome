@@ -63,6 +63,9 @@ namespace mc
 		/// Returns the background color of items in the selection list.
 		Color GetItemBackgroundColor();
 
+		/// Returns the color of the dropdown arrow.
+		Color GetDropdownArrowColor();
+
 		/// Sets the text color of items in the selection list.
 		void SetItemTextColor(Color color);
 
@@ -90,6 +93,9 @@ namespace mc
 
 	private:
 		void Update();
+
+		// Z-index before unrolling the item panel
+		uint32_t m_UnopenedZIndex = 1;
 
 		// Displays the currently selected item
 		Ref<UILabel> m_DisplayItemLabel;

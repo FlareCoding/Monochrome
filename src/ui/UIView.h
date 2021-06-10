@@ -84,6 +84,9 @@ namespace mc
 			SortElements();
 		}
 
+		/// @brief Returns the highest z-index out of all elements on the current layer.
+		const uint32_t GetHighestLayerZIndex() const;
+
 	private:
 		friend class EventValidator;
 

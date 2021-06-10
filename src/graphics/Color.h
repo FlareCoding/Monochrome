@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <cinttypes>
 
 namespace mc
@@ -11,8 +12,12 @@ namespace mc
 		uint32_t r = 0, g = 0, b = 0;
 		float alpha = 1.0f;
 
-		//static Color from_rgb_string(const char* rgb);
-		//static Color from_hex_string(const char* hex);
+		/// @brief Converts a string into a color object.
+		/// @param rgb String in a format "r g b (a)"
+		/// @return Color instance.
+		static Color FromRGBString(const char* rgb);
+
+		std::string ToString();
 
 		bool operator==(const Color& color) { return (r == color.r && g == color.g && b == color.b && alpha == color.alpha); }
 		bool operator!=(const Color& color) { return (r != color.r || g != color.g || b != color.b || alpha != color.alpha); }
