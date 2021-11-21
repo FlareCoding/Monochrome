@@ -102,103 +102,114 @@ $(document).ready(function(){initNavTree('_u_i_view_8h_source.html',''); initRes
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;core/Core.h&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;IDrawable.h&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;Layer.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;UICursor.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;events/IResponder.h&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>mc</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">class </span>UIWindow;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html">   12</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmc_1_1_u_i_view.html">UIView</a> : <span class="keyword">public</span> <a class="code" href="classmc_1_1_i_drawable.html">IDrawable</a>, <span class="keyword">public</span> <a class="code" href="classmc_1_1_i_responder.html">IResponder</a></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="comment">// Inherited via IDrawable</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_view.html#a519c488dbbd342550057e77831d640ef">Draw</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="classmc_1_1_u_i_view.html">UIView</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="classmc_1_1_u_i_view.html">UIView</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <a class="code" href="classmc_1_1_u_i_view.html">UIView</a>(<span class="keyword">const</span> Ref&lt;UIView&gt;&amp; view);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <a class="code" href="classmc_1_1_u_i_view.html">UIView</a>(<a class="code" href="structmc_1_1_frame.html">Frame</a> frame);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_view.html#aa44894c75232684a1bbbaea9a7c50ad8">SetZIndex</a>(uint32_t index);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f">   29</a></span>&#160;        <span class="keyword">inline</span> <span class="keyword">const</span> uint32_t <a class="code" href="classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f">GetZIndex</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_zIndex; }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#aea18ed1b8824d32242c6a76f8d8d51d2">   32</a></span>&#160;        <span class="keywordtype">float</span> <a class="code" href="classmc_1_1_u_i_view.html#aea18ed1b8824d32242c6a76f8d8d51d2">CornerRadius</a> = 6;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#aa154c0d3e0d7e8e76c24d2bc544822da">   36</a></span>&#160;        <a class="code" href="classmc_1_1_layer.html">Layer</a> <a class="code" href="classmc_1_1_u_i_view.html#aa154c0d3e0d7e8e76c24d2bc544822da">layer</a> = <a class="code" href="classmc_1_1_layer.html">Layer</a>();</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="structmc_1_1_point.html">Position</a> <a class="code" href="classmc_1_1_u_i_view.html#a872caf88b4629769886b477f4f562338">GetAbsolutePosition</a>();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">   43</a></span>&#160;        std::vector&lt;Ref&lt;UIView&gt;&gt; <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#a16263f2d249fa426f2ecd8b6c8baa823">   46</a></span>&#160;        <a class="code" href="classmc_1_1_u_i_view.html">UIView</a>* <a class="code" href="classmc_1_1_u_i_view.html#a16263f2d249fa426f2ecd8b6c8baa823">parent</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162">   49</a></span>&#160;        <a class="code" href="classmc_1_1_u_i_window.html">UIWindow</a>* <a class="code" href="classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162">srcwindow</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#aa9b2f51533896d4a1c75471dc150d7dc">   52</a></span>&#160;        CursorType <a class="code" href="classmc_1_1_u_i_view.html#aa9b2f51533896d4a1c75471dc150d7dc">cursor</a> = CursorType::Arrow;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#a6ccdabc91407e0a747a3b89e9b8cf8bc">   57</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_view.html#a6ccdabc91407e0a747a3b89e9b8cf8bc">AddSubview</a>(Ref&lt;T&gt; subview)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            subview-&gt;parent = <span class="keyword">this</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            subview-&gt;srcwindow = <a class="code" href="classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162">srcwindow</a>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.push_back(std::dynamic_pointer_cast&lt;UIView&gt;(subview));</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            SortElements();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#ab01b6fd4c03d66cce9af52dbb626c583">   67</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_view.html#ab01b6fd4c03d66cce9af52dbb626c583">RemoveSubview</a>(Ref&lt;T&gt; subview)</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            std::vector&lt;Ref&lt;UIView&gt;&gt;::iterator it = std::find(<a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.begin(), <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.end(), subview);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">if</span> (it != <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.end())</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                (*it)-&gt;parent = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.erase(it);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            SortElements();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classmc_1_1_event_validator.html">EventValidator</a>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordtype">bool</span> m_IsMouseOverFrame = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        uint32_t m_zIndex = 0;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">void</span> SortElements();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    };</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#define CastToUiView(elem) std::dynamic_pointer_cast&lt;UIView&gt;(elem)</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;Anchor.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;UICursor.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;events/IResponder.h&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>mc</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">class </span>UIWindow;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html">   13</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classmc_1_1_u_i_view.html">UIView</a> : <span class="keyword">public</span> <a class="code" href="classmc_1_1_i_drawable.html">IDrawable</a>, <span class="keyword">public</span> <a class="code" href="classmc_1_1_i_responder.html">IResponder</a></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="comment">// Inherited via IDrawable</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_view.html#a519c488dbbd342550057e77831d640ef">Draw</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="classmc_1_1_u_i_view.html">UIView</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="classmc_1_1_u_i_view.html">UIView</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <a class="code" href="classmc_1_1_u_i_view.html">UIView</a>(<span class="keyword">const</span> Ref&lt;UIView&gt;&amp; view);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <a class="code" href="classmc_1_1_u_i_view.html">UIView</a>(<a class="code" href="structmc_1_1_frame.html">Frame</a> frame);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_view.html#aa44894c75232684a1bbbaea9a7c50ad8">SetZIndex</a>(uint32_t index);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f">   30</a></span>&#160;        <span class="keyword">inline</span> <span class="keyword">const</span> uint32_t <a class="code" href="classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f">GetZIndex</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_zIndex; }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#aea18ed1b8824d32242c6a76f8d8d51d2">   33</a></span>&#160;        <span class="keywordtype">float</span> <a class="code" href="classmc_1_1_u_i_view.html#aea18ed1b8824d32242c6a76f8d8d51d2">CornerRadius</a> = 6;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#aa154c0d3e0d7e8e76c24d2bc544822da">   37</a></span>&#160;        <a class="code" href="classmc_1_1_layer.html">Layer</a> <a class="code" href="classmc_1_1_u_i_view.html#aa154c0d3e0d7e8e76c24d2bc544822da">layer</a> = <a class="code" href="classmc_1_1_layer.html">Layer</a>();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <a class="code" href="structmc_1_1_point.html">Position</a> <a class="code" href="classmc_1_1_u_i_view.html#a872caf88b4629769886b477f4f562338">GetAbsolutePosition</a>();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">   44</a></span>&#160;        std::vector&lt;Ref&lt;UIView&gt;&gt; <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#a16263f2d249fa426f2ecd8b6c8baa823">   47</a></span>&#160;        <a class="code" href="classmc_1_1_u_i_view.html">UIView</a>* <a class="code" href="classmc_1_1_u_i_view.html#a16263f2d249fa426f2ecd8b6c8baa823">parent</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162">   50</a></span>&#160;        <a class="code" href="classmc_1_1_u_i_window.html">UIWindow</a>* <a class="code" href="classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162">srcwindow</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#aa9b2f51533896d4a1c75471dc150d7dc">   53</a></span>&#160;        CursorType <a class="code" href="classmc_1_1_u_i_view.html#aa9b2f51533896d4a1c75471dc150d7dc">cursor</a> = CursorType::Arrow;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#a8e8af69e32c826f31be2e0eff209b593">   57</a></span>&#160;        Anchor <a class="code" href="classmc_1_1_u_i_view.html#a8e8af69e32c826f31be2e0eff209b593">anchor</a> = Anchor::None;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#a6ccdabc91407e0a747a3b89e9b8cf8bc">   62</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_view.html#a6ccdabc91407e0a747a3b89e9b8cf8bc">AddSubview</a>(Ref&lt;T&gt; subview)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            subview-&gt;parent = <span class="keyword">this</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            subview-&gt;srcwindow = <a class="code" href="classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162">srcwindow</a>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.push_back(std::dynamic_pointer_cast&lt;UIView&gt;(subview));</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            SortElements();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            OnSubviewAdded(subview);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classmc_1_1_u_i_view.html#ab01b6fd4c03d66cce9af52dbb626c583">   73</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classmc_1_1_u_i_view.html#ab01b6fd4c03d66cce9af52dbb626c583">RemoveSubview</a>(Ref&lt;T&gt; subview)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            std::vector&lt;Ref&lt;UIView&gt;&gt;::iterator it = std::find(<a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.begin(), <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.end(), subview);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">if</span> (it != <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.end())</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                (*it)-&gt;parent = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <a class="code" href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">subviews</a>.erase(it);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                OnSubviewRemoved(subview);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            SortElements();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classmc_1_1_event_validator.html">EventValidator</a>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordtype">bool</span> m_IsMouseOverFrame = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        uint32_t m_zIndex = 0;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordtype">void</span> SortElements();</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> OnSubviewAdded(<span class="keyword">const</span> Ref&lt;UIView&gt;&amp;) {}</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> OnSubviewRemoved(<span class="keyword">const</span> Ref&lt;UIView&gt;&amp;) {}</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    };</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#define CastToUiView(elem) std::dynamic_pointer_cast&lt;UIView&gt;(elem)</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclassmc_1_1_u_i_view_html"><div class="ttname"><a href="classmc_1_1_u_i_view.html">mc::UIView</a></div><div class="ttdef"><b>Definition:</b> UIView.h:13</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html"><div class="ttname"><a href="classmc_1_1_u_i_view.html">mc::UIView</a></div><div class="ttdef"><b>Definition:</b> UIView.h:14</div></div>
 <div class="ttc" id="aclassmc_1_1_u_i_view_html_aa44894c75232684a1bbbaea9a7c50ad8"><div class="ttname"><a href="classmc_1_1_u_i_view.html#aa44894c75232684a1bbbaea9a7c50ad8">mc::UIView::SetZIndex</a></div><div class="ttdeci">void SetZIndex(uint32_t index)</div><div class="ttdoc">Sets the heirarchical position of the view.</div><div class="ttdef"><b>Definition:</b> UIView.cpp:19</div></div>
 <div class="ttc" id="astructmc_1_1_point_html"><div class="ttname"><a href="structmc_1_1_point.html">mc::Point</a></div><div class="ttdef"><b>Definition:</b> Layer.h:7</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_view_html_a62c03d6e0fa8f69feec6c18d10fe2162"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162">mc::UIView::srcwindow</a></div><div class="ttdeci">UIWindow * srcwindow</div><div class="ttdoc">Pointer to the source window, initially a nullptr.</div><div class="ttdef"><b>Definition:</b> UIView.h:49</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_window_html"><div class="ttname"><a href="classmc_1_1_u_i_window.html">mc::UIWindow</a></div><div class="ttdef"><b>Definition:</b> UIWindow.h:14</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_view_html_ab01b6fd4c03d66cce9af52dbb626c583"><div class="ttname"><a href="classmc_1_1_u_i_view.html#ab01b6fd4c03d66cce9af52dbb626c583">mc::UIView::RemoveSubview</a></div><div class="ttdeci">void RemoveSubview(Ref&lt; T &gt; subview)</div><div class="ttdoc">Removes a child view.</div><div class="ttdef"><b>Definition:</b> UIView.h:67</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_a62c03d6e0fa8f69feec6c18d10fe2162"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a62c03d6e0fa8f69feec6c18d10fe2162">mc::UIView::srcwindow</a></div><div class="ttdeci">UIWindow * srcwindow</div><div class="ttdoc">Pointer to the source window, initially a nullptr.</div><div class="ttdef"><b>Definition:</b> UIView.h:50</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_window_html"><div class="ttname"><a href="classmc_1_1_u_i_window.html">mc::UIWindow</a></div><div class="ttdef"><b>Definition:</b> UIWindow.h:16</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_ab01b6fd4c03d66cce9af52dbb626c583"><div class="ttname"><a href="classmc_1_1_u_i_view.html#ab01b6fd4c03d66cce9af52dbb626c583">mc::UIView::RemoveSubview</a></div><div class="ttdeci">void RemoveSubview(Ref&lt; T &gt; subview)</div><div class="ttdoc">Removes a child view.</div><div class="ttdef"><b>Definition:</b> UIView.h:73</div></div>
 <div class="ttc" id="aclassmc_1_1_i_responder_html"><div class="ttname"><a href="classmc_1_1_i_responder.html">mc::IResponder</a></div><div class="ttdoc">Base class for any element that can receive system events.</div><div class="ttdef"><b>Definition:</b> IResponder.h:13</div></div>
 <div class="ttc" id="aclassmc_1_1_layer_html"><div class="ttname"><a href="classmc_1_1_layer.html">mc::Layer</a></div><div class="ttdef"><b>Definition:</b> Layer.h:77</div></div>
 <div class="ttc" id="aclassmc_1_1_u_i_view_html_a872caf88b4629769886b477f4f562338"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a872caf88b4629769886b477f4f562338">mc::UIView::GetAbsolutePosition</a></div><div class="ttdeci">Position GetAbsolutePosition()</div><div class="ttdef"><b>Definition:</b> UIView.cpp:26</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_view_html_ab9dfd18aa973bbcf62ca5532b26e385f"><div class="ttname"><a href="classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f">mc::UIView::GetZIndex</a></div><div class="ttdeci">const uint32_t GetZIndex() const</div><div class="ttdef"><b>Definition:</b> UIView.h:29</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_view_html_aea18ed1b8824d32242c6a76f8d8d51d2"><div class="ttname"><a href="classmc_1_1_u_i_view.html#aea18ed1b8824d32242c6a76f8d8d51d2">mc::UIView::CornerRadius</a></div><div class="ttdeci">float CornerRadius</div><div class="ttdoc">Default view's rounded corner radius.</div><div class="ttdef"><b>Definition:</b> UIView.h:32</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_view_html_aa154c0d3e0d7e8e76c24d2bc544822da"><div class="ttname"><a href="classmc_1_1_u_i_view.html#aa154c0d3e0d7e8e76c24d2bc544822da">mc::UIView::layer</a></div><div class="ttdeci">Layer layer</div><div class="ttdoc">Contains position, size, and color of the UIView.</div><div class="ttdef"><b>Definition:</b> UIView.h:36</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_view_html_a3ad306976abd57515e719e5f3d08a4b4"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">mc::UIView::subviews</a></div><div class="ttdeci">std::vector&lt; Ref&lt; UIView &gt; &gt; subviews</div><div class="ttdoc">List of children views.</div><div class="ttdef"><b>Definition:</b> UIView.h:43</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_ab9dfd18aa973bbcf62ca5532b26e385f"><div class="ttname"><a href="classmc_1_1_u_i_view.html#ab9dfd18aa973bbcf62ca5532b26e385f">mc::UIView::GetZIndex</a></div><div class="ttdeci">const uint32_t GetZIndex() const</div><div class="ttdef"><b>Definition:</b> UIView.h:30</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_aea18ed1b8824d32242c6a76f8d8d51d2"><div class="ttname"><a href="classmc_1_1_u_i_view.html#aea18ed1b8824d32242c6a76f8d8d51d2">mc::UIView::CornerRadius</a></div><div class="ttdeci">float CornerRadius</div><div class="ttdoc">Default view's rounded corner radius.</div><div class="ttdef"><b>Definition:</b> UIView.h:33</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_aa154c0d3e0d7e8e76c24d2bc544822da"><div class="ttname"><a href="classmc_1_1_u_i_view.html#aa154c0d3e0d7e8e76c24d2bc544822da">mc::UIView::layer</a></div><div class="ttdeci">Layer layer</div><div class="ttdoc">Contains position, size, and color of the UIView.</div><div class="ttdef"><b>Definition:</b> UIView.h:37</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_a3ad306976abd57515e719e5f3d08a4b4"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a3ad306976abd57515e719e5f3d08a4b4">mc::UIView::subviews</a></div><div class="ttdeci">std::vector&lt; Ref&lt; UIView &gt; &gt; subviews</div><div class="ttdoc">List of children views.</div><div class="ttdef"><b>Definition:</b> UIView.h:44</div></div>
 <div class="ttc" id="aclassmc_1_1_i_drawable_html"><div class="ttname"><a href="classmc_1_1_i_drawable.html">mc::IDrawable</a></div><div class="ttdef"><b>Definition:</b> IDrawable.h:6</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_view_html_aa9b2f51533896d4a1c75471dc150d7dc"><div class="ttname"><a href="classmc_1_1_u_i_view.html#aa9b2f51533896d4a1c75471dc150d7dc">mc::UIView::cursor</a></div><div class="ttdeci">CursorType cursor</div><div class="ttdoc">Cursor icon to be used when hovered over the view.</div><div class="ttdef"><b>Definition:</b> UIView.h:52</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_view_html_a16263f2d249fa426f2ecd8b6c8baa823"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a16263f2d249fa426f2ecd8b6c8baa823">mc::UIView::parent</a></div><div class="ttdeci">UIView * parent</div><div class="ttdoc">Pointer to the parent view, nullptr if no parent view exists.</div><div class="ttdef"><b>Definition:</b> UIView.h:46</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_aa9b2f51533896d4a1c75471dc150d7dc"><div class="ttname"><a href="classmc_1_1_u_i_view.html#aa9b2f51533896d4a1c75471dc150d7dc">mc::UIView::cursor</a></div><div class="ttdeci">CursorType cursor</div><div class="ttdoc">Cursor icon to be used when hovered over the view.</div><div class="ttdef"><b>Definition:</b> UIView.h:53</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_a16263f2d249fa426f2ecd8b6c8baa823"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a16263f2d249fa426f2ecd8b6c8baa823">mc::UIView::parent</a></div><div class="ttdeci">UIView * parent</div><div class="ttdoc">Pointer to the parent view, nullptr if no parent view exists.</div><div class="ttdef"><b>Definition:</b> UIView.h:47</div></div>
 <div class="ttc" id="aclassmc_1_1_event_validator_html"><div class="ttname"><a href="classmc_1_1_event_validator.html">mc::EventValidator</a></div><div class="ttdef"><b>Definition:</b> EventValidator.h:8</div></div>
-<div class="ttc" id="aclassmc_1_1_u_i_view_html_a6ccdabc91407e0a747a3b89e9b8cf8bc"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a6ccdabc91407e0a747a3b89e9b8cf8bc">mc::UIView::AddSubview</a></div><div class="ttdeci">void AddSubview(Ref&lt; T &gt; subview)</div><div class="ttdef"><b>Definition:</b> UIView.h:57</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_a6ccdabc91407e0a747a3b89e9b8cf8bc"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a6ccdabc91407e0a747a3b89e9b8cf8bc">mc::UIView::AddSubview</a></div><div class="ttdeci">void AddSubview(Ref&lt; T &gt; subview)</div><div class="ttdef"><b>Definition:</b> UIView.h:62</div></div>
 <div class="ttc" id="aclassmc_1_1_u_i_view_html_a519c488dbbd342550057e77831d640ef"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a519c488dbbd342550057e77831d640ef">mc::UIView::Draw</a></div><div class="ttdeci">virtual void Draw() override</div><div class="ttdoc">Called during the graphics update routine.</div><div class="ttdef"><b>Definition:</b> UIView.cpp:45</div></div>
 <div class="ttc" id="astructmc_1_1_frame_html"><div class="ttname"><a href="structmc_1_1_frame.html">mc::Frame</a></div><div class="ttdef"><b>Definition:</b> Layer.h:42</div></div>
+<div class="ttc" id="aclassmc_1_1_u_i_view_html_a8e8af69e32c826f31be2e0eff209b593"><div class="ttname"><a href="classmc_1_1_u_i_view.html#a8e8af69e32c826f31be2e0eff209b593">mc::UIView::anchor</a></div><div class="ttdeci">Anchor anchor</div><div class="ttdef"><b>Definition:</b> UIView.h:57</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

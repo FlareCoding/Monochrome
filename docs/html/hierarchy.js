@@ -1,6 +1,13 @@
 var hierarchy =
 [
     [ "mc::_LinuxGraphicsNativeInformation", "structmc_1_1___linux_graphics_native_information.html", null ],
+    [ "mc::Animation", "classmc_1_1_animation.html", [
+      [ "mc::CustomAnimation", "classmc_1_1_custom_animation.html", null ],
+      [ "mc::FadeInAnimation", "classmc_1_1_fade_in_animation.html", null ],
+      [ "mc::FadeOutAnimation", "classmc_1_1_fade_out_animation.html", null ],
+      [ "mc::ScaleAnimation", "classmc_1_1_scale_animation.html", null ],
+      [ "mc::TranslationAnimation", "classmc_1_1_translation_animation.html", null ]
+    ] ],
     [ "mc::Bitmap", "classmc_1_1_bitmap.html", [
       [ "mc::LinuxBitmap", "classmc_1_1_linux_bitmap.html", null ],
       [ "mc::OSXBitmap", "classmc_1_1_o_s_x_bitmap.html", null ],
@@ -10,6 +17,7 @@ var hierarchy =
     [ "mc::Color", "classmc_1_1_color.html", null ],
     [ "mc::CoreResources", "classmc_1_1_core_resources.html", null ],
     [ "mc::Event", "classmc_1_1_event.html", [
+      [ "mc::DockingUpdateEvent", "classmc_1_1_docking_update_event.html", null ],
       [ "mc::FocusChangedEvent", "classmc_1_1_focus_changed_event.html", null ],
       [ "mc::KeyboardEvent", "classmc_1_1_keyboard_event.html", [
         [ "mc::KeyPressedEvent", "classmc_1_1_key_pressed_event.html", null ],
@@ -35,6 +43,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "mc::EventValidator", "classmc_1_1_event_validator.html", null ],
+    [ "mc::FileMenu", "classmc_1_1_file_menu.html", null ],
+    [ "mc::FileMenuBar", "classmc_1_1_file_menu_bar.html", null ],
+    [ "mc::FileMenuItem", "structmc_1_1_file_menu_item.html", null ],
     [ "mc::Frame", "structmc_1_1_frame.html", null ],
     [ "mc::Graphics", "classmc_1_1_graphics.html", null ],
     [ "mc::IDrawable", "classmc_1_1_i_drawable.html", [
@@ -43,6 +54,7 @@ var hierarchy =
         [ "mc::UICheckbox", "classmc_1_1_u_i_checkbox.html", null ],
         [ "mc::UICircularProgressBar", "classmc_1_1_u_i_circular_progress_bar.html", null ],
         [ "mc::UICombobox", "classmc_1_1_u_i_combobox.html", null ],
+        [ "mc::UIDockPanel", "classmc_1_1_u_i_dock_panel.html", null ],
         [ "mc::UIImage", "classmc_1_1_u_i_image.html", null ],
         [ "mc::UILabel", "classmc_1_1_u_i_label.html", null ],
         [ "mc::UIProgressBar", "classmc_1_1_u_i_progress_bar.html", null ],
@@ -87,6 +99,7 @@ var hierarchy =
       [ "mc::WindowsFileDialogue", "classmc_1_1_windows_file_dialogue.html", null ]
     ] ],
     [ "mc::UIFileDialogueFilter", "classmc_1_1_u_i_file_dialogue_filter.html", null ],
+    [ "mc::UITimer", "classmc_1_1_u_i_timer.html", null ],
     [ "mc::UIWindow", "classmc_1_1_u_i_window.html", [
       [ "mc::LinuxWindow", "classmc_1_1_linux_window.html", null ],
       [ "mc::OSXWindow", "classmc_1_1_o_s_x_window.html", null ],

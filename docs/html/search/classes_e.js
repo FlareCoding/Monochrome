@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['textmetrics_262',['TextMetrics',['../structmc_1_1_text_metrics.html',1,'mc']]],
-  ['textproperties_263',['TextProperties',['../structmc_1_1_text_properties.html',1,'mc']]]
+  ['rectangle_296',['Rectangle',['../classmc_1_1_rectangle.html',1,'mc']]],
+  ['rendertarget_297',['RenderTarget',['../classmc_1_1_render_target.html',1,'mc']]]
 ];

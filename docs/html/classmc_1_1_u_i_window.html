@@ -128,6 +128,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9b75a62665cfca57ada95c4afdbf297b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab69506b299f4b0fcd32d39d5ddba99fe"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#ab69506b299f4b0fcd32d39d5ddba99fe">GetDpi</a> () const</td></tr>
 <tr class="separator:ab69506b299f4b0fcd32d39d5ddba99fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5301422291cc2cbdf3f48931064b02d8"><td class="memItemLeft" align="right" valign="top">WindowStyle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#a5301422291cc2cbdf3f48931064b02d8">GetWindowStyle</a> () const</td></tr>
+<tr class="separator:a5301422291cc2cbdf3f48931064b02d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac2891bf94b142718500d4213e6bbaa6"><td class="memItemLeft" align="right" valign="top"><a id="aac2891bf94b142718500d4213e6bbaa6"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#aac2891bf94b142718500d4213e6bbaa6">SetSize</a> (uint32_t width, uint32_t height)=0</td></tr>
 <tr class="memdesc:aac2891bf94b142718500d4213e6bbaa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the size of the window. <br /></td></tr>
@@ -160,6 +162,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#a42278242dddc490fd0e0f79943a68fad">StartWindowLoop</a> ()=0</td></tr>
 <tr class="memdesc:a42278242dddc490fd0e0f79943a68fad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the continous window loop which ends when the window closes. <br /></td></tr>
 <tr class="separator:a42278242dddc490fd0e0f79943a68fad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e2c71cc732b6059368b5f5f88e8f3e4"><td class="memItemLeft" align="right" valign="top"><a id="a4e2c71cc732b6059368b5f5f88e8f3e4"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#a4e2c71cc732b6059368b5f5f88e8f3e4">SetMenuBar</a> (const Ref&lt; <a class="el" href="classmc_1_1_file_menu_bar.html">FileMenuBar</a> &gt; &amp;menuBar)=0</td></tr>
+<tr class="memdesc:a4e2c71cc732b6059368b5f5f88e8f3e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a Menubar, which is going to be updated per frame. <br /></td></tr>
+<tr class="separator:a4e2c71cc732b6059368b5f5f88e8f3e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59ce118902641dc9c02c92200c66c7a5"><td class="memItemLeft" align="right" valign="top">bool const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#a59ce118902641dc9c02c92200c66c7a5">IsOpened</a> () const</td></tr>
 <tr class="separator:a59ce118902641dc9c02c92200c66c7a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a451cda0b81a3337a32f8ef575d27bbcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmc_1_1_color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#a451cda0b81a3337a32f8ef575d27bbcd">GetBackgroundColor</a> () const</td></tr>
@@ -186,22 +192,20 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="separator:a693f1c8875f3f94f13dfb2b102ecb71f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c5655440bcab1d34f9ca17134531acf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#a5c5655440bcab1d34f9ca17134531acf">IsViewFocused</a> (<a class="el" href="classmc_1_1_u_i_view.html">UIView</a> *view)</td></tr>
 <tr class="separator:a5c5655440bcab1d34f9ca17134531acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad28b480308f1009c8e651b1faf1fb02d"><td class="memItemLeft" align="right" valign="top"><a id="ad28b480308f1009c8e651b1faf1fb02d"></a>
-virtual Ref&lt; <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#ad28b480308f1009c8e651b1faf1fb02d">GetViewRef</a> (<a class="el" href="classmc_1_1_u_i_view.html">UIView</a> *raw_address)=0</td></tr>
-<tr class="memdesc:ad28b480308f1009c8e651b1faf1fb02d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a shared_ptr to the uiview with the specified address. <br /></td></tr>
+<tr class="memitem:ad28b480308f1009c8e651b1faf1fb02d"><td class="memItemLeft" align="right" valign="top">virtual Ref&lt; <a class="el" href="classmc_1_1_u_i_view.html">UIView</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#ad28b480308f1009c8e651b1faf1fb02d">GetViewRef</a> (<a class="el" href="classmc_1_1_u_i_view.html">UIView</a> *raw_address)=0</td></tr>
 <tr class="separator:ad28b480308f1009c8e651b1faf1fb02d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a122a755030f954fb8811851996d4d6c5"><td class="memItemLeft" align="right" valign="top"><a id="a122a755030f954fb8811851996d4d6c5"></a>
-virtual <a class="el" href="structmc_1_1_point.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#a122a755030f954fb8811851996d4d6c5">GetMouseCursorPos</a> ()=0</td></tr>
-<tr class="memdesc:a122a755030f954fb8811851996d4d6c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position of the mouse cursor relative to the top left corner of the window. <br /></td></tr>
+<tr class="memitem:a122a755030f954fb8811851996d4d6c5"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structmc_1_1_point.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#a122a755030f954fb8811851996d4d6c5">GetMouseCursorPos</a> ()=0</td></tr>
 <tr class="separator:a122a755030f954fb8811851996d4d6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaedf31e2be6bda35bcd3fa099664f6ec"><td class="memItemLeft" align="right" valign="top"><a id="aaedf31e2be6bda35bcd3fa099664f6ec"></a>
-virtual <a class="el" href="structmc_1_1_point.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#aaedf31e2be6bda35bcd3fa099664f6ec">GetAsboluteMouseCursorPos</a> ()=0</td></tr>
-<tr class="memdesc:aaedf31e2be6bda35bcd3fa099664f6ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position of the mouse cursor relative to the top left corner of the monitor. <br /></td></tr>
+<tr class="memitem:aaedf31e2be6bda35bcd3fa099664f6ec"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structmc_1_1_point.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#aaedf31e2be6bda35bcd3fa099664f6ec">GetAsboluteMouseCursorPos</a> ()=0</td></tr>
 <tr class="separator:aaedf31e2be6bda35bcd3fa099664f6ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a500b7f8a21b7717363dbdabfeec78e02"><td class="memItemLeft" align="right" valign="top"><a id="a500b7f8a21b7717363dbdabfeec78e02"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#a500b7f8a21b7717363dbdabfeec78e02">RemoveAllViews</a> ()=0</td></tr>
 <tr class="memdesc:a500b7f8a21b7717363dbdabfeec78e02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all current views from the window's view hierarchy. <br /></td></tr>
 <tr class="separator:a500b7f8a21b7717363dbdabfeec78e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad932abe737ab0b10f44e0debcd7e3aab"><td class="memItemLeft" align="right" valign="top">virtual const std::pair&lt; float, float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#ad932abe737ab0b10f44e0debcd7e3aab">GetLastViewPosition</a> ()=0</td></tr>
+<tr class="separator:ad932abe737ab0b10f44e0debcd7e3aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae720c27e4cc423a38396e63b4180dbca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmc_1_1_u_i_window.html#ae720c27e4cc423a38396e63b4180dbca">DispatchEvent</a> (EventPtr e)</td></tr>
+<tr class="separator:ae720c27e4cc423a38396e63b4180dbca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -323,6 +327,38 @@ Ref&lt; <a class="el" href="classmc_1_1_u_i_label.html">UILabel</a> &gt;&#160;</
 
 </div>
 </div>
+<a id="ae720c27e4cc423a38396e63b4180dbca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae720c27e4cc423a38396e63b4180dbca">&#9670;&nbsp;</a></span>DispatchEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mc::UIWindow::DispatchEvent </td>
+          <td>(</td>
+          <td class="paramtype">EventPtr&#160;</td>
+          <td class="paramname"><em>e</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to register a new event to be processed during the next update cycle (next frame). </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">e</td><td>Shared pointer to the event that will be dispatched and processed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad31c5235b1a1e0835f77636a76bee715"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad31c5235b1a1e0835f77636a76bee715">&#9670;&nbsp;</a></span>FocusView()</h2>
 
@@ -349,6 +385,34 @@ Ref&lt; <a class="el" href="classmc_1_1_u_i_label.html">UILabel</a> &gt;&#160;</
 <p>Sets focus onto a single view. If another view is already focused, that view will lose its focus. </p>
 
 <p>Implemented in <a class="el" href="classmc_1_1_linux_window.html#a14d826c603df281ba77569b3e2998b88">mc::LinuxWindow</a>, <a class="el" href="classmc_1_1_o_s_x_window.html#aa6669f1fcee1541bd1511dc4d0769749">mc::OSXWindow</a>, and <a class="el" href="classmc_1_1_windows_window.html#a2b7970860439adf3495afe50be037ea5">mc::WindowsWindow</a>.</p>
+
+</div>
+</div>
+<a id="aaedf31e2be6bda35bcd3fa099664f6ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaedf31e2be6bda35bcd3fa099664f6ec">&#9670;&nbsp;</a></span>GetAsboluteMouseCursorPos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="structmc_1_1_point.html">Position</a> mc::UIWindow::GetAsboluteMouseCursorPos </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Returns the position of the mouse cursor relative to the top left corner of the monitor. </dd></dl>
+
+<p>Implemented in <a class="el" href="classmc_1_1_linux_window.html#ac1f42f361bd6dea2cace1ee69eb5094a">mc::LinuxWindow</a>, <a class="el" href="classmc_1_1_o_s_x_window.html#ab0ac3d7fcfb06b6c28853152c9c54599">mc::OSXWindow</a>, and <a class="el" href="classmc_1_1_windows_window.html#a24b8a3c9e09dbdba224ad236d000b184">mc::WindowsWindow</a>.</p>
 
 </div>
 </div>
@@ -508,6 +572,34 @@ Ref&lt; <a class="el" href="classmc_1_1_u_i_label.html">UILabel</a> &gt;&#160;</
 
 </div>
 </div>
+<a id="ad932abe737ab0b10f44e0debcd7e3aab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad932abe737ab0b10f44e0debcd7e3aab">&#9670;&nbsp;</a></span>GetLastViewPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const std::pair&lt;float, float&gt; mc::UIWindow::GetLastViewPosition </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Returns the position of the last ViewElement from the ViewList </dd></dl>
+
+<p>Implemented in <a class="el" href="classmc_1_1_linux_window.html#af07a7b68d016aa4505778eca16cf15c7">mc::LinuxWindow</a>, <a class="el" href="classmc_1_1_o_s_x_window.html#a8ce10da0b542369b69527270cb8f8381">mc::OSXWindow</a>, and <a class="el" href="classmc_1_1_windows_window.html#aa9ddbe021fd2cde64c8d632a56b871ff">mc::WindowsWindow</a>.</p>
+
+</div>
+</div>
 <a id="ad5ef214569c7a389a1705940a8790d22"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5ef214569c7a389a1705940a8790d22">&#9670;&nbsp;</a></span>GetMaximizeButtonRef()</h2>
 
@@ -557,6 +649,34 @@ Ref&lt; <a class="el" href="classmc_1_1_u_i_label.html">UILabel</a> &gt;&#160;</
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Returns the pointer to the minimize button if the window was created with modern style, otherwise returns nullptr. </dd></dl>
+
+</div>
+</div>
+<a id="a122a755030f954fb8811851996d4d6c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a122a755030f954fb8811851996d4d6c5">&#9670;&nbsp;</a></span>GetMouseCursorPos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="structmc_1_1_point.html">Position</a> mc::UIWindow::GetMouseCursorPos </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Returns the position of the mouse cursor relative to the top left corner of the window. </dd></dl>
+
+<p>Implemented in <a class="el" href="classmc_1_1_linux_window.html#ab8b849509e7cd9416c9a69127743f0b6">mc::LinuxWindow</a>, <a class="el" href="classmc_1_1_o_s_x_window.html#a694270e4b2921fd03a7a69278314df0f">mc::OSXWindow</a>, and <a class="el" href="classmc_1_1_windows_window.html#ab1530f6d6fe09a984bcbbfba3dec2114">mc::WindowsWindow</a>.</p>
 
 </div>
 </div>
@@ -612,6 +732,35 @@ Ref&lt; <a class="el" href="classmc_1_1_u_i_label.html">UILabel</a> &gt;&#160;</
 
 </div>
 </div>
+<a id="ad28b480308f1009c8e651b1faf1fb02d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad28b480308f1009c8e651b1faf1fb02d">&#9670;&nbsp;</a></span>GetViewRef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual Ref&lt;<a class="el" href="classmc_1_1_u_i_view.html">UIView</a>&gt; mc::UIWindow::GetViewRef </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmc_1_1_u_i_view.html">UIView</a> *&#160;</td>
+          <td class="paramname"><em>raw_address</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Returns a shared_ptr to the uiview with the specified address. </dd></dl>
+
+<p>Implemented in <a class="el" href="classmc_1_1_linux_window.html#ae619e16503ee44c96ca6bf0317b0a3ad">mc::LinuxWindow</a>, <a class="el" href="classmc_1_1_o_s_x_window.html#a79e76678399e3cbc62582fdd9adfd62d">mc::OSXWindow</a>, and <a class="el" href="classmc_1_1_windows_window.html#a540fa9a06aedb3a4a4dc0927e43cfff3">mc::WindowsWindow</a>.</p>
+
+</div>
+</div>
 <a id="a49d7b9b1bd20d49b2eb82d28c2f922ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49d7b9b1bd20d49b2eb82d28c2f922ba">&#9670;&nbsp;</a></span>GetWidth()</h2>
 
@@ -635,6 +784,32 @@ Ref&lt; <a class="el" href="classmc_1_1_u_i_label.html">UILabel</a> &gt;&#160;</
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Width of the window in pixels </dd></dl>
+
+</div>
+</div>
+<a id="a5301422291cc2cbdf3f48931064b02d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5301422291cc2cbdf3f48931064b02d8">&#9670;&nbsp;</a></span>GetWindowStyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WindowStyle mc::UIWindow::GetWindowStyle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The style of the window that it was created with </dd></dl>
 
 </div>
 </div>

@@ -6,6 +6,7 @@ namespace mc
 	{
 		Classic,
 		Modern,
+		Overlay,
 		Default = Classic
 	};
 }

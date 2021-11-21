@@ -22,6 +22,10 @@ namespace mc
 		/// @returns Pointer to the newly created window
 		static Ref<UIWindow> Create(WindowStyle style = WindowStyle::Default, uint32_t width = 1270, uint32_t height = 920, const char* title = "Monochrome 7.2 Window");
 
+		/// Creates a transparent overlay UIWindow instance and returns shared_ptr to it.
+		/// @returns Pointer to the newly created window
+		static Ref<UIWindow> CreateOverlayWindow(const char* targetWindow, const char* title = "Monochrome 7.2 Window");
+
 		/// @returns Win32 handle to the native window
 		inline void* GetNativeHandle() const { return m_NativeHandle; }
 
@@ -36,6 +40,9 @@ namespace mc
 
 		/// @returns Window-specific DPI
 		inline uint32_t GetDpi() const { return m_Dpi; }
+
+		/// @returns The style of the window that it was created with
+		inline WindowStyle GetWindowStyle() const { return m_WindowStyle; }
 
 		/// Sets the size of the window.
 		virtual void SetSize(uint32_t width, uint32_t height) = 0;
@@ -117,6 +124,10 @@ namespace mc
 		
 		/// @returns Returns the position of the last ViewElement from the ViewList
 		virtual const std::pair<float, float> GetLastViewPosition() = 0;
+
+		/// Allows to register a new event to be processed during the next update cycle (next frame).
+		/// @param e Shared pointer to the event that will be dispatched and processed.
+		void DispatchEvent(EventPtr e) { m_SceneManager.DispatchEvent(e); }
 
 	protected:
 		void* m_NativeHandle = nullptr;

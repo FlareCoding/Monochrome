@@ -90,12 +90,27 @@ namespace mc
 		return Ref<UIWindow>(new WindowsWindow(style, width, height, title));
 	}
 
+	Ref<UIWindow> UIWindow::CreateOverlayWindow(const char* targetWindow, const char* title)
+	{
+		return Ref<UIWindow>(new WindowsWindow(targetWindow, title));
+	}
+
 	WindowsWindow::WindowsWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title)
 	{
 		m_WindowStyle = style;
 		m_Width = width;
 		m_Height = height;
 		m_Title = title;
+		Init();
+	}
+
+	WindowsWindow::WindowsWindow(const char* targetWindow, const char* title)
+	{
+		m_OverlayTargetWindow	= targetWindow;
+		m_WindowStyle			= WindowStyle::Overlay;
+		m_Width					= 800;
+		m_Height				= 600;
+		m_Title					= title;
 		Init();
 	}
 
@@ -118,7 +133,7 @@ namespace mc
 		wc.cbSize = sizeof(WNDCLASSEX);
 		wc.cbClsExtra = NULL;
 		wc.cbWndExtra = NULL;
-		wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
+		wc.hbrBackground = ((m_WindowStyle == WindowStyle::Overlay) ? (HBRUSH)COLOR_WINDOW : CreateSolidBrush(RGB(0, 0, 0)));
 		wc.hInstance = NULL;
 		wc.lpszClassName = WindowClassName.c_str();
 		wc.lpszMenuName = L"";
@@ -132,12 +147,22 @@ namespace mc
 			return;
 		}
 
+		if (m_WindowStyle == WindowStyle::Overlay)
+		{
+			m_OverlayTargetHandle = FindWindowA(0, m_OverlayTargetWindow);
+		}
+
 		// Creating window rect
 		RECT window_rect;
 		window_rect.left = 60;
 		window_rect.top = 60;
 		window_rect.right = window_rect.left + m_Width;
 		window_rect.bottom = window_rect.top + m_Height;
+
+		if (m_OverlayTargetHandle)
+		{
+			GetWindowRect(m_OverlayTargetHandle, &window_rect);
+		}
 
 		DWORD dwStyle = 0;
 		DWORD dwExStyle = 0;
@@ -152,6 +177,11 @@ namespace mc
 			dwStyle = WS_POPUP;
 			dwExStyle = WS_EX_APPWINDOW;
 		}
+		else if (m_WindowStyle == WindowStyle::Overlay)
+		{
+			dwStyle = WS_POPUP;
+			dwExStyle = WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED;
+		}
 
 		// Adjusting window rect to be exact size that we specified depending on the window style
 		AdjustWindowRect(&window_rect, dwStyle, FALSE);
@@ -161,13 +191,18 @@ namespace mc
 			dwExStyle, WindowClassName.c_str(), ConvertStringToWstring(m_Title).c_str(), dwStyle,
 			window_rect.left, window_rect.top, window_rect.right - window_rect.left, window_rect.bottom - window_rect.top,
 			NULL, NULL, NULL,
-			this /* This parameter is crucial as it specifies the WindowsWindow pointer to be used in the WindowProc*/
+			this /* This parameter is crucial as it specifies the WindowsWindow pointer to be used in the WindowProc */
 		);
 
 		if (hwnd == (HWND)nullptr)
 		{
 			MessageBoxA(0, "Failed to create window HWND", "WindowsWindow", 0);
 			return;
+		}
+
+		if (m_WindowStyle == WindowStyle::Overlay)
+		{
+			SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
 		}
 
 		m_NativeHandle = hwnd;
@@ -589,6 +624,19 @@ namespace mc
 
 	void WindowsWindow::Update()
 	{
+		if (m_WindowStyle == WindowStyle::Overlay && m_OverlayTargetHandle)
+		{
+			RECT rect;
+			GetWindowRect(m_OverlayTargetHandle, &rect);
+			m_Width = rect.right - rect.left;
+			m_Height = rect.bottom - rect.top;
+
+			MoveWindow(reinterpret_cast<HWND>(m_NativeHandle), rect.left, rect.top, m_Width, m_Height, true);
+			PostMessage(reinterpret_cast<HWND>(m_NativeHandle), WM_PAINT, NULL, NULL);
+
+			return;
+		}
+
 		// Process all messages and events
 		while (PeekMessage(&msg, reinterpret_cast<HWND>(m_NativeHandle), 0, 0, PM_REMOVE))
 		{

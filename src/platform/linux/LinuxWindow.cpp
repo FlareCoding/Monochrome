@@ -37,6 +37,11 @@ namespace mc
         return Ref<UIWindow>(new LinuxWindow(style, width, height, title));
     }
 
+    Ref<UIWindow> UIWindow::CreateOverlayWindow(const char* targetWindow, const char* title)
+	{
+		return nullptr;
+	}
+
     LinuxWindow::LinuxWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title)
     {
         m_WindowStyle = WindowStyle::Classic; // modern style is not supported yet

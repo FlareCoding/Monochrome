@@ -33,9 +33,14 @@ namespace mc
 		virtual void Init() override;
 		virtual void SetupModernWindowViews() override;
 		virtual void AdjustModernWindowViews() override;
+	
+	private:
+		const char* m_OverlayTargetWindow = "";
+		HWND m_OverlayTargetHandle = 0;
 
 	public:
 		WindowsWindow(WindowStyle style, uint32_t width, uint32_t height, const char* title);
+		WindowsWindow(const char* targetWindow, const char* title);
 
 		LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
