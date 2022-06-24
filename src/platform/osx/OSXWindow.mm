@@ -51,7 +51,7 @@ namespace mc
                                                             backing:NSBackingStoreBuffered defer:NO];
         
         
-        m_NativeObject->windowDelegate = [OSXWindowDelegate alloc];
+        m_NativeObject->windowDelegate = [[OSXWindowDelegate alloc] init];
         [m_NativeObject->window setDelegate:(id)m_NativeObject->windowDelegate];
         m_NativeObject->windowDelegate.mcWindowHandle = this;
 
