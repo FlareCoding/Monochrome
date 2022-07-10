@@ -15,6 +15,7 @@ namespace mc
         EventEmitter(const std::initializer_list<std::string>& allowedEvents);
 
         void on(const std::string& eventName, eventEmiterCallback_t handler);
+        void off(const std::string& eventName);
         void fireEvent(const std::string& eventName, Shared<Event> data);
 
         void forwardEmittedEvents(EventEmitter* emitter);

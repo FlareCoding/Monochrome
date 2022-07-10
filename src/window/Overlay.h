@@ -19,13 +19,14 @@ namespace mc
         void setBackgroundColor(const Color& color);
 
         void setAnchor(const Point& point);
+        void setActivatorWidget(Shared<BaseWidget> widget);
 
         bool autoHide = true;
 
     private:
         Shared<UIWindow>    d_overlayWindow;
 
-        Shared<BaseWidget>  d_anchor = nullptr;
+        Shared<BaseWidget>  d_activatorWidget = nullptr;
         Point               d_anchorPoint = { 0, 0 };
     };
 }

@@ -17,6 +17,19 @@ namespace mc
         d_handlers[eventName].push_back(std::any_cast<eventEmiterCallback_t>(handler));
     }
 
+    void EventEmitter::off(const std::string& eventName) {
+        // Check if the event name is allowed
+        CORE_ASSERT(
+            std::count(d_allowedEvents.begin(), d_allowedEvents.end(), eventName),
+            "Event '" + eventName + "' is not an allowed event"
+        );
+
+        auto it = d_handlers.find(eventName);
+        if (it != d_handlers.end()) {
+            d_handlers.erase(it);
+        }
+    }
+
     void EventEmitter::fireEvent(const std::string& eventName, Shared<Event> e) {
         // Check if the event name is allowed
         CORE_ASSERT(

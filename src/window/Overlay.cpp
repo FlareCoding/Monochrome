@@ -60,4 +60,46 @@ namespace mc
 	void Overlay::setAnchor(const Point& point) {
 	    d_anchorPoint = point;
 	}
+
+	void Overlay::setActivatorWidget(Shared<BaseWidget> widget) {
+		// Check if the previous activator widget needs to be detached
+		if (d_activatorWidget) {
+			d_activatorWidget->off("clicked");
+		}
+
+		d_activatorWidget = widget;
+
+		d_activatorWidget->on("clicked", [this](Shared<Event> e) {
+			auto clickEvent = std::static_pointer_cast<MouseButtonEvent>(e);
+			if (clickEvent->getButton() != MouseButton::Left) {
+				return;
+			}
+
+			// Get the anchor widget's position in the window
+			auto anchorPositionInWindow = d_activatorWidget->getPositionInWindow();
+
+			// Get click event's position information
+			auto clickPos = clickEvent->getLocation();
+			auto screenClickPos = clickEvent->getScreenLocation();
+
+			// Calculate click offset from the anchor's origin
+			Position anchorPosDiff = {
+				clickPos.x - anchorPositionInWindow.x,
+				clickPos.y - anchorPositionInWindow.y
+			};
+
+			// Calculate the new anchor point
+			Point anchorPoint = {
+				screenClickPos.x - anchorPosDiff.x,
+				screenClickPos.y - anchorPosDiff.y + (int32_t)d_activatorWidget->size->height
+			};
+
+			// Set the overlay's anchor point to be
+			// right below the activator widget.
+			setAnchor(anchorPoint);
+
+			// Open the overlay
+			show();
+		});
+	}
 }
