@@ -6,12 +6,14 @@
 namespace mc
 {
 	Overlay::Overlay() {
+		autoHide = true;
+		spawnDirection = OverflowDirection::Down;
+
 		d_overlayWindow = MakeRef<UIWindow>(MC_OVERLAYWINDOW_FLAGS, 1, 1);
 		d_overlayWindow->hide();
 		d_overlayWindow->setPosition(d_anchorPoint);
-		d_overlayWindow->forwardEmittedEvents(this);
 
-		on("focusChanged", [this](Shared<Event> e) {
+		d_overlayWindow->on("focusChanged", [this](Shared<Event> e) {
 			if (autoHide) {
 				bool focused = e->get<bool>("focused");
 				if (!focused) {
@@ -75,24 +77,9 @@ namespace mc
 				return;
 			}
 
-			// Get the anchor widget's position in the window
-			auto anchorPositionInWindow = d_activatorWidget->getPositionInWindow();
-
-			// Get click event's position information
-			auto clickPos = clickEvent->getLocation();
-			auto screenClickPos = clickEvent->getScreenLocation();
-
-			// Calculate click offset from the anchor's origin
-			Position anchorPosDiff = {
-				clickPos.x - anchorPositionInWindow.x,
-				clickPos.y - anchorPositionInWindow.y
-			};
-
-			// Calculate the new anchor point
-			Point anchorPoint = {
-				screenClickPos.x - anchorPosDiff.x,
-				screenClickPos.y - anchorPosDiff.y + (int32_t)d_activatorWidget->size->height
-			};
+			// Calculate the anchor position
+			// according to the anchor point.
+			auto anchorPoint = _calculateAnchorPosition(clickEvent);
 
 			// Set the overlay's anchor point to be
 			// right below the activator widget.
@@ -101,5 +88,55 @@ namespace mc
 			// Open the overlay
 			show();
 		});
+	}
+	
+	Position Overlay::_calculateAnchorPosition(Shared<MouseButtonEvent> e) {
+		// Get the anchor widget's position in the window
+		auto anchorPositionInWindow = d_activatorWidget->getPositionInWindow();
+
+		// Get click event's position information
+		auto clickPos = e->getLocation();
+		auto screenClickPos = e->getScreenLocation();
+
+		// Calculate click offset from the anchor's origin
+		Position anchorPosDiff = {
+			clickPos.x - anchorPositionInWindow.x,
+			clickPos.y - anchorPositionInWindow.y
+		};
+
+		// Calculate the anchor's origin
+		Point anchorOrigin = {
+			screenClickPos.x - anchorPosDiff.x,
+			screenClickPos.y - anchorPosDiff.y
+		};
+
+		// Calculate the anchor point according
+		// to the overlay's preferred spawn position.
+		Point proposedAnchorPoint = {
+			anchorOrigin.x,
+			anchorOrigin.y
+		};
+
+		switch (spawnDirection) {
+		case OverflowDirection::Down: {
+			proposedAnchorPoint.y += (int32_t)d_activatorWidget->size->height;
+			break;
+		}
+		case OverflowDirection::Up: {
+			proposedAnchorPoint.y -= d_overlayWindow->getHeight();
+			break;
+		}
+		case OverflowDirection::Right: {
+			proposedAnchorPoint.x += (int32_t)d_activatorWidget->size->width;
+			break;
+		}
+		case OverflowDirection::Left: {
+			proposedAnchorPoint.x -= d_overlayWindow->getWidth();
+			break;
+		}
+		default: break;
+		}
+
+		return proposedAnchorPoint;
 	}
 }

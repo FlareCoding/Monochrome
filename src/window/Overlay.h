@@ -4,7 +4,15 @@
 
 namespace mc
 {
-    class Overlay : public EventEmitter
+    enum OverflowDirection
+    {
+        Down,
+        Up,
+        Left,
+        Right
+    };
+
+    class Overlay
     {
     public:
         Overlay();
@@ -21,12 +29,20 @@ namespace mc
         void setAnchor(const Point& point);
         void setActivatorWidget(Shared<BaseWidget> widget);
 
-        bool autoHide = true;
+        // Specifies the preferred orientation for spawning
+        // the overlay window around the activator widget.
+        OverflowDirection   spawnDirection;
+
+        // Specifies if the overlay should automatically
+        // hide whenever the overlay window loses focus.
+        bool                autoHide;
 
     private:
         Shared<UIWindow>    d_overlayWindow;
 
         Shared<BaseWidget>  d_activatorWidget = nullptr;
         Point               d_anchorPoint = { 0, 0 };
+
+        Position            _calculateAnchorPosition(Shared<MouseButtonEvent> e);
     };
 }
