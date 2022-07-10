@@ -1,23 +1,26 @@
-cmake_minimum_required(VERSION 3.0)
+set(CMAKE_CURRENT_SOURCE_DIR src/window)
+set(cwd ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(
-    MC_WINDOW_HEADERS
-    
-    src/window/SceneManager.h
-    src/window/UIWindow.h
-    src/window/WindowStyle.h
-    src/window/FileMenu.h
-    src/window/FileMenuBar.h
+    WINDOW_SYSTEM_HEADERS
+
+    ${cwd}/UIWindow.h
+    ${cwd}/NativeWindow.h
+    ${cwd}/ClassicWindow.h
+    ${cwd}/ModernWindow.h
+    ${cwd}/Overlay.h
 
     PARENT_SCOPE
 )
 
 set(
-    MC_WINDOW_SOURCES
+    WINDOW_SYSTEM_SOURCES
 
-    src/window/SceneManager.cpp
-    src/window/FileMenu.cpp
-    src/window/FileMenuBar.cpp
+    ${cwd}/UIWindow.cpp
+    ${cwd}/NativeWindow.cpp
+    ${cwd}/ClassicWindow.cpp
+    ${cwd}/ModernWindow.cpp
+    ${cwd}/Overlay.cpp
 
     PARENT_SCOPE
 )

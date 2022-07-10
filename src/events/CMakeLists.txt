@@ -1,27 +1,24 @@
-cmake_minimum_required(VERSION 3.0)
+set(CMAKE_CURRENT_SOURCE_DIR src/events)
+set(cwd ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(
-    MC_EVENTS_HEADERS
-    
-    src/events/Event.h
-    src/events/Events.h
-    src/events/EventValidator.h
-    src/events/IResponder.h
-    src/events/KeyboardEvents.h
-    src/events/MouseEvents.h
-    src/events/WindowEvents.h
-    src/events/FocusChangedEvent.h
-    src/events/CustomEvents.h
+    EVENT_SYSTEM_HEADERS
+
+    ${cwd}/Event.h
+    ${cwd}/EventEmitter.h
+    ${cwd}/PropertyObserver.h
+    ${cwd}/MouseEvents.h
+    ${cwd}/KeyboardEvents.h
 
     PARENT_SCOPE
 )
 
 set(
-    MC_EVENTS_SOURCES
+    EVENT_SYSTEM_SOURCES
 
-    src/events/EventValidator.cpp
-    src/events/IResponder.cpp
-    src/events/KeyboardEvents.cpp
+    ${cwd}/Event.cpp
+    ${cwd}/EventEmitter.cpp
+    ${cwd}/KeyboardEvents.cpp
 
     PARENT_SCOPE
 )

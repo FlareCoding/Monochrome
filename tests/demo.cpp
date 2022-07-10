@@ -1,138 +1,77 @@
-#include "Monochrome.h"
+#if defined(NDEBUG) && defined(_WIN32)
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#endif // !NDEBUG
+
+#include <window/ClassicWindow.h>
+#include <window/ModernWindow.h>
+#include <window/Overlay.h>
+#include <widgets/AllWidgets.h>
 using namespace mc;
-
-Ref<UICheckbox> checkbox;
-Ref<UISlider> slider;
-Ref<UITextArea> textArea;
-Ref<UIProgressBar> progressBar;
-Ref<UICircularProgressBar> circularProgressBar;
-
-void Checkbox_ValueChanged(bool checked, UICheckbox* sender)
-{
-	slider->Value = (checked) ? 95.0f : 32.0f;
-}
-
-void Slider_ValueChanged(float value, UISlider* sender)
-{
-	printf("Slider Value: %f\n", value);
-}
-
-void ChangeProgressBarValue()
-{
-	while (true)
-	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
-		progressBar->Value += 1;
-		circularProgressBar->Value += 1;
-
-		if (progressBar->Value > 100)
-		{
-			progressBar->Value = 0;
-			circularProgressBar->Value = 0;
-		}
-	}
-}
 
 int main()
 {
-	auto window = UIWindow::Create(WindowStyle::Modern, 1220, 760, "Demo App");
-	window->SetBackgroundColor(Color(28, 21, 31, 1.0f));
-	window->SetModernWindowButtonsColor(Color(28, 21, 31, 1.0f));
+    AppManager::registerApplication("appId-032487");
 
-	Ref<UIButton> button = MakeRef<UIButton>();
-	button->layer.frame = Frame({ 280, 120 }, { 200, 36 });
-	button->Label->Text = "Click Me";
-	button->AddEventHandler<EventType::MouseButtonClicked>([](Event& evt, UIView* sender) -> bool {
-		checkbox->Checked = !checkbox->Checked;
-		return EVENT_HANDLED;
-	});
-	window->AddView(button);
+    auto window = MakeRef<ModernWindow>(860, 660, "Monochrome Demo");
+    window->setBackgroundColor(Color(18, 22, 28));
 
-	checkbox = MakeRef<UICheckbox>();
-	checkbox->layer.frame = Frame(Position{ 160, 160 }, Size{ 300, 40 });
-	checkbox->AddValueChangedEventHandler(Checkbox_ValueChanged);
-	window->AddView(checkbox);
+    auto overlay = MakeRef<Overlay>();
 
-	slider = MakeRef<UISlider>();
-	slider->layer.frame = Frame({ 160, 240 }, { 200, 20 });
-	slider->SliderKnobShape = Shape::Circle;
-	slider->AddValueChangedEventHandler(Slider_ValueChanged);
-	window->AddView(slider);
+    auto entry = MakeRef<Entry>();
+    entry->position = { 140, 80 };
+    window->addWidget(entry);
 
-	Ref<UITextbox> textbox = MakeRef<UITextbox>();
-	textbox->layer.frame = Frame(Position{ 220, 340 }, Size{ 260, 34 });
-	textbox->textProperties.FontSize = 16;
-	textbox->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
-		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
-			printf("Text entered from Textbox 1!\n");
+    auto btn = MakeRef<Button>();
+    btn->position = { 140, 130 };
+    btn->text = "Generate text";
+    btn->on("clicked", [entry](auto e) {
+        entry->text = "this is a test long text";
+    });
+    window->addWidget(btn);
 
-		return EVENT_HANDLED;
-	});
-	window->AddView(textbox);
+    auto panel = MakeRef<Panel>();
+    panel->position = { 400, 300 };
+    panel->size = { 300, 300 };
+    panel->backgroundColor = Color(10, 20, 10);
+    window->addWidget(panel);
 
-	Ref<UITextbox> textbox2 = MakeRef<UITextbox>();
-	textbox2->layer.frame = Frame(Position{ 220, 400 }, Size{ 260, 34 });
-	textbox2->textProperties.FontSize = 16;
-	textbox2->Placeholder = "Enter Username";
-	textbox2->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
-		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
-			printf("Text entered from Textbox 2!\n");
+    auto btn2 = MakeRef<Button>();
+    btn2->position = { 30, 80 };
+    btn2->size = { 200, 24 };
+    btn2->text = "See selected text";
+    btn2->on("clicked", [&](Shared<Event> e) {
+        if (!entry->hasSelectedText()) {
+            return;
+        }
 
-		return EVENT_HANDLED;
-	});
-	window->AddView(textbox2);
+        auto text = entry->getSelectedText();
 
-	Ref<UIScrollPanel> scrollPanel = MakeRef<UIScrollPanel>();
-	scrollPanel->layer.frame = Frame(Position{ 560, 100 }, Size{ 340, 500 });
-	scrollPanel->layer.color = Color(200, 200, 200, 1.0f);
-	scrollPanel->ContentView->layer.frame.size = { 340, 800 };
-	scrollPanel->ContentView->layer.color = Color::gray;
-	window->AddView(scrollPanel);
+        auto b = MakeRef<Button>();
+        b->position = { 40, 40 };
+        b->text = text;
+        b->on("clicked", [overlay](auto e) {
+            overlay->hide();
+        });
+        overlay->setContent(b);
 
-	for (int i = 0; i < 10; i++)
-	{
-		Ref<UIButton> btn = MakeRef<UIButton>();
-		btn->layer.frame = Frame({ 70, 30 + (float)i * 70 }, { 200, 36 });
-		btn->Label->Text = "Button " + std::to_string(i + 1);
-		scrollPanel->AddChild(btn);
-	}
+        auto btnPosInWindow = btn2->getPositionInWindow();
 
-	Ref<UICombobox> combobox = MakeRef<UICombobox>();
-	combobox->layer.frame = Frame(Position{ 960, 100 }, Size{ 180, 100 });
-	std::vector<std::string> items = { "Red", "Green", "Blue", "Purple", "Cyan", "Pink", "Brown" };
-	combobox->SetItems(items);
-	combobox->SetItemBackgroundColor(Color(58, 58, 59, 1));
-	combobox->SetItemTextColor(Color::white);
-	combobox->layer.color = Color(62, 62, 63, 1);
-	combobox->SetDropdownArrowColor(Color::white);
-	combobox->SetSelectedItemColor(Color::white);
-	combobox->AddItemChangedEventHandler([](size_t index, UICombobox* sender) {
-		printf("Selected \"%s\" at index %zu\n", sender->GetItem(index).c_str(), index);
-	});
-	window->AddView(combobox);
+        auto clickPos = std::static_pointer_cast<MouseButtonEvent>(e)->getLocation();
+        auto screenClickPos = std::static_pointer_cast<MouseButtonEvent>(e)->getScreenLocation();
 
-	textArea = MakeRef<UITextArea>();
-	textArea->layer.frame = Frame(Position{ 140, 470 }, Size{ 320, 220 });
-	textArea->RightMargins = 4.0f;
-	textArea->LeftMargins = 4.0f;
-	window->AddView(textArea);
+        Position anchorDiff = { clickPos.x - btnPosInWindow.x, clickPos.y - btnPosInWindow.y };
 
-	progressBar = MakeRef<UIProgressBar>();
-	progressBar->layer.frame = Frame(Position { 600, 660 }, Size { 240, 12 });
-	progressBar->Value = 0;
-	window->AddView(progressBar);
+        Point anchorPoint = {
+            screenClickPos.x - anchorDiff.x,
+            screenClickPos.y - anchorDiff.y + (int32_t)btn2->size->height
+        };
 
-	circularProgressBar = MakeRef<UICircularProgressBar>();
-	circularProgressBar->layer.frame = Frame(Position{ 980, 460 }, Size{ 80, 80 });
-	circularProgressBar->Value = 0;
-	circularProgressBar->layer.color = Color(64, 64, 66, 1.0f);
-	circularProgressBar->ProgressColor = Color::green;
-	window->AddView(circularProgressBar);
-	std::thread progressBarThread(ChangeProgressBarValue);
-	progressBarThread.detach();
+        overlay->setSize(btn2->size->width, 120);
+        overlay->setAnchor(anchorPoint);
+        overlay->show();
+    });
+    panel->addChild(btn2);
 
-	window->StartWindowLoop();
-
-	printf("End of control flow reached, clean up code should go here\n");
-	return 0;
+    AppManager::startApplicationLoop();
+    return 0;
 }

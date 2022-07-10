@@ -1,9 +1,5 @@
-# Directories
-.vs/
-.vscode/
-build/
-dist/
-__pycache__/
+# Prerequisites
+*.d
 
 # Compiled Object files
 *.slo
@@ -11,10 +7,30 @@ __pycache__/
 *.o
 *.obj
 
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
 # Executables
 *.exe
 *.out
 *.app
 
-# Other
-*.DS_Store
+# Directories
+build/
+.vscode/

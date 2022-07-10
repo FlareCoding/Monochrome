@@ -1,39 +1,58 @@
 #pragma once
 #include <memory>
-#include <utility>
-#include <map>
-#include <thread>
+#include <iostream>
+#include <cinttypes>
 
-#if defined(_WIN32)
-	#define MC_SUPPORTS_MULTIPLE_WINDOWS
-#elif defined(__linux__)
-	// Multiple windows not supported yet.
-#elif defined(__APPLE__)
-	// Multiple windows not supported yet.
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+	#define MC_PLATFORM_WINDOWS
+	#ifdef _WIN64
+		#define MC_PLATFORM_WINDOWS_X64
+	#else
+		#define MC_PLATFORM_WINDOWS_X64_86
+	#endif
+#elif __APPLE__
+	#define MC_PLATFORM_MACOS
+#elif __linux__
+    #define MC_PLATFORM_LINUX
+#elif __unix__ // all unixes not caught above
+    #define MC_PLATFORM_UNIX
+#elif defined(_POSIX_VERSION)
+    #define MC_PLATFORM_POSIX
+#else
+	#error "Unknown compiler"
+#endif
+
+#ifndef NDEBUG
+#define CORE_ASSERT(condition, message) \
+    if (!(condition)) { \
+        std::cerr << "Assertion `" #condition "` failed in " << __FILE__ \
+                    << " line " << __LINE__ << ": " << message << std::endl; \
+        std::terminate(); \
+    }
+#else
+#define CORE_ASSERT(condition, message)
 #endif
 
 namespace mc
 {
-	using Byte = unsigned char;
+    template <typename T>
+	using Shared = std::shared_ptr<T>;
 
 	template <typename T>
-	using Ref = std::shared_ptr<T>;
+	using Unique = std::unique_ptr<T>;
+
+	template <typename T>
+	using Weak = std::weak_ptr<T>;
 
 	template <typename T, typename... Args>
-	constexpr Ref<T> MakeRef(Args&& ... args)
+	constexpr Shared<T> MakeRef(Args&& ... args)
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 
-	template <typename T>
-	using UniqueRef = std::unique_ptr<T>;
-
 	template <typename T, typename... Args>
-	constexpr UniqueRef<T> MakeUniqueRef(Args&& ... args)
+	constexpr Unique<T> MakeUniqueRef(Args&& ... args)
 	{
 		return std::make_unique<T>(std::forward<Args>(args)...);
 	}
-
-	template <typename T>
-	using WeakRef = std::weak_ptr<T>;
 }

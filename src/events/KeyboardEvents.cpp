@@ -1,17 +1,14 @@
 #include "KeyboardEvents.h"
-
-#if defined(_WIN32)
+#ifdef MC_PLATFORM_WINDOWS
 #include <Windows.h>
 #endif
-
-#include <map>
 
 namespace mc
 {
 #define DEPRECATED_KEY 0
 
-#if defined(_WIN32)
-	static std::map<KeyCode, int> _monochrome_keyboard_keycode_bindings_ = {
+#if defined(MC_PLATFORM_WINDOWS)
+	static std::map<KeyCode, int>  s_monochromeKeyboardKeycodeBindings = {
 		{ KeyCode::KEY_0, 0x30 },
 		{ KeyCode::KEY_1, 0x31 },
 		{ KeyCode::KEY_2, 0x32 },
@@ -92,9 +89,9 @@ namespace mc
 		{ KeyCode::KEY_BACKSLASH,			VkKeyScan('\\')		},
 		{ KeyCode::KEY_SLASH,				VkKeyScan('/')		},
 	};
-#elif defined(__linux__)
-// https://www.cl.cam.ac.uk/~mgk25/ucs/keysymdef.h
-	static std::map<KeyCode, int> _monochrome_keyboard_keycode_bindings_ = {
+#elif defined(MC_PLATFORM_LINUX)
+	// https://www.cl.cam.ac.uk/~mgk25/ucs/keysymdef.h
+	static std::map<KeyCode, int> s_monochromeKeyboardKeycodeBindings = {
 		{ KeyCode::KEY_0, 0x30 },
 		{ KeyCode::KEY_1, 0x31 },
 		{ KeyCode::KEY_2, 0x32 },
@@ -176,7 +173,7 @@ namespace mc
 		{ KeyCode::KEY_SLASH,				0x002f		},
 	};
 #else
-	static std::map<KeyCode, int> _monochrome_keyboard_keycode_bindings_ = {
+	static std::map<KeyCode, int> s_monochromeKeyboardKeycodeBindings = {
 		{ KeyCode::KEY_0, 29 },
 		{ KeyCode::KEY_1, 18 },
 		{ KeyCode::KEY_2, 19 },
@@ -260,7 +257,7 @@ namespace mc
 #endif
 
 
-	static std::map<KeyCode, std::pair<char, char>> _monochrome_keyboard_keycode_capital_char_bindings_ = {
+	static std::map<KeyCode, std::pair<char, char>> s_monochromeKeyboardKeycodeCapitalCharBindings = {
 		{ KeyCode::KEY_0, std::pair<char, char>('0', ')') },
 		{ KeyCode::KEY_1, std::pair<char, char>('1', '!') },
 		{ KeyCode::KEY_2, std::pair<char, char>('2', '@') },
@@ -341,42 +338,25 @@ namespace mc
 		{ KeyCode::KEY_SLASH,		std::pair<char, char>('/', '?')		},
 	};
 
-	KeyCode NativeToMcKeycode(int keycode)
-	{
-		for (auto it = _monochrome_keyboard_keycode_bindings_.begin(); it != _monochrome_keyboard_keycode_bindings_.end(); it++)
+	KeyCode NativeToMcKeycode(int keycode) {
+		for (auto it = s_monochromeKeyboardKeycodeBindings.begin(); it != s_monochromeKeyboardKeycodeBindings.end(); it++)
 			if (it->second == keycode)
 				return it->first;
 
 		return KeyCode::None;
 	}
 
-	int McToNativeKeycode(KeyCode keycode)
-	{
-		return _monochrome_keyboard_keycode_bindings_[keycode];
+	int McToNativeKeycode(KeyCode keycode) {
+		return s_monochromeKeyboardKeycodeBindings[keycode];
 	}
 
-	char McKeycodeToChar(KeyCode keycode, bool capital, bool capslock_enabled)
-	{
+	char McKeycodeToChar(KeyCode keycode, bool capital, bool capslock_enabled) {
 		if (keycode > KeyCode::KEY_9 && keycode < KeyCode::KEY_F1 && (capital || capslock_enabled))
-			return _monochrome_keyboard_keycode_capital_char_bindings_[keycode].second;
+			return s_monochromeKeyboardKeycodeCapitalCharBindings[keycode].second;
 
 		if (capital)
-			return _monochrome_keyboard_keycode_capital_char_bindings_[keycode].second;
+			return s_monochromeKeyboardKeycodeCapitalCharBindings[keycode].second;
 		else
-			return _monochrome_keyboard_keycode_capital_char_bindings_[keycode].first;
-	}
-
-	std::string KeyPressedEvent::ToString() const
-	{
-		std::stringstream ss;
-		ss << "Key Pressed: " << McKeycodeToChar(keycode, capital, capslock_on);
-		return ss.str();
-	}
-
-	std::string KeyReleasedEvent::ToString() const
-	{
-		std::stringstream ss;
-		ss << "Key Released: " << McKeycodeToChar(keycode, false, false);
-		return ss.str();
+			return s_monochromeKeyboardKeycodeCapitalCharBindings[keycode].first;
 	}
 }
