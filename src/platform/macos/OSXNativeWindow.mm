@@ -4,6 +4,7 @@
 #include <widgets/Layer.h>
 #include <events/MouseEvents.h>
 #include <events/KeyboardEvents.h>
+#include <utils/PlacementConstraintSystem.h>
 using namespace mc;
 
 @implementation OSXWindowDelegate
@@ -373,8 +374,8 @@ namespace mc
         });
 
         if (!utils::PlacementConstraintSystem::hasContainer(MAIN_SCREEN_CONTAINER_NAME)) {
-            unt32_t screenWidth = (uint32_t)[[NSScreen mainScreen] visibleFrame].size.width;
-            unt32_t screenHeight = (uint32_t)[[NSScreen mainScreen] visibleFrame].size.height;
+            uint32_t screenWidth = (uint32_t)[[NSScreen mainScreen] visibleFrame].size.width;
+            uint32_t screenHeight = (uint32_t)[[NSScreen mainScreen] visibleFrame].size.height;
 
 			utils::PlacementConstraintSystem::registerContainer(
 				MAIN_SCREEN_CONTAINER_NAME,
