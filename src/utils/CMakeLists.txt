@@ -7,6 +7,7 @@ set(
     ${cwd}/uuid.h
     ${cwd}/Clipboard.h
     ${cwd}/TextUtils.h
+    ${cwd}/PlacementConstraintSystem.h
 
     PARENT_SCOPE
 )
@@ -16,6 +17,7 @@ set(
 
     ${cwd}/uuid.cpp
     ${cwd}/TextUtils.cpp
+    ${cwd}/PlacementConstraintSystem.cpp
 
     PARENT_SCOPE
 )

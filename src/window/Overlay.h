@@ -4,14 +4,6 @@
 
 namespace mc
 {
-    enum OverflowDirection
-    {
-        Down,
-        Up,
-        Left,
-        Right
-    };
-
     class Overlay
     {
     public:

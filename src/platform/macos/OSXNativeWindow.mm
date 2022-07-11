@@ -371,6 +371,16 @@ namespace mc
         on("focusChanged", [this](Shared<Event> event) {
             d_focused = event->get<bool>("focused");
         });
+
+        if (!utils::PlacementConstraintSystem::hasContainer(MAIN_SCREEN_CONTAINER_NAME)) {
+            unt32_t screenWidth = (uint32_t)[[NSScreen mainScreen] visibleFrame].size.width;
+            unt32_t screenHeight = (uint32_t)[[NSScreen mainScreen] visibleFrame].size.height;
+
+			utils::PlacementConstraintSystem::registerContainer(
+				MAIN_SCREEN_CONTAINER_NAME,
+				Size(screenWidth, screenHeight)
+			);
+		}
     }
 
     void OSXNativeWindow::show() {

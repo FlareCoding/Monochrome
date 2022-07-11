@@ -1,5 +1,6 @@
 #include "Overlay.h"
 #include <core/InternalFlags.h>
+#include <utils/PlacementConstraintSystem.h>
 
 #define MC_OVERLAYWINDOW_FLAGS (1ULL << WindowStyleBorderless)
 
@@ -110,33 +111,20 @@ namespace mc
 			screenClickPos.y - anchorPosDiff.y
 		};
 
+		// Get the virtual screen container
+		// from the placement constraint system.
+		auto screenContainer = utils::PlacementConstraintSystem::getContainer(MAIN_SCREEN_CONTAINER_NAME);
+
 		// Calculate the anchor point according
 		// to the overlay's preferred spawn position.
-		Point proposedAnchorPoint = {
-			anchorOrigin.x,
-			anchorOrigin.y
-		};
+		auto anchorPosition = screenContainer->insertChild(
+			Size(d_overlayWindow->getWidth(), d_overlayWindow->getHeight()),
+			anchorOrigin,
+			d_activatorWidget->size,
+			spawnDirection
+		);
 
-		switch (spawnDirection) {
-		case OverflowDirection::Down: {
-			proposedAnchorPoint.y += (int32_t)d_activatorWidget->size->height;
-			break;
-		}
-		case OverflowDirection::Up: {
-			proposedAnchorPoint.y -= d_overlayWindow->getHeight();
-			break;
-		}
-		case OverflowDirection::Right: {
-			proposedAnchorPoint.x += (int32_t)d_activatorWidget->size->width;
-			break;
-		}
-		case OverflowDirection::Left: {
-			proposedAnchorPoint.x -= d_overlayWindow->getWidth();
-			break;
-		}
-		default: break;
-		}
 
-		return proposedAnchorPoint;
+		return anchorPosition;
 	}
 }

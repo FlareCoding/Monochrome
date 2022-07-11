@@ -5,6 +5,7 @@
 #include <events/MouseEvents.h>
 #include <events/KeyboardEvents.h>
 #include <utils/uuid.h>
+#include <utils/PlacementConstraintSystem.h>
 
 typedef BOOL(__stdcall* SetProcessDpiAwarenessContextFn)(DPI_AWARENESS_CONTEXT);
 LRESULT CALLBACK setupWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -41,6 +42,16 @@ namespace mc
 		on("focusChanged", [this](Shared<Event> event) {
 			d_focused = event->get<bool>("focused");
 		});
+
+		if (!utils::PlacementConstraintSystem::hasContainer(MAIN_SCREEN_CONTAINER_NAME)) {
+			uint32_t screenWidth = (uint32_t)GetSystemMetrics(SM_CXSCREEN);
+			uint32_t screenHeight = (uint32_t)GetSystemMetrics(SM_CYSCREEN);
+
+			utils::PlacementConstraintSystem::registerContainer(
+				MAIN_SCREEN_CONTAINER_NAME,
+				Size(screenWidth, screenHeight)
+			);
+		}
 	}
 
 	void Win32NativeWindow::setWidth(uint32_t width) {

@@ -49,4 +49,12 @@ namespace mc
             );
         }
     };
+
+    enum OverflowDirection
+    {
+        Down,
+        Up,
+        Left,
+        Right
+    };
 }

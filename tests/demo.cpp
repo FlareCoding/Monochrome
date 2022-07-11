@@ -34,7 +34,18 @@ int main()
 
     auto overlay = MakeRef<Overlay>();
     overlay->setSize(200, 140);
+    overlay->spawnDirection = Right;
     overlay->setActivatorWidget(dropdownButton);
+
+    auto dropdownButton2 = MakeRef<Button>();
+    dropdownButton2->position = { 30, 30 };
+    dropdownButton2->text = "Open 2";
+    overlay->setContent(dropdownButton2);
+
+    auto overlay2 = MakeRef<Overlay>();
+    overlay2->setSize(200, 140);
+    //overlay->spawnDirection = Left;
+    overlay2->setActivatorWidget(dropdownButton2);
 
     AppManager::startApplicationLoop();
     return 0;
