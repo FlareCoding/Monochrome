@@ -56,8 +56,8 @@ namespace mc
     }
 
     void OSXRenderTarget::resize(uint32_t width, uint32_t height) {
-        d_width = width;
-        d_height = height;
+        d_width = width ? width : 1;
+        d_height = height ? height : 1;
 
         d_backRenderBuffer = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
                                 pixelsWide:d_width * d_scalingFactor
