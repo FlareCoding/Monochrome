@@ -15,11 +15,29 @@ namespace mc
 		d_overlayWindow->setPosition(d_anchorPoint);
 
 		d_overlayWindow->on("focusChanged", [this](Shared<Event> e) {
-			if (autoHide) {
+			/*if (autoHide) {
 				bool focused = e->get<bool>("focused");
 				if (!focused) {
 					d_overlayWindow->hide();
 				}
+			}*/
+		});
+
+		d_overlayWindow->on("globalMouseDown", [this](Shared<Event> e) {
+			if (!autoHide || !d_overlayOpened) {
+				return;
+			}
+
+			// Get the mouse location where the mouse down event occured
+			auto clickEvent = std::static_pointer_cast<MouseButtonEvent>(e);
+			auto clickLocation = clickEvent->getLocation();
+			
+			// Determine if the overlay should close
+			// depending on where the mouse was clicked.
+			auto mouseDownInsideOverlay = _isMouseClickedInOverlay(clickLocation);
+			
+			if (!mouseDownInsideOverlay) {
+				hide();
 			}
 		});
 	}
@@ -36,15 +54,13 @@ namespace mc
 		d_overlayWindow->setPosition(d_anchorPoint);
 		d_overlayWindow->show();
 		d_overlayWindow->focus();
+
+		d_overlayOpened = true;
 	}
 
 	void Overlay::hide() {
-		if (autoHide) {
-			d_overlayWindow->unfocus();
-		}
-		else {
-			d_overlayWindow->hide();
-		}
+		d_overlayOpened = false;
+		d_overlayWindow->hide();
 	}
 
 	void Overlay::setContent(Shared<BaseWidget> content) {
@@ -91,6 +107,10 @@ namespace mc
 		});
 	}
 	
+	void Overlay::addChildOverlay(Shared<Overlay> overlay) {
+		d_childOverlays.push_back(overlay);
+	}
+
 	Position Overlay::_calculateAnchorPosition(Shared<MouseButtonEvent> e) {
 		// Get the anchor widget's position in the window
 		auto anchorPositionInWindow = d_activatorWidget->getPositionInWindow();
@@ -126,5 +146,26 @@ namespace mc
 
 
 		return anchorPosition;
+	}
+	
+	bool Overlay::_isMouseClickedInOverlay(const Position& clickPosition) {
+		auto windowFrame = Frame(d_overlayWindow->getPosition(), d_overlayWindow->getSize());
+		auto clickedInsideOverlay = windowFrame.containsPoint(clickPosition);
+
+		if (clickedInsideOverlay) {
+			return true;
+		}
+
+		// Check if the mouse was clicked in the child overlay
+		if (d_childOverlays.size()) {
+			for (auto& child : d_childOverlays) {
+				if (child->_isMouseClickedInOverlay(clickPosition)) {
+					return true;
+				}
+			}
+		}
+
+		// Otherwise return false
+		return false;
 	}
 }

@@ -19,6 +19,7 @@ namespace mc
         virtual uint32_t getWidth() const = 0;
         virtual uint32_t getHeight() const = 0;
         virtual Position getPosition() const = 0;
+        virtual Size getSize() const = 0;
         virtual const std::string& getTitle() const = 0;
         virtual void setWidth(uint32_t width) = 0;
         virtual void setHeight(uint32_t height) = 0;

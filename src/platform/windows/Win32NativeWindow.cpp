@@ -6,16 +6,43 @@
 #include <events/KeyboardEvents.h>
 #include <utils/uuid.h>
 #include <utils/PlacementConstraintSystem.h>
+#include <mutex>
 
 typedef BOOL(__stdcall* SetProcessDpiAwarenessContextFn)(DPI_AWARENESS_CONTEXT);
 LRESULT CALLBACK setupWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK msgRedirectWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+static HHOOK s_hMouseHook = NULL;
+LRESULT CALLBACK win32LowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam);
 
 #define GET_X_LPARAM(lp)	((int)(short)LOWORD(lp))
 #define GET_Y_LPARAM(lp)	((int)(short)HIWORD(lp))
 
 namespace mc
 {
+	static std::mutex s_windowMapMutex;
+	static std::vector<Win32NativeWindow*> s_registeredWindows;
+
+	static void registerNativeWindow(Win32NativeWindow* window) {
+		s_windowMapMutex.lock();
+		s_registeredWindows.push_back(window);
+		s_windowMapMutex.unlock();
+	}
+
+	static void unregisterNativeWindow(Win32NativeWindow* window) {
+		s_windowMapMutex.lock();
+
+		s_registeredWindows.erase(
+			std::remove(
+				s_registeredWindows.begin(),
+				s_registeredWindows.end(),
+				window
+			)
+		);
+
+		s_windowMapMutex.unlock();
+	}
+
 	Win32NativeWindow::Win32NativeWindow(uint64_t windowFlags) {
 		d_width = 800;
 		d_height = 600;
@@ -52,6 +79,14 @@ namespace mc
 				Size(screenWidth, screenHeight)
 			);
 		}
+
+		// Create the global low-level mouse hook
+		if (!s_hMouseHook) {
+			s_hMouseHook = SetWindowsHookEx(WH_MOUSE_LL, win32LowLevelMouseProc, GetModuleHandle(NULL), 0);
+		}
+
+		// Register the window instance
+		registerNativeWindow(this);
 	}
 
 	void Win32NativeWindow::setWidth(uint32_t width) {
@@ -65,6 +100,8 @@ namespace mc
 	}
 
 	void Win32NativeWindow::setPosition(const Position& pos) {
+		d_position = pos;
+
 		// Get window's current position and size
 		RECT rect;
 		GetWindowRect(d_windowHandle, &rect);
@@ -261,6 +298,8 @@ namespace mc
 	Win32NativeWindow::win32WindowProcCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
 		case WM_CLOSE: {
+			unregisterNativeWindow(this);
+
 			// Stop the application only if the
 			// destroyed window was the root window.
 			if (isRoot()) {
@@ -639,4 +678,33 @@ LRESULT msgRedirectWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		reinterpret_cast<mc::Win32NativeWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 	return pWindow->win32WindowProcCallback(hwnd, uMsg, wParam, lParam);
+}
+
+LRESULT CALLBACK win32LowLevelMouseProc(
+	int    nCode,
+	WPARAM wParam,
+	LPARAM lParam
+) {
+	MOUSEHOOKSTRUCT* pMouseStruct = reinterpret_cast<MOUSEHOOKSTRUCT*>(lParam);
+	if (pMouseStruct != NULL) {
+		if (wParam == WM_LBUTTONDOWN) {
+			// Convert the mouse position to
+			// a monochrome Position struct.
+			mc::Position cursorPosition = {
+				(int32_t)pMouseStruct->pt.x,
+				(int32_t)pMouseStruct->pt.y
+			};
+
+			// Go through each registered window intance
+			// and fire the global mouse clicked event.
+			for (auto window : mc::s_registeredWindows) {
+				window->fireEvent("globalMouseDown", mc::MakeRef<mc::Event>(mc::eventDataMap_t{
+					{ "location", cursorPosition },
+					{ "button", mc::MouseButton::Left }
+				}));
+			}
+		}
+	}
+
+	return CallNextHookEx(s_hMouseHook, nCode, wParam, lParam);
 }

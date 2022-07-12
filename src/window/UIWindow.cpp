@@ -103,6 +103,11 @@ namespace mc
         return d_nativeWindow->getPosition();
     }
 
+    Size UIWindow::getSize()
+    {
+        return d_nativeWindow->getSize();
+    }
+
     void UIWindow::setWidth(uint32_t width) {
         d_nativeWindow->setWidth(width);
     }

@@ -18,6 +18,10 @@ namespace mc
         this->appendAllowedEvent("mouseUp");
         this->appendAllowedEvent("keyDown");
         this->appendAllowedEvent("keyUp");
+
+        // Special types of events called
+        // from low level system hooks.
+        this->appendAllowedEvent("globalMouseDown");
     }
 
     Shared<NativeWindow> NativeWindow::create(bool isRoot, uint64_t windowFlags) {

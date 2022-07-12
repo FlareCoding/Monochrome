@@ -17,6 +17,7 @@ namespace mc
         uint32_t getHeight();
         const std::string& getTitle();
         Position getPosition();
+        Size getSize();
         void setWidth(uint32_t width);
         void setHeight(uint32_t height);
         void setSize(uint32_t width, uint32_t height);

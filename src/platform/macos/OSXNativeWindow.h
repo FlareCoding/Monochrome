@@ -30,6 +30,7 @@ namespace mc
         uint32_t getWidth() const { return d_width; }
         uint32_t getHeight() const { return d_height; }
         Position getPosition() const { return d_position; }
+        Size     getSize() const { return Size(d_width, d_height); }
         const std::string& getTitle() const { return d_title; };
 
         void setWidth(uint32_t width);

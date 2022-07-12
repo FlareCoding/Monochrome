@@ -439,6 +439,8 @@ namespace mc
     }
 
     void OSXNativeWindow::setPosition(const Position& pos) {
+        d_position = pos;
+
         float topLeftOrigin =   [[NSScreen mainScreen] visibleFrame].origin.y +
                                 [[NSScreen mainScreen] visibleFrame].size.height;
 

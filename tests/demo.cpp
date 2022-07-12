@@ -27,25 +27,28 @@ int main()
     });
     window->addWidget(btn);
 
+    auto fileMenu = MakeRef<MenuList>("File");
+    fileMenu->backgroundColor = Color(60, 64, 62);
+    fileMenu->color = Color::yellow;
+    fileMenu->addMenuItem(MenuItem("Save"));
+    fileMenu->addMenuItem(MenuItem("Save As"));
+    fileMenu->addMenuItem(MenuItem("Open"));
+
+    MenuItem newItem("New");
+
+    auto ddMenuList = MakeRef<MenuList>();
+
     auto dropdownButton = MakeRef<Button>();
     dropdownButton->position = { 340, 130 };
     dropdownButton->text = "Open";
+    dropdownButton->cornerRadius = 0;
     window->addWidget(dropdownButton);
 
-    auto overlay = MakeRef<Overlay>();
-    overlay->setSize(200, 140);
-    overlay->spawnDirection = Right;
-    overlay->setActivatorWidget(dropdownButton);
-
-    auto dropdownButton2 = MakeRef<Button>();
-    dropdownButton2->position = { 30, 30 };
-    dropdownButton2->text = "Open 2";
-    overlay->setContent(dropdownButton2);
-
-    auto overlay2 = MakeRef<Overlay>();
-    overlay2->setSize(200, 140);
-    //overlay->spawnDirection = Left;
-    overlay2->setActivatorWidget(dropdownButton2);
+    ddMenuList->backgroundColor = Color(60, 64, 62);
+    ddMenuList->color = Color::yellow;
+    ddMenuList->setActivatorWidget(dropdownButton);
+    ddMenuList->addMenu(fileMenu);
+    ddMenuList->addMenuItem(newItem);
 
     AppManager::startApplicationLoop();
     return 0;

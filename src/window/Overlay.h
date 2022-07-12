@@ -29,12 +29,21 @@ namespace mc
         // hide whenever the overlay window loses focus.
         bool                autoHide;
 
+        // Specifies a child overlay so that when
+        // the mouse is clicked onto the child, the
+        // parent overlay doesn't automatically close.
+        void addChildOverlay(Shared<Overlay> overlay);
+
     private:
         Shared<UIWindow>    d_overlayWindow;
 
         Shared<BaseWidget>  d_activatorWidget = nullptr;
         Point               d_anchorPoint = { 0, 0 };
+        bool                d_overlayOpened = false;
+
+        std::vector<Shared<Overlay>> d_childOverlays;
 
         Position            _calculateAnchorPosition(Shared<MouseButtonEvent> e);
+        bool                _isMouseClickedInOverlay(const Position& clickPosition);
     };
 }
