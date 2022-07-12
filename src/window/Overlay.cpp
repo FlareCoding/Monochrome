@@ -14,15 +14,6 @@ namespace mc
 		d_overlayWindow->hide();
 		d_overlayWindow->setPosition(d_anchorPoint);
 
-		d_overlayWindow->on("focusChanged", [this](Shared<Event> e) {
-			/*if (autoHide) {
-				bool focused = e->get<bool>("focused");
-				if (!focused) {
-					d_overlayWindow->hide();
-				}
-			}*/
-		});
-
 		d_overlayWindow->on("globalMouseDown", [this](Shared<Event> e) {
 			if (!autoHide || !d_overlayOpened) {
 				return;
@@ -35,7 +26,7 @@ namespace mc
 			// Determine if the overlay should close
 			// depending on where the mouse was clicked.
 			auto mouseDownInsideOverlay = _isMouseClickedInOverlay(clickLocation);
-			
+
 			if (!mouseDownInsideOverlay) {
 				hide();
 			}

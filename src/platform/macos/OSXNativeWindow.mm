@@ -7,6 +7,32 @@
 #include <utils/PlacementConstraintSystem.h>
 using namespace mc;
 
+namespace mc
+{
+    static std::mutex s_windowMapMutex;
+	static std::vector<OSXNativeWindow*> s_registeredWindows;
+
+	static void registerNativeWindow(OSXNativeWindow* window) {
+		s_windowMapMutex.lock();
+		s_registeredWindows.push_back(window);
+		s_windowMapMutex.unlock();
+	}
+
+	static void unregisterNativeWindow(OSXNativeWindow* window) {
+		s_windowMapMutex.lock();
+
+		s_registeredWindows.erase(
+			std::remove(
+				s_registeredWindows.begin(),
+				s_registeredWindows.end(),
+				window
+			)
+		);
+
+		s_windowMapMutex.unlock();
+	}
+}
+
 @implementation OSXWindowDelegate
 @synthesize mcWindowHandle;
 
@@ -14,6 +40,9 @@ using namespace mc;
 {
     OSXWindowDelegate* delegate = ((OSXWindowDelegate*)sender.delegate);
     OSXNativeWindow* windowInstance = delegate.mcWindowHandle;
+
+    // Unregister the window instance
+    unregisterNativeWindow(windowInstance);
 
     // Stop the application only if the
     // destroyed window was the root window.
@@ -382,6 +411,73 @@ namespace mc
 				Size(screenWidth, screenHeight)
 			);
 		}
+
+        // Register the window instance
+		registerNativeWindow(this);
+
+        // On the first window creation, initialize mouse hooks
+        static bool s_globalMouseHookInitialized = false;
+        if (!s_globalMouseHookInitialized) {
+            s_globalMouseHookInitialized = true;
+
+            // Installing the global hook to track mouse
+            // events outside of the current application.
+            [NSEvent addGlobalMonitorForEventsMatchingMask:
+                NSEventMaskLeftMouseDown
+                handler:^(NSEvent* event
+            ) {
+                if (event.type == NSEventTypeLeftMouseDown) {
+                    NSPoint mouseLocation = [NSEvent mouseLocation];
+                    int32_t screenHeight = (int32_t)[[NSScreen mainScreen] visibleFrame].size.height;
+
+                    // Convert the mouse position to
+                    // a monochrome Position struct.
+                    mc::Position cursorPosition = {
+                        (int32_t)mouseLocation.x,
+                        (int32_t)(screenHeight - mouseLocation.y)
+                    };
+
+                    // Go through each registered window intance
+                    // and fire the global mouse clicked event.
+                    for (auto window : mc::s_registeredWindows) {
+                        window->fireEvent("globalMouseDown", mc::MakeRef<mc::Event>(mc::eventDataMap_t{
+                            { "location", cursorPosition },
+                            { "button", mc::MouseButton::Left }
+                        }));
+                    }
+                }
+            }];
+
+            // Installing the local hook to track mouse
+            // events inside the current application.
+            [NSEvent addLocalMonitorForEventsMatchingMask:
+                NSEventMaskLeftMouseDown
+                handler:^NSEvent*(NSEvent* event
+            ) {
+                if (event.type == NSEventTypeLeftMouseDown) {
+                    NSPoint mouseLocation = [NSEvent mouseLocation];
+                    int32_t screenHeight = (int32_t)[[NSScreen mainScreen] visibleFrame].size.height;
+
+                    // Convert the mouse position to
+                    // a monochrome Position struct.
+                    mc::Position cursorPosition = {
+                        (int32_t)mouseLocation.x,
+                        (int32_t)(screenHeight - mouseLocation.y)
+                    };
+
+                    // Go through each registered window intance
+                    // and fire the global mouse clicked event.
+                    for (auto window : mc::s_registeredWindows) {
+                        window->fireEvent("globalMouseDown", mc::MakeRef<mc::Event>(mc::eventDataMap_t{
+                            { "location", cursorPosition },
+                            { "button", mc::MouseButton::Left }
+                        }));
+                    }
+                }
+
+                return event;
+            }];
+        }
     }
 
     void OSXNativeWindow::show() {
