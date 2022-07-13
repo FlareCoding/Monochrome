@@ -6,6 +6,7 @@ set(
 
     ${cwd}/Core.h
     ${cwd}/InternalFlags.h
+    ${cwd}/StackTracer.h
 
     PARENT_SCOPE
 )
@@ -15,6 +16,7 @@ set(
 
     ${cwd}/Core.cpp
     ${cwd}/InternalFlags.cpp
+    ${cwd}/StackTracer.cpp
 
     PARENT_SCOPE
 )

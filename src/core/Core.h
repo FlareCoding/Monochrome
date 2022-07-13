@@ -22,11 +22,26 @@
 	#error "Unknown compiler"
 #endif
 
+#include "StackTracer.h"
+
+//
+// Uncomment this line in order to receive
+// a full frame stacktrace on a failed assert call.
+//
+#define MC_DEBUG_ENABLE_STACKTRACE
+
+#ifdef MC_DEBUG_ENABLE_STACKTRACE
+	#define PrintStackTrace() _printDebugStackTrace();
+#else
+	#define PrintStackTrace()
+#endif
+
 #ifndef NDEBUG
 #define CORE_ASSERT(condition, message) \
     if (!(condition)) { \
         std::cerr << "Assertion `" #condition "` failed in " << __FILE__ \
                     << " line " << __LINE__ << ": " << message << std::endl; \
+		PrintStackTrace() \
         std::terminate(); \
     }
 #else

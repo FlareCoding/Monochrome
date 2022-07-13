@@ -1,6 +1,3 @@
 #include "Core.h"
 
-namespace mc
-{
-    
-}
+namespace mc {}
