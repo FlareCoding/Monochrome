@@ -603,6 +603,15 @@ namespace mc
 			fireEvent("mouseMoved", mouseMovedEvent);
 
 			d_previousMousePosition = cursorPoint;
+
+			// Tracking the mouse leaving and entering the window
+			// ** Check out WM_MOUSELEAVE message **
+			TRACKMOUSEEVENT tme;
+			tme.cbSize = sizeof(tme);
+			tme.hwndTrack = d_windowHandle;
+			tme.dwFlags = TME_HOVER | TME_LEAVE;
+			tme.dwHoverTime = HOVER_DEFAULT;
+			TrackMouseEvent(&tme);
 			break;
 		}
 		case WM_KEYDOWN:
@@ -642,6 +651,14 @@ namespace mc
 			});
 
 			fireEvent("keyUp", keyUpEvent);
+			break;
+		}
+		case WM_MOUSELEAVE: {
+			//
+			// *** Potential Development ***
+			// Currently not supported on MacOS or Linux
+			//
+			//fireEvent("mouseLeftWindow", Event::empty);
 			break;
 		}
 		default: break;

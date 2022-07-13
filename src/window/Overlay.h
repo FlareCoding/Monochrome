@@ -11,6 +11,7 @@ namespace mc
         ~Overlay();
 
         void setSize(uint32_t width, uint32_t height);
+        void setSize(const Size& size);
         void show();
         void hide();
         void setContent(Shared<BaseWidget> content);

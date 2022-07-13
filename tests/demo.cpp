@@ -8,6 +8,11 @@
 #include <widgets/AllWidgets.h>
 using namespace mc;
 
+void itemSelected(Shared<Event> e) {
+    auto item = e->get<MenuItem>("item");
+    printf("Item Selected: %s\n", item.c_str());
+}
+
 int main()
 {
     AppManager::registerApplication("appId-032487");
@@ -27,28 +32,33 @@ int main()
     });
     window->addWidget(btn);
 
-    auto fileMenu = MakeRef<MenuList>("File");
-    fileMenu->backgroundColor = Color(60, 64, 62);
-    fileMenu->color = Color::yellow;
-    fileMenu->addMenuItem(MenuItem("Save"));
-    fileMenu->addMenuItem(MenuItem("Save As"));
-    fileMenu->addMenuItem(MenuItem("Open"));
-
-    MenuItem newItem("New");
-
-    auto ddMenuList = MakeRef<MenuList>();
-
     auto dropdownButton = MakeRef<Button>();
     dropdownButton->position = { 340, 130 };
     dropdownButton->text = "Open";
     dropdownButton->cornerRadius = 0;
     window->addWidget(dropdownButton);
 
+    auto moreMenu = MakeRef<MenuList>("More...");
+    moreMenu->addMenuItem("Save");
+    moreMenu->addMenuItem("Save As");
+    moreMenu->addMenuItem("Open");
+    moreMenu->on("itemSelected", itemSelected);
+    moreMenu->backgroundColor = Color(60, 64, 62);
+    moreMenu->color = Color::yellow;
+    moreMenu->borderColor = Color::yellow;
+
+    auto ddMenuList = MakeRef<MenuList>();
+    ddMenuList->on("itemSelected", itemSelected);
+
     ddMenuList->backgroundColor = Color(60, 64, 62);
-    ddMenuList->color = Color::yellow;
     ddMenuList->setActivatorWidget(dropdownButton);
-    ddMenuList->addMenu(fileMenu);
-    ddMenuList->addMenuItem(newItem);
+    ddMenuList->addMenuItem("New Project");
+    ddMenuList->addMenu(moreMenu);
+    ddMenuList->addMenuItem("Exit");
+    ddMenuList->color = Color::green;
+    ddMenuList->borderColor = Color::blue;
+    ddMenuList->borderThickness = 2;
+    ddMenuList->size = { 200, 0 };
 
     AppManager::startApplicationLoop();
     return 0;

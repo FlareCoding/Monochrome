@@ -1,21 +1,14 @@
 #pragma once
 #include "BaseWidget.h"
 #include "Panel.h"
+#include "Button.h"
 #include <variant>
 
 namespace mc
 {
     class Overlay;
 
-    class MenuItem
-    {
-    public:
-        std::string name;
-        std::function<void()> selectionHandler;
-
-        MenuItem() = default;
-        MenuItem(const std::string& name) : name(name) {}
-    };
+    using MenuItem = std::string;
 
     class MenuList : public BaseWidget
     {
@@ -29,17 +22,36 @@ namespace mc
 
         void setActivatorWidget(Shared<BaseWidget> widget);
 
-        PropertyObserver<std::string> name;
+        // If this MenuList is added as a child menu 
+        // of another MenuList, then this is the name
+        // that will be displayed on the menu button.
+        PropertyObserver<std::string>   name;
+
+        // Color of the border around the MenuList overlay
+        PropertyObserver<Color>         borderColor;
+
+        // Thickness of the border around the MenuList overlay
+        PropertyObserver<uint32_t>      borderThickness;
+
+        // Height of each individual menu item
+        PropertyObserver<uint32_t>      menuItemSize;
 
     private:
         void _setupProperties() override;
 
-    private:
-        Shared<Overlay> d_overlay;
-        Shared<Panel> d_contentPanel;
-        std::map<std::string, std::variant<Shared<MenuList>, MenuItem>> d_menuItems;
+        void _recalculateMenuItemBounds();
 
     private:
-        const uint32_t  d_itemSize = 24u;
+        Shared<Overlay> d_overlay;
+        Shared<Panel> d_overlayBorder;
+        Shared<Panel> d_contentPanel;
+
+        std::map<
+            std::string,
+            std::pair<
+                Shared<Button>,
+                std::variant<Shared<MenuList>, MenuItem>
+            >
+        > d_menuItems;
     };
 }

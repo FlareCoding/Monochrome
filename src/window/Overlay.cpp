@@ -41,7 +41,15 @@ namespace mc
 		d_overlayWindow->setSize(width, height);
 	}
 
+	void Overlay::setSize(const Size& size) {
+		d_overlayWindow->setSize(size.width, size.height);
+	}
+
 	void Overlay::show() {
+		if (d_overlayOpened) {
+			return;
+		}
+
 		d_overlayWindow->setPosition(d_anchorPoint);
 		d_overlayWindow->show();
 		d_overlayWindow->focus();
