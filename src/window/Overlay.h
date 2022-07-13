@@ -20,7 +20,7 @@ namespace mc
         void setBackgroundColor(const Color& color);
 
         void setAnchor(const Point& point);
-        void setActivatorWidget(Shared<BaseWidget> widget);
+        void setActivatorWidget(BaseWidget* widget);
 
         // Specifies the preferred orientation for spawning
         // the overlay window around the activator widget.
@@ -38,7 +38,7 @@ namespace mc
     private:
         Shared<UIWindow>    d_overlayWindow;
 
-        Shared<BaseWidget>  d_activatorWidget = nullptr;
+        BaseWidget*         d_activatorWidget = nullptr;
         Point               d_anchorPoint = { 0, 0 };
         bool                d_overlayOpened = false;
 

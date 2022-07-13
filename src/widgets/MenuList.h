@@ -20,7 +20,10 @@ namespace mc
         void addMenu(Shared<MenuList> menu);
         void addMenuItem(const MenuItem& item);
 
-        void setActivatorWidget(Shared<BaseWidget> widget);
+        void setActivatorWidget(BaseWidget* widget);
+
+        // Returns the index of the specified item or submenu name
+        size_t indexOf(const std::string& name);
 
         // If this MenuList is added as a child menu 
         // of another MenuList, then this is the name
@@ -46,11 +49,13 @@ namespace mc
         Shared<Panel> d_overlayBorder;
         Shared<Panel> d_contentPanel;
 
-        std::map<
-            std::string,
+        std::vector<
             std::pair<
-                Shared<Button>,
-                std::variant<Shared<MenuList>, MenuItem>
+                std::string,
+                std::pair<
+                    Shared<Button>,
+                    std::variant<Shared<MenuList>, MenuItem>
+                >
             >
         > d_menuItems;
     };

@@ -158,13 +158,13 @@ namespace mc
         d_contentPanel->addChild(menuButton);
 
         // Set the button as menu list activator
-        menu->setActivatorWidget(menuButton);
+        menu->setActivatorWidget(menuButton.get());
 
         // Set the menu's overlay as the child overlay
         d_overlay->addChildOverlay(menu->d_overlay);
 
         // Add the menu to the list
-        d_menuItems.insert({ menu->name, { menuButton, menu } });
+        d_menuItems.push_back({ menu->name, { menuButton, menu } });
 
         // Whenever an item was selected in the child menu,
         // this MenuList should also hide its own overlay.
@@ -188,19 +188,29 @@ namespace mc
             // indicating that an item was selected.
             fireEvent("itemSelected", MakeRef<Event>(eventDataMap_t{
                 { "item", item },
-                { "index", d_menuItems.find(item) }
+                { "index", indexOf(item) }
             }));
         });
         d_contentPanel->addChild(menuItemButton);
 
         // Add the menu item to the list
-        d_menuItems.insert({ item, { menuItemButton, item } });
+        d_menuItems.push_back({ item, { menuItemButton, item } });
 
         // Calculate positioning and size menu items
         _recalculateMenuItemBounds();
     }
     
-    void MenuList::setActivatorWidget(Shared<BaseWidget> widget) {
+    void MenuList::setActivatorWidget(BaseWidget* widget) {
         d_overlay->setActivatorWidget(widget);
+    }
+    
+    size_t MenuList::indexOf(const std::string& name) {
+        for (size_t i = 0; i < d_menuItems.size(); ++i) {
+            if (d_menuItems.at(i).first == name) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

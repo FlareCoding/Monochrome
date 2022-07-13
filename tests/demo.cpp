@@ -32,16 +32,20 @@ int main()
     });
     window->addWidget(btn);
 
-    auto dropdownButton = MakeRef<Button>();
-    dropdownButton->position = { 340, 130 };
-    dropdownButton->text = "Open";
-    dropdownButton->cornerRadius = 0;
-    window->addWidget(dropdownButton);
+    auto extraMenu = MakeRef<MenuList>("Actions...");
+    extraMenu->addMenuItem("Like");
+    extraMenu->addMenuItem("Notify");
+    extraMenu->addMenuItem("Subscribe");
+    extraMenu->on("itemSelected", itemSelected);
+    extraMenu->backgroundColor = Color(60, 64, 62);
+    extraMenu->color = Color(195, 255, 100);
+    extraMenu->borderColor = Color::red;
 
     auto moreMenu = MakeRef<MenuList>("More...");
     moreMenu->addMenuItem("Save");
     moreMenu->addMenuItem("Save As");
     moreMenu->addMenuItem("Open");
+    moreMenu->addMenu(extraMenu);
     moreMenu->on("itemSelected", itemSelected);
     moreMenu->backgroundColor = Color(60, 64, 62);
     moreMenu->color = Color::yellow;
@@ -49,9 +53,7 @@ int main()
 
     auto ddMenuList = MakeRef<MenuList>();
     ddMenuList->on("itemSelected", itemSelected);
-
     ddMenuList->backgroundColor = Color(60, 64, 62);
-    ddMenuList->setActivatorWidget(dropdownButton);
     ddMenuList->addMenuItem("New Project");
     ddMenuList->addMenu(moreMenu);
     ddMenuList->addMenuItem("Exit");
@@ -59,6 +61,14 @@ int main()
     ddMenuList->borderColor = Color::blue;
     ddMenuList->borderThickness = 2;
     ddMenuList->size = { 200, 0 };
+
+    auto dropdown = MakeRef<DropdownButton>();
+    dropdown->position = { 340, 130 };
+    dropdown->size = { 160, 20 };
+    dropdown->text = "Open Menu";
+    dropdown->cornerRadius = 0;
+    dropdown->setMenuList(ddMenuList);
+    window->addWidget(dropdown);
 
     AppManager::startApplicationLoop();
     return 0;

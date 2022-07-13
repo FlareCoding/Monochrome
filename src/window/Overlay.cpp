@@ -79,13 +79,19 @@ namespace mc
 	    d_anchorPoint = point;
 	}
 
-	void Overlay::setActivatorWidget(Shared<BaseWidget> widget) {
+	void Overlay::setActivatorWidget(BaseWidget* widget) {
 		// Check if the previous activator widget needs to be detached
 		if (d_activatorWidget) {
 			d_activatorWidget->off("clicked");
 		}
 
 		d_activatorWidget = widget;
+
+		// If widget is nullptr, treat it as
+		// resetting and removing the activator widget.
+		if (!d_activatorWidget) {
+			return;
+		}
 
 		d_activatorWidget->on("clicked", [this](Shared<Event> e) {
 			auto clickEvent = std::static_pointer_cast<MouseButtonEvent>(e);
