@@ -14,7 +14,7 @@
 
 namespace mc
 {
-    MenuList::MenuList() : name("Menu Item") {
+    MenuList::MenuList() {
         _setupProperties();
     }
 
@@ -114,13 +114,12 @@ namespace mc
         // Setup a default size
         size = { 140, 0 };
 
-        // Indicate that the MenuList can
-        // fire an 'itemSelected' event.
+        // Allow MenuList specific events
         appendAllowedEvent("itemSelected");
+        appendAllowedEvent("overlayShouldClose");
 
-        // Additionally, the overlay should
-        // close when an item is selected.
-        on("itemSelected", [this](auto e) {
+        // Hide the overlay when needed
+        on("overlayShouldClose", [this](auto e) {
             d_overlay->hide();
         });
     }
@@ -149,7 +148,7 @@ namespace mc
         };
     }
 
-    void MenuList::addMenu(Shared<MenuList> menu) {
+    void MenuList::addSubMenu(Shared<MenuList> menu) {
         auto menuButton = MakeRef<Button>();
         menuButton->cornerRadius = 0;
         menuButton->text = menu->name;
@@ -168,9 +167,7 @@ namespace mc
 
         // Whenever an item was selected in the child menu,
         // this MenuList should also hide its own overlay.
-        menu->on("itemSelected", [this](auto e) {
-            d_overlay->hide();
-        });
+        menu->forwardEmittedEvent(this, "overlayShouldClose");
 
         // Calculate positioning and size menu items
         _recalculateMenuItemBounds();
@@ -190,6 +187,10 @@ namespace mc
                 { "item", item },
                 { "index", indexOf(item) }
             }));
+
+            // Indicate to this MenuList and its potential
+            // parent MenuLists that the overlay should close.
+            fireEvent("overlayShouldClose", Event::empty);
         });
         d_contentPanel->addChild(menuItemButton);
 

@@ -45,7 +45,7 @@ int main()
     moreMenu->addMenuItem("Save");
     moreMenu->addMenuItem("Save As");
     moreMenu->addMenuItem("Open");
-    moreMenu->addMenu(extraMenu);
+    moreMenu->addSubMenu(extraMenu);
     moreMenu->on("itemSelected", itemSelected);
     moreMenu->backgroundColor = Color(60, 64, 62);
     moreMenu->color = Color::yellow;
@@ -55,7 +55,7 @@ int main()
     ddMenuList->on("itemSelected", itemSelected);
     ddMenuList->backgroundColor = Color(60, 64, 62);
     ddMenuList->addMenuItem("New Project");
-    ddMenuList->addMenu(moreMenu);
+    ddMenuList->addSubMenu(moreMenu);
     ddMenuList->addMenuItem("Exit");
     ddMenuList->color = Color::green;
     ddMenuList->borderColor = Color::blue;

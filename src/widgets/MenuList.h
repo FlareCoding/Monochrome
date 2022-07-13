@@ -17,7 +17,7 @@ namespace mc
         MenuList(const std::string& name);
         inline const std::string getType() const override { return "MenuList"; }
 
-        void addMenu(Shared<MenuList> menu);
+        void addSubMenu(Shared<MenuList> menu);
         void addMenuItem(const MenuItem& item);
 
         void setActivatorWidget(BaseWidget* widget);
