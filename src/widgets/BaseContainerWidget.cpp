@@ -49,6 +49,13 @@ namespace mc
         return false;
     }
 
+    void BaseContainerWidget::removeAllChildren() {
+        while (d_children.size()) {
+            auto firstChild = getChild(0);
+            removeChild(firstChild);
+        }
+    }
+
     Shared<BaseWidget> BaseContainerWidget::findChild(uuid_t uuid) {    
         for (auto& widget : d_children) {
             if (widget->getID() == uuid) {

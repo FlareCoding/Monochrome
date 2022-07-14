@@ -31,6 +31,9 @@ namespace mc
         // @returns Status of whether a child widget has been removed successfully
         bool removeChild(uuid_t uuid);
 
+        // Removes all child widgets
+        void removeAllChildren();
+
         // Attemts to find a child widget given its ID
         // @param uuid ID of the child widget to find
         // @returns Shared pointer to the child widget if it was found, nullptr otherwise
