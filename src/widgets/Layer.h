@@ -10,6 +10,10 @@ namespace mc
 
         Position() = default;
         Position(int32_t x, int32_t y) : x(x), y(y) {}
+
+        inline friend bool operator==(const Position& lhs, const Position& rhs) {
+            return (lhs.x == rhs.x) && (lhs.y == rhs.y);
+        }
     };
 
     using Point = Position;
@@ -21,6 +25,10 @@ namespace mc
 
         Size() = default;
         Size(uint32_t width, uint32_t height) : width(width), height(height) {}
+
+        inline friend bool operator==(const Size& lhs, const Size& rhs) {
+            return (lhs.width == rhs.width) && (lhs.height == rhs.height);
+        }
     };
 
     struct Distance
@@ -30,6 +38,10 @@ namespace mc
 
         Distance() = default;
         Distance(int32_t x, int32_t y) : x(x), y(y) {}
+
+        inline friend bool operator==(const Distance& lhs, const Distance& rhs) {
+            return (lhs.x == rhs.x) && (lhs.y == rhs.y);
+        }
     };
 
     struct Frame
@@ -47,6 +59,10 @@ namespace mc
                 point.x > position.x && point.x < position.x + (int32_t)size.width &&
 				point.y > position.y && point.y < position.y + (int32_t)size.height
             );
+        }
+
+        inline friend bool operator==(const Frame& lhs, const Frame& rhs) {
+            return (lhs.position == rhs.position) && (lhs.size == rhs.size);
         }
     };
 

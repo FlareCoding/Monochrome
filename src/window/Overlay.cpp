@@ -60,6 +60,16 @@ namespace mc
 	void Overlay::hide() {
 		d_overlayOpened = false;
 		d_overlayWindow->hide();
+
+		// Get the virtual screen container
+		// from the placement constraint system.
+		auto screenContainer = utils::PlacementConstraintSystem::getContainer(MAIN_SCREEN_CONTAINER_NAME);
+
+		// Unregister the overal window from the
+		// global container placement system.
+		screenContainer->removeChild(
+			reinterpret_cast<uint64_t>(this) // ID
+		);
 	}
 
 	void Overlay::setContent(Shared<BaseWidget> content) {
@@ -143,12 +153,12 @@ namespace mc
 		// Calculate the anchor point according
 		// to the overlay's preferred spawn position.
 		auto anchorPosition = screenContainer->insertChild(
+			reinterpret_cast<uint64_t>(this), // ID
 			Size(d_overlayWindow->getWidth(), d_overlayWindow->getHeight()),
 			anchorOrigin,
 			d_activatorWidget->size,
 			spawnDirection
 		);
-
 
 		return anchorPosition;
 	}

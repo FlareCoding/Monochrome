@@ -309,6 +309,23 @@ namespace mc
 			}
 			break;
 		}
+		case WM_MOVE: {
+			HMONITOR monitor = MonitorFromWindow(d_windowHandle, MONITOR_DEFAULTTONEAREST);
+
+			MONITORINFO info;
+			info.cbSize = sizeof(info);
+			if (GetMonitorInfo(monitor, &info)) {
+				uint32_t screenWidth = std::abs(info.rcMonitor.left - info.rcMonitor.right);
+				uint32_t screenHeight = std::abs(info.rcMonitor.top - info.rcMonitor.bottom);
+
+				utils::PlacementConstraintSystem::updateContainer(
+					MAIN_SCREEN_CONTAINER_NAME,
+					Size(screenWidth, screenHeight)
+				);
+			}
+
+			break;
+		}
 		case WM_SIZE: {
 			uint32_t newWidth = static_cast<uint32_t>(LOWORD(lParam));
 			uint32_t newHeight = static_cast<uint32_t>(HIWORD(lParam));
