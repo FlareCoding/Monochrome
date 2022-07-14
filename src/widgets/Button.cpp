@@ -9,6 +9,12 @@ namespace mc
     void Button::_setupProperties() {
         text = "Button";
         text.forwardEmittedEvents(this);
+        
+        secondaryRightText = "";
+        secondaryRightText.forwardEmittedEvents(this);
+
+        secondaryLeftText = "";
+        secondaryLeftText.forwardEmittedEvents(this);
 
         font = "arial";
         font.forwardEmittedEvents(this);

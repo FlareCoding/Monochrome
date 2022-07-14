@@ -210,6 +210,36 @@ namespace mc
             button->wordWrapMode
         );
 
+        // Optionally draw the secondary right-aligned text
+        if (!button->secondaryRightText->empty()) {
+            renderTarget->drawText(
+                position.x, position.y,
+                size.width, size.height,
+                button->color,
+                button->secondaryRightText,
+                button->font,
+                button->fontSize,
+                button->fontStyle,
+                "right",
+                button->wordWrapMode
+            );
+        }
+
+        // Optionally draw the secondary left-aligned text
+        if (!button->secondaryLeftText->empty()) {
+            renderTarget->drawText(
+                position.x, position.y,
+                size.width, size.height,
+                button->color,
+                button->secondaryLeftText,
+                button->font,
+                button->fontSize,
+                button->fontStyle,
+                "left",
+                button->wordWrapMode
+            );
+        }
+
         // Draw the border on top of the body
         renderTarget->drawRectangle(
             position.x, position.y,

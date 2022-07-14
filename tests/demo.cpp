@@ -70,6 +70,17 @@ int main()
     dropdown->setMenuList(ddMenuList);
     window->addWidget(dropdown);
 
+    auto combobox = MakeRef<Combobox>();
+    combobox->position = { 540, 100 };
+    combobox->size = { 160, 20 };
+    combobox->cornerRadius = 0;
+    combobox->addItems({ "Eggs", "Milk", "Beef", "Lettuce", "Tomatos" });
+    combobox->borderColor = Color::white;
+    combobox->itemColor = Color::white;
+    combobox->color = Color::white;
+    combobox->backgroundColor = Color::darkGray;
+    window->addWidget(combobox);
+
     AppManager::startApplicationLoop();
     return 0;
 }

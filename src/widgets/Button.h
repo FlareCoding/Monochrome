@@ -12,6 +12,16 @@ namespace mc
         // Text to be displayed on the button
         PropertyObserver<std::string>   text;
 
+        // Additional text that can optionally be displayed
+        // on the far-right end of the button with the same
+        // color as the main text. Empty by default.
+        PropertyObserver<std::string>   secondaryRightText;
+
+        // Additional text that can optionally be displayed
+        // on the far-left end of the button with the same
+        // color as the main text. Empty by default.
+        PropertyObserver<std::string>   secondaryLeftText;
+
         // Font of the text displayed
         PropertyObserver<std::string>   font;
 

@@ -34,6 +34,9 @@ namespace mc
         menuItemSize = 24;
         menuItemSize.forwardEmittedEvents(this);
 
+        spawnDirection = OverflowDirection::Right;
+        spawnDirection.forwardEmittedEvents(this);
+
         backgroundColor = Color(60, 60, 60);
         color = Color::white;
 
@@ -85,6 +88,11 @@ namespace mc
             // Recalculating position and size of each menu item
             _recalculateMenuItemBounds();
         });
+
+        spawnDirection.on("propertyChanged", [this](auto e) {
+            // Set the overlays spawn direction
+            d_overlay->spawnDirection = spawnDirection;
+        });
         
         // The following callbacks are there to ensure that
         // whenever certain local attributes change, the same
@@ -108,7 +116,7 @@ namespace mc
 
         // Create the overlay
         d_overlay = MakeRef<Overlay>();
-        d_overlay->spawnDirection = OverflowDirection::Right;
+        d_overlay->spawnDirection = spawnDirection;
         d_overlay->setContent(d_contentPanel);
 
         // Setup a default size

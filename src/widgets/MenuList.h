@@ -21,22 +21,29 @@ namespace mc
 
         void setActivatorWidget(BaseWidget* widget);
 
+        // Returns the number of items (submenus included)
+        inline size_t getItemCount() const { return d_menuItems.size(); }
+
         // Returns the index of the specified item or submenu name
         size_t indexOf(const std::string& name);
 
         // If this MenuList is added as a child menu 
         // of another MenuList, then this is the name
         // that will be displayed on the menu button.
-        PropertyObserver<std::string>   name;
+        PropertyObserver<std::string>       name;
 
         // Color of the border around the MenuList overlay
-        PropertyObserver<Color>         borderColor;
+        PropertyObserver<Color>             borderColor;
 
         // Thickness of the border around the MenuList overlay
-        PropertyObserver<uint32_t>      borderThickness;
+        PropertyObserver<uint32_t>          borderThickness;
 
         // Height of each individual menu item
-        PropertyObserver<uint32_t>      menuItemSize;
+        PropertyObserver<uint32_t>          menuItemSize;
+
+        // Specifies the preferred orientation for spawning
+        // the overlay window around the activator widget.
+        PropertyObserver<OverflowDirection> spawnDirection;
 
     private:
         void _setupProperties() override;
