@@ -1,8 +1,9 @@
 #pragma once
-#include <events/PropertyObserver.h>
-#include <utils/uuid.h>
 #include "Layer.h"
 #include "Color.h"
+#include <utils/uuid.h>
+#include <utils/Cursor.h>
+#include <events/PropertyObserver.h>
 
 namespace mc
 {
@@ -20,9 +21,10 @@ namespace mc
         inline virtual bool isContainer() const { return false; }
         inline uint64_t& getInternalFlags() { return d_internalFlags; }
 
-        PropertyObserver<bool>        visible;
         PropertyObserver<bool>        enabled;
         PropertyObserver<bool>        focused;
+        PropertyObserver<bool>        visible;
+        PropertyObserver<CursorType>  cursorType;
         PropertyObserver<Position>    position;
         PropertyObserver<Size>        size;
         PropertyObserver<Color>       color;

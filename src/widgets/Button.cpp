@@ -52,6 +52,7 @@ namespace mc
         onMousePressColor = Color::transparent;
         onMousePressColor.forwardEmittedEvents(this);
 
+        cursorType = CursorType::Hand;
         size = { 100, 24 };
     }
 }

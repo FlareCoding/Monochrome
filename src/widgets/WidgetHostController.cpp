@@ -1,6 +1,7 @@
 #include "WidgetHostController.h"
 #include "BaseContainerWidget.h"
 #include <core/InternalFlags.h>
+#include <utils/Cursor.h>
 
 namespace mc
 {
@@ -193,6 +194,9 @@ namespace mc
 
                 widget->fireEvent("hoveredOn", Event::empty);
 
+                // Set the widget-specific cursor type
+                utils::Cursor::setActiveCursor(widget->cursorType);
+
                 // Make sure to re-render the widget tree
                 _fireWidgetTreeChangedEvent();
             }
@@ -204,6 +208,9 @@ namespace mc
                     widgetFlags, InternalWidgetFlag::MouseDownOnWidget, false);
 
                 widget->fireEvent("hoveredOff", Event::empty);
+
+                // Reset the cursor icon
+                utils::Cursor::setActiveCursor(DEFAULT_CURSOR_TYPE);
 
                 // Make sure to re-render the widget tree
                 _fireWidgetTreeChangedEvent();

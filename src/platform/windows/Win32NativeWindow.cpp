@@ -5,6 +5,7 @@
 #include <events/MouseEvents.h>
 #include <events/KeyboardEvents.h>
 #include <utils/uuid.h>
+#include <utils/Cursor.h>
 #include <utils/PlacementConstraintSystem.h>
 #include <mutex>
 
@@ -668,6 +669,11 @@ namespace mc
 			});
 
 			fireEvent("keyUp", keyUpEvent);
+			break;
+		}
+		case WM_SETCURSOR: {
+			auto activeCursor = static_cast<LPCWSTR>(utils::Cursor::getActiveCursor());
+			SetCursor(LoadCursorW(NULL, activeCursor));
 			break;
 		}
 		case WM_MOUSELEAVE: {

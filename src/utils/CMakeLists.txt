@@ -6,6 +6,7 @@ set(
 
     ${cwd}/uuid.h
     ${cwd}/Clipboard.h
+    ${cwd}/Cursor.h
     ${cwd}/TextUtils.h
     ${cwd}/PlacementConstraintSystem.h
 

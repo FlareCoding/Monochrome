@@ -20,6 +20,7 @@ set(
     ${cwd}/Win32RenderTarget.cpp
     ${cwd}/D2DGraphics.cpp
     ${cwd}/Win32Clipboard.cpp
+    ${cwd}/Win32Cursor.cpp
 
     PARENT_SCOPE
 )

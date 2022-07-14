@@ -34,6 +34,9 @@ namespace mc
         focused = true;
         focused.forwardEmittedEvents(this);
 
+        cursorType = CursorType::Arrow;
+        cursorType.forwardEmittedEvents(this);
+
         position = { 0, 0 };
         position.forwardEmittedEvents(this);
         position.on("propertyChanged", [this](auto e) {

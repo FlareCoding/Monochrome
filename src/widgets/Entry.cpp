@@ -88,6 +88,7 @@ namespace mc
         cornerRadius = 0;
         cornerRadius.forwardEmittedEvents(this);
 
+        cursorType = CursorType::IBeam;
         size = { 140, 24 };
         backgroundColor = Color::white;
         d_history.push(text);
