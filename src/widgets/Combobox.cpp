@@ -10,8 +10,9 @@ namespace mc
 	void Combobox::addItem(const std::string& item) {
 		// If the first item was added, set the
 		// MenuList's activator to this combobox.
-		if (getItemCount() == 1) {
+		if (getItemCount() == 0) {
 			d_menuList->setActivatorWidget(this);
+			text = item;
 		}
 
 		d_menuList->addMenuItem(item);
