@@ -238,7 +238,7 @@ namespace mc
 
         const auto& [position, size] = getWidgetTruePositionAndSize(entry, parentPositionOffset);
 
-        // Draw the body of the button
+        // Draw the body of the entry
         renderTarget->drawRectangle(
             position.x, position.y,
             size.width, size.height,
