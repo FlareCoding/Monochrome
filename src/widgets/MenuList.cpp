@@ -188,6 +188,10 @@ namespace mc
         menuItemButton->color = color;
         menuItemButton->backgroundColor = backgroundColor;
         menuItemButton->on("clicked", [this, item](auto e) {
+            // Indicate to this MenuList and its potential
+            // parent MenuLists that the overlay should close.
+            fireEvent("overlayShouldClose", Event::empty);
+
             // When the menu item is selected,
             // the MenuList should fire an event
             // indicating that an item was selected.
@@ -195,10 +199,6 @@ namespace mc
                 { "item", item },
                 { "index", indexOf(item) }
             }));
-
-            // Indicate to this MenuList and its potential
-            // parent MenuLists that the overlay should close.
-            fireEvent("overlayShouldClose", Event::empty);
         });
         d_contentPanel->addChild(menuItemButton);
 
@@ -206,6 +206,47 @@ namespace mc
         d_menuItems.push_back({ item, { menuItemButton, item } });
 
         // Calculate positioning and size menu items
+        _recalculateMenuItemBounds();
+    }
+
+    void MenuList::removeItem(const std::string& name) {
+        for (auto it = d_menuItems.begin(); it != d_menuItems.end(); ++it) {
+            auto menuItemName   = it->first;
+            auto menuItem       = it->second;
+
+            if (name == menuItemName) {
+                // Get the button representing the menu item
+                auto& menuItemButton = menuItem.first;
+
+                // Remove the click handler from it
+                menuItemButton->off("clicked");
+
+                // Remove the item entry from the item list
+                d_menuItems.erase(it);
+
+                // Remove the button from the overlay panel
+                d_contentPanel->removeChild(menuItemButton->getID());
+                
+                // Stop looping
+                break;
+            }
+        }
+
+        // Recalculate item positions and overlay size
+        _recalculateMenuItemBounds();
+    }
+
+    void MenuList::removeAllItems() {
+        while (d_menuItems.size()) {
+            // Get the name of the first item
+            auto& firstItemName = d_menuItems.at(0).first;
+
+            // Remove it from the list
+            removeItem(firstItemName);
+        }
+
+        // Recalculate overlay size
+        // since there are no more items.
         _recalculateMenuItemBounds();
     }
     

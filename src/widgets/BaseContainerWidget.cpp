@@ -38,9 +38,13 @@ namespace mc
     bool BaseContainerWidget::removeChild(uuid_t uuid) {
         for (auto it = d_children.begin(); it != d_children.end(); ++it) {
             if (it->get()->getID() == uuid) {
+                // Reset the child's parent
+                it->get()->setParent(nullptr);
+
+                // Erase the child from the list
                 d_children.erase(it);
 
-                it->get()->setParent(nullptr);
+                // Fire the childRemoved event
                 fireEvent("childRemoved", Event::empty);
                 return true;
             }

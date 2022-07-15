@@ -16,9 +16,22 @@ namespace mc
         MenuList(const std::string& name);
         inline const std::string getType() const override { return "MenuList"; }
 
+        // Adds another MenuList as a submenu that will
+        // open when it's selection button is clicked.
         void addSubMenu(Shared<MenuList> menu);
+
+        // Adds a menu item button to the items list.
         void addMenuItem(const MenuItem& item);
 
+        // Removes a menu item or a submenu
+        // that matches the specified name.
+        void removeItem(const std::string& name);
+
+        // Removes all menu items and submenus in the current MenuList
+        void removeAllItems();
+
+        // Gives the ability to the specified widget
+        // to open this MenuList on the click event.
         void setActivatorWidget(BaseWidget* widget);
 
         // Returns the number of items (submenus included)
