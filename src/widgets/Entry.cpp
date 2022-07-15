@@ -55,6 +55,9 @@ namespace mc
         placeholder = "Type something...";
         placeholder.forwardEmittedEvents(this);
 
+        readOnly = false;
+        readOnly.forwardEmittedEvents(this);
+
         font = "arial";
         font.forwardEmittedEvents(this);
 
@@ -218,6 +221,12 @@ namespace mc
             }
         }
 
+        // Do not handle any other key presses
+        // if the entry is in a read-only state.
+        if (readOnly) {
+            return;
+        }
+
         // Validate the inputted character
         if (d_entryInputValidator) {
             if (!d_entryInputValidator(inputChar)) {
@@ -366,6 +375,12 @@ namespace mc
             }
             case 'v': {
                 // Paste operation
+                
+                // Do nothing if the entry
+                // is in a read-only mode.
+                if (readOnly) {
+                    break;
+                }
 
                 // Check if there is currently a selection,
                 // and if so, replace it with pasted contents
@@ -394,6 +409,12 @@ namespace mc
                 return true;
             }
             case 'x': {
+                // Do nothing if the entry
+                // is in a read-only mode.
+                if (readOnly) {
+                    break;
+                }
+
                 // Cut operation
                 if (hasSelectedText()) {
                     auto selectedText = getSelectedText();
@@ -407,6 +428,11 @@ namespace mc
                 return true;
             }
             case 'z': {
+                // Do nothing if the entry
+                // is in a read-only mode.
+                if (readOnly) {
+                    break;
+                }
                 // Undo operation
                 if (d_history.size() >= 2) {
                     // Update the undo history
@@ -425,6 +451,12 @@ namespace mc
                 return true;
             }
             case 'y': {
+                // Do nothing if the entry
+                // is in a read-only mode.
+                if (readOnly) {
+                    break;
+                }
+
                 // Redo operation
                 if (!d_undoHistory.empty()) {
                     // Update the text

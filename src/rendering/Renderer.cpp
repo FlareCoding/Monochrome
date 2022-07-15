@@ -355,7 +355,8 @@ namespace mc
         auto cursorYOffset = (uint32_t)(((float)size.height - textPixelHeight) / 2);
 
         // Draw the cursor if the entry is focused
-        if (entry->isFocused()) {
+        // and if the entry is not in a read-only mode.
+        if (entry->isFocused() && !entry->readOnly) {
             renderTarget->drawRectangle(
                 position.x + entry->d_textFrame.position.x + (int32_t)textPixelWidth,
                 position.y + cursorYOffset,
@@ -413,13 +414,16 @@ namespace mc
         }
 
         // Draw the border on top of the body
-        renderTarget->drawRectangle(
-            position.x, position.y,
-            size.width, size.height,
-            entry->isFocused() ? entry->focusedHighlightColor : entry->borderColor,
-            entry->cornerRadius,
-            false,
-            entry->borderSize
-        );
+        // if the entry is not in a read-only mode.
+        if (!entry->readOnly) {
+            renderTarget->drawRectangle(
+                position.x, position.y,
+                size.width, size.height,
+                entry->isFocused() ? entry->focusedHighlightColor : entry->borderColor,
+                entry->cornerRadius,
+                false,
+                entry->borderSize
+            );
+        }
     }
 }

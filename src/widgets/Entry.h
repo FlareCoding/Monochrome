@@ -19,6 +19,9 @@ namespace mc
         // Placeholder to be displayed when the entry is empty
         PropertyObserver<std::string>   placeholder;
 
+        // Specifies whether or not the entry is currently editable
+        PropertyObserver<bool>          readOnly;
+
         // Font of the text displayed
         PropertyObserver<std::string>   font;
 
