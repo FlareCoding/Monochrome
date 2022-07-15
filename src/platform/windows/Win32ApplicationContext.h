@@ -4,22 +4,20 @@
 #include <vector>
 #include <atomic>
 
-namespace mc
-{
-    class Win32NativeWindow;
+namespace mc {
+class Win32NativeWindow;
 
-    class Win32ApplicationContext : public ApplicationContext
-    {
-    public:
-        Win32ApplicationContext(const std::string& appId);
+class Win32ApplicationContext : public ApplicationContext {
+public:
+    explicit Win32ApplicationContext(const std::string& appId);
 
-        void startApplicationLoop();
+    void startApplicationLoop();
 
-        void mainWindowRequestedClose();
-        void registerWin32NativeWindowHandle(Win32NativeWindow* handle);
+    void mainWindowRequestedClose();
+    void registerWin32NativeWindowHandle(Win32NativeWindow* handle);
 
-    private:
-        std::vector<Win32NativeWindow*> d_win32NativeWindowHandles;
-        std::atomic_bool d_applicationRunning = false;
-    };
-}
+private:
+    std::vector<Win32NativeWindow*> d_win32NativeWindowHandles;
+    std::atomic_bool d_applicationRunning = false;
+};
+} // namespace mc

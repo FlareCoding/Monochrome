@@ -1,11 +1,10 @@
 #include "BaseWidget.h"
 #include <core/InternalFlags.h>
 
-namespace mc
-{
+namespace mc {
     BaseWidget::BaseWidget() {
         d_uuid = utils::generateUUID();
-        
+
         _setDefaultProperties();
         appendAllowedEvent("propertyChanged");
         appendAllowedEvent("widgetMoved");
@@ -83,7 +82,7 @@ namespace mc
         marginRight = 0;
         marginRight.forwardEmittedEvents(this);
     }
-    
+
     Frame BaseWidget::getLayerFrame() const {
         return Frame(
             Position({ position->x, position->y }),
@@ -114,8 +113,8 @@ namespace mc
             { "target", this }
         }));
     }
-    
+
     void BaseWidget::unfocus() {
         fireEvent("requestedFocusLoss", Event::empty);
     }
-}
+} // namespace mc

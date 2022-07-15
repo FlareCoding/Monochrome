@@ -1,7 +1,6 @@
 #include "AppManager.h"
 
-namespace mc
-{
+namespace mc {
     static Shared<ApplicationContext> s_applicationContext = nullptr;
 
     std::string AppManager::s_appId;
@@ -11,8 +10,12 @@ namespace mc
     }
 
     Shared<ApplicationContext> AppManager::getApplicationContext() {
-        CORE_ASSERT(!s_appId.empty(), "Current application is not registered, please call AppManager::registerApplication() first");
-        
+        CORE_ASSERT(
+            !s_appId.empty(),
+            "Current application is not registered, please"
+            " call AppManager::registerApplication() first"
+        );
+
         if (!s_applicationContext) {
             s_applicationContext = ApplicationContext::create(s_appId);
         }
@@ -27,9 +30,11 @@ namespace mc
         // functions are available and valid.
         auto& runtimeFunctions = appContext->getRuntimeUtilityFunctions();
 
-        CORE_ASSERT(runtimeFunctions.getTextPixelSizeFn, "Runtime function 'getTextPixelSizeFn' is not implemented");
+        CORE_ASSERT(
+            runtimeFunctions.getTextPixelSizeFn,
+            "Runtime function 'getTextPixelSizeFn' is not implemented"
+        );
 
         appContext->startApplicationLoop();
     }
-    
-}
+} // namespace mc

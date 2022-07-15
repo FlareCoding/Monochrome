@@ -1,8 +1,7 @@
 #include <utils/Cursor.h>
 #include <Windows.h>
 
-namespace mc::utils
-{
+namespace mc::utils {
     static LPCWSTR s_activeWin32CursorIcon = IDC_ARROW;
 
     void Cursor::setActiveCursor(CursorType type) {
@@ -70,4 +69,4 @@ namespace mc::utils
     const void* Cursor::getActiveCursor() {
         return static_cast<const void*>(s_activeWin32CursorIcon);
     }
-}
+} // namespace mc::utils

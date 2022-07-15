@@ -2,8 +2,7 @@
 #include <application/AppManager.h>
 #include <utils/TextUtils.h>
 
-namespace mc
-{
+namespace mc {
     OSXRenderTarget::OSXRenderTarget(NSView* contentView, float dpiScalingFactor) {
         d_contentView = contentView;
         d_scalingFactor = dpiScalingFactor;
@@ -266,4 +265,4 @@ namespace mc
             stringSize.height
         };
     }
-}
+} // namespace mc

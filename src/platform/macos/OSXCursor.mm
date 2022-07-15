@@ -1,8 +1,7 @@
 #include <utils/Cursor.h>
 #include <Cocoa/Cocoa.h>
 
-namespace mc::utils
-{
+namespace mc::utils {
     NSCursor* s_activeOSXCursorIcon = [NSCursor arrowCursor];
 
     void Cursor::setActiveCursor(CursorType type) {
@@ -67,4 +66,4 @@ namespace mc::utils
     const void* Cursor::getActiveCursor() {
         return static_cast<const void*>(s_activeOSXCursorIcon);
     }
-}
+} // namespace mc

@@ -6,8 +6,7 @@
     #include <platform/macos/OSXApplicationContext.h>
 #endif
 
-namespace mc
-{
+namespace mc {
     Shared<ApplicationContext> ApplicationContext::create(const std::string& appId) {
 #ifdef MC_PLATFORM_WINDOWS_X64
         return Shared<Win32ApplicationContext>(new Win32ApplicationContext(appId));
@@ -17,4 +16,4 @@ namespace mc
     }
 
     ApplicationContext::ApplicationContext(const std::string& appId) : d_appId(appId) {}
-}
+} // namespace mc

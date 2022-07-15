@@ -1,8 +1,7 @@
 #include <utils/Clipboard.h>
 #include <Cocoa/Cocoa.h>
 
-namespace mc::utils
-{
+namespace mc::utils {
     void Clipboard::saveToClipboard(const std::string& data) {
         NSString* nsData = [NSString stringWithUTF8String: data.c_str()];
 
@@ -16,4 +15,4 @@ namespace mc::utils
 
         return std::string([pasteboardContent UTF8String]);
     }
-}
+} // namespace mc

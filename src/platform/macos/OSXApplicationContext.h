@@ -6,17 +6,15 @@
 @property (nonatomic, assign) void* appContextHandle;
 @end
 
-namespace mc
-{
-    class OSXApplicationContext : public ApplicationContext
-    {
-    public:
-        OSXApplicationContext(const std::string& appId);
+namespace mc {
+class OSXApplicationContext : public ApplicationContext {
+public:
+    explicit OSXApplicationContext(const std::string& appId);
 
-        void startApplicationLoop();
+    void startApplicationLoop();
 
-    private:
-        NSApplication*  d_application = nullptr;
-        OSXAppDelegate* d_appDelegate = nullptr;
-    };
-}
+private:
+    NSApplication*  d_application = nullptr;
+    OSXAppDelegate* d_appDelegate = nullptr;
+};
+} // namespace mc

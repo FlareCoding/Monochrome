@@ -1,9 +1,8 @@
 #include "DropdownButton.h"
 
-namespace mc
-{
+namespace mc {
     DropdownButton::DropdownButton() : Button() {}
-    
+
     void DropdownButton::setMenuList(Shared<MenuList> menuList) {
         // If a previous menu list already exists,
         // remove this button from being an
@@ -19,4 +18,4 @@ namespace mc
     Shared<MenuList> DropdownButton::getMenuList() {
         return d_menuList;
     }
-}
+} // namespace mc

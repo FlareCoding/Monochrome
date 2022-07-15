@@ -7,8 +7,7 @@
                                 (1ULL << WindowStyleTitled)      |  \
                                 (1ULL << WindowStyleResizable)
 
-namespace mc
-{
+namespace mc {
     ClassicWindow::ClassicWindow(uint32_t width, uint32_t height, const std::string& title)
         : UIWindow(MC_CLASSICWINDOW_FLAGS, width, height, title) {}
-}
+} // namespace mc

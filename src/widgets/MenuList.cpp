@@ -12,8 +12,7 @@
 #define PROPAGATE_PROPERTY_TO_MENU_ITEMS(thisProp, setValue) \
         PROPAGATE_PROPERTY_TO_MENU_ITEMS_X(thisProp, thisProp, setValue)
 
-namespace mc
-{
+namespace mc {
     MenuList::MenuList() {
         _setupProperties();
     }
@@ -93,7 +92,7 @@ namespace mc
             // Set the overlays spawn direction
             d_overlay->spawnDirection = spawnDirection;
         });
-        
+
         // The following callbacks are there to ensure that
         // whenever certain local attributes change, the same
         // attributes for the child menu items also apply.
@@ -228,7 +227,7 @@ namespace mc
 
                 // Remove the button from the overlay panel
                 d_contentPanel->removeChild(menuItemButton->getID());
-                
+
                 // Stop looping
                 status = true;
                 break;
@@ -256,11 +255,11 @@ namespace mc
         // since there are no more items.
         _recalculateMenuItemBounds();
     }
-    
+
     void MenuList::setActivatorWidget(BaseWidget* widget) {
         d_overlay->setActivatorWidget(widget);
     }
-    
+
     size_t MenuList::indexOf(const std::string& name) {
         for (size_t i = 0; i < d_menuItems.size(); ++i) {
             if (d_menuItems.at(i).first == name) {
@@ -270,10 +269,10 @@ namespace mc
 
         return -1;
     }
-    
+
     std::string MenuList::getItemName(size_t index) {
         CORE_ASSERT((d_menuItems.size() && index < d_menuItems.size()), "Item index out of bounds");
 
         return d_menuItems.at(index).first;
     }
-}
+} // namespace mc

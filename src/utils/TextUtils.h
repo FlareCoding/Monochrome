@@ -4,8 +4,7 @@
 #include <locale>
 #include <codecvt>
 
-namespace mc::utils
-{
+namespace mc::utils {
     extern std::wstring convertToWideString(const std::string& str);
     extern std::string convertToNarrowString(const std::wstring& wstr);
-}
+} // namespace mc::utils

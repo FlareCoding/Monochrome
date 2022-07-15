@@ -2,8 +2,7 @@
 #include <core/InternalFlags.h>
 #include <application/AppManager.h>
 
-namespace mc
-{
+namespace mc {
     std::pair<Position, Size> Renderer::getWidgetTruePositionAndSize(
         const Shared<BaseWidget>& widget,
         Position& parentPositionOffset
@@ -25,7 +24,7 @@ namespace mc
         Color& backgroundColor,
         WidgetHostController& widgetHostController,
         Shared<RenderTarget>& renderTarget
-    ) {        
+    ) {
         // Render the background color layer
         renderTarget->clearScreen(
             backgroundColor.r,
@@ -66,22 +65,32 @@ namespace mc
         auto widgetType = widget->getType();
 
         if (widgetType == "panel") {
-            renderPanel(renderTarget, std::static_pointer_cast<Panel>(widget), parentPositionOffset);
-        }
-        else if (widgetType == "label") {
-            renderLabel(renderTarget, std::static_pointer_cast<Label>(widget), parentPositionOffset);
-        }
-        else if (widgetType == "button") {
-            renderButton(renderTarget, std::static_pointer_cast<Button>(widget), parentPositionOffset);
-        }
-        else if (widgetType == "checkbox") {
+            renderPanel(
+                renderTarget, std::static_pointer_cast<Panel>(widget),
+                parentPositionOffset
+            );
+        } else if (widgetType == "label") {
+            renderLabel(
+                renderTarget,
+                std::static_pointer_cast<Label>(widget),
+                parentPositionOffset
+            );
+        } else if (widgetType == "button") {
+            renderButton(
+                renderTarget,
+                std::static_pointer_cast<Button>(widget),
+                parentPositionOffset
+            );
+        } else if (widgetType == "checkbox") {
             CORE_ASSERT(false, "Rendering 'checkbox' widget is not implemented yet");
-        }
-        else if (widgetType == "slider") {
+        } else if (widgetType == "slider") {
             CORE_ASSERT(false, "Rendering 'slider' widget is not implemented yet");
-        }
-        else if (widgetType == "entry") {
-            renderEntry(renderTarget, std::static_pointer_cast<Entry>(widget), parentPositionOffset);
+        } else if (widgetType == "entry") {
+            renderEntry(
+                renderTarget,
+                std::static_pointer_cast<Entry>(widget),
+                parentPositionOffset
+            );
         }
 
         if (widget->isContainer()) {
@@ -132,7 +141,7 @@ namespace mc
         Position& parentPositionOffset
     ) {
         const auto& [position, size] = getWidgetTruePositionAndSize(label, parentPositionOffset);
-        
+
         // Draw the label's text
         renderTarget->drawText(
             position.x, position.y,
@@ -166,11 +175,15 @@ namespace mc
         // Calculating color if the mouse is hovered over the widget
         if (isMouseHovered) {
             if (button->onHoverColor.get() == Color::transparent) {
-                buttonBodyColor.r -= (uint32_t)((float)buttonBodyColor.r * 0.3f);
-                buttonBodyColor.g -= (uint32_t)((float)buttonBodyColor.g * 0.3f);
-                buttonBodyColor.b -= (uint32_t)((float)buttonBodyColor.b * 0.3f);
-            }
-            else {
+                buttonBodyColor.r -= static_cast<uint32_t>(
+                                        static_cast<float>(buttonBodyColor.r) * 0.3f);
+
+                buttonBodyColor.g -= static_cast<uint32_t>(
+                                        static_cast<float>(buttonBodyColor.g) * 0.3f);
+
+                buttonBodyColor.b -= static_cast<uint32_t>(
+                                        static_cast<float>(buttonBodyColor.b) * 0.3f);
+            } else {
                 buttonBodyColor = button->onHoverColor;
             }
         }
@@ -178,11 +191,15 @@ namespace mc
         // Calculating the color if the mouse is pressed on the button
         if (isMousePressed) {
             if (button->onMousePressColor.get() == Color::transparent) {
-                buttonBodyColor.r -= (uint32_t)((float)buttonBodyColor.r * 0.3f);
-                buttonBodyColor.g -= (uint32_t)((float)buttonBodyColor.g * 0.3f);
-                buttonBodyColor.b -= (uint32_t)((float)buttonBodyColor.b * 0.3f);
-            }
-            else {
+                buttonBodyColor.r -= static_cast<uint32_t>(
+                                        static_cast<float>(buttonBodyColor.r) * 0.3f);
+
+                buttonBodyColor.g -= static_cast<uint32_t>(
+                                        static_cast<float>(buttonBodyColor.g) * 0.3f);
+
+                buttonBodyColor.b -= static_cast<uint32_t>(
+                                        static_cast<float>(buttonBodyColor.b) * 0.3f);
+            } else {
                 buttonBodyColor = button->onMousePressColor;
             }
         }
@@ -252,11 +269,11 @@ namespace mc
     }
 
     // void Renderer::renderCheckbox() {
-    
+
     // }
 
     // void Renderer::renderSlider() {
-    
+
     // }
 
     void Renderer::renderEntry(
@@ -283,10 +300,16 @@ namespace mc
         // rendered or the placeholder.
         Color entryTextColor = entry->color;
         if (entry->text->empty()) {
-            entryTextColor.r -= (uint32_t)((float)entryTextColor.r * 0.3f);
-            entryTextColor.g -= (uint32_t)((float)entryTextColor.g * 0.3f);
-            entryTextColor.b -= (uint32_t)((float)entryTextColor.b * 0.3f);
-            entryTextColor.a -= (uint32_t)((float)entryTextColor.b * 0.3f);
+            entryTextColor.r -= static_cast<uint32_t>(
+                                    static_cast<float>(entryTextColor.r) * 0.3f);
+
+            entryTextColor.g -= static_cast<uint32_t>(
+                                    static_cast<float>(entryTextColor.g) * 0.3f);
+
+            entryTextColor.b -= static_cast<uint32_t>(
+                                    static_cast<float>(entryTextColor.b) * 0.3f);
+
+            entryTextColor.a = 120;
         }
 
         // Push the text region clip
@@ -312,8 +335,7 @@ namespace mc
                 "left",
                 "none"
             );
-        }
-        else {
+        } else {
             renderTarget->drawText(
                 position.x + entry->d_textFrame.position.x,
                 position.y + entry->d_textFrame.position.y,
@@ -355,7 +377,8 @@ namespace mc
             );
 
             // Calculate the cursor's y offset from the top of the entry
-            auto cursorYOffset = (uint32_t)(((float)size.height - textPixelHeight) / 2);
+            auto cursorYOffset =
+                (uint32_t)((static_cast<float>(size.height) - textPixelHeight) / 2);
 
             // Draw the cursor if the entry is focused
             // and if the entry is not in a read-only mode.
@@ -405,7 +428,7 @@ namespace mc
             );
 
             uint32_t selectionWidth = (uint32_t)(postTextSelectionWidth - preTextSelectionWidth);
-            
+
             // Draw the actual selection rectangle
             renderTarget->drawRectangle(
                 position.x + entry->d_textFrame.position.x + (int32_t)preTextSelectionWidth,
@@ -430,4 +453,4 @@ namespace mc
             );
         }
     }
-}
+} // namespace mc

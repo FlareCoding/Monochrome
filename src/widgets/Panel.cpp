@@ -1,7 +1,6 @@
 #include "Panel.h"
 
-namespace mc
-{
+namespace mc {
     Panel::Panel() {
         _setupProperties();
     }
@@ -16,4 +15,4 @@ namespace mc
         cornerRadius = 4;
         cornerRadius.forwardEmittedEvents(this);
     }
-}
+} // namespace mc

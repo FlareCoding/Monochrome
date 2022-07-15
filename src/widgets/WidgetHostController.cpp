@@ -3,14 +3,16 @@
 #include <core/InternalFlags.h>
 #include <utils/Cursor.h>
 
-namespace mc
-{
+namespace mc {
     WidgetHostController::WidgetHostController()
         : EventEmitter({"widgetTreeChanged"}) {}
 
     void WidgetHostController::addWidget(Shared<BaseWidget> widget) {
         CORE_ASSERT(!widget->getParent(), "Cannot add widget, widget already has a parent");
-        CORE_ASSERT(!findWidget(widget->getID()), "Cannot add widget, widget with the given UUID already exists");
+        CORE_ASSERT(
+            !findWidget(widget->getID()),
+            "Cannot add widget, widget with the given UUID already exists"
+        );
 
         d_widgets.push_back(widget);
         _fireWidgetTreeChangedEvent();
@@ -181,7 +183,8 @@ namespace mc
             // Getting the widget's flags and determining if
             // the mouse was previously in the frame.
             uint64_t& widgetFlags = widget->getInternalFlags();
-            bool mouseWasInFrame = getInternalFlag(widgetFlags, InternalWidgetFlag::IsMouseInWidgetFrame);
+            bool mouseWasInFrame =
+                getInternalFlag(widgetFlags, InternalWidgetFlag::IsMouseInWidgetFrame);
 
             // Checking if mouse is currently in the widget's frame
             bool isMouseInFrame = frame.containsPoint(cursorLocation);
@@ -199,8 +202,7 @@ namespace mc
 
                 // Make sure to re-render the widget tree
                 _fireWidgetTreeChangedEvent();
-            }
-            else if (!isMouseInFrame && mouseWasInFrame) {
+            } else if (!isMouseInFrame && mouseWasInFrame) {
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, false);
 
@@ -318,7 +320,7 @@ namespace mc
                 parentPositionOffset.y -= widget->position->y;
             }
 
-            // If a widget captures the event, don't 
+            // If a widget captures the event, don't
             // check for other widgets on the same z-level.
             return;
         }
@@ -328,7 +330,7 @@ namespace mc
         std::vector<Shared<BaseWidget>>& widgets,
         Shared<MouseButtonEvent> event,
         Position& parentPositionOffset
-    ) { 
+    ) {
         for (auto& widget : widgets) {
             // Get the cursor position and location
             Position cursorLocation = event->getLocation();
@@ -398,4 +400,4 @@ namespace mc
             }
         }
     }
-}
+} // namespace mc

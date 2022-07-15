@@ -2,12 +2,16 @@
 #include <rendering/Renderer.h>
 #include <chrono>
 
-namespace mc
-{
+namespace mc {
     // Specifies that only the first created window should be the root window
     static bool s_isFirstWindow = true;
 
-    UIWindow::UIWindow(uint64_t windowFlags, uint32_t width, uint32_t height, const std::string& title) {
+    UIWindow::UIWindow(
+        uint64_t windowFlags,
+        uint32_t width,
+        uint32_t height,
+        const std::string& title
+    ) {
         d_uuid = utils::generateUUID();
 
         // Create the native window
@@ -103,8 +107,7 @@ namespace mc
         return d_nativeWindow->getPosition();
     }
 
-    Size UIWindow::getSize()
-    {
+    Size UIWindow::getSize() {
         return d_nativeWindow->getSize();
     }
 
@@ -160,7 +163,7 @@ namespace mc
     void UIWindow::restoreMaximize() {
         d_nativeWindow->restoreMaximize();
     }
-    
+
     void UIWindow::minimize() {
         d_nativeWindow->minimize();
     }
@@ -191,7 +194,7 @@ namespace mc
         d_widgetHostController->removeAllWidgets();
     }
 
-    Shared<BaseWidget> UIWindow::findWidget(uuid_t uuid) {        
+    Shared<BaseWidget> UIWindow::findWidget(uuid_t uuid) {
         return d_widgetHostController->findWidget(uuid);
     }
 
@@ -217,4 +220,4 @@ namespace mc
     void UIWindow::_renderScene(Shared<RenderTarget>& renderTarget) {
         Renderer::renderScene(d_backgroundColor, *d_widgetHostController, renderTarget);
     }
-}
+} // namespace mc

@@ -7,8 +7,7 @@
 #include <utils/PlacementConstraintSystem.h>
 using namespace mc;
 
-namespace mc
-{
+namespace mc {
     static std::mutex s_windowMapMutex;
 	static std::vector<OSXNativeWindow*> s_registeredWindows;
 
@@ -629,4 +628,4 @@ namespace mc
 
         fireEvent("sizeChanged", resizeEvent);
     }
-}
+} // namespace mc

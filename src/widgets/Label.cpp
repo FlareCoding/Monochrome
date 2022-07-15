@@ -1,8 +1,7 @@
 #include "Label.h"
 
-namespace mc
-{
-    Label::Label() {        
+namespace mc {
+    Label::Label() {
         _setupProperties();
     }
 
@@ -15,7 +14,7 @@ namespace mc
 
         fontSize = 14;
         fontSize.forwardEmittedEvents(this);
-        
+
         fontStyle = "normal";
         fontStyle.forwardEmittedEvents(this);
 
@@ -27,4 +26,4 @@ namespace mc
 
         size = { 80, 20 };
     }
-}
+} // namespace mc

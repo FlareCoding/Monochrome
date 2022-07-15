@@ -1,7 +1,6 @@
 #include "Button.h"
 
-namespace mc
-{
+namespace mc {
     Button::Button() {
         _setupProperties();
     }
@@ -9,7 +8,7 @@ namespace mc
     void Button::_setupProperties() {
         text = "Button";
         text.forwardEmittedEvents(this);
-        
+
         secondaryRightText = "";
         secondaryRightText.forwardEmittedEvents(this);
 
@@ -21,7 +20,7 @@ namespace mc
 
         fontSize = 14;
         fontSize.forwardEmittedEvents(this);
-        
+
         fontStyle = "normal";
         fontStyle.forwardEmittedEvents(this);
 
@@ -55,4 +54,4 @@ namespace mc
         cursorType = CursorType::Hand;
         size = { 100, 24 };
     }
-}
+} // namespace mc

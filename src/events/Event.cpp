@@ -1,6 +1,5 @@
 #include "Event.h"
 
-namespace mc
-{
+namespace mc {
     Shared<Event> Event::empty = MakeRef<Event>();
-}
+} // namespace mc

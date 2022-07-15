@@ -41,8 +41,7 @@
 
 @end
 
-namespace mc
-{
+namespace mc {
     OSXApplicationContext::OSXApplicationContext(const std::string& appId) : ApplicationContext(appId) {
         this->d_appDelegate = [[OSXAppDelegate alloc] init];
         this->d_appDelegate.appContextHandle = this;
@@ -54,4 +53,4 @@ namespace mc
     void OSXApplicationContext::startApplicationLoop() {
         [NSApp run];
     }
-}
+} // namespace mc

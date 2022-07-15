@@ -6,11 +6,9 @@
                                 (1ULL << WindowStyleDraggable) |  \
                                 (1ULL << WindowStyleMinimizable)
 
-namespace mc
-{
+namespace mc {
     ModernWindow::ModernWindow(uint32_t width, uint32_t height, const std::string& title)
         : UIWindow(MC_MODERNWINDOW_FLAGS, width, height, title) {
-        
         // Create the 'close', 'minimize', and 'maximize'
         // buttons as well as the title label.
         _createDecoratorWidgets();
@@ -50,15 +48,16 @@ namespace mc
 
         // Create the 'maximize' button
         d_maximizeButton = _createDecoratorButton();
-        d_maximizeButton->position = { (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 2, 0 };
+        d_maximizeButton->position = {
+            (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 2, 0
+        };
         d_maximizeButton->text = "▢";
         d_maximizeButton->fontSize = 11;
         d_maximizeButton->on("clicked", [this](Shared<Event> e) {
             if (d_maximized) {
                 this->restoreMaximize();
                 d_maximized = false;
-            }
-            else {
+            } else {
                 this->maximize();
                 d_maximized = true;
             }
@@ -69,7 +68,9 @@ namespace mc
 
         // Create the 'minimize' button
         d_minimizeButton = _createDecoratorButton();
-        d_minimizeButton->position = { (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 3, 0 };
+        d_minimizeButton->position = {
+            (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 3, 0
+        };
         d_minimizeButton->text = "_";
         d_minimizeButton->fontSize = 10;
         d_minimizeButton->on("clicked", [this](Shared<Event> e) {
@@ -97,8 +98,12 @@ namespace mc
             auto height = event->get<uint32_t>("height");
 
             d_closeButton->position = { (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth, 0 };
-            d_maximizeButton->position = { (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 2, 0 };
-            d_minimizeButton->position = { (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 3, 0 };
+            d_maximizeButton->position = {
+                (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 2, 0
+            };
+            d_minimizeButton->position = {
+                (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 3, 0
+            };
         });
     }
 
@@ -111,4 +116,4 @@ namespace mc
 
         return decoratorButton;
     }
-}
+} // namespace mc

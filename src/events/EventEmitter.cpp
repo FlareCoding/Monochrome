@@ -1,8 +1,7 @@
 #include "EventEmitter.h"
 #include <algorithm>
 
-namespace mc
-{
+namespace mc {
     EventEmitter::EventEmitter(const std::initializer_list<std::string>& allowedEvents) {
         d_allowedEvents = allowedEvents;
     }
@@ -88,4 +87,4 @@ namespace mc
             emitter->fireEvent(eventName, event);
         });
     }
-}
+} // namespace mc

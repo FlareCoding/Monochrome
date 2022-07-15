@@ -4,46 +4,44 @@
 #include <rendering/RenderTarget.h>
 #include <widgets/Layer.h>
 
-namespace mc
-{
-    class NativeWindow : public EventEmitter
-    {
-    public:
-        static Shared<NativeWindow> create(bool isRoot, uint64_t windowFlags);
+namespace mc {
+class NativeWindow : public EventEmitter {
+public:
+    static Shared<NativeWindow> create(bool isRoot, uint64_t windowFlags);
 
-        inline bool isRoot() const { return d_isRoot; }
+    inline bool isRoot() const { return d_isRoot; }
 
-        void setUpdateCallback(std::function<void()> callback) { d_updateCallback = callback; }
-        std::function<void()> getUpdateCallback() const { return d_updateCallback; }
+    void setUpdateCallback(std::function<void()> callback) { d_updateCallback = callback; }
+    std::function<void()> getUpdateCallback() const { return d_updateCallback; }
 
-        virtual uint32_t getWidth() const = 0;
-        virtual uint32_t getHeight() const = 0;
-        virtual Position getPosition() const = 0;
-        virtual Size getSize() const = 0;
-        virtual const std::string& getTitle() const = 0;
-        virtual void setWidth(uint32_t width) = 0;
-        virtual void setHeight(uint32_t height) = 0;
-        virtual void setPosition(const Position& pos) = 0;
-        virtual void setTitle(const std::string& title) = 0;
-        virtual bool isFocused() const = 0;
+    virtual uint32_t getWidth() const = 0;
+    virtual uint32_t getHeight() const = 0;
+    virtual Position getPosition() const = 0;
+    virtual Size getSize() const = 0;
+    virtual const std::string& getTitle() const = 0;
+    virtual void setWidth(uint32_t width) = 0;
+    virtual void setHeight(uint32_t height) = 0;
+    virtual void setPosition(const Position& pos) = 0;
+    virtual void setTitle(const std::string& title) = 0;
+    virtual bool isFocused() const = 0;
 
-        virtual void show() = 0;
-        virtual void hide() = 0;
-        virtual void focus() = 0;
-        virtual void unfocus() = 0;
-        virtual void close() = 0;
-        virtual void maximize() = 0;
-        virtual void restoreMaximize() = 0;
-        virtual void minimize() = 0;
+    virtual void show() = 0;
+    virtual void hide() = 0;
+    virtual void focus() = 0;
+    virtual void unfocus() = 0;
+    virtual void close() = 0;
+    virtual void maximize() = 0;
+    virtual void restoreMaximize() = 0;
+    virtual void minimize() = 0;
 
-        virtual Shared<RenderTarget> getRenderTarget() const = 0;
+    virtual Shared<RenderTarget> getRenderTarget() const = 0;
 
-    protected:
-        NativeWindow();
+protected:
+    NativeWindow();
 
-        bool d_isRoot = false;
-        Shared<ApplicationContext> d_applicationContext = nullptr;
+    bool d_isRoot = false;
+    Shared<ApplicationContext> d_applicationContext = nullptr;
 
-        std::function<void()> d_updateCallback;
-    };
-}
+    std::function<void()> d_updateCallback;
+};
+} // namespace mc

@@ -6,8 +6,7 @@
 #include <cmath>
 #include <chrono>
 
-namespace mc
-{
+namespace mc {
     Entry::Entry() {
         // Entry-specific events
         appendAllowedEvent("change");
@@ -42,8 +41,7 @@ namespace mc
 
         if (d_selectionEndedIndex > d_selectionBeganIndex) {
             return text->substr(d_selectionBeganIndex, selectionLength);
-        }
-        else {
+        } else {
             return text->substr(d_selectionEndedIndex, selectionLength);
         }
     }
@@ -86,7 +84,7 @@ namespace mc
 
         selectionColor = Color(0, 255, 0, 80);
         selectionColor.forwardEmittedEvents(this);
-        
+
         cursorColor = Color::black;
         cursorColor.forwardEmittedEvents(this);
 
@@ -120,7 +118,7 @@ namespace mc
             auto clickPosX = clickedEvent->getLocation().x;
             _onMousePressed(clickPosX);
         });
-        
+
         on("mouseUp", [this](Shared<Event> e) {
             d_mousePressed = false;
         });
@@ -151,7 +149,7 @@ namespace mc
             }
         });
     }
-    
+
     void Entry::_onKeyPressed(Shared<KeyDownEvent> e) {
         KeyCode keycode = e->getKeyCode();
         bool ctrlPressed = e->isCtrlPressed();
@@ -209,7 +207,7 @@ namespace mc
         _updateTextFrameSize();
         fireEvent("propertyChanged", Event::empty);
     }
-    
+
     void Entry::_onTextAssigned() {
         // Validating assigned text
         if (d_entryInputValidator) {
@@ -222,7 +220,7 @@ namespace mc
 
         d_cursorPos = text->size();
         clearSelection();
-        
+
         _updateTextFrameSize();
 
         // Clear the undo/redo history
@@ -280,8 +278,7 @@ namespace mc
 
             // Reset the selection
             clearSelection();
-        }
-        else {
+        } else {
             // Do nothing if the cursor is
             // already at the very beginning.
             if (d_cursorPos == 0) {
@@ -296,13 +293,11 @@ namespace mc
                 if (pos == std::string::npos) {
                     text->assign(postCursorText);
                     d_cursorPos = 0;
-                }
-                else {
+                } else {
                     text->assign(text->substr(0, pos) + postCursorText);
                     d_cursorPos = pos;
                 }
-            }
-            else {
+            } else {
                 text->erase(d_cursorPos - 1, 1);
                 --d_cursorPos;
             }
@@ -328,12 +323,10 @@ namespace mc
 
             if (pos == std::string::npos) {
                 d_cursorPos = text->size();
-            }
-            else {
+            } else {
                 d_cursorPos = d_cursorPos + pos;
             }
-        }
-        else {
+        } else {
             ++d_cursorPos;
         }
 
@@ -341,8 +334,7 @@ namespace mc
         // so update the selection end index.
         if (shiftPressed) {
             d_selectionEndedIndex = d_cursorPos;
-        }
-        else {
+        } else {
             clearSelection();
         }
 
@@ -361,12 +353,10 @@ namespace mc
             const auto pos = preCursorText.find_last_of(" \t\n");
             if (pos == std::string::npos) {
                 d_cursorPos = 0;
-            }
-            else {
+            } else {
                 d_cursorPos = pos;
             }
-        }
-        else {
+        } else {
             --d_cursorPos;
         }
 
@@ -374,8 +364,7 @@ namespace mc
         // so update the selection end index.
         if (shiftPressed) {
             d_selectionEndedIndex = d_cursorPos;
-        }
-        else {
+        } else {
             clearSelection();
         }
 
@@ -397,7 +386,7 @@ namespace mc
             }
             case 'v': {
                 // Paste operation
-                
+
                 // Do nothing if the entry
                 // is in a read-only mode.
                 if (readOnly) {
@@ -423,7 +412,7 @@ namespace mc
                         }
                     }
                 }
-                
+
                 text->insert(d_cursorPos, pastedText);
                 d_cursorPos += pastedText.size();
                 _handleEntryTextChanged();
@@ -550,9 +539,10 @@ namespace mc
         // Check if text frame of reference should be moved left,
         // ultimately scrolling the text forward
         if (d_cursorPos == text->size()) {
+            int32_t diff =
+                (d_textFrame.position.x + d_textFrame.size.width) -
+                (size->width - d_entryTextPadding);
 
-            int32_t diff = (d_textFrame.position.x + d_textFrame.size.width) - (size->width - d_entryTextPadding);
-            
             if (diff > 0) {
                 d_textFrame.position.x -= diff;
             }
@@ -574,7 +564,7 @@ namespace mc
 
         if (leftDiff > 0 && rightDiff < 0) {
             int32_t shiftDiff = std::min(std::abs(rightDiff), std::abs(leftDiff));
-            
+
             d_textFrame.position.x += shiftDiff;
         }
 
@@ -586,7 +576,8 @@ namespace mc
             "left", "none"
         );
 
-        int32_t preCursorDiff = (d_entryTextPadding - (d_textFrame.position.x + (int32_t)preCursorTextWidth));
+        int32_t preCursorDiff =
+            (d_entryTextPadding - (d_textFrame.position.x + (int32_t)preCursorTextWidth));
         if (preCursorDiff > 0) {
             d_textFrame.position.x += preCursorDiff;
         }
@@ -602,14 +593,14 @@ namespace mc
             d_textFrame.position.x -= postCursorDiff;
         }
     }
-    
+
     uint64_t Entry::_getTextIndexFromMousePosition(int32_t mousePos) {
         int32_t localMousePosX = mousePos - position->x;
         localMousePosX += std::abs(d_textFrame.position.x - (int32_t)d_entryTextPadding);
         localMousePosX -= d_entryTextPadding;
 
-        float percentage = (float)(localMousePosX) / (float)d_textFrame.size.width;
-        float clickedIndex = (float)text->size() * percentage;
+        float percentage = static_cast<float>(localMousePosX / d_textFrame.size.width);
+        float clickedIndex = static_cast<float>(text->size() * percentage);
         if (clickedIndex < 0) {
             clickedIndex = 0;
         }
@@ -623,7 +614,7 @@ namespace mc
 
         return result;
     }
-    
+
     void Entry::_blinkingCursorControlRoutine() {
         d_blinkingCursorThreadRunning = true;
 
@@ -653,4 +644,4 @@ namespace mc
 
         d_cursorBlinkedVisible = true;
     }
-}
+} // namespace mc

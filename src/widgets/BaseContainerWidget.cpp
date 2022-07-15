@@ -1,7 +1,6 @@
 #include "BaseContainerWidget.h"
 
-namespace mc
-{
+namespace mc {
     BaseContainerWidget::BaseContainerWidget() {
         appendAllowedEvent("childAdded");
         appendAllowedEvent("childRemoved");
@@ -9,7 +8,10 @@ namespace mc
 
     void BaseContainerWidget::addChild(Shared<BaseWidget> child) {
         CORE_ASSERT(!child->getParent(), "Cannot add child, child widget already has a parent");
-        CORE_ASSERT(!findChild(child->getID()), "Cannot add widget, widget with the given UUID already exists");
+        CORE_ASSERT(
+            !findChild(child->getID()),
+            "Cannot add widget, widget with the given UUID already exists"
+        );
 
         d_children.push_back(child);
         child->setParent(this);
@@ -22,7 +24,10 @@ namespace mc
 
     void BaseContainerWidget::insertChild(Shared<BaseWidget> child, uint64_t index) {
         CORE_ASSERT(!child->getParent(), "Cannot add child, child widget already has a parent");
-        CORE_ASSERT(!findChild(child->getID()), "Cannot add widget, widget with the given UUID already exists");
+        CORE_ASSERT(
+            !findChild(child->getID()),
+            "Cannot add widget, widget with the given UUID already exists"
+        );
 
         d_children.insert(d_children.begin() + index, child);
         child->setParent(this);
@@ -60,7 +65,7 @@ namespace mc
         }
     }
 
-    Shared<BaseWidget> BaseContainerWidget::findChild(uuid_t uuid) {    
+    Shared<BaseWidget> BaseContainerWidget::findChild(uuid_t uuid) {
         for (auto& widget : d_children) {
             if (widget->getID() == uuid) {
                 return widget;
@@ -73,5 +78,4 @@ namespace mc
     Shared<BaseWidget> BaseContainerWidget::getChild(uint64_t index) {
         return d_children.at(index);
     }
-    
-}
+} // namespace mc

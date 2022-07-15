@@ -6,8 +6,7 @@
     #include <platform/macos/OSXNativeWindow.h>
 #endif
 
-namespace mc
-{
+namespace mc {
     NativeWindow::NativeWindow() {
         d_applicationContext = AppManager::getApplicationContext();
 
@@ -38,4 +37,4 @@ namespace mc
         instance->d_isRoot = isRoot;
         return instance;
     }
-}
+} // namespace mc

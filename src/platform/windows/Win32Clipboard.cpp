@@ -1,8 +1,7 @@
 #include <utils/Clipboard.h>
 #include <Windows.h>
 
-namespace mc::utils
-{
+namespace mc::utils {
     void Clipboard::saveToClipboard(const std::string& data) {
         if (!OpenClipboard(0)) {
             return;
@@ -19,7 +18,7 @@ namespace mc::utils
         }
 
         // Lock and get the address of the clipboard buffer
-        char* clipboardBuffer = (char*)GlobalLock(newClipboardContent);
+        char* clipboardBuffer = static_cast<char*>(GlobalLock(newClipboardContent));
         if (clipboardBuffer) {
             memcpy_s(clipboardBuffer, data.size(), &data[0], data.size());
         }
@@ -61,4 +60,4 @@ namespace mc::utils
 
         return result;
     }
-}
+} // namespace mc::utils
