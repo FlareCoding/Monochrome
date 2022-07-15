@@ -166,7 +166,9 @@ namespace mc
     }
 
     void UIWindow::update() {
-        d_nativeWindow->getRenderTarget()->swapBuffers();
+        if (!shouldRedraw()) {
+            d_nativeWindow->getRenderTarget()->swapBuffers();
+        }
     }
 
     void UIWindow::setShouldRedraw() {
