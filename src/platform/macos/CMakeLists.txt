@@ -18,6 +18,7 @@ set(
     ${cwd}/OSXNativeWindow.mm
     ${cwd}/OSXRenderTarget.mm
     ${cwd}/OSXClipboard.mm
+    ${cwd}/OSXCursor.mm
 
     PARENT_SCOPE
 )
