@@ -166,11 +166,7 @@ namespace mc
     }
 
     void UIWindow::update() {
-        if (d_renderTargetBuffersReadyForSwap) {
-            d_nativeWindow->getRenderTarget()->swapBuffers();
-
-            d_renderTargetBuffersReadyForSwap = false;
-        }
+        d_nativeWindow->getRenderTarget()->swapBuffers();
     }
 
     void UIWindow::setShouldRedraw() {
@@ -209,7 +205,6 @@ namespace mc
                 renderTarget->endFrame();
                 renderTarget->unlockBackBuffer();
 
-                d_renderTargetBuffersReadyForSwap = true;
                 d_shouldRedrawScene = false;
             }
 

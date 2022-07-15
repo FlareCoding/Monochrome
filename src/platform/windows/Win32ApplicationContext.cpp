@@ -23,15 +23,6 @@ namespace mc
 		// Set the application running flag to true
 		d_applicationRunning = true;
 
-		//
-		// Force a redraw on the main window.
-		// By setting the width to itself, the main window
-		// will send a redraw request to the UIWindow owner
-		// and cause the front and back buffers to be reliably swapped.
-		//
-		auto& mainWindow = d_win32NativeWindowHandles.at(0);
-		mainWindow->setWidth(mainWindow->getWidth());
-
 		// Start the application loop
 		while (d_applicationRunning) {
 			for (auto& window : d_win32NativeWindowHandles) {

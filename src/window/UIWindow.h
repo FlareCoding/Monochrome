@@ -59,7 +59,6 @@ namespace mc
         std::thread d_renderingThread;
 
         std::atomic_bool d_shouldRedrawScene = true;
-        std::atomic_bool d_renderTargetBuffersReadyForSwap = false;
 
         void _backgroundRenderingTask();
         void _renderScene(Shared<RenderTarget>& renderTarget);
