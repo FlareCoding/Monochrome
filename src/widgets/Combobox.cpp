@@ -13,6 +13,7 @@ namespace mc
 		if (getItemCount() == 0) {
 			d_menuList->setActivatorWidget(this);
 			text = item;
+			d_selectedItem = item;
 		}
 
 		d_menuList->addMenuItem(item);
@@ -28,6 +29,25 @@ namespace mc
 		for (auto& item : items) {
 			addItem(item);
 		}
+	}
+
+	bool Combobox::removeItem(const std::string& item) {
+		bool successfulRemoval = d_menuList->removeItem(item);
+
+		// If the element that was displayed got removed, replace the displayed
+		// text to either blank or the first element depending on the item count.
+		if (successfulRemoval && item == d_selectedItem) {
+			d_selectedItem = d_menuList->getItemCount() ? d_menuList->getItemName(0) : "";
+			text = d_selectedItem;
+		}
+
+		return successfulRemoval;
+	}
+
+	void Combobox::removeAllItems() {
+		d_menuList->removeAllItems();
+		d_selectedItem = "";
+		text = d_selectedItem;
 	}
 	
 	void Combobox::_setupComboboxProperties() {
@@ -62,7 +82,11 @@ namespace mc
 	
 	void Combobox::_setupEventHandlers() {
 		d_menuList->on("itemSelected", [this](Shared<Event> e) {
-			text = e->get<std::string>("item");
+			// Update the record of the selected item
+			d_selectedItem = e->get<std::string>("item");
+
+			// Update the displayed text
+			text = d_selectedItem;
 		});
 		
 		size.on("propertyChanged", [this](auto e) {

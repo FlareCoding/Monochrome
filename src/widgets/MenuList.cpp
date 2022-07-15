@@ -209,7 +209,9 @@ namespace mc
         _recalculateMenuItemBounds();
     }
 
-    void MenuList::removeItem(const std::string& name) {
+    bool MenuList::removeItem(const std::string& name) {
+        bool status = false;
+
         for (auto it = d_menuItems.begin(); it != d_menuItems.end(); ++it) {
             auto menuItemName   = it->first;
             auto menuItem       = it->second;
@@ -228,12 +230,17 @@ namespace mc
                 d_contentPanel->removeChild(menuItemButton->getID());
                 
                 // Stop looping
+                status = true;
                 break;
             }
         }
 
         // Recalculate item positions and overlay size
-        _recalculateMenuItemBounds();
+        if (status) {
+            _recalculateMenuItemBounds();
+        }
+
+        return status;
     }
 
     void MenuList::removeAllItems() {
@@ -262,5 +269,11 @@ namespace mc
         }
 
         return -1;
+    }
+    
+    std::string MenuList::getItemName(size_t index) {
+        CORE_ASSERT((d_menuItems.size() && index < d_menuItems.size()), "Item index out of bounds");
+
+        return d_menuItems.at(index).first;
     }
 }

@@ -25,20 +25,25 @@ namespace mc
 
         // Removes a menu item or a submenu
         // that matches the specified name.
-        void removeItem(const std::string& name);
+        // @return true if the item was successfully removed,
+        //         false if the item wasn't found.
+        bool removeItem(const std::string& name);
 
         // Removes all menu items and submenus in the current MenuList
         void removeAllItems();
-
-        // Gives the ability to the specified widget
-        // to open this MenuList on the click event.
-        void setActivatorWidget(BaseWidget* widget);
 
         // Returns the number of items (submenus included)
         inline size_t getItemCount() const { return d_menuItems.size(); }
 
         // Returns the index of the specified item or submenu name
         size_t indexOf(const std::string& name);
+
+        // Returns the name of the item at the given index
+        std::string getItemName(size_t index);
+
+        // Gives the ability to the specified widget
+        // to open this MenuList on the click event.
+        void setActivatorWidget(BaseWidget* widget);
 
         // If this MenuList is added as a child menu 
         // of another MenuList, then this is the name

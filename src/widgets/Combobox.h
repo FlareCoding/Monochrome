@@ -34,6 +34,12 @@ namespace mc
         // Adds the specified items to the list
         void addItems(const std::vector<std::string>& items);
 
+        // Removes the specified item from the list
+        bool removeItem(const std::string& item);
+
+        // Removes all items from the list
+        void removeAllItems();
+
         // Returns the number of items in the combobox
         inline size_t getItemCount() const { return d_menuList->getItemCount(); }
 
@@ -42,5 +48,6 @@ namespace mc
         void _setupEventHandlers();
 
         Shared<MenuList>    d_menuList;
+        std::string         d_selectedItem;
     };
 }
