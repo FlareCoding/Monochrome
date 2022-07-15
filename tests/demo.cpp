@@ -75,7 +75,7 @@ int main()
     combobox->size = { 160, 20 };
     combobox->cornerRadius = 0;
     combobox->addItems({ "Eggs", "Milk", "Beef", "Lettuce", "Tomatos" });
-    combobox->borderColor = Color::white;
+    combobox->overlayBorderColor = Color::white;
     combobox->itemColor = Color::white;
     combobox->color = Color::white;
     combobox->backgroundColor = Color::darkGray;

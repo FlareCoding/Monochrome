@@ -51,8 +51,8 @@ namespace mc
 	}
 	
 	void Combobox::_setupComboboxProperties() {
-		borderColor = Color::black;
-		borderColor.forwardEmittedEvents(this);
+		overlayBorderColor = Color::black;
+		overlayBorderColor.forwardEmittedEvents(this);
 
 		borderThickness = 1;
 		borderThickness.forwardEmittedEvents(this);
@@ -77,7 +77,7 @@ namespace mc
 		d_menuList->size = { 0, 0 };
 		d_menuList->color = itemColor;
 		d_menuList->backgroundColor = backgroundColor;
-		d_menuList->borderColor = borderColor;
+		d_menuList->borderColor = overlayBorderColor;
 	}
 	
 	void Combobox::_setupEventHandlers() {
@@ -93,8 +93,8 @@ namespace mc
 			d_menuList->size = size;
 		});
 
-		borderColor.on("propertyChanged", [this](auto e) {
-			d_menuList->borderColor = borderColor;
+		overlayBorderColor.on("propertyChanged", [this](auto e) {
+			d_menuList->borderColor = overlayBorderColor;
 		});
 
 		borderThickness.on("propertyChanged", [this](auto e) {

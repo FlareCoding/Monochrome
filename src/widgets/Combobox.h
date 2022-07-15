@@ -14,7 +14,7 @@ namespace mc
         PropertyObserver<OverflowDirection> overlaySpawnDirection;
 
         // Color of the border around the MenuList overlay
-        PropertyObserver<Color>             borderColor;
+        PropertyObserver<Color>             overlayBorderColor;
 
         // Thickness of the border around the MenuList overlay
         PropertyObserver<uint32_t>          borderThickness;
