@@ -340,33 +340,37 @@ namespace mc
         // minimum required size for the text in pixels.
         auto getTextPixelSizeFn = runtimeFunctions.getTextPixelSizeFn;
 
-        // Determine the minimum required width for the
-        // text before the cursor position in pixels.
-        auto preCursorText = entry->text->substr(0, entry->d_cursorPos);
+        // Calculate and draw the cursor if it's visible
+        // and not in the middle of blinking invisibly.
+        if (entry->d_cursorBlinkedVisible) {
+            // Determine the minimum required width for the
+            // text before the cursor position in pixels.
+            auto preCursorText = entry->text->substr(0, entry->d_cursorPos);
 
-        auto [textPixelWidth, textPixelHeight] = getTextPixelSizeFn(
-            entry->d_textFrame.size.width,
-            entry->d_textFrame.size.height,
-            preCursorText, entry->font, entry->fontSize, entry->fontStyle,
-            "left", "none"
-        );
-
-        // Calculate the cursor's y offset from the top of the entry
-        auto cursorYOffset = (uint32_t)(((float)size.height - textPixelHeight) / 2);
-
-        // Draw the cursor if the entry is focused
-        // and if the entry is not in a read-only mode.
-        if (entry->isFocused() && !entry->readOnly) {
-            renderTarget->drawRectangle(
-                position.x + entry->d_textFrame.position.x + (int32_t)textPixelWidth,
-                position.y + cursorYOffset,
-                2,
-                (uint32_t)textPixelHeight,
-                entry->cursorColor,
-                0,
-                true,
-                0
+            auto [textPixelWidth, textPixelHeight] = getTextPixelSizeFn(
+                entry->d_textFrame.size.width,
+                entry->d_textFrame.size.height,
+                preCursorText, entry->font, entry->fontSize, entry->fontStyle,
+                "left", "none"
             );
+
+            // Calculate the cursor's y offset from the top of the entry
+            auto cursorYOffset = (uint32_t)(((float)size.height - textPixelHeight) / 2);
+
+            // Draw the cursor if the entry is focused
+            // and if the entry is not in a read-only mode.
+            if (entry->isFocused() && !entry->readOnly) {
+                renderTarget->drawRectangle(
+                    position.x + entry->d_textFrame.position.x + (int32_t)textPixelWidth,
+                    position.y + cursorYOffset,
+                    2,
+                    (uint32_t)textPixelHeight,
+                    entry->cursorColor,
+                    0,
+                    true,
+                    0
+                );
+            }
         }
 
         // Calculate and draw the highlighted text

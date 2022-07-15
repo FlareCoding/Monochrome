@@ -2,6 +2,7 @@
 #include "BaseWidget.h"
 #include <events/KeyboardEvents.h>
 #include <stack>
+#include <thread>
 
 namespace mc
 {
@@ -11,6 +12,7 @@ namespace mc
     {
     public:
         Entry();
+        ~Entry();
         inline const std::string getType() const override { return "entry"; }
 
         // Text to be displayed on the entry
@@ -98,6 +100,8 @@ namespace mc
 
         uint64_t _getTextIndexFromMousePosition(int32_t mousePos);
 
+        void _blinkingCursorControlRoutine();
+
     private:
         const uint32_t d_entryTextPadding = 6;
 
@@ -130,6 +134,16 @@ namespace mc
         // Used to track 'undo' operations and
         // used in the 'redo' operation handler.
         std::stack<std::string> d_undoHistory;
+
+        // Thread responsible for controlling the blinking cursor
+        std::thread d_blinkingCursorThread;
+
+        // Indicates if the blinking cursor thread is running
+        std::atomic_bool d_blinkingCursorThreadRunning = false;
+
+        // Tells the renderer if the cursor is in the
+        // middle of blinking and should be drawn.
+        std::atomic_bool d_cursorBlinkedVisible = true;
 
     private:
         friend class Renderer;

@@ -4,6 +4,7 @@
 #include <events/MouseEvents.h>
 #include <utils/Clipboard.h>
 #include <cmath>
+#include <chrono>
 
 namespace mc
 {
@@ -14,6 +15,13 @@ namespace mc
 
         _setupProperties();
         _setupEventHandlers();
+    }
+
+    Entry::~Entry() {
+        if (d_blinkingCursorThread.joinable()) {
+            d_blinkingCursorThreadRunning = false;
+            d_blinkingCursorThread.join();
+        }
     }
 
     void Entry::clear() {
@@ -127,6 +135,20 @@ namespace mc
             int32_t mousePosX = mouseMovedEvent->getLocation().x;
 
             _onMouseMoved(mousePosX);
+        });
+
+        on("gainedFocus", [this](Shared<Event> e) {
+            // Start the thread to control the blinking cursor
+            d_blinkingCursorThread = std::thread(&Entry::_blinkingCursorControlRoutine, this);
+        });
+
+        on("lostFocus", [this](Shared<Event> e) {
+            d_blinkingCursorThreadRunning = false;
+
+            // Stop the thread controlling the blinking cursor
+            if (d_blinkingCursorThread.joinable()) {
+                d_blinkingCursorThread.join();
+            }
         });
     }
     
@@ -600,5 +622,35 @@ namespace mc
         }
 
         return result;
+    }
+    
+    void Entry::_blinkingCursorControlRoutine() {
+        d_blinkingCursorThreadRunning = true;
+
+        std::chrono::high_resolution_clock::time_point start(
+            std::chrono::high_resolution_clock::now()
+        );
+
+        while (d_blinkingCursorThreadRunning) {
+            // Calculate the time that passed since the timer reset
+            auto timerDurationNanoseconds = std::chrono::high_resolution_clock::now() - start;
+
+            // Convert the time passed to miliseconds
+            auto timeDurationMiliseconds =
+                std::chrono::duration_cast<std::chrono::milliseconds>(timerDurationNanoseconds);
+
+            if (timeDurationMiliseconds.count() >= 500) {
+                // Update the cursor blinking state
+                d_cursorBlinkedVisible = !d_cursorBlinkedVisible;
+
+                // Fire the propertyChanged event to cause a widget redraw
+                fireEvent("propertyChanged", Event::empty);
+
+                // Reset the timer
+                start = std::chrono::high_resolution_clock::now();
+            }
+        }
+
+        d_cursorBlinkedVisible = true;
     }
 }
