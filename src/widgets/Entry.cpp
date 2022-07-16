@@ -55,7 +55,7 @@ namespace mc {
         text = "";
         text.on("propertyChanged", [this](auto e) {
             _onTextAssigned();
-        });
+            });
         text.forwardEmittedEvents(this);
 
         placeholder = "Type something...";
@@ -108,7 +108,7 @@ namespace mc {
     void Entry::_setupEventHandlers() {
         on("keyDown", [this](Shared<Event> e) {
             _onKeyPressed(std::static_pointer_cast<KeyDownEvent>(e));
-        });
+            });
 
         on("mouseDown", [this](Shared<Event> e) {
             d_mousePressed = true;
@@ -117,11 +117,11 @@ namespace mc {
 
             auto clickPosX = clickedEvent->getLocation().x;
             _onMousePressed(clickPosX);
-        });
+            });
 
         on("mouseUp", [this](Shared<Event> e) {
             d_mousePressed = false;
-        });
+            });
 
         on("mouseMoved", [this](Shared<Event> e) {
             // Only react to mouse "dragging"
@@ -133,12 +133,12 @@ namespace mc {
             int32_t mousePosX = mouseMovedEvent->getLocation().x;
 
             _onMouseMoved(mousePosX);
-        });
+            });
 
         on("gainedFocus", [this](Shared<Event> e) {
             // Start the thread to control the blinking cursor
             d_blinkingCursorThread = std::thread(&Entry::_blinkingCursorControlRoutine, this);
-        });
+            });
 
         on("lostFocus", [this](Shared<Event> e) {
             d_blinkingCursorThreadRunning = false;
@@ -147,7 +147,7 @@ namespace mc {
             if (d_blinkingCursorThread.joinable()) {
                 d_blinkingCursorThread.join();
             }
-        });
+            });
     }
 
     void Entry::_onKeyPressed(Shared<KeyDownEvent> e) {
@@ -175,7 +175,7 @@ namespace mc {
         case KeyCode::KEY_ENTER: {
             fireEvent("enter", MakeRef<Event>(eventDataMap_t{
                 { "text", text.get() }
-            }));
+                }));
             break;
         }
         default: {
@@ -375,114 +375,114 @@ namespace mc {
 
     bool Entry::_handleShortcut(char cmdChar) {
         switch (cmdChar) {
-            case 'c': {
-                // Copy operation
-                if (hasSelectedText()) {
-                    auto selectedText = getSelectedText();
-                    utils::Clipboard::saveToClipboard(selectedText);
-                }
-
-                return true;
+        case 'c': {
+            // Copy operation
+            if (hasSelectedText()) {
+                auto selectedText = getSelectedText();
+                utils::Clipboard::saveToClipboard(selectedText);
             }
-            case 'v': {
-                // Paste operation
 
-                // Do nothing if the entry
-                // is in a read-only mode.
-                if (readOnly) {
-                    break;
-                }
+            return true;
+        }
+        case 'v': {
+            // Paste operation
 
-                // Check if there is currently a selection,
-                // and if so, replace it with pasted contents
-                if (hasSelectedText()) {
-                    _eraseSelectedText();
-                    clearSelection();
-                }
+            // Do nothing if the entry
+            // is in a read-only mode.
+            if (readOnly) {
+                break;
+            }
 
-                auto pastedText = utils::Clipboard::getClipboardText();
+            // Check if there is currently a selection,
+            // and if so, replace it with pasted contents
+            if (hasSelectedText()) {
+                _eraseSelectedText();
+                clearSelection();
+            }
 
-                // Validate pasted text
-                if (d_entryInputValidator) {
-                    for (uint64_t i = 0; i < pastedText.size(); ++i) {
-                        if (!d_entryInputValidator(pastedText.at(i))) {
-                            // Return true in order to indicate
-                            // that the shortcut was handled properly.
-                            return true;
-                        }
+            auto pastedText = utils::Clipboard::getClipboardText();
+
+            // Validate pasted text
+            if (d_entryInputValidator) {
+                for (uint64_t i = 0; i < pastedText.size(); ++i) {
+                    if (!d_entryInputValidator(pastedText.at(i))) {
+                        // Return true in order to indicate
+                        // that the shortcut was handled properly.
+                        return true;
                     }
                 }
+            }
 
-                text->insert(d_cursorPos, pastedText);
-                d_cursorPos += pastedText.size();
+            text->insert(d_cursorPos, pastedText);
+            d_cursorPos += pastedText.size();
+            _handleEntryTextChanged();
+
+            return true;
+        }
+        case 'x': {
+            // Do nothing if the entry
+            // is in a read-only mode.
+            if (readOnly) {
+                break;
+            }
+
+            // Cut operation
+            if (hasSelectedText()) {
+                auto selectedText = getSelectedText();
+                utils::Clipboard::saveToClipboard(selectedText);
+
+                _eraseSelectedText();
+                clearSelection();
                 _handleEntryTextChanged();
-
-                return true;
             }
-            case 'x': {
-                // Do nothing if the entry
-                // is in a read-only mode.
-                if (readOnly) {
-                    break;
-                }
 
-                // Cut operation
-                if (hasSelectedText()) {
-                    auto selectedText = getSelectedText();
-                    utils::Clipboard::saveToClipboard(selectedText);
-
-                    _eraseSelectedText();
-                    clearSelection();
-                    _handleEntryTextChanged();
-                }
-
-                return true;
+            return true;
+        }
+        case 'z': {
+            // Do nothing if the entry
+            // is in a read-only mode.
+            if (readOnly) {
+                break;
             }
-            case 'z': {
-                // Do nothing if the entry
-                // is in a read-only mode.
-                if (readOnly) {
-                    break;
-                }
-                // Undo operation
-                if (d_history.size() >= 2) {
-                    // Update the undo history
-                    d_undoHistory.push(text.get());
+            // Undo operation
+            if (d_history.size() >= 2) {
+                // Update the undo history
+                d_undoHistory.push(text.get());
 
-                    // Pop the latest change
-                    d_history.pop();
+                // Pop the latest change
+                d_history.pop();
 
-                    // Set the text to the last changed text
-                    text->assign(d_history.top());
+                // Set the text to the last changed text
+                text->assign(d_history.top());
 
-                    // Sanitize the cursor position
-                    d_cursorPos = text->size();
-                }
-
-                return true;
+                // Sanitize the cursor position
+                d_cursorPos = text->size();
             }
-            case 'y': {
-                // Do nothing if the entry
-                // is in a read-only mode.
-                if (readOnly) {
-                    break;
-                }
 
-                // Redo operation
-                if (!d_undoHistory.empty()) {
-                    // Update the text
-                    text->assign(d_undoHistory.top());
-
-                    // Pop the last undo operation
-                    d_undoHistory.pop();
-
-                    // Sanitize the cursor position
-                    d_cursorPos = text->size();
-                }
-
-                return true;
+            return true;
+        }
+        case 'y': {
+            // Do nothing if the entry
+            // is in a read-only mode.
+            if (readOnly) {
+                break;
             }
-            default: break;
+
+            // Redo operation
+            if (!d_undoHistory.empty()) {
+                // Update the text
+                text->assign(d_undoHistory.top());
+
+                // Pop the last undo operation
+                d_undoHistory.pop();
+
+                // Sanitize the cursor position
+                d_cursorPos = text->size();
+            }
+
+            return true;
+        }
+        default: break;
         }
 
         return false;
@@ -512,7 +512,7 @@ namespace mc {
 
         fireEvent("change", MakeRef<Event>(eventDataMap_t{
             { "text", text.get() }
-        }));
+            }));
     }
 
     void Entry::_updateTextFrameSize() {
@@ -539,9 +539,8 @@ namespace mc {
         // Check if text frame of reference should be moved left,
         // ultimately scrolling the text forward
         if (d_cursorPos == text->size()) {
-            int32_t diff =
-                (d_textFrame.position.x + d_textFrame.size.width) -
-                (size->width - d_entryTextPadding);
+            int32_t diff = (d_textFrame.position.x + d_textFrame.size.width) -
+                            (size->width - d_entryTextPadding);
 
             if (diff > 0) {
                 d_textFrame.position.x -= diff;
@@ -558,9 +557,9 @@ namespace mc {
         // can remain shifted over to the left, so it needs to be
         // aligned with either the left or the right clip boundaries.
         int32_t rightDiff = (int64_t)(d_textFrame.position.x + d_textFrame.size.width) -
-                            (int64_t)(size->width - d_entryTextPadding);
+            (int64_t)(size->width - d_entryTextPadding);
 
-        int32_t leftDiff = (int64_t)(d_entryTextPadding) - (int64_t)d_textFrame.position.x;
+        int32_t leftDiff = (int64_t)(d_entryTextPadding)-(int64_t)d_textFrame.position.x;
 
         if (leftDiff > 0 && rightDiff < 0) {
             int32_t shiftDiff = std::min(std::abs(rightDiff), std::abs(leftDiff));
@@ -578,6 +577,7 @@ namespace mc {
 
         int32_t preCursorDiff =
             (d_entryTextPadding - (d_textFrame.position.x + (int32_t)preCursorTextWidth));
+
         if (preCursorDiff > 0) {
             d_textFrame.position.x += preCursorDiff;
         }
@@ -599,8 +599,10 @@ namespace mc {
         localMousePosX += std::abs(d_textFrame.position.x - (int32_t)d_entryTextPadding);
         localMousePosX -= d_entryTextPadding;
 
-        float percentage = static_cast<float>(localMousePosX / d_textFrame.size.width);
-        float clickedIndex = static_cast<float>(text->size() * percentage);
+        float percentage =
+            static_cast<float>(localMousePosX) / static_cast<float>(d_textFrame.size.width);
+
+        float clickedIndex = static_cast<float>(text->size()) * percentage;
         if (clickedIndex < 0) {
             clickedIndex = 0;
         }
