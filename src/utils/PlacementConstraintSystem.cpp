@@ -7,7 +7,10 @@ namespace mc::utils {
     > PlacementConstraintSystem::s_containers;
 
     void PlacementConstraintSystem::registerContainer(const std::string& name, const Size& size) {
-        CORE_ASSERT(!hasContainer(name), "Virtual container with name '" + name + "' already registered");
+        CORE_ASSERT(
+            !hasContainer(name),
+            "Virtual container with name '" + name + "' already registered"
+        );
 
         VirtualContainer container;
         container.containerFrame = Frame(Position(), size);
@@ -37,7 +40,7 @@ namespace mc::utils {
 
         s_containers[name] = container;
     }
-    
+
     Position VirtualContainer::insertChild(
         uint64_t id,
         const Size& childSize,
@@ -95,7 +98,7 @@ namespace mc::utils {
             // the child element below.
             proposedAnchorPoint.y += anchorOrigin.y + anchorElementSize.height;
         }
-        
+
         if (proposedAnchorPoint.x + childSize.width > containerFrame.size.width) {
             // In this case, the child element is going out of bounds
             // of the virtual container from the __right__ edge.
@@ -132,13 +135,13 @@ namespace mc::utils {
 
         return resultingFrame.position;
     }
-    
+
     void VirtualContainer::removeChild(uint64_t id) {
         if (children.find(id) != children.end()) {
             children.erase(id);
         }
     }
-    
+
     bool VirtualContainer::framesColliding(
         Frame& first,
         Frame& second,
