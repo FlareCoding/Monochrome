@@ -28,5 +28,7 @@ public:
     static Color gray;
     static Color lightGray;
     static Color darkGray;
+    static Color teal;
+    static Color magenta;
 };
 } // namespace mc

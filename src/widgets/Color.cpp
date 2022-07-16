@@ -11,4 +11,6 @@ namespace mc {
     Color Color::gray           = Color(100, 100, 100);
     Color Color::lightGray      = Color(160, 160, 160);
     Color Color::darkGray       = Color(60, 60, 60);
+    Color Color::teal           = Color(0, 128, 128);
+    Color Color::magenta        = Color(255, 0, 255);
 } // namespace mc
