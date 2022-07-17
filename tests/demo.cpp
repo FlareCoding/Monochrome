@@ -107,8 +107,12 @@ int main()
     clearBtn->cornerRadius = 2;
     clearBtn->text = "Clear";
     clearBtn->on("clicked", [flowContainer](auto e) {
-        while (flowContainer->getChildren().size() > 2) {
-            flowContainer->removeChild(flowContainer->getChild(2));
+        if (flowContainer->layout == Horizontal ||
+            flowContainer->layout == HorizontalReversed
+        ) {
+            while (flowContainer->getChildren().size() > 2) {
+                flowContainer->removeChild(flowContainer->getChild(2));
+            }
         }
     });
     flowContainer->addChild(clearBtn);
@@ -123,7 +127,7 @@ int main()
     layoutCombobox->color = Color::white;
     layoutCombobox->backgroundColor = Color::darkGray;
     layoutCombobox->overlaySpawnDirection = Right;
-    layoutCombobox->on("itemSelected", [flowContainer](auto e) {
+    layoutCombobox->on("itemSelected", [flowContainer](Shared<Event> e) {
         auto item = e->get<std::string>("item");
         if (item == "Horizontal") {
             flowContainer->layout = Horizontal;
@@ -147,7 +151,7 @@ int main()
     justifyContentCombobox->color = Color::white;
     justifyContentCombobox->backgroundColor = Color::darkGray;
     justifyContentCombobox->overlaySpawnDirection = Right;
-    justifyContentCombobox->on("itemSelected", [flowContainer](auto e) {
+    justifyContentCombobox->on("itemSelected", [flowContainer](Shared<Event> e) {
         auto item = e->get<std::string>("item");
         if (item == "None") {
             flowContainer->justifyContent = None;

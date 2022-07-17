@@ -60,6 +60,7 @@ private:
     void _calculateNextChildPosition(Position& pos, BaseWidget* child);
 
     void _justifyRowElementsHorizontally(int32_t positionY, uint32_t elementCount);
+    void _justifyElementsVertically();
 
 private:
     // rowPositionY -> { totalRowElementWidth, rowElements }

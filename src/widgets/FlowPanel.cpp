@@ -69,6 +69,9 @@ namespace mc {
                     rowElementCount
                 );
             } else {
+                // Logic gets simplified a lot since there
+                // is no element wrapping in vertical layouts.
+                _justifyElementsVertically();
             }
 
             // Prepare the position anchor for the next child
@@ -137,12 +140,13 @@ namespace mc {
         }
         case FlowLayout::Vertical: {
             child->position = pos;
-
-            CORE_ASSERT(false, "Vertical layout not supported (yet)");
             break;
         }
         case FlowLayout::VerticalReversed: {
-            CORE_ASSERT(false, "VerticalReversed layout not supported (yet)");
+            child->position = {
+                pos.x,
+                pos.y - static_cast<int32_t>(child->size->height)
+            };
             break;
         }
         default: break;
@@ -178,7 +182,7 @@ namespace mc {
                 break;
             }
 
-            CORE_ASSERT(false, "Vertical layout not supported (yet)");
+            pos.y += child->size->height;
             break;
         }
         case FlowLayout::VerticalReversed: {
@@ -188,7 +192,7 @@ namespace mc {
                 break;
             }
 
-            CORE_ASSERT(false, "VerticalReversed layout not supported (yet)");
+            pos.y -= static_cast<int32_t>(child->size->height);
             break;
         }
         default: break;
@@ -351,6 +355,130 @@ namespace mc {
                 for (auto& elem : affectedElements) {
                     elem->position->x = newElemPos - static_cast<int32_t>(elem->size->width);
                     newElemPos -= static_cast<int32_t>(elem->size->width) + spaceBetweenElements;
+                }
+            }
+            break;
+        }
+        default: break;
+        }
+    }
+
+    void FlowPanel::_justifyElementsVertically() {
+        switch (justifyContent) {
+        case JustifyContentType::None: {
+            // None is the default type and doesn't require
+            // any additional positional adjustments.
+            return;
+        }
+        case JustifyContentType::Fill: {
+            // All elements must be packed into the vertical column
+            uint32_t elementHeight = size->height / static_cast<uint32_t>(d_children.size());
+
+            for (auto& child : d_children) {
+                child->size->height = elementHeight;
+            }
+            break;
+        }
+        case JustifyContentType::Center: {
+            // Calculate the sum of all element heights.
+            uint32_t totalElemHeight = 0;
+
+            for (auto& child : d_children) {
+                totalElemHeight += child->size->height;
+            }
+
+            // Calculate the free space left
+            uint32_t freeSpace = 0;
+            if (static_cast<int32_t>(size->height) - static_cast<int32_t>(totalElemHeight) > 0) {
+                freeSpace = (size->height - totalElemHeight) / 2;
+            }
+
+            // Adjust the positions of each affected element in the column
+            if (layout == Vertical) {
+                int32_t newElemPos = static_cast<int32_t>(freeSpace);
+                for (auto& elem : d_children) {
+                    elem->position->y = newElemPos;
+                    newElemPos += elem->size->height;
+                }
+            } else if (layout == VerticalReversed) {
+                int32_t newElemPos = static_cast<int32_t>(size->height - freeSpace);
+                for (auto& elem : d_children) {
+                    elem->position->y = newElemPos - static_cast<int32_t>(elem->size->height);
+                    newElemPos -= static_cast<int32_t>(elem->size->height);
+                }
+            }
+            break;
+        }
+        case JustifyContentType::SpaceBetween: {
+            // Calculate the sum of all element heights.
+            uint32_t totalElemHeight = 0;
+
+            for (auto& child : d_children) {
+                totalElemHeight += child->size->height;
+            }
+
+            // Calculate the free space left
+            uint32_t totalFreeSpace = 0;
+            if (static_cast<int32_t>(size->height) - static_cast<int32_t>(totalElemHeight) > 0) {
+                totalFreeSpace = size->height - totalElemHeight;
+            }
+
+            // Calculate the space between elements
+            uint32_t spaceBetweenElements = 0;
+            if (d_children.size() > 1) {
+                spaceBetweenElements =
+                    totalFreeSpace / (static_cast<uint32_t>(d_children.size()) - 1);
+            }
+
+            // Adjust the positions of each affected element in the column
+            if (layout == Vertical) {
+                int32_t newElemPos = 0;
+                for (auto& elem : d_children) {
+                    elem->position->y = newElemPos;
+                    newElemPos += elem->size->height + spaceBetweenElements;
+                }
+            } else if (layout == VerticalReversed) {
+                int32_t newElemPos = static_cast<int32_t>(size->height);
+                for (auto& elem : d_children) {
+                    elem->position->y = newElemPos - static_cast<int32_t>(elem->size->height);
+                    newElemPos -= static_cast<int32_t>(elem->size->height) + spaceBetweenElements;
+                }
+            }
+            break;
+        }
+        case JustifyContentType::SpaceAround: {
+            // Calculate the sum of all element heights.
+            uint32_t totalElemHeight = 0;
+
+            for (auto& child : d_children) {
+                totalElemHeight += child->size->height;
+            }
+
+            // Calculate the free space left
+            uint32_t totalFreeSpace = 0;
+            if (static_cast<int32_t>(size->height) - static_cast<int32_t>(totalElemHeight) > 0) {
+                totalFreeSpace = size->height - totalElemHeight;
+            }
+
+            // Calculate the space between elements
+            uint32_t spaceBetweenElements = 0;
+            if (d_children.size() > 1) {
+                spaceBetweenElements =
+                    totalFreeSpace / (static_cast<uint32_t>(d_children.size()) + 1);
+            }
+
+            // Adjust the positions of each affected element in the row
+            if (layout == Vertical) {
+                int32_t newElemPos = spaceBetweenElements;
+                for (auto& elem : d_children) {
+                    elem->position->y = newElemPos;
+                    newElemPos += elem->size->height + spaceBetweenElements;
+                }
+            } else if (layout == VerticalReversed) {
+                int32_t newElemPos = static_cast<int32_t>(size->height) - spaceBetweenElements;
+                for (auto& elem : d_children) {
+                    elem->position->y = newElemPos - static_cast<int32_t>(elem->size->height);
+                    newElemPos -= static_cast<int32_t>(elem->size->height) + spaceBetweenElements;
                 }
             }
             break;
