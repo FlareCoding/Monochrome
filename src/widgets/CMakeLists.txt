@@ -17,6 +17,7 @@ set(
     ${cwd}/MenuList.h
     ${cwd}/DropdownButton.h
     ${cwd}/Combobox.h
+    ${cwd}/FlowPanel.h
 
     PARENT_SCOPE
 )
@@ -35,6 +36,7 @@ set(
     ${cwd}/MenuList.cpp
     ${cwd}/DropdownButton.cpp
     ${cwd}/Combobox.cpp
+    ${cwd}/FlowPanel.cpp
 
     PARENT_SCOPE
 )

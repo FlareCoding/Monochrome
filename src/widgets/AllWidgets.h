@@ -1,5 +1,6 @@
 #pragma once
 #include "Panel.h"
+#include "FlowPanel.h"
 #include "Label.h"
 #include "Button.h"
 #include "Entry.h"
