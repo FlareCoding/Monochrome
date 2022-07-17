@@ -34,6 +34,18 @@ namespace mc {
         size.on("propertyChanged", [this](Shared<Event> e) {
             _calculateChildrenDynamicPosition();
         });
+
+        layout.on("propertyChanged", [this](Shared<Event> e) {
+            _calculateChildrenDynamicPosition();
+        });
+
+        justifyContent.on("propertyChanged", [this](Shared<Event> e) {
+            _calculateChildrenDynamicPosition();
+        });
+
+        wrapContents.on("propertyChanged", [this](Shared<Event> e) {
+            _calculateChildrenDynamicPosition();
+        });
     }
 
     void FlowPanel::_calculateChildrenDynamicPosition() {
@@ -232,10 +244,18 @@ namespace mc {
             }
 
             // Adjust the positions of each affected element in the row
-            int32_t newElemPos = static_cast<int32_t>(freeSpace);
-            for (auto& elem : affectedElements) {
-                elem->position->x = newElemPos;
-                newElemPos += elem->size->width;
+            if (layout == Horizontal) {
+                int32_t newElemPos = static_cast<int32_t>(freeSpace);
+                for (auto& elem : affectedElements) {
+                    elem->position->x = newElemPos;
+                    newElemPos += elem->size->width;
+                }
+            } else if (layout == HorizontalReversed) {
+                int32_t newElemPos = static_cast<int32_t>(size->width - freeSpace);
+                for (auto& elem : affectedElements) {
+                    elem->position->x = newElemPos - static_cast<int32_t>(elem->size->width);
+                    newElemPos -= static_cast<int32_t>(elem->size->width);
+                }
             }
             break;
         }
@@ -272,10 +292,19 @@ namespace mc {
             }
 
             // Adjust the positions of each affected element in the row
-            int32_t newElemPos = 0;
-            for (auto& elem : affectedElements) {
-                elem->position->x = newElemPos;
-                newElemPos += elem->size->width + spaceBetweenElements;
+            if (layout == Horizontal) {
+                int32_t newElemPos = 0;
+                for (auto& elem : affectedElements) {
+                    elem->position->x = newElemPos;
+                    newElemPos += elem->size->width + spaceBetweenElements;
+                }
+            }
+            else if (layout == HorizontalReversed) {
+                int32_t newElemPos = static_cast<int32_t>(size->width);
+                for (auto& elem : affectedElements) {
+                    elem->position->x = newElemPos - static_cast<int32_t>(elem->size->width);
+                    newElemPos -= static_cast<int32_t>(elem->size->width) + spaceBetweenElements;
+                }
             }
             break;
         }
@@ -312,10 +341,19 @@ namespace mc {
             }
 
             // Adjust the positions of each affected element in the row
-            int32_t newElemPos = spaceBetweenElements;
-            for (auto& elem : affectedElements) {
-                elem->position->x = newElemPos;
-                newElemPos += elem->size->width + spaceBetweenElements;
+            if (layout == Horizontal) {
+                int32_t newElemPos = spaceBetweenElements;
+                for (auto& elem : affectedElements) {
+                    elem->position->x = newElemPos;
+                    newElemPos += elem->size->width + spaceBetweenElements;
+                }
+            }
+            else if (layout == HorizontalReversed) {
+                int32_t newElemPos = static_cast<int32_t>(size->width) - spaceBetweenElements;
+                for (auto& elem : affectedElements) {
+                    elem->position->x = newElemPos - static_cast<int32_t>(elem->size->width);
+                    newElemPos -= static_cast<int32_t>(elem->size->width) + spaceBetweenElements;
+                }
             }
             break;
         }

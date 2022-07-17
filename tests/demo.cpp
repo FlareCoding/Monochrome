@@ -26,7 +26,7 @@ int main()
 {
     AppManager::registerApplication("appId-032487");
 
-    auto window = MakeRef<ModernWindow>(860, 660, "Monochrome Demo");
+    auto window = MakeRef<ModernWindow>(1060, 660, "Monochrome Demo");
     window->setBackgroundColor(Color(18, 22, 28));
 
     auto entry = MakeRef<Entry>();
@@ -79,45 +79,93 @@ int main()
     dropdown->setMenuList(ddMenuList);
     window->addWidget(dropdown);
 
-    auto combobox = MakeRef<Combobox>();
-    combobox->position = { 540, 100 };
-    combobox->size = { 160, 20 };
-    combobox->cornerRadius = 0;
-    combobox->addItems({ "Eggs", "Milk", "Beef", "Lettuce", "Tomatos" });
-    combobox->overlayBorderColor = Color::white;
-    combobox->itemColor = Color::white;
-    combobox->color = Color::white;
-    combobox->backgroundColor = Color::darkGray;
-    window->addWidget(combobox);
-
     auto flowContainer = MakeRef<FlowPanel>();
     flowContainer->position = { 140, 240 };
     flowContainer->size = { 540, 300 };
     flowContainer->cornerRadius = 2;
     flowContainer->backgroundColor = Color(20, 50, 20);
     flowContainer->layout = Horizontal;
-    flowContainer->justifyContent = SpaceBetween;
+    flowContainer->justifyContent = None;
     window->addWidget(flowContainer);
 
-    auto testBtn = MakeRef<Button>();
-    testBtn->cornerRadius = 2;
-    testBtn->text = "Add";
-    flowContainer->addChild(testBtn);
-    
-    testBtn->on("clicked", [flowContainer](auto e) {
+    auto addBtn = MakeRef<Button>();
+    addBtn->cornerRadius = 2;
+    addBtn->text = "Add";
+    addBtn->on("clicked", [flowContainer](auto e) {
+        static int counter = 2;
+        ++counter;
+
         auto b = MakeRef<Button>();
         b->size->height = random(30, 60);
         b->cornerRadius = 2;
+        b->text = "Button " + std::to_string(counter);
         flowContainer->addChild(b);
     });
+    flowContainer->addChild(addBtn);
 
-    for (int i = 2; i <= 3; ++i) {
-        auto b = MakeRef<Button>();
-        b->size->height = random(30, 60);
-        b->cornerRadius = 2;
-        b->text = "Button " + std::to_string(i);
-        flowContainer->addChild(b);
-    }
+    auto clearBtn = MakeRef<Button>();
+    clearBtn->cornerRadius = 2;
+    clearBtn->text = "Clear";
+    clearBtn->on("clicked", [flowContainer](auto e) {
+        while (flowContainer->getChildren().size() > 2) {
+            flowContainer->removeChild(flowContainer->getChild(2));
+        }
+    });
+    flowContainer->addChild(clearBtn);
+
+    auto layoutCombobox = MakeRef<Combobox>();
+    layoutCombobox->position = { 700, 240 };
+    layoutCombobox->size = { 160, 20 };
+    layoutCombobox->cornerRadius = 0;
+    layoutCombobox->addItems({ "Horizontal", "HorizontalReversed", "Vertical", "VerticalReversed" });
+    layoutCombobox->overlayBorderColor = Color::white;
+    layoutCombobox->itemColor = Color::white;
+    layoutCombobox->color = Color::white;
+    layoutCombobox->backgroundColor = Color::darkGray;
+    layoutCombobox->overlaySpawnDirection = Right;
+    layoutCombobox->on("itemSelected", [flowContainer](auto e) {
+        auto item = e->get<std::string>("item");
+        if (item == "Horizontal") {
+            flowContainer->layout = Horizontal;
+        } else if (item == "HorizontalReversed") {
+            flowContainer->layout = HorizontalReversed;
+        } else if (item == "Vertical") {
+            flowContainer->layout = Vertical;
+        } else if (item == "VerticalReversed") {
+            flowContainer->layout = VerticalReversed;
+        }
+    });
+    window->addWidget(layoutCombobox);
+
+    auto justifyContentCombobox = MakeRef<Combobox>();
+    justifyContentCombobox->position = { 700, 270 };
+    justifyContentCombobox->size = { 160, 20 };
+    justifyContentCombobox->cornerRadius = 0;
+    justifyContentCombobox->addItems({ "None", "Fill", "Center", "SpaceBetween", "SpaceAround" });
+    justifyContentCombobox->overlayBorderColor = Color::white;
+    justifyContentCombobox->itemColor = Color::white;
+    justifyContentCombobox->color = Color::white;
+    justifyContentCombobox->backgroundColor = Color::darkGray;
+    justifyContentCombobox->overlaySpawnDirection = Right;
+    justifyContentCombobox->on("itemSelected", [flowContainer](auto e) {
+        auto item = e->get<std::string>("item");
+        if (item == "None") {
+            flowContainer->justifyContent = None;
+        }
+        else if (item == "Fill") {
+            flowContainer->justifyContent = Fill;
+        }
+        else if (item == "Center") {
+            flowContainer->justifyContent = Center;
+        }
+        else if (item == "SpaceBetween") {
+            flowContainer->justifyContent = SpaceBetween;
+        }
+        else if (item == "SpaceAround") {
+            flowContainer->justifyContent = SpaceAround;
+        }
+    });
+    window->addWidget(justifyContentCombobox);
 
     AppManager::startApplicationLoop();
     return 0;

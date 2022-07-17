@@ -60,5 +60,9 @@ private:
     void _calculateNextChildPosition(Position& pos, BaseWidget* child);
 
     void _justifyRowElementsHorizontally(int32_t positionY, uint32_t elementCount);
+
+private:
+    // rowPositionY -> { totalRowElementWidth, rowElements }
+    std::map<uint32_t, std::pair<uint32_t, std::vector<BaseWidget*>>> d_rowElementsMap;
 };
 } // namespace mc
