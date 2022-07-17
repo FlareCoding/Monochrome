@@ -298,8 +298,7 @@ namespace mc {
                     elem->position->x = newElemPos;
                     newElemPos += elem->size->width + spaceBetweenElements;
                 }
-            }
-            else if (layout == HorizontalReversed) {
+            } else if (layout == HorizontalReversed) {
                 int32_t newElemPos = static_cast<int32_t>(size->width);
                 for (auto& elem : affectedElements) {
                     elem->position->x = newElemPos - static_cast<int32_t>(elem->size->width);
@@ -347,8 +346,7 @@ namespace mc {
                     elem->position->x = newElemPos;
                     newElemPos += elem->size->width + spaceBetweenElements;
                 }
-            }
-            else if (layout == HorizontalReversed) {
+            } else if (layout == HorizontalReversed) {
                 int32_t newElemPos = static_cast<int32_t>(size->width) - spaceBetweenElements;
                 for (auto& elem : affectedElements) {
                     elem->position->x = newElemPos - static_cast<int32_t>(elem->size->width);
