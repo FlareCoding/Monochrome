@@ -14,7 +14,8 @@ public:
 
     void on(const std::string& eventName, eventEmiterCallback_t handler);
     void off(const std::string& eventName);
-    void fireEvent(const std::string& eventName, Shared<Event> data);
+    void fireEvent(const std::string& eventName, Shared<Event> event);
+    void fireEvent(const std::string& eventName, const eventDataMap_t& data);
 
     void forwardEmittedEvents(EventEmitter* emitter);
     void forwardEmittedEvent(EventEmitter* emitter, const std::string& eventName);

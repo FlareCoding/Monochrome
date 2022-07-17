@@ -29,21 +29,25 @@ namespace mc {
         }
     }
 
-    void EventEmitter::fireEvent(const std::string& eventName, Shared<Event> e) {
+    void EventEmitter::fireEvent(const std::string& eventName, Shared<Event> event) {
         // Check if the event name is allowed
         CORE_ASSERT(
             std::count(d_allowedEvents.begin(), d_allowedEvents.end(), eventName),
             "Event '" + eventName + "' is not an allowed event"
         );
 
-        e->name = eventName;
+        event->name = eventName;
 
         if (d_handlers.find(eventName) != d_handlers.end()) {
             auto& eventHandlers = d_handlers[eventName];
             for (auto& handler : eventHandlers) {
-                handler(e);
+                handler(event);
             }
         }
+    }
+
+    void EventEmitter::fireEvent(const std::string& eventName, const eventDataMap_t& data) {
+        fireEvent(eventName, MakeRef<Event>(data));
     }
 
     void EventEmitter::forwardEmittedEvents(EventEmitter* emitter) {
