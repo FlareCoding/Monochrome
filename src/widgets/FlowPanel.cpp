@@ -210,6 +210,9 @@ namespace mc {
             // All elements must be packed into the row
             uint32_t elementWidth = size->width / elementCount;
 
+            int32_t newElemPos =
+                (layout == Horizontal) ? 0 : static_cast<int32_t>(size->width);
+
             for (auto& child : d_children) {
                 // Ignore elements in a different row
                 if (child->position->y != positionY) {
@@ -217,6 +220,14 @@ namespace mc {
                 }
 
                 child->size->width = elementWidth;
+
+                if (layout == Horizontal) {
+                    child->position->x = newElemPos;
+                    newElemPos += elementWidth;
+                } else if (layout == HorizontalReversed) {
+                    child->position->x = newElemPos - child->size->width;
+                    newElemPos -= elementWidth;
+                }
             }
             break;
         }
@@ -374,8 +385,19 @@ namespace mc {
             // All elements must be packed into the vertical column
             uint32_t elementHeight = size->height / static_cast<uint32_t>(d_children.size());
 
+            int32_t newElemPos =
+                (layout == Vertical) ? 0 : static_cast<int32_t>(size->height);
+
             for (auto& child : d_children) {
                 child->size->height = elementHeight;
+
+                if (layout == Vertical) {
+                    child->position->y = newElemPos;
+                    newElemPos += elementHeight;
+                } else if (layout == VerticalReversed) {
+                    child->position->y = newElemPos - child->size->height;
+                    newElemPos -= elementHeight;
+                }
             }
             break;
         }
