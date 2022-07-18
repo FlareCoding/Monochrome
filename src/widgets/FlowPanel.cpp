@@ -18,6 +18,9 @@ namespace mc {
 
         stretchContents = false;
         stretchContents.forwardEmittedEvents(this);
+
+        autoSize = false;
+        autoSize.forwardEmittedEvents(this);
     }
 
     void FlowPanel::_setupEventHandlers() {
@@ -49,11 +52,23 @@ namespace mc {
         wrapContents.on("propertyChanged", [this](Shared<Event> e) {
             _calculateChildrenDynamicPosition();
         });
+
+        stretchContents.on("propertyChanged", [this](Shared<Event> e) {
+            _calculateChildrenDynamicPosition();
+        });
+
+        autoSize.on("propertyChanged", [this](Shared<Event> e) {
+            _calculateChildrenDynamicPosition();
+        });
     }
 
     void FlowPanel::_calculateChildrenDynamicPosition() {
         Frame availableInsertionFrame;
         _calculateNextChildPosition(availableInsertionFrame.position, nullptr);
+
+        // Used to track maximum content size for a given
+        // layout to be potentially used in the autoSize calculation.
+        uint32_t maxContentSize = 0;
 
         for (auto& child : d_children) {
             // Update the child's position and size
@@ -77,6 +92,11 @@ namespace mc {
                 if (stretchContents) {
                     child->size->height = size->height;
                 }
+
+                // Keep track of the maximum content size
+                if (child->position->y + child->size->height > maxContentSize) {
+                    maxContentSize = child->position->y + child->size->height;
+                }
             } else {
                 // Logic gets simplified a lot since there
                 // is no element wrapping in vertical layouts.
@@ -87,6 +107,37 @@ namespace mc {
                 if (stretchContents) {
                     child->size->width = size->width;
                 }
+
+                // Keep track of the maximum content size
+                // *Note: in a vertical layout items are
+                // always aligned with the left border.
+                if (child->size->width > maxContentSize) {
+                    maxContentSize = child->size->width;
+                }
+            }
+
+            // If the autoSize property is true, then
+            // resize the panel to be the size of the content.
+            if (autoSize) {
+                switch (layout) {
+                    case Horizontal:
+                    case HorizontalReversed: {
+                        // Update the panel's height
+                        size->height = maxContentSize;
+                        break;
+                    }
+                    case Vertical:
+                    case VerticalReversed: {
+                        // Update the panel's width
+                        size->width = maxContentSize;
+                        break;
+                    }
+                    default: break;
+                }
+
+                // Indicate that the redraw is needed because
+                // size's property observer wasn't affected.
+                fireEvent("propertyChanged", Event::empty);
             }
 
             // Prepare the position anchor for the next child

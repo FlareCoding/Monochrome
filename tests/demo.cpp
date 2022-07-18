@@ -81,12 +81,13 @@ int main()
 
     auto flowContainer = MakeRef<FlowPanel>();
     flowContainer->position = { 140, 240 };
-    flowContainer->size = { 540, 100 };
+    flowContainer->size = { 540, 300 };
     flowContainer->cornerRadius = 2;
     flowContainer->backgroundColor = Color(20, 50, 20);
     flowContainer->layout = Horizontal;
     flowContainer->justifyContent = None;
     flowContainer->stretchContents = false;
+    flowContainer->autoSize = false;
     window->addWidget(flowContainer);
 
     auto addBtn = MakeRef<Button>();
@@ -97,7 +98,7 @@ int main()
         ++counter;
 
         auto b = MakeRef<Button>();
-        b->size->height = random(30, 60);
+        b->size = { random(100, 170), random(30, 60) };
         b->cornerRadius = 2;
         b->text = "Button " + std::to_string(counter);
         flowContainer->addChild(b);

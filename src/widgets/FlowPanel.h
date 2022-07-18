@@ -54,6 +54,11 @@ public:
     // in a horizontal layout and horizontally in a vertical layout.
     PropertyObserver<bool>                  stretchContents;
 
+    // If true, the panel will resize itself to the bounds of the content.
+    // The user has to specify only the width for horizontal layouts and only the height
+    // for vertical layouts to create the appropriate bounds for layout configurations.
+    PropertyObserver<bool>                  autoSize;
+
 private:
     void _setupFlowpanelProperties();
     void _setupEventHandlers();
