@@ -38,7 +38,7 @@ int main()
     btn->text = "Generate text";
     btn->on("clicked", [entry](auto e) {
         entry->text = "this is a test long text";
-        });
+    });
     window->addWidget(btn);
 
     auto extraMenu = MakeRef<MenuList>("Actions...");
@@ -81,11 +81,12 @@ int main()
 
     auto flowContainer = MakeRef<FlowPanel>();
     flowContainer->position = { 140, 240 };
-    flowContainer->size = { 540, 300 };
+    flowContainer->size = { 540, 100 };
     flowContainer->cornerRadius = 2;
     flowContainer->backgroundColor = Color(20, 50, 20);
     flowContainer->layout = Horizontal;
     flowContainer->justifyContent = None;
+    flowContainer->stretchContents = false;
     window->addWidget(flowContainer);
 
     auto addBtn = MakeRef<Button>();
@@ -170,6 +171,15 @@ int main()
         }
     });
     window->addWidget(justifyContentCombobox);
+
+    auto resizeFlowContainerBtn = MakeRef<Button>();
+    resizeFlowContainerBtn->position = { 700, 310 };
+    resizeFlowContainerBtn->size = { 200, 26 };
+    resizeFlowContainerBtn->text = "Resize FlowPanel";
+    resizeFlowContainerBtn->on("clicked", [flowContainer](auto e) {
+        flowContainer->size = { flowContainer->size->width, random(100, 200) };
+    });
+    window->addWidget(resizeFlowContainerBtn);
 
     AppManager::startApplicationLoop();
     return 0;

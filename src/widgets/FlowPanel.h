@@ -50,6 +50,10 @@ public:
     // *Only applies to horizontal layouts*
     PropertyObserver<bool>                  wrapContents;
 
+    // Determines if elements should stretch to fill the panel vertically
+    // in a horizontal layout and horizontally in a vertical layout.
+    PropertyObserver<bool>                  stretchContents;
+
 private:
     void _setupFlowpanelProperties();
     void _setupEventHandlers();

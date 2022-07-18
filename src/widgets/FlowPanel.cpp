@@ -15,6 +15,9 @@ namespace mc {
 
         wrapContents = true;
         wrapContents.forwardEmittedEvents(this);
+
+        stretchContents = false;
+        stretchContents.forwardEmittedEvents(this);
     }
 
     void FlowPanel::_setupEventHandlers() {
@@ -68,10 +71,22 @@ namespace mc {
                     availableInsertionFrame.position.y,
                     rowElementCount
                 );
+
+                // If the contents need to be stretched, set each element's
+                // height to be the same height as the flowpanel.
+                if (stretchContents) {
+                    child->size->height = size->height;
+                }
             } else {
                 // Logic gets simplified a lot since there
                 // is no element wrapping in vertical layouts.
                 _justifyElementsVertically();
+
+                // If the contents need to be stretched, set each element's
+                // width to be the same width as the flowpanel.
+                if (stretchContents) {
+                    child->size->width = size->width;
+                }
             }
 
             // Prepare the position anchor for the next child
