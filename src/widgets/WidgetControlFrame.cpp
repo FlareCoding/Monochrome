@@ -238,48 +238,48 @@ namespace mc {
             // Top left
             return RESIZE_FRAME_ANCHOR_TOP_LEFT;
         } else if (
-            pos.x > size->width / 2 - (d_anchorSquareSize * 2) &&
-            pos.x < size->width / 2 + (d_anchorSquareSize * 2) &&
+            pos.x > static_cast<int32_t>(size->width / 2 - (d_anchorSquareSize * 2)) &&
+            pos.x < static_cast<int32_t>(size->width / 2 + (d_anchorSquareSize * 2)) &&
             pos.y < d_anchorSquareSize * 2
         ) {
             // Top middle
             return RESIZE_FRAME_ANCHOR_TOP_MIDDLE;
         } else if (
-            pos.x > size->width - d_anchorSquareSize * 2 &&
+            pos.x > static_cast<int32_t>(size->width - d_anchorSquareSize * 2) &&
             pos.y < d_anchorSquareSize * 2
         ) {
             // Top right
             return RESIZE_FRAME_ANCHOR_TOP_RIGHT;
         } else if (
-            pos.x > size->width - d_anchorSquareSize * 2 &&
-            pos.y > size->height / 2 - (d_anchorSquareSize * 2) &&
-            pos.y < size->height / 2 + (d_anchorSquareSize * 2)
+            pos.x > static_cast<int32_t>(size->width - d_anchorSquareSize * 2) &&
+            pos.y > static_cast<int32_t>(size->height / 2 - (d_anchorSquareSize * 2)) &&
+            pos.y < static_cast<int32_t>(size->height / 2 + (d_anchorSquareSize * 2))
         ) {
             // Middle right
             return RESIZE_FRAME_ANCHOR_MIDDLE_RIGHT;
         } else if (
-            pos.x > size->width - d_anchorSquareSize * 2 &&
-            pos.y > size->height - (d_anchorSquareSize * 2)
+            pos.x > static_cast<int32_t>(size->width - d_anchorSquareSize * 2) &&
+            pos.y > static_cast<int32_t>(size->height - (d_anchorSquareSize * 2))
         ) {
             // Bottom right
             return RESIZE_FRAME_ANCHOR_BOTTOM_RIGHT;
         } else if (
-            pos.x > size->width / 2 - (d_anchorSquareSize * 2) &&
-            pos.x < size->width / 2 + (d_anchorSquareSize * 2) &&
-            pos.y > size->height - (d_anchorSquareSize * 2)
+            pos.x > static_cast<int32_t>(size->width / 2 - (d_anchorSquareSize * 2)) &&
+            pos.x < static_cast<int32_t>(size->width / 2 + (d_anchorSquareSize * 2)) &&
+            pos.y > static_cast<int32_t>(size->height - (d_anchorSquareSize * 2))
         ) {
             // Bottom middle
             return RESIZE_FRAME_ANCHOR_BOTTOM_MIDDLE;
         } else if (
             pos.x < d_anchorSquareSize * 2 &&
-            pos.y > size->height - (d_anchorSquareSize * 2)
+            pos.y > static_cast<int32_t>(size->height - (d_anchorSquareSize * 2))
         ) {
             // Bottom left
             return RESIZE_FRAME_ANCHOR_BOTTOM_LEFT;
         } else if (
             pos.x < d_anchorSquareSize * 2 &&
-            pos.y > size->height / 2 - (d_anchorSquareSize * 2) &&
-            pos.y < size->height / 2 + (d_anchorSquareSize * 2)
+            pos.y > static_cast<int32_t>(size->height / 2 - (d_anchorSquareSize * 2)) &&
+            pos.y < static_cast<int32_t>(size->height / 2 + (d_anchorSquareSize * 2))
         ) {
             // Middle left
             return RESIZE_FRAME_ANCHOR_MIDDLE_LEFT;
