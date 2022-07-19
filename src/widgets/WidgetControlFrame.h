@@ -2,7 +2,7 @@
 #include "CustomRenderedWidget.h"
 
 namespace mc {
-class WidgetControlFrame : public CustomRenderedContainerWidget {
+class WidgetControlFrame : public CustomRenderedWidget {
 public:
     WidgetControlFrame();
 
@@ -16,6 +16,9 @@ public:
 
     // Determines if the widget can be dragged around with a mouse
     PropertyObserver<bool> widgetDraggable;
+
+    // Color of the resize anchor square that the user drags
+    PropertyObserver<Color> resizeAnchorColor;
 
     void onRender(
         Shared<RenderTarget>& renderTarget,

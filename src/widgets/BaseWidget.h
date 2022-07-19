@@ -19,6 +19,7 @@ public:
     inline virtual bool isContainer() const { return false; }
     inline uint64_t& getInternalFlags() { return d_internalFlags; }
 
+    PropertyObserver<uint32_t>    zIndex;
     PropertyObserver<bool>        enabled;
     PropertyObserver<bool>        focused;
     PropertyObserver<bool>        visible;

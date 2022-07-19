@@ -18,17 +18,6 @@ public:
         Shared<RenderTarget>& renderTarget
     );
 
-private:
-    static std::pair<Position, Size> getWidgetTruePositionAndSize(
-        BaseWidget* widget,
-        Position& parentPositionOffset
-    );
-
-    static std::pair<Position, Size> getWidgetTruePositionAndSize(
-        const Shared<BaseWidget>& widget,
-        Position& parentPositionOffset
-    );
-
     // Renders the widget in the current graphics context
     // @param renderTarget Render target object that holds the graphics context
     // @param widget Widget instance that needs to be rendered
@@ -36,6 +25,17 @@ private:
     //        parents so that the child is rendered in relation to its parent.
     static void renderWidget(
         Shared<RenderTarget>& renderTarget,
+        const Shared<BaseWidget>& widget,
+        Position& parentPositionOffset
+    );
+
+private:
+    static std::pair<Position, Size> getWidgetTruePositionAndSize(
+        BaseWidget* widget,
+        Position& parentPositionOffset
+    );
+
+    static std::pair<Position, Size> getWidgetTruePositionAndSize(
         const Shared<BaseWidget>& widget,
         Position& parentPositionOffset
     );

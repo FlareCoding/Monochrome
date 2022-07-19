@@ -1,5 +1,5 @@
 #include "WidgetControlFrame.h"
-#include <rendering/RenderTarget.h>
+#include <rendering/Renderer.h>
 #include <events/MouseEvents.h>
 
 #define RESIZE_FRAME_ANCHOR_TOP_LEFT        1
@@ -12,11 +12,12 @@
 #define RESIZE_FRAME_ANCHOR_MIDDLE_LEFT     8
 
 namespace mc {
-    WidgetControlFrame::WidgetControlFrame() : CustomRenderedContainerWidget() {
+    WidgetControlFrame::WidgetControlFrame() : CustomRenderedWidget() {
         content = nullptr;
         content.forwardEmittedEvents(this);
 
         widgetDraggable = true;
+        resizeAnchorColor = Color::yellow;
 
         enabled = true;
         enabled.forwardEmittedEvents(this);
@@ -29,20 +30,32 @@ namespace mc {
             if (content.get()) {
                 content.get()->off("widgetResized");
             }
-            removeAllChildren();
 
             size = content->get()->size;
-            content->get()->position = { d_anchorSquareSize, d_anchorSquareSize };
+            content->get()->position = {
+                position->x + d_anchorSquareSize,
+                position->y + d_anchorSquareSize
+            };
 
-            addChild(content);
             content->get()->on("widgetResized", [this](Shared<Event> e) {
                 size = content->get()->size;
             });
         });
 
+        position.on("propertyChanged", [this](Shared<Event> e) {
+            if (content.get()) {
+                content->get()->position = {
+                    position->x + d_anchorSquareSize,
+                    position->y + d_anchorSquareSize
+                };
+            }
+        });
+
         size.on("propertyChanged", [this](Shared<Event> e) {
-            content->get()->size->width -= d_anchorSquareSize * 2;
-            content->get()->size->height -= d_anchorSquareSize * 2;
+            if (content.get()) {
+                content->get()->size->width -= d_anchorSquareSize * 2;
+                content->get()->size->height -= d_anchorSquareSize * 2;
+            }
         });
 
         on("mouseDown", [this](Shared<Event> e) {
@@ -230,6 +243,12 @@ namespace mc {
             }
         }
         }
+
+        // Update the position of the content
+        content->get()->position = {
+            position->x + d_anchorSquareSize,
+            position->y + d_anchorSquareSize
+        };
     }
 
     void WidgetControlFrame::_onMouseUp() {
@@ -300,6 +319,10 @@ namespace mc {
             return;
         }
 
+        // Render the content widget
+        Renderer::renderWidget(renderTarget, content, parentPositionOffset);
+
+        // Render the actual control frame
         auto [position, size] = getWidgetBounds(this, parentPositionOffset);
 
         // Draw the top and bottom resize anchors
@@ -312,7 +335,7 @@ namespace mc {
             renderTarget->drawRectangle(
                 xPos, position.y,
                 d_anchorSquareSize, d_anchorSquareSize,
-                Color::yellow,
+                resizeAnchorColor,
                 0,
                 true,
                 0
@@ -322,7 +345,7 @@ namespace mc {
                 xPos,
                 position.y + size.height - d_anchorSquareSize,
                 d_anchorSquareSize, d_anchorSquareSize,
-                Color::yellow,
+                resizeAnchorColor,
                 0,
                 true,
                 0
@@ -333,7 +356,7 @@ namespace mc {
         renderTarget->drawRectangle(
             position.x, position.y + size.height / 2 - (d_anchorSquareSize / 2),
             d_anchorSquareSize, d_anchorSquareSize,
-            Color::yellow,
+            resizeAnchorColor,
             0,
             true,
             0
@@ -344,7 +367,7 @@ namespace mc {
             position.x + size.width - d_anchorSquareSize,
             position.y + size.height / 2 - (d_anchorSquareSize / 2),
             d_anchorSquareSize, d_anchorSquareSize,
-            Color::yellow,
+            resizeAnchorColor,
             0,
             true,
             0

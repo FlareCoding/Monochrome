@@ -7,6 +7,7 @@ namespace mc {
 
         _setDefaultProperties();
         appendAllowedEvent("propertyChanged");
+        appendAllowedEvent("zIndexChanged");
         appendAllowedEvent("widgetMoved");
         appendAllowedEvent("widgetResized");
         appendAllowedEvent("mouseDown");
@@ -24,6 +25,11 @@ namespace mc {
     }
 
     void BaseWidget::_setDefaultProperties() {
+        zIndex = 0;
+        zIndex.on("propertyChanged", [this](auto e) {
+            this->fireEvent("zIndexChanged", Event::empty);
+        });
+
         visible = true;
         visible.forwardEmittedEvents(this);
 

@@ -15,27 +15,23 @@ namespace mc {
         );
 
         d_children.push_back(child);
+        _orderChildrenByZIndex();
+
         child->setParent(this);
         child->forwardEmittedEvent(this, "propertyChanged");
         child->forwardEmittedEvent(this, "requestedFocusGain");
         child->forwardEmittedEvent(this, "requestedFocusLoss");
 
-        fireEvent("childAdded", {
-            { "child", child.get() }
+        // If the child's z-index changes, the container
+        // should reorder all children in ascending order.
+        child->on("zIndexChanged", [this](auto e) {
+            _orderChildrenByZIndex();
         });
-    }
 
-    void BaseContainerWidget::insertChild(Shared<BaseWidget> child, uint64_t index) {
-        CORE_ASSERT((child.get() != this), "Cannot add widget as its own child");
-        CORE_ASSERT(!child->getParent(), "Cannot add child, child widget already has a parent");
-        CORE_ASSERT(
-            !findChild(child->getID()),
-            "Cannot add widget, widget with the given UUID already exists"
-        );
-
-        d_children.insert(d_children.begin() + index, child);
-        child->setParent(this);
-        child->forwardEmittedEvents(this);
+        if (child->isContainer()) {
+            child->forwardEmittedEvent(this, "childAdded");
+            child->forwardEmittedEvent(this, "childRemoved");
+        }
 
         fireEvent("childAdded", {
             { "child", child.get() }
@@ -53,6 +49,9 @@ namespace mc {
 
                 // Reset the child's parent
                 widget->setParent(nullptr);
+
+                // Remove the zIndexChanged event listenr
+                widget->off("zIndexChanged");
 
                 // Erase the child from the list
                 d_children.erase(it);
@@ -87,5 +86,12 @@ namespace mc {
 
     Shared<BaseWidget> BaseContainerWidget::getChild(uint64_t index) {
         return d_children.at(index);
+    }
+
+    void BaseContainerWidget::_orderChildrenByZIndex() {
+        std::sort(d_children.begin(), d_children.end(),
+        [](Shared<BaseWidget> a, Shared<BaseWidget> b) {
+            return a->zIndex.get() < b->zIndex.get();
+        });
     }
 } // namespace mc

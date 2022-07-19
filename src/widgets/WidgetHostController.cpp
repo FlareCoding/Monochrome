@@ -15,6 +15,8 @@ namespace mc {
         );
 
         d_widgets.push_back(widget);
+
+        _orderWidgetsByZIndex();
         _fireWidgetTreeChangedEvent();
 
         // Setup event listeners on top layer widgets
@@ -41,6 +43,12 @@ namespace mc {
                 _fireWidgetTreeChangedEvent();
             });
         }
+
+        // If the child's z-index changes, the host controller
+        // should reorder all widgets in ascending order.
+        widget->on("zIndexChanged", [this](auto e) {
+            _orderWidgetsByZIndex();
+        });
     }
 
     bool WidgetHostController::removeWidget(Shared<BaseWidget> widget) {
@@ -53,6 +61,7 @@ namespace mc {
                 d_widgets.erase(it);
 
                 it->get()->setParent(nullptr);
+                _orderWidgetsByZIndex();
                 _fireWidgetTreeChangedEvent();
                 return true;
             }
@@ -124,6 +133,13 @@ namespace mc {
     void WidgetHostController::processKeyUpEvent(Shared<KeyUpEvent> event) {
     }
 
+    void WidgetHostController::_orderWidgetsByZIndex() {
+        std::sort(d_widgets.begin(), d_widgets.end(),
+        [](Shared<BaseWidget> a, Shared<BaseWidget> b) {
+            return a->zIndex.get() < b->zIndex.get();
+        });
+    }
+
     void WidgetHostController::_fireWidgetTreeChangedEvent() {
         fireEvent("widgetTreeChanged", Event::empty);
     }
@@ -167,7 +183,9 @@ namespace mc {
         Shared<MouseMovedEvent> event,
         Position& parentPositionOffset
     ) {
-        for (auto& widget : widgets) {
+        for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
+            auto widget = *it;
+
             // Fire a default mouse moved event
             widget->fireEvent("mouseMoved", event);
 
@@ -191,18 +209,58 @@ namespace mc {
 
             // If the two boolean flags are different, the mouse
             // was either hovered onto or off the widget's frame.
-            if (isMouseInFrame && !mouseWasInFrame) {
-                setInternalFlag(
-                    widgetFlags, InternalWidgetFlag::WidgetHoveredOn, true);
+            if (
+                !d_widgetCapturingHoverOnEvent ||
+                widget->zIndex.get() > d_widgetCapturingHoverOnEvent->zIndex.get()
+            ) {
+                if (isMouseInFrame && !mouseWasInFrame) {
+                    // Updating internal flags
+                    setInternalFlag(
+                        widgetFlags, InternalWidgetFlag::IsMouseInWidgetFrame, true);
 
-                widget->fireEvent("hoveredOn", Event::empty);
+                    setInternalFlag(
+                        widgetFlags, InternalWidgetFlag::WidgetHoveredOn, true);
 
-                // Set the widget-specific cursor type
-                utils::Cursor::setActiveCursor(widget->cursorType);
+                    widget->fireEvent("hoveredOn", Event::empty);
 
-                // Make sure to re-render the widget tree
-                _fireWidgetTreeChangedEvent();
+                    // Set the widget-specific cursor type
+                    utils::Cursor::setActiveCursor(widget->cursorType);
+
+                    // Make sure to re-render the widget tree
+                    _fireWidgetTreeChangedEvent();
+
+                    // Indicate that this widget should is capturing the "hoveredOn" event
+                    if (!widget->isContainer()) {
+                        if (d_widgetCapturingHoverOnEvent) {
+                            setInternalFlag(
+                                d_widgetCapturingHoverOnEvent->getInternalFlags(),
+                                InternalWidgetFlag::WidgetHoveredOn,
+                                false
+                            );
+
+                            setInternalFlag(
+                                d_widgetCapturingHoverOnEvent->getInternalFlags(),
+                                InternalWidgetFlag::MouseDownOnWidget,
+                                false
+                            );
+
+                            setInternalFlag(
+                                d_widgetCapturingHoverOnEvent->getInternalFlags(),
+                                InternalWidgetFlag::IsMouseInWidgetFrame,
+                                false
+                            );
+
+                            d_widgetCapturingHoverOnEvent->fireEvent("hoveredOff", Event::empty);
+                        }
+
+                        // Update the widget that's capturing the hover events
+                        d_widgetCapturingHoverOnEvent = widget;
+                    }
+                }
             } else if (!isMouseInFrame && mouseWasInFrame) {
+                setInternalFlag(
+                    widgetFlags, InternalWidgetFlag::IsMouseInWidgetFrame, false);
+
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, false);
 
@@ -216,11 +274,12 @@ namespace mc {
 
                 // Make sure to re-render the widget tree
                 _fireWidgetTreeChangedEvent();
-            }
 
-            // Updating internal flags
-            setInternalFlag(
-                widgetFlags, InternalWidgetFlag::IsMouseInWidgetFrame, isMouseInFrame);
+                // Update the widget that's capturing the hover events
+                if (d_widgetCapturingHoverOnEvent.get() == widget.get()) {
+                    d_widgetCapturingHoverOnEvent = nullptr;
+                }
+            }
 
             // Check if the view wants to stop propagating this event
             if (event->isHandled()) {
@@ -254,7 +313,15 @@ namespace mc {
         Position& parentPositionOffset,
         BaseWidget*& newFocusedWidget
     ) {
-        for (auto& widget : widgets) {
+        for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
+            auto widget = *it;
+
+            // Checking if the widget that was pressed
+            // is the same as the one capturing events.
+            if (d_widgetCapturingHoverOnEvent.get() != widget.get()) {
+                continue;
+            }
+
             // Get the cursor position and location
             Position cursorLocation = event->getLocation();
 
@@ -331,7 +398,9 @@ namespace mc {
         Shared<MouseButtonEvent> event,
         Position& parentPositionOffset
     ) {
-        for (auto& widget : widgets) {
+        for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
+            auto widget = *it;
+
             // Get the cursor position and location
             Position cursorLocation = event->getLocation();
 
@@ -370,7 +439,10 @@ namespace mc {
 
             // Fire the clicked and mouse up events
             widget->fireEvent("mouseUp", event);
-            widget->fireEvent("clicked", event);
+
+            if (d_widgetCapturingHoverOnEvent.get() == widget.get()) {
+                widget->fireEvent("clicked", event);
+            }
 
             // Make sure to re-render the widget tree
             _fireWidgetTreeChangedEvent();

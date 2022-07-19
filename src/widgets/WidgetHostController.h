@@ -28,8 +28,12 @@ private:
     BaseWidget* d_focusedWidget = nullptr;
     std::vector<Shared<BaseWidget>> d_widgetsUnderMouseDown;
 
-    void _fireWidgetTreeChangedEvent();
+    // Holds a reference to the highest level widget
+    // that's currently capturing the hovered on event.
+    Shared<BaseWidget> d_widgetCapturingHoverOnEvent = nullptr;
 
+    void _orderWidgetsByZIndex();
+    void _fireWidgetTreeChangedEvent();
     void _handlePotentialFocusChange(BaseWidget* newFocusedWidget);
 
     void _processMouseMovedEvent(

@@ -14,11 +14,6 @@ public:
     // @param child Widget to be added
     void addChild(Shared<BaseWidget> child);
 
-    // Inserts a child at a specified index
-    // @param child Widget to be inserted
-    // @param index Index in the list of children at which to insert the child
-    void insertChild(Shared<BaseWidget> child, uint64_t index);
-
     // Removes a child widget from the list of children
     // @param child Widget to be removed
     // @returns Status of whether a child widget has been removed successfully
@@ -47,5 +42,7 @@ public:
 
 protected:
     std::vector<Shared<BaseWidget>> d_children;
+
+    void _orderChildrenByZIndex();
 };
 } // namespace mc

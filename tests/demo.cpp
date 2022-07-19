@@ -190,6 +190,8 @@ int main()
     resizeFrameWithButton->position = { 700, 410 };
     resizeFrameWithButton->content = resizeFrameContent;
     resizeFrameWithButton->enabled = true;
+    resizeFrameWithButton->zIndex = 1;
+    resizeFrameWithButton->resizeAnchorColor = Color::green;
     window->addWidget(resizeFrameWithButton);
 
     AppManager::startApplicationLoop();
