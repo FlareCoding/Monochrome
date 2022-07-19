@@ -182,6 +182,15 @@ int main()
     });
     window->addWidget(resizeFlowContainerBtn);
 
+    auto resizeFrameContent = MakeRef<Button>();
+    resizeFrameContent->size = { 180, 36 };
+    resizeFrameContent->text = "Button";
+    
+    auto resizeFrameWithButton = MakeRef<WidgetControlFrame>();
+    resizeFrameWithButton->position = { 700, 410 };
+    resizeFrameWithButton->content = resizeFrameContent;
+    window->addWidget(resizeFrameWithButton);
+
     AppManager::startApplicationLoop();
     return 0;
 }

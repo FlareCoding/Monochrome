@@ -4,7 +4,7 @@
 
 namespace mc {
     std::pair<Position, Size> Renderer::getWidgetTruePositionAndSize(
-        const Shared<BaseWidget>& widget,
+        BaseWidget* widget,
         Position& parentPositionOffset
     ) {
         // Calculating frame dimensions of the widget
@@ -18,6 +18,13 @@ namespace mc {
             Position(xPos, yPos),
             Size(width, height)
         };
+    }
+
+    std::pair<Position, Size> Renderer::getWidgetTruePositionAndSize(
+        const Shared<BaseWidget>& widget,
+        Position& parentPositionOffset
+    ) {
+        return getWidgetTruePositionAndSize(widget.get(), parentPositionOffset);
     }
 
     void Renderer::renderScene(
@@ -89,6 +96,12 @@ namespace mc {
             renderEntry(
                 renderTarget,
                 std::static_pointer_cast<Entry>(widget),
+                parentPositionOffset
+            );
+        } else if (widgetType == "customRenderedWidget") {
+            renderCustomRenderedWidget(
+                renderTarget,
+                std::dynamic_pointer_cast<IRenderable>(widget),
                 parentPositionOffset
             );
         }
@@ -452,5 +465,18 @@ namespace mc {
                 entry->borderSize
             );
         }
+    }
+
+    void Renderer::renderCustomRenderedWidget(
+        Shared<RenderTarget>& renderTarget,
+        const Shared<IRenderable>& renderable,
+        Position& parentPositionOffset
+    ) {
+        const getWidgetBoundsFn_t getWidgetBounds =
+            [](BaseWidget* widget, Position& parentPositionOffset) {
+                return getWidgetTruePositionAndSize(widget, parentPositionOffset);
+            };
+
+        renderable->onRender(renderTarget, parentPositionOffset, getWidgetBounds);
     }
 } // namespace mc

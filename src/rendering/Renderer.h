@@ -7,6 +7,7 @@
 // #include <widgets/Checkbox.h>
 // #include <widgets/Slider.h>
 #include <widgets/Entry.h>
+#include <widgets/CustomRenderedWidget.h>
 
 namespace mc {
 class Renderer {
@@ -18,6 +19,11 @@ public:
     );
 
 private:
+    static std::pair<Position, Size> getWidgetTruePositionAndSize(
+        BaseWidget* widget,
+        Position& parentPositionOffset
+    );
+
     static std::pair<Position, Size> getWidgetTruePositionAndSize(
         const Shared<BaseWidget>& widget,
         Position& parentPositionOffset
@@ -67,6 +73,12 @@ private:
         static void renderEntry(
             Shared<RenderTarget>& renderTarget,
             const Shared<Entry>& entry,
+            Position& parentPositionOffset
+        );
+
+        static void renderCustomRenderedWidget(
+            Shared<RenderTarget>& renderTarget,
+            const Shared<IRenderable>& renderable,
             Position& parentPositionOffset
         );
 };

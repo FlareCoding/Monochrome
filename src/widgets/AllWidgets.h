@@ -7,3 +7,4 @@
 #include "MenuList.h"
 #include "DropdownButton.h"
 #include "Combobox.h"
+#include "WidgetControlFrame.h"
