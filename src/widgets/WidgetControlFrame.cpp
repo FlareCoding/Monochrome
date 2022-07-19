@@ -18,6 +18,9 @@ namespace mc {
 
         widgetDraggable = true;
 
+        enabled = true;
+        enabled.forwardEmittedEvents(this);
+
         _setupEventHandlers();
     }
 
@@ -43,7 +46,7 @@ namespace mc {
         });
 
         on("mouseDown", [this](Shared<Event> e) {
-            if (!content->get()) {
+            if (!content->get() || !enabled) {
                 return;
             }
 
@@ -58,7 +61,7 @@ namespace mc {
         });
 
         on("mouseMoved", [this](Shared<Event> e) {
-            if (!content->get()) {
+            if (!content->get() || !enabled) {
                 return;
             }
 
@@ -73,7 +76,7 @@ namespace mc {
         });
 
         on("mouseUp", [this](Shared<Event> e) {
-            if (!content->get()) {
+            if (!content->get() || !enabled) {
                 return;
             }
 
@@ -293,7 +296,7 @@ namespace mc {
         Position& parentPositionOffset,
         getWidgetBoundsFn_t getWidgetBounds
     ) {
-        if (!content.get()) {
+        if (!content.get() || !enabled) {
             return;
         }
 

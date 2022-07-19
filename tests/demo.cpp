@@ -189,6 +189,7 @@ int main()
     auto resizeFrameWithButton = MakeRef<WidgetControlFrame>();
     resizeFrameWithButton->position = { 700, 410 };
     resizeFrameWithButton->content = resizeFrameContent;
+    resizeFrameWithButton->enabled = true;
     window->addWidget(resizeFrameWithButton);
 
     AppManager::startApplicationLoop();

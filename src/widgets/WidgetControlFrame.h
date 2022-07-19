@@ -6,7 +6,13 @@ class WidgetControlFrame : public CustomRenderedContainerWidget {
 public:
     WidgetControlFrame();
 
+    // The widget to be surrounded by a resizable frame
+    // and can be dragged with a mouse if widgetDraggable is true.
     PropertyObserver<Shared<BaseWidget>> content;
+
+    // Determines if the frame should be
+    // displayed and can be interacted with.
+    PropertyObserver<bool> enabled;
 
     // Determines if the widget can be dragged around with a mouse
     PropertyObserver<bool> widgetDraggable;
