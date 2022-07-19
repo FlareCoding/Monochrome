@@ -2,6 +2,7 @@
 #include "BaseContainerWidget.h"
 #include <core/InternalFlags.h>
 #include <utils/Cursor.h>
+#include <algorithm>
 
 namespace mc {
     WidgetHostController::WidgetHostController()

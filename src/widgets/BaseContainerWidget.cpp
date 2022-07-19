@@ -1,4 +1,5 @@
 #include "BaseContainerWidget.h"
+#include <algorithm>
 
 namespace mc {
     BaseContainerWidget::BaseContainerWidget() {
