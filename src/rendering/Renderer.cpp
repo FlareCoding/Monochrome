@@ -355,7 +355,7 @@ namespace mc {
         const Shared<Slider>& slider,
         Position& parentPositionOffset
     ) {
-        const auto& [position, size] = getWidgetTruePositionAndSize(slider, parentPositionOffset);
+        auto [position, size] = getWidgetTruePositionAndSize(slider, parentPositionOffset);
 
         // Helper values calculations
         int32_t sliderBarHeight = static_cast<int32_t>(size.height / 4);
@@ -364,6 +364,15 @@ namespace mc {
         float valuePercentage =
         static_cast<float>(slider->value - slider->minValue) /
         static_cast<float>(slider->maxValue - slider->minValue);
+
+        float knobRadiusF = static_cast<float>(sliderBarHeight * 0.8f);
+        int32_t knobRadius = static_cast<int32_t>(knobRadiusF);
+
+        // The actual visually rendered slider bar should
+        // be shorter than the bounds so that the knob, no
+        // matter the shape, can fit into the bounds at the ends.
+        position.x += (knobRadius * 4); // size of two circular knobs
+        size.width -= (knobRadius * 8);
 
         // X-position offset of the slider knob
         float knobOffsetF = valuePercentage * static_cast<float>(size.width);
@@ -392,12 +401,12 @@ namespace mc {
         int32_t positionalIncrement = static_cast<int32_t>(size.width) / individualStep;
 
         if (slider->showTickmarks) {
-            for (int32_t posX = position.x + 1;
+            for (int32_t posX = position.x;
                 posX < position.x + static_cast<int32_t>(size.width) + positionalIncrement;
                 posX += positionalIncrement
             ) {
                 renderTarget->drawRectangle(
-                    posX - 2, position.y + sliderBarHeight,
+                    posX, position.y + sliderBarHeight,
                     2, size.height / 2,
                     slider->tickmarkColor,
                     0, true, 0
@@ -407,9 +416,6 @@ namespace mc {
 
         // Draw the slider knob
         if (slider->circularKnob) {
-            float knobRadiusF = static_cast<float>(sliderBarHeight * 0.8f);
-            int32_t knobRadius = static_cast<int32_t>(knobRadiusF);
-
             int32_t knobPosY =
                 frameVerticalCenter - (sliderBarHeight / 2) -
                 static_cast<int32_t>(static_cast<float>(knobRadius * 1.75f));
