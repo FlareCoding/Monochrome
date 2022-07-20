@@ -2,7 +2,7 @@
 
 namespace mc {
         Checkbox::Checkbox() {
-            appendAllowedEvent("changed");
+            appendAllowedEvent("valueChanged");
 
             _setupProperties();
         }
@@ -65,7 +65,7 @@ namespace mc {
             on("clicked", [this](auto e) {
                 checked = !checked;
 
-                fireEvent("changed", {
+                fireEvent("valueChanged", {
                     { "state", checked.get()}
                 });
             });
