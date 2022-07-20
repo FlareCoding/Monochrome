@@ -1,5 +1,6 @@
 #include "Win32ApplicationContext.h"
 #include "Win32NativeWindow.h"
+#include <thread>
 
 namespace mc {
     Win32ApplicationContext::Win32ApplicationContext(const std::string& appId)
@@ -27,6 +28,8 @@ namespace mc {
             for (auto& window : d_win32NativeWindowHandles) {
                 window->updatePlatformWindow();
             }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(4));
         }
 
         // Destroy all windows

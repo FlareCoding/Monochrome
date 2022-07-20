@@ -68,6 +68,7 @@ private:
     void _renderScene(Shared<RenderTarget>& renderTarget);
 
     inline void _requestOnDemandBufferSwap() { d_onDemandBufferSwapRequested = true; }
+    inline void _completeOnDemandBufferSwap() { d_onDemandBufferSwapRequested = false; }
     bool _shouldSwapBuffersOnDemand() const { return d_onDemandBufferSwapRequested; }
 };
 } // namespace mc

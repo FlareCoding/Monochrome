@@ -219,6 +219,7 @@ namespace mc {
 
                 if (_shouldSwapBuffersOnDemand()) {
                     renderTarget->swapBuffers();
+                    _completeOnDemandBufferSwap();
                 }
 
                 d_shouldRedrawScene = false;
