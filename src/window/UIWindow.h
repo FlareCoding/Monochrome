@@ -62,8 +62,12 @@ private:
     std::thread d_renderingThread;
 
     std::atomic_bool d_shouldRedrawScene = true;
+    std::atomic_bool d_onDemandBufferSwapRequested = false;
 
     void _backgroundRenderingTask();
     void _renderScene(Shared<RenderTarget>& renderTarget);
+
+    inline void _requestOnDemandBufferSwap() { d_onDemandBufferSwapRequested = true; }
+    bool _shouldSwapBuffersOnDemand() const { return d_onDemandBufferSwapRequested; }
 };
 } // namespace mc

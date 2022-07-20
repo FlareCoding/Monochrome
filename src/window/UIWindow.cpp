@@ -44,6 +44,13 @@ namespace mc {
             }
         });
 
+        // For high-frequency events such as mouseMoved, the window
+        // should swap buffers immediately after rendering to produce
+        // a smooth update of display and prevent the visual lag.
+        on("mouseMoved", [this](Shared<Event> e) {
+            _requestOnDemandBufferSwap();
+        });
+
         // Setup the background rendering thread
         d_renderingThread = std::thread(&UIWindow::_backgroundRenderingTask, this);
 
@@ -209,6 +216,10 @@ namespace mc {
 
                 renderTarget->endFrame();
                 renderTarget->unlockBackBuffer();
+
+                if (_shouldSwapBuffersOnDemand()) {
+                    renderTarget->swapBuffers();
+                }
 
                 d_shouldRedrawScene = false;
             }
