@@ -328,7 +328,7 @@ namespace mc {
                 boxSize, boxSize,
                 checkbox->checkmarkColor,
                 L"✔",
-                checkbox->font,
+                "Arial",
                 checkbox->fontSize,
                 "light"
             );

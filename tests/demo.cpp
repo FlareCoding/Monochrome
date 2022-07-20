@@ -182,9 +182,9 @@ int main()
     });
     window->addWidget(resizeFlowContainerBtn);
 
-    auto resizeFrameContent = MakeRef<Slider>();
-    //resizeFrameContent->size = { 180, 36 };
-    //resizeFrameContent->text = "Button";
+    auto resizeFrameContent = MakeRef<Button>();
+    resizeFrameContent->size = { 180, 36 };
+    resizeFrameContent->text = "Button";
     
     auto resizeFrameWithButton = MakeRef<WidgetControlFrame>();
     resizeFrameWithButton->position = { 700, 410 };
