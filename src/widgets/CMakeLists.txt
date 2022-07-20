@@ -14,6 +14,7 @@ set(
     ${cwd}/Label.h
     ${cwd}/Button.h
     ${cwd}/Checkbox.h
+    ${cwd}/Slider.h
     ${cwd}/Entry.h
     ${cwd}/MenuList.h
     ${cwd}/DropdownButton.h
@@ -36,6 +37,7 @@ set(
     ${cwd}/Label.cpp
     ${cwd}/Button.cpp
     ${cwd}/Checkbox.cpp
+    ${cwd}/Slider.cpp
     ${cwd}/Entry.cpp
     ${cwd}/MenuList.cpp
     ${cwd}/DropdownButton.cpp

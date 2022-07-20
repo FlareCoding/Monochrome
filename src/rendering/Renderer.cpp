@@ -95,7 +95,11 @@ namespace mc {
                 parentPositionOffset
             );
         } else if (widgetType == "slider") {
-            CORE_ASSERT(false, "Rendering 'slider' widget is not implemented yet");
+            renderSlider(
+                renderTarget,
+                std::static_pointer_cast<Slider>(widget),
+                parentPositionOffset
+            );
         } else if (widgetType == "entry") {
             renderEntry(
                 renderTarget,
@@ -344,6 +348,91 @@ namespace mc {
             checkbox->alignment,
             checkbox->wordWrapMode
         );
+    }
+
+     void Renderer::renderSlider(
+        Shared<RenderTarget>& renderTarget,
+        const Shared<Slider>& slider,
+        Position& parentPositionOffset
+    ) {
+        const auto& [position, size] = getWidgetTruePositionAndSize(slider, parentPositionOffset);
+
+        // Helper values calculations
+        int32_t sliderBarHeight = static_cast<int32_t>(size.height / 4);
+        int32_t frameVerticalCenter = static_cast<int32_t>(size.height / 2);
+
+        float valuePercentage =
+        static_cast<float>(slider->value - slider->minValue) /
+        static_cast<float>(slider->maxValue - slider->minValue);
+
+        // X-position offset of the slider knob
+        float knobOffsetF = valuePercentage * static_cast<float>(size.width);
+        int32_t knobOffset = static_cast<int32_t>(knobOffsetF);
+
+        // Draw the body of the slider
+        renderTarget->drawRectangle(
+            position.x, position.y + frameVerticalCenter - (sliderBarHeight / 2),
+            size.width, sliderBarHeight,
+            slider->color,
+            slider->cornerRadius,
+            true, 0
+        );
+
+        // Color in the region behind the slider knob
+        renderTarget->drawRectangle(
+            position.x, position.y + frameVerticalCenter - (sliderBarHeight / 2),
+            knobOffset, sliderBarHeight,
+            slider->completedValuesColor,
+            slider->cornerRadius,
+            true, 0
+        );
+
+        // Draw tick marks
+        int32_t individualStep = (slider->maxValue - slider->minValue) / slider->increment;
+        int32_t positionalIncrement = static_cast<int32_t>(size.width) / individualStep;
+
+        if (slider->showTickmarks) {
+            for (int32_t posX = position.x + 1;
+                posX < position.x + static_cast<int32_t>(size.width) + positionalIncrement;
+                posX += positionalIncrement
+            ) {
+                renderTarget->drawRectangle(
+                    posX - 2, position.y + sliderBarHeight,
+                    2, size.height / 2,
+                    slider->tickmarkColor,
+                    0, true, 0
+                );
+            }
+        }
+
+        // Draw the slider knob
+        if (slider->circularKnob) {
+            float knobRadiusF = static_cast<float>(sliderBarHeight * 0.8f);
+            int32_t knobRadius = static_cast<int32_t>(knobRadiusF);
+
+            int32_t knobPosY =
+                frameVerticalCenter - (sliderBarHeight / 2) -
+                static_cast<int32_t>(static_cast<float>(knobRadius * 1.75f));
+
+            renderTarget->drawCircle(
+                position.x + knobOffset - knobRadius,
+                position.y + knobPosY,
+                knobRadius,
+                slider->knobColor,
+                true, 0
+            );
+        } else {
+            float knobWidthF = static_cast<float>(size.width) * 0.04f;
+            int32_t knobWidth = static_cast<int32_t>(knobWidthF);
+
+            renderTarget->drawRectangle(
+                position.x + knobOffset - (knobWidth / 2),
+                position.y,
+                knobWidth, size.height,
+                slider->knobColor,
+                0, true, 0
+            );
+        }
     }
 
     void Renderer::renderEntry(

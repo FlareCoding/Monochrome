@@ -146,6 +146,36 @@ namespace mc {
 		}
     }
 
+    void OSXRenderTarget::drawCircle(
+        int32_t x, int32_t y,
+        uint32_t radius,
+        const Color& color,
+        bool filled,
+        uint32_t stroke
+    ) {
+        uint32_t size = radius * 2;
+
+        _adjustPositionAndSizeForDPIScaling(x, y, size, size);
+        _convertPositionToCartesianCoordinates(y, size);
+
+        [[NSColor colorWithCalibratedRed:(float)color.r / 255.0f 
+            green:(float)color.g / 255.0f 
+            blue:(float)color.b / 255.0f 
+            alpha:(float)color.a / 255.0f] 
+            set];
+
+		NSRect rect = NSMakeRect(x - radius, y - radius, size, size);
+		NSBezierPath* path = [NSBezierPath bezierPathWithOvalInRect:rect];
+
+		if (filled) {
+			[path fill];
+		}
+        else {
+			[path setLineWidth:stroke];
+			[path stroke];
+		}
+    }
+
     void OSXRenderTarget::drawText(
         int32_t x, int32_t y,
         uint32_t width, uint32_t height,

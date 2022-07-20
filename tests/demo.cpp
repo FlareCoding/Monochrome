@@ -182,9 +182,9 @@ int main()
     });
     window->addWidget(resizeFlowContainerBtn);
 
-    auto resizeFrameContent = MakeRef<Button>();
-    resizeFrameContent->size = { 180, 36 };
-    resizeFrameContent->text = "Button";
+    auto resizeFrameContent = MakeRef<Slider>();
+    //resizeFrameContent->size = { 180, 36 };
+    //resizeFrameContent->text = "Button";
     
     auto resizeFrameWithButton = MakeRef<WidgetControlFrame>();
     resizeFrameWithButton->position = { 700, 410 };
@@ -202,6 +202,17 @@ int main()
     checkbox->color = Color::green;
     checkbox->checkedColor = Color(224, 146, 213);
     window->addWidget(checkbox);
+
+    auto slider = MakeRef<Slider>();
+    slider->position = { 540, 80 };
+    slider->showTickmarks = true;
+    slider->increment = 20;
+    slider->knobColor = Color::yellow;
+    slider->color = Color::darkGray;
+    slider->tickmarkColor = Color::white;
+    slider->completedValuesColor = Color(200, 0, 200);
+    slider->on("valueChanged", [slider](auto e){ printf("Value changed: %i\n", slider->value.get()); });
+    window->addWidget(slider);
 
     AppManager::startApplicationLoop();
     return 0;

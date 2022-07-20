@@ -5,7 +5,7 @@
 #include <widgets/Label.h>
 #include <widgets/Button.h>
  #include <widgets/Checkbox.h>
-// #include <widgets/Slider.h>
+#include <widgets/Slider.h>
 #include <widgets/Entry.h>
 #include <widgets/CustomRenderedWidget.h>
 
@@ -58,28 +58,28 @@ private:
         Position& parentPositionOffset
     );
 
-     static void renderCheckbox(
-         Shared<RenderTarget>& renderTarget,
-         const Shared<Checkbox>& checkbox,
-         Position& parentPositionOffset
-     );
+    static void renderCheckbox(
+        Shared<RenderTarget>& renderTarget,
+        const Shared<Checkbox>& checkbox,
+        Position& parentPositionOffset
+    );
 
-    // static void renderSlider(
-    //     Shared<RenderTarget>& renderTarget,
-    //     const Shared<Slider>& slider,
-    //     Position& parentPositionOffset
-    // );
+    static void renderSlider(
+        Shared<RenderTarget>& renderTarget,
+        const Shared<Slider>& slider,
+        Position& parentPositionOffset
+    );
 
-        static void renderEntry(
-            Shared<RenderTarget>& renderTarget,
-            const Shared<Entry>& entry,
-            Position& parentPositionOffset
-        );
+    static void renderEntry(
+        Shared<RenderTarget>& renderTarget,
+        const Shared<Entry>& entry,
+        Position& parentPositionOffset
+    );
 
-        static void renderCustomRenderedWidget(
-            Shared<RenderTarget>& renderTarget,
-            const Shared<IRenderable>& renderable,
-            Position& parentPositionOffset
-        );
+    static void renderCustomRenderedWidget(
+        Shared<RenderTarget>& renderTarget,
+        const Shared<IRenderable>& renderable,
+        Position& parentPositionOffset
+    );
 };
 } // namespace mc
