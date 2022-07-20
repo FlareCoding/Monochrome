@@ -331,6 +331,7 @@ namespace mc {
 
                 utils::PlacementConstraintSystem::updateContainer(
                     MAIN_SCREEN_CONTAINER_NAME,
+                    Position(info.rcMonitor.left, info.rcMonitor.top),
                     Size(screenWidth, screenHeight)
                 );
             }
