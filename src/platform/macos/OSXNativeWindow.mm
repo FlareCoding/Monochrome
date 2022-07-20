@@ -598,6 +598,9 @@ namespace mc
         [d_windowHandle setAcceptsMouseMovedEvents:YES];
         [d_windowHandle setTitle:[NSString stringWithUTF8String: d_title.c_str()]];
 
+        // Specifying that the window can be moved to a differnet workspace (desktop)
+        d_windowHandle.collectionBehavior |= NSWindowCollectionBehaviorMoveToActiveSpace;
+
         // Content View
         OSXWindowContentViewDelegate* contentViewDelegate = [[OSXWindowContentViewDelegate alloc] initWithFrame:NSMakeRect(0, 0, d_width, d_height)];
         contentViewDelegate.mcWindowHandle = this;
