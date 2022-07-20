@@ -36,7 +36,7 @@ public:
     static void registerContainer(const std::string& name, const Size& size);
     static bool hasContainer(const std::string& name);
     static VirtualContainer* getContainer(const std::string& name);
-    
+
     static void updateContainer(
         const std::string& name,
         const Position& position,
