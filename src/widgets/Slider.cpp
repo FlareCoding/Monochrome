@@ -87,7 +87,7 @@ namespace mc {
         // is outside of the bounds of the slider.
         if (localMousePosX < 0) {
             newSliderValue = minValue;
-        } else if (localMousePosX > size->width) {
+        } else if (localMousePosX > static_cast<int32_t>(size->width)) {
             newSliderValue = maxValue;
         } else {
             float percentage = static_cast<float>(localMousePosX) / static_cast<float>(size->width);

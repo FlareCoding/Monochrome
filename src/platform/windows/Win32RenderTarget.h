@@ -32,6 +32,14 @@ public:
         uint32_t stroke
     );
 
+    void drawCircle(
+        int32_t x, int32_t y,
+        uint32_t radius,
+        const Color& color,
+        bool filled,
+        uint32_t stroke
+    );
+
     void drawText(
         int32_t x, int32_t y,
         uint32_t width, uint32_t height,

@@ -205,8 +205,8 @@ int main()
 
     auto slider = MakeRef<Slider>();
     slider->position = { 540, 80 };
-    slider->showTickmarks = false;
-    slider->increment = 1;
+    slider->showTickmarks = true;
+    slider->increment = 20;
     slider->knobColor = Color::yellow;
     slider->color = Color::darkGray;
     slider->tickmarkColor = Color::white;

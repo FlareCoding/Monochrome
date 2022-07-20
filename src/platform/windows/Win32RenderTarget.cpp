@@ -194,6 +194,46 @@ namespace mc {
         brush->Release();
     }
 
+    void Win32RenderTarget::drawCircle(
+        int32_t x, int32_t y,
+        uint32_t radius,
+        const Color& color,
+        bool filled,
+        uint32_t stroke
+    ) {
+        uint32_t size = radius * 2;
+        _adjustPositionAndSizeForDPIScaling(x, y, size, size);
+        
+        ID2D1SolidColorBrush* brush;
+        HRESULT result = d_activeRenderTarget->CreateSolidColorBrush(
+            D2D1::ColorF(
+                static_cast<float>(color.r) / 255.0f,
+                static_cast<float>(color.g) / 255.0f,
+                static_cast<float>(color.b) / 255.0f,
+                static_cast<float>(color.a) / 255.0f
+            ),
+            &brush
+        );
+
+        CORE_ASSERT(result == S_OK, "Failed to create brush");
+
+        D2D1_ELLIPSE bounds = D2D1::Ellipse(
+            D2D1::Point2F(
+                static_cast<float>(x + size),
+                static_cast<float>(y + size)
+            ),
+            static_cast<float>(size),
+            static_cast<float>(size)
+        );
+
+        if (filled)
+            d_activeRenderTarget->FillEllipse(bounds, brush);
+        else
+            d_activeRenderTarget->DrawEllipse(bounds, brush, static_cast<float>(stroke));
+
+        brush->Release();
+    }
+
     void Win32RenderTarget::drawText(
         int32_t x,
         int32_t y,
