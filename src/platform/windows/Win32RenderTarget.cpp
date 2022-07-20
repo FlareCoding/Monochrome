@@ -203,7 +203,7 @@ namespace mc {
     ) {
         uint32_t size = radius * 2;
         _adjustPositionAndSizeForDPIScaling(x, y, size, size);
-        
+
         ID2D1SolidColorBrush* brush;
         HRESULT result = d_activeRenderTarget->CreateSolidColorBrush(
             D2D1::ColorF(
