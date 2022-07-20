@@ -212,12 +212,8 @@ namespace mc {
 									NSParagraphStyleAttributeName: paragraphStyle
 								};
 
-
-        // Conversion provided text to widestring to support emojis and UTF-8
-        auto wideText = utils::convertToWideString(text);
-
-		NSString* str = [[NSString alloc] initWithBytes:wideText.c_str()
-                                          length:wideText.size() * sizeof(wchar_t)
+		NSString* str = [[NSString alloc] initWithBytes:text.c_str()
+                                          length:text.size() * sizeof(wchar_t)
                                           encoding:NSUTF32LittleEndianStringEncoding];
                                           
 		CGRect frame = [str boundingRectWithSize:NSMakeSize(width, height)
