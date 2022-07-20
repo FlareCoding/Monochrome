@@ -44,6 +44,18 @@ public:
         const std::string& wrapMode = "none"
     );
 
+    void drawText(
+        int32_t x, int32_t y,
+        uint32_t width, uint32_t height,
+        const Color& color,
+        const std::wstring& text,
+        const std::string& font,
+        uint32_t fontSize,
+        const std::string& fontStyle = "normal",
+        const std::string& alignment = "center",
+        const std::string& wrapMode = "none"
+    );
+
     void __drawFrontBufferBitmap();
 
     std::pair<float, float> runtimeCalculateTextSize(

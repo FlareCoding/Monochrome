@@ -13,6 +13,7 @@ set(
     ${cwd}/Panel.h
     ${cwd}/Label.h
     ${cwd}/Button.h
+    ${cwd}/Checkbox.h
     ${cwd}/Entry.h
     ${cwd}/MenuList.h
     ${cwd}/DropdownButton.h
@@ -34,6 +35,7 @@ set(
     ${cwd}/Panel.cpp
     ${cwd}/Label.cpp
     ${cwd}/Button.cpp
+    ${cwd}/Checkbox.cpp
     ${cwd}/Entry.cpp
     ${cwd}/MenuList.cpp
     ${cwd}/DropdownButton.cpp

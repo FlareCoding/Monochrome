@@ -4,7 +4,7 @@
 #include <widgets/Panel.h>
 #include <widgets/Label.h>
 #include <widgets/Button.h>
-// #include <widgets/Checkbox.h>
+ #include <widgets/Checkbox.h>
 // #include <widgets/Slider.h>
 #include <widgets/Entry.h>
 #include <widgets/CustomRenderedWidget.h>
@@ -58,11 +58,11 @@ private:
         Position& parentPositionOffset
     );
 
-    // static void renderCheckbox(
-    //     Shared<RenderTarget>& renderTarget,
-    //     const Shared<Checkbox>& checkbox,
-    //     Position& parentPositionOffset
-    // );
+     static void renderCheckbox(
+         Shared<RenderTarget>& renderTarget,
+         const Shared<Checkbox>& checkbox,
+         Position& parentPositionOffset
+     );
 
     // static void renderSlider(
     //     Shared<RenderTarget>& renderTarget,

@@ -157,6 +157,32 @@ namespace mc {
         const std::string& alignment,
         const std::string& wrapMode
     ) {
+        drawText(
+            x, y,
+            width, height,
+            color,
+            utils::convertToWideString(text),
+            font,
+            fontSize,
+            fontStyle,
+            alignment,
+            wrapMode
+        );
+    }
+
+    void OSXRenderTarget::drawText(
+        int32_t x,
+        int32_t y,
+        uint32_t width,
+        uint32_t height,
+        const Color& color,
+        const std::wstring& text,
+        const std::string& font,
+        uint32_t fontSize,
+        const std::string& fontStyle,
+        const std::string& alignment,
+        const std::string& wrapMode
+    ) {
         _adjustPositionAndSizeForDPIScaling(x, y, width, height);
         fontSize *= d_scalingFactor;
 

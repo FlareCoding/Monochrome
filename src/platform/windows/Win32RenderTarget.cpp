@@ -207,14 +207,37 @@ namespace mc {
         const std::string& alignment,
         const std::string& wrapMode
     ) {
+        drawText(
+            x, y,
+            width, height,
+            color,
+            utils::convertToWideString(text),
+            font,
+            fontSize,
+            fontStyle,
+            alignment,
+            wrapMode
+        );
+    }
+
+    void Win32RenderTarget::drawText(
+        int32_t x,
+        int32_t y,
+        uint32_t width,
+        uint32_t height,
+        const Color& color,
+        const std::wstring& text,
+        const std::string& font,
+        uint32_t fontSize,
+        const std::string& fontStyle,
+        const std::string& alignment,
+        const std::string& wrapMode
+    ) {
         _adjustPositionAndSizeForDPIScaling(x, y, width, height);
 
         // Adjust the font size for DPI scaling
         float fontSizeF = static_cast<float>(fontSize);
         fontSize = static_cast<uint32_t>(fontSizeF * d_scalingFactor);
-
-        // Convert text to be a wide string
-        std::wstring textW = utils::convertToWideString(text);
 
         // Create the brush
         ID2D1SolidColorBrush* brush;
@@ -274,7 +297,7 @@ namespace mc {
         format->SetWordWrapping(dwWrapMode);
 
         d_activeRenderTarget->DrawTextW(
-            textW.c_str(),
+            text.c_str(),
             (UINT32)text.size(),
             format,
             D2D1::RectF(

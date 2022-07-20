@@ -3,6 +3,7 @@
 #include "FlowPanel.h"
 #include "Label.h"
 #include "Button.h"
+#include "Checkbox.h"
 #include "Entry.h"
 #include "MenuList.h"
 #include "DropdownButton.h"

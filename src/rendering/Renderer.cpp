@@ -1,4 +1,4 @@
-#include "Renderer.h"
+﻿#include "Renderer.h"
 #include <core/InternalFlags.h>
 #include <application/AppManager.h>
 
@@ -89,7 +89,11 @@ namespace mc {
                 parentPositionOffset
             );
         } else if (widgetType == "checkbox") {
-            CORE_ASSERT(false, "Rendering 'checkbox' widget is not implemented yet");
+            renderCheckbox(
+                renderTarget,
+                std::static_pointer_cast<Checkbox>(widget),
+                parentPositionOffset
+            );
         } else if (widgetType == "slider") {
             CORE_ASSERT(false, "Rendering 'slider' widget is not implemented yet");
         } else if (widgetType == "entry") {
@@ -281,13 +285,66 @@ namespace mc {
         );
     }
 
-    // void Renderer::renderCheckbox() {
+    void Renderer::renderCheckbox(
+        Shared<RenderTarget>& renderTarget,
+        const Shared<Checkbox>& checkbox,
+        Position& parentPositionOffset
+    ) {
+        const auto& [position, size] = getWidgetTruePositionAndSize(checkbox, parentPositionOffset);
 
-    // }
+        uint32_t boxSize = size.height / 5 * 3;
 
-    // void Renderer::renderSlider() {
+        // Draw the body of the checkbox
+        renderTarget->drawRectangle(
+            position.x,
+            position.y + static_cast<int32_t>(size.height / 2 - boxSize / 2),
+            boxSize, boxSize,
+            checkbox->checked ? checkbox->checkedColor : checkbox->backgroundColor,
+            checkbox->cornerRadius,
+            checkbox->filled,
+            checkbox->stroke
+        );
 
-    // }
+        // Draw the border around the checkbox
+        renderTarget->drawRectangle(
+            position.x + static_cast<int32_t>(checkbox->stroke * 2),
+            position.y + static_cast<int32_t>(size.height / 2 - boxSize / 2),
+            boxSize, boxSize,
+            checkbox->borderColor,
+            checkbox->cornerRadius,
+            false,
+            checkbox->borderSize
+        );
+
+        // Draw the checkmark inside the checkbox if it's checked
+        if (checkbox->checked && checkbox->displayCheckmark) {
+            renderTarget->drawText(
+                position.x + static_cast<int32_t>(checkbox->stroke * 2),
+                position.y + static_cast<int32_t>(size.height / 2 - boxSize / 2),
+                boxSize, boxSize,
+                checkbox->checkmarkColor,
+                L"✔",
+                checkbox->font,
+                checkbox->fontSize,
+                "light"
+            );
+        }
+
+        // Draw the text next to the checkbox
+        renderTarget->drawText(
+            position.x + boxSize + checkbox->textMargin,
+            position.y,
+            size.width - boxSize + checkbox->textMargin,
+            size.height,
+            checkbox->color,
+            checkbox->text.get(),
+            checkbox->font,
+            checkbox->fontSize,
+            checkbox->fontStyle,
+            checkbox->alignment,
+            checkbox->wordWrapMode
+        );
+    }
 
     void Renderer::renderEntry(
         Shared<RenderTarget>& renderTarget,

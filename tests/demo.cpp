@@ -194,6 +194,15 @@ int main()
     resizeFrameWithButton->resizeAnchorColor = Color::green;
     window->addWidget(resizeFrameWithButton);
 
+    auto checkbox = MakeRef<Checkbox>();
+    checkbox->position = { 400, 60 };
+    checkbox->text = "Status";
+    checkbox->displayCheckmark = true;
+    checkbox->checkmarkColor = Color(0, 100, 0);
+    checkbox->color = Color::green;
+    checkbox->checkedColor = Color(224, 146, 213);
+    window->addWidget(checkbox);
+
     AppManager::startApplicationLoop();
     return 0;
 }
