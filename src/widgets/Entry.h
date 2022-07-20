@@ -114,6 +114,10 @@ private:
     // if the mouse was dragging the cursor.
     bool d_mousePressed = false;
 
+    // Used to track position of the entry
+    // relative to the window's origin.
+    Position d_positionInWindow;
+
     // Used to track where the entry was clicked
     // in order to determine the size of the selection.
     uint64_t d_selectionBeganIndex = 0;

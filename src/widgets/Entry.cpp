@@ -112,6 +112,7 @@ namespace mc {
 
         on("mouseDown", [this](Shared<Event> e) {
             d_mousePressed = true;
+            d_positionInWindow = getPositionInWindow();
 
             auto clickedEvent = std::static_pointer_cast<MouseButtonEvent>(e);
 
@@ -595,7 +596,7 @@ namespace mc {
     }
 
     uint64_t Entry::_getTextIndexFromMousePosition(int32_t mousePos) {
-        int32_t localMousePosX = mousePos - position->x;
+        int32_t localMousePosX = mousePos - d_positionInWindow.x;
         localMousePosX += std::abs(d_textFrame.position.x - (int32_t)d_entryTextPadding);
         localMousePosX -= d_entryTextPadding;
 
