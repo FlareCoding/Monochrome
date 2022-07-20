@@ -30,13 +30,17 @@ namespace mc::utils {
         return nullptr;
     }
 
-    void PlacementConstraintSystem::updateContainer(const std::string& name, const Size& size) {
+    void PlacementConstraintSystem::updateContainer(
+        const std::string& name,
+        const Position& position,
+        const Size& size
+    ) {
         if (!hasContainer(name)) {
             return;
         }
 
         VirtualContainer container;
-        container.containerFrame = Frame(Position(), size);
+        container.containerFrame = Frame(position, size);
 
         s_containers[name] = container;
     }
@@ -48,10 +52,17 @@ namespace mc::utils {
         const Size& anchorElementSize,
         OverflowDirection overflow
     ) {
+        // Setting the anchor origin point to be
+        // relative to the origin of the virtual container.
+        Position adjustedAnchorOrigin = anchorOrigin;
+
+        adjustedAnchorOrigin.x -= containerFrame.position.x;
+        adjustedAnchorOrigin.y -= containerFrame.position.y;
+
         // Set the proposed anchor point to be at the anchor's origin
         Point proposedAnchorPoint = {
-            anchorOrigin.x,
-            anchorOrigin.y
+            adjustedAnchorOrigin.x,
+            adjustedAnchorOrigin.y
         };
 
         // anchorElementSize usually refers to the
@@ -87,7 +98,7 @@ namespace mc::utils {
             //
             // Attempt to place
             // the child element above.
-            proposedAnchorPoint.y = anchorOrigin.y - childSize.height;
+            proposedAnchorPoint.y = adjustedAnchorOrigin.y - childSize.height;
         }
 
         if (proposedAnchorPoint.y < 0) {
@@ -96,7 +107,7 @@ namespace mc::utils {
             //
             // Attempt to place
             // the child element below.
-            proposedAnchorPoint.y += anchorOrigin.y + anchorElementSize.height;
+            proposedAnchorPoint.y += adjustedAnchorOrigin.y + anchorElementSize.height;
         }
 
         if (proposedAnchorPoint.x + childSize.width > containerFrame.size.width) {
@@ -105,7 +116,7 @@ namespace mc::utils {
             //
             // Attempt to place
             // the child element to the left.
-            proposedAnchorPoint.x = anchorOrigin.x - childSize.width;
+            proposedAnchorPoint.x = adjustedAnchorOrigin.x - childSize.width;
         }
 
         if (proposedAnchorPoint.x < 0) {
@@ -114,7 +125,7 @@ namespace mc::utils {
             //
             // Attempt to place
             // the child element to the right.
-            proposedAnchorPoint.x = anchorOrigin.x + anchorElementSize.width;
+            proposedAnchorPoint.x = adjustedAnchorOrigin.x + anchorElementSize.width;
         }
 
         // Insert the child into the children's map
@@ -132,6 +143,10 @@ namespace mc::utils {
                 resultingFrame.position.y += resolutionDistance.y;
             }
         }
+
+        // Removing the earlier shift in relation to the container's origin
+        resultingFrame.position.x += containerFrame.position.x;
+        resultingFrame.position.y += containerFrame.position.y;
 
         return resultingFrame.position;
     }
