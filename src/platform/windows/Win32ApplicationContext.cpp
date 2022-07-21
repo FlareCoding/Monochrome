@@ -29,7 +29,7 @@ namespace mc {
                 window->updatePlatformWindow();
             }
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(4));
+            //std::this_thread::sleep_for(std::chrono::milliseconds(4));
         }
 
         // Destroy all windows
