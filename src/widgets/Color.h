@@ -10,6 +10,8 @@ public:
     Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255)
         : r(r), g(g), b(b), a(a) {}
 
+    static Color randomColor();
+
     bool operator==(const Color& color) const {
         return (r == color.r && g == color.g && b == color.b && a == color.a);
     }
@@ -28,7 +30,5 @@ public:
     static Color gray;
     static Color lightGray;
     static Color darkGray;
-    static Color teal;
-    static Color magenta;
 };
 } // namespace mc
