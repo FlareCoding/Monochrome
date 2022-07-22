@@ -317,12 +317,6 @@ namespace mc {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto widget = *it;
 
-            // Checking if the widget that was pressed
-            // is the same as the one capturing events.
-            if (d_widgetCapturingHoverOnEvent.get() != widget.get()) {
-                continue;
-            }
-
             // Get the cursor position and location
             Position cursorLocation = event->getLocation();
 
