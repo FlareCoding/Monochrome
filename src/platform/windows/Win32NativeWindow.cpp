@@ -161,6 +161,10 @@ namespace mc {
         ::ShowWindow(d_windowHandle, SW_MINIMIZE);
     }
 
+    void Win32NativeWindow::requestRedraw() {
+        ::SendMessage(d_windowHandle, WM_PAINT, NULL, NULL);
+    }
+
     void Win32NativeWindow::_createWin32Window(uint64_t windowFlags) {
         // Extracting internal window flags
         bool isBorderless = getInternalFlag(windowFlags, InternalWindowFlag::WindowStyleBorderless);
@@ -283,23 +287,6 @@ namespace mc {
         d_renderTarget->resize(d_width, d_height);
     }
 
-    void Win32NativeWindow::updatePlatformWindow() {
-        // Process all messages and events
-        while (PeekMessage(&d_windowProcMessage, d_windowHandle, 0, 0, PM_REMOVE)) {
-            TranslateMessage(&d_windowProcMessage);
-            DispatchMessage(&d_windowProcMessage);
-        }
-
-        auto updateCallback = getUpdateCallback();
-
-        if (updateCallback) {
-            updateCallback();
-        }
-
-        // Draw the render target's front buffer bitmap image
-        std::static_pointer_cast<Win32RenderTarget>(d_renderTarget)->__drawFrontBufferBitmap();
-    }
-
     void Win32NativeWindow::destroyPlatformWindow() {
         ::DestroyWindow(d_windowHandle);
     }
@@ -307,6 +294,7 @@ namespace mc {
     LRESULT
     CALLBACK
     Win32NativeWindow::win32WindowProcCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+        // Process the received message
         switch (uMsg) {
         case WM_CLOSE: {
             unregisterNativeWindow(this);

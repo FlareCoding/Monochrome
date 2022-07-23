@@ -31,12 +31,13 @@ public:
     void restoreMaximize();
     void minimize();
 
+    void requestRedraw() override;
+
     Shared<RenderTarget> getRenderTarget() const { return d_renderTarget; }
 
     //
     // Win32NativeWindow specific functionality
     //
-    void updatePlatformWindow();
     void destroyPlatformWindow();
 
     LRESULT CALLBACK win32WindowProcCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -54,7 +55,6 @@ private:
 
     HWND d_windowHandle = nullptr;
     Shared<Win32RenderTarget> d_renderTarget = nullptr;
-    MSG d_windowProcMessage;
 
     void _createWin32Window(uint64_t windowFlags);
     void _setWindowSize(uint32_t width, uint32_t height);

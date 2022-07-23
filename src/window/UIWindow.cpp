@@ -222,7 +222,13 @@ namespace mc {
                     _completeOnDemandBufferSwap();
                 }
 
+                // Mark the scene as successfully drawn
                 d_shouldRedrawScene = false;
+
+                // On Windows, the event loop doesn't repaint
+                // the screen automatically and needs the
+                // window rect to be requested to be repainted.
+                d_nativeWindow->requestRedraw();
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(16));

@@ -64,8 +64,6 @@ public:
         const std::string& wrapMode = "none"
     );
 
-    void __drawFrontBufferBitmap();
-
     std::pair<float, float> runtimeCalculateTextSize(
         uint64_t maxWidth,
         uint64_t maxHeight,
@@ -80,8 +78,6 @@ public:
 private:
     HWND d_windowHandle;
     ComPtr<ID2D1HwndRenderTarget> d_nativeWindowRenderTarget;
-    ComPtr<ID2D1BitmapRenderTarget> d_nativeBitmapRenderTarget;
-    ComPtr<ID2D1RenderTarget> d_activeRenderTarget;
 
     uint32_t    d_width;
     uint32_t    d_height;

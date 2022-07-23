@@ -34,6 +34,9 @@ public:
     virtual void restoreMaximize() = 0;
     virtual void minimize() = 0;
 
+    // Only required on certain platforms
+    virtual void requestRedraw() {}
+
     virtual Shared<RenderTarget> getRenderTarget() const = 0;
 
 protected:

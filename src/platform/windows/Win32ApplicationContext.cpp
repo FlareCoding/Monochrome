@@ -25,11 +25,12 @@ namespace mc {
 
         // Start the application loop
         while (d_applicationRunning) {
-            for (auto& window : d_win32NativeWindowHandles) {
-                window->updatePlatformWindow();
-            }
+            MSG windowProcMessage;
 
-            //std::this_thread::sleep_for(std::chrono::milliseconds(4));
+            if (GetMessage(&windowProcMessage, NULL, 0, NULL)) {
+                TranslateMessage(&windowProcMessage);
+                DispatchMessage(&windowProcMessage);
+            }
         }
 
         // Destroy all windows
