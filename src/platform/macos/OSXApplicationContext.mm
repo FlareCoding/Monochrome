@@ -1,4 +1,5 @@
 #include "OSXApplicationContext.h"
+#include "OSXNativeWindow.h"
 
 @implementation OSXAppDelegate
 @synthesize appContextHandle;
@@ -32,6 +33,7 @@
 -(void)applicationDidFinishLaunching:(NSNotification*)notification
 {
     [NSApp activateIgnoringOtherApps:YES];
+    [NSApp stop:nil]; // handing over control to the manual event loop
 }
 
 -(NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender
@@ -51,6 +53,30 @@ namespace mc {
     }
 
     void OSXApplicationContext::startApplicationLoop() {
+        // Set the application running flag to true
+        d_applicationRunning = true;
+
         [NSApp run];
+
+        while (d_applicationRunning) {
+            NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny
+                                                    untilDate:[NSDate distantFuture]
+                                                    inMode:NSDefaultRunLoopMode
+                                                    dequeue:YES];
+
+            [NSApp sendEvent:event];
+
+            for (auto& nativeWindowHandle : d_osxNativeWindowHandles) {
+                nativeWindowHandle->updatePlatformWindow();
+            }
+        }
+    }
+
+    void OSXApplicationContext::mainWindowRequestedClose() {
+        d_applicationRunning = false;
+    }
+
+    void OSXApplicationContext::registerOSXNativeWindowHandle(OSXNativeWindow* handle) {
+        d_osxNativeWindowHandles.push_back(handle);
     }
 } // namespace mc

@@ -1,6 +1,7 @@
 #pragma once
 #include <window/NativeWindow.h>
 #include "OSXRenderTarget.h"
+#include "OSXApplicationContext.h"
 
 namespace mc { class OSXNativeWindow; }
 
@@ -47,9 +48,14 @@ public:
     void restoreMaximize();
     void minimize();
 
+    void requestRedraw();
+
     Shared<RenderTarget> getRenderTarget() const { return d_renderTarget; }
 
     uint64_t& getWindowFlags() { return d_windowFlags; }
+
+    Shared<OSXApplicationContext> getApplicationContext() const;
+    void updatePlatformWindow();
 
 private:
     bool        d_visible = false;

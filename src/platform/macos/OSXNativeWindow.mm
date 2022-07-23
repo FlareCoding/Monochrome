@@ -1,19 +1,22 @@
 #include "OSXNativeWindow.h"
-#include "OSXApplicationContext.h"
 #include <core/InternalFlags.h>
 #include <widgets/Layer.h>
 #include <events/MouseEvents.h>
 #include <events/KeyboardEvents.h>
 #include <utils/PlacementConstraintSystem.h>
+#include <thread>
+#include <mutex>
 using namespace mc;
 
 namespace mc {
     static std::mutex s_windowMapMutex;
-	static std::vector<OSXNativeWindow*> s_registeredWindows;
+	static std::vector<OSXNativeWindow*> s_registeredWindows; // used for tracking registered windows
+    static std::vector<OSXNativeWindow*> s_windowKeyOrderStack; // used for tracking focus of windows
 
 	static void registerNativeWindow(OSXNativeWindow* window) {
 		s_windowMapMutex.lock();
 		s_registeredWindows.push_back(window);
+        s_windowKeyOrderStack.insert(s_windowKeyOrderStack.begin(), window);
 		s_windowMapMutex.unlock();
 	}
 
@@ -28,8 +31,40 @@ namespace mc {
 			)
 		);
 
+        s_windowKeyOrderStack.erase(
+			std::remove(
+				s_windowKeyOrderStack.begin(),
+				s_windowKeyOrderStack.end(),
+				window
+			)
+		);
+
 		s_windowMapMutex.unlock();
 	}
+
+    static void trackWindowGainedFocus(OSXNativeWindow* window) {
+        auto it = std::find(s_windowKeyOrderStack.begin(), s_windowKeyOrderStack.end(), window);
+        
+        // Remove window from its current position
+        if (it != s_windowKeyOrderStack.end()) {
+            s_windowKeyOrderStack.erase(it);
+        }
+
+        // Insert the window into the back (highest key)
+        s_windowKeyOrderStack.push_back(window);
+    }
+
+    static void trackWindowLostFocus(OSXNativeWindow* window) {
+        auto it = std::find(s_windowKeyOrderStack.begin(), s_windowKeyOrderStack.end(), window);
+        
+        // Remove window from its current position
+        if (it != s_windowKeyOrderStack.end()) {
+            s_windowKeyOrderStack.erase(it);
+        }
+
+        // Insert the window into the front (lowest key)
+        s_windowKeyOrderStack.insert(s_windowKeyOrderStack.begin(), window);
+    }
 }
 
 @implementation OSXWindowDelegate
@@ -46,7 +81,7 @@ namespace mc {
     // Stop the application only if the
     // destroyed window was the root window.
     if (windowInstance->isRoot()) {
-        [[NSApplication sharedApplication] stop:nil];
+        windowInstance->getApplicationContext()->mainWindowRequestedClose();
     }
 
     return YES;
@@ -134,6 +169,8 @@ namespace mc {
                         frontBuffer.size.height
                     )
                     operation:NSCompositingOperationCopy fraction:1.0];
+
+    auto id = std::hash<std::thread::id>()(std::this_thread::get_id());
 }
 
 - (void)update
@@ -145,6 +182,8 @@ namespace mc {
     }
 
     [self setNeedsDisplay: YES];
+
+    auto id = std::hash<std::thread::id>()(std::this_thread::get_id());
 }
 
 - (void) mouseDown: (NSEvent*) event
@@ -484,6 +523,8 @@ namespace mc
 
         d_visible = true;
         [this->d_windowHandle orderFront:nil];
+
+        trackWindowGainedFocus(this);
     }
 
     void OSXNativeWindow::hide() {
@@ -491,14 +532,27 @@ namespace mc
 
         d_visible = false;
         [this->d_windowHandle orderOut:nil];
+
+        trackWindowLostFocus(this);
+
+        if (s_windowKeyOrderStack.size() > 1) {
+            auto topWindow = s_windowKeyOrderStack.back();
+            if (topWindow != this) {
+                topWindow->focus();
+            }
+        }
     }
 
     void OSXNativeWindow::focus() {
         [this->d_windowHandle makeKeyAndOrderFront:nil];
+
+        trackWindowGainedFocus(this);
     }
 
     void OSXNativeWindow::unfocus() {
         [this->d_windowHandle resignKeyWindow];
+
+        trackWindowLostFocus(this);
     }
 
     void OSXNativeWindow::close() {
@@ -523,6 +577,20 @@ namespace mc
         [this->d_windowHandle miniaturize:d_windowHandle];
     }
 
+    void OSXNativeWindow::requestRedraw() {
+        NSEvent* event = [NSEvent otherEventWithType:NSEventTypeApplicationDefined
+                                        location:NSMakePoint(0, 0)
+                                   modifierFlags:0
+                                       timestamp:0
+                                    windowNumber:0
+                                         context:nil
+                                         subtype:0
+                                           data1:0
+                                           data2:0];
+                                           
+        [NSApp postEvent:event atStart:YES];
+    }
+
     void OSXNativeWindow::setWidth(uint32_t width) {
         d_width = width;
         _setWindowSize(d_width, d_height);
@@ -545,6 +613,14 @@ namespace mc
     void OSXNativeWindow::setTitle(const std::string& title) {
         d_title = title;
         [d_windowHandle setTitle:[NSString stringWithUTF8String: d_title.c_str()]];
+    }
+
+    Shared<OSXApplicationContext> OSXNativeWindow::getApplicationContext() const {
+        return std::static_pointer_cast<OSXApplicationContext>(d_applicationContext);
+    }
+
+    void OSXNativeWindow::updatePlatformWindow() {
+        [d_windowHandle.contentView update];
     }
 
     void OSXNativeWindow::_createOSXWindow(uint64_t windowFlags) {
@@ -606,8 +682,10 @@ namespace mc
         contentViewDelegate.mcWindowHandle = this;
         [d_windowHandle setContentView:contentViewDelegate];
 
-        // Sets the refresh rate of the content view
-        [NSTimer scheduledTimerWithTimeInterval:1.0/60.0 target:contentViewDelegate selector:@selector(update) userInfo:nil repeats:YES];
+        // Register the native window handle in the OSXApplicationContext
+        std::static_pointer_cast<OSXApplicationContext>(
+            d_applicationContext
+        )->registerOSXNativeWindowHandle(this);
     }
 
     void OSXNativeWindow::_setWindowSize(uint32_t width, uint32_t height) {
