@@ -98,6 +98,14 @@ namespace mc {
     OSXNativeWindow* windowInstance = delegate.mcWindowHandle;
 
     windowInstance->fireEvent("sizeChanged", resizeEvent);
+
+    // Due to the way Cocoa rendering system doesn't let you
+    // reliably control the timing of drawRect being called
+    // preventing you from properly synchronizing buffer swapping,
+    // while resizing, the scene has to be re-rendered manually
+    // to the front buffer directly.
+    windowInstance->requestFrontBufferRender();
+
     return frameSize;
 }
 
@@ -159,6 +167,14 @@ namespace mc {
 
 -(void) drawRect:(NSRect)rect
 {
+    if (self.mcWindowHandle->isFrontBufferRenderRequested()) {
+        auto updateCallback = self.mcWindowHandle->getUpdateCallback();
+    
+        if (updateCallback) {
+            updateCallback();
+        }
+    }
+
     Shared<RenderTarget> renderTarget = self.mcWindowHandle->getRenderTarget();
     NSImage* frontBuffer = reinterpret_cast<NSImage*>(renderTarget->getFrontBuffer());
 

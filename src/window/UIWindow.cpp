@@ -2,6 +2,10 @@
 #include <rendering/Renderer.h>
 #include <chrono>
 
+#ifdef MC_PLATFORM_MACOS
+#include <platform/macos/OSXNativeWindow.h>
+#endif
+
 namespace mc {
     // Specifies that only the first created window should be the root window
     static bool s_isFirstWindow = true;
@@ -179,6 +183,30 @@ namespace mc {
         if (!shouldRedraw()) {
             d_nativeWindow->getRenderTarget()->swapBuffers();
         }
+
+#ifdef MC_PLATFORM_MACOS
+        // Due to the way Cocoa rendering system doesn't let you
+        // reliably control the timing of drawRect being called
+        // preventing you from properly synchronizing buffer swapping,
+        // while resizing, the scene has to be re-rendered manually
+        // to the front buffer directly.
+        auto osxWindow = std::static_pointer_cast<OSXNativeWindow>(d_nativeWindow);
+
+        if (osxWindow->isFrontBufferRenderRequested()) {
+            auto renderTarget = d_nativeWindow->getRenderTarget();
+            renderTarget->lockBackBuffer();
+            renderTarget->beginFrame();
+
+            _renderScene(renderTarget);
+
+            renderTarget->endFrame();
+            renderTarget->unlockBackBuffer();
+            renderTarget->swapBuffers();
+
+            // Complete the request
+            osxWindow->completeFrontBufferRender();
+        }
+#endif
     }
 
     void UIWindow::setShouldRedraw() {
@@ -207,6 +235,17 @@ namespace mc {
 
     void UIWindow::_backgroundRenderingTask() {
         while (!d_isDestroyed) {
+#ifdef MC_PLATFORM_MACOS
+            // If the current platform is MacOS, to prevent screen
+            // flickering, the background thread has to be paused
+            // while the window is resizing.
+            auto osxWindow = std::static_pointer_cast<OSXNativeWindow>(d_nativeWindow);
+            if (osxWindow->isFrontBufferRenderRequested()) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(16));
+                continue;
+            }
+#endif
+
             if (shouldRedraw()) {
                 auto renderTarget = d_nativeWindow->getRenderTarget();
                 renderTarget->lockBackBuffer();
@@ -225,9 +264,8 @@ namespace mc {
                 // Mark the scene as successfully drawn
                 d_shouldRedrawScene = false;
 
-                // On Windows, the event loop doesn't repaint
-                // the screen automatically and needs the
-                // window rect to be requested to be repainted.
+                // Request the native window to
+                // repaint with the updated contents.
                 d_nativeWindow->requestRedraw();
             }
 

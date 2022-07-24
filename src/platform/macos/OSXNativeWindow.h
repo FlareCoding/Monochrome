@@ -57,6 +57,10 @@ public:
     Shared<OSXApplicationContext> getApplicationContext() const;
     void updatePlatformWindow();
 
+    inline bool isFrontBufferRenderRequested() const { return d_requestedFrontBufferRender; }
+    inline void requestFrontBufferRender() { d_requestedFrontBufferRender = true; }
+    inline void completeFrontBufferRender() { d_requestedFrontBufferRender = false; }
+
 private:
     bool        d_visible = false;
     bool        d_focused = false;
@@ -66,6 +70,7 @@ private:
     float       d_scalingFactor = 1;
     std::string d_title;
     uint64_t    d_windowFlags = 0;
+    bool        d_requestedFrontBufferRender = false;
 
     NSWindow*   d_windowHandle = nullptr;
     Shared<OSXRenderTarget> d_renderTarget = nullptr;
