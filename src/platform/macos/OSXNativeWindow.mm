@@ -169,8 +169,6 @@ namespace mc {
                         frontBuffer.size.height
                     )
                     operation:NSCompositingOperationCopy fraction:1.0];
-
-    auto id = std::hash<std::thread::id>()(std::this_thread::get_id());
 }
 
 - (void)update
@@ -182,8 +180,6 @@ namespace mc {
     }
 
     [self setNeedsDisplay: YES];
-
-    auto id = std::hash<std::thread::id>()(std::this_thread::get_id());
 }
 
 - (void) mouseDown: (NSEvent*) event
