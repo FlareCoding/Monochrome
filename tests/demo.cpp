@@ -22,8 +22,7 @@ uint32_t random(int min, int max) {
     return (uint32_t)(min + rand() % ((max + 1) - min));
 }
 
-int main()
-{
+int firstDemo() {
     AppManager::registerApplication("appId-032487");
 
     auto window = MakeRef<ModernWindow>(1060, 660, "Monochrome Demo");
@@ -216,4 +215,38 @@ int main()
 
     AppManager::startApplicationLoop();
     return 0;
+}
+
+int flowpanelDemo() {
+    AppManager::registerApplication("appId-032483");
+
+    auto window = MakeRef<ModernWindow>(1060, 660, "Flowpanel Demo");
+    window->setBackgroundColor(Color(28, 22, 28));
+
+    auto body = window->getBody();
+    body->stretchContents = true;
+    body->justifyContent = SpaceBetween;
+
+    auto leftPanel = MakeRef<Panel>();
+    leftPanel->size->width = 300;
+    leftPanel->backgroundColor = Color(120, 130, 140);
+    body->addChild(leftPanel);
+
+    auto testButtonLeft = MakeRef<Button>();
+    leftPanel->addChild(testButtonLeft);
+
+    auto rightPanel = MakeRef<Panel>();
+    rightPanel->size->width = 300;
+    rightPanel->backgroundColor = Color(180, 130, 140);
+    body->addChild(rightPanel);
+
+    auto testButtonRight = MakeRef<Button>();
+    rightPanel->addChild(testButtonRight);
+
+    AppManager::startApplicationLoop();
+    return 0;
+}
+
+int main() {
+    return flowpanelDemo();
 }

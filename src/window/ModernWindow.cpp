@@ -15,6 +15,9 @@ namespace mc {
 
         // Setup events handlers
         _setupEventHandlers();
+
+        // Adjust the offset of the body panel that belongs to a UIWindow
+        setBodyPanelOffset({ 0, d_titleLabel->size->height + 8 });
     }
 
     void ModernWindow::setBackgroundColor(const Color& color) {
