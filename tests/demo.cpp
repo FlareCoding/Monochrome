@@ -92,6 +92,10 @@ int firstDemo() {
     auto addBtn = MakeRef<Button>();
     addBtn->cornerRadius = 2;
     addBtn->text = "Add";
+    addBtn->marginLeft = 6;
+    addBtn->marginRight = 6;
+    addBtn->marginTop = 6;
+    addBtn->marginBottom = 6;
     addBtn->on("clicked", [flowContainer](auto e) {
         static int counter = 2;
         ++counter;
@@ -100,6 +104,10 @@ int firstDemo() {
         b->size = { random(100, 170), random(30, 60) };
         b->cornerRadius = 2;
         b->text = "Button " + std::to_string(counter);
+        b->marginLeft = 6;
+        b->marginRight = 6;
+        b->marginTop = 6;
+        b->marginBottom = 6;
         flowContainer->addChild(b);
     });
     flowContainer->addChild(addBtn);
@@ -107,6 +115,10 @@ int firstDemo() {
     auto clearBtn = MakeRef<Button>();
     clearBtn->cornerRadius = 2;
     clearBtn->text = "Clear";
+    clearBtn->marginLeft = 6;
+    clearBtn->marginRight = 6;
+    clearBtn->marginTop = 6;
+    clearBtn->marginBottom = 6;
     clearBtn->on("clicked", [flowContainer](auto e) {
         if (flowContainer->layout == Horizontal ||
             flowContainer->layout == HorizontalReversed
@@ -229,6 +241,9 @@ int flowpanelDemo() {
 
     auto leftPanel = MakeRef<Panel>();
     leftPanel->size->width = 300;
+    leftPanel->marginLeft = 10;
+    leftPanel->marginTop = 10;
+    leftPanel->marginBottom = 10;
     leftPanel->backgroundColor = Color(120, 130, 140);
     body->addChild(leftPanel);
 
@@ -237,6 +252,9 @@ int flowpanelDemo() {
 
     auto rightPanel = MakeRef<Panel>();
     rightPanel->size->width = 300;
+    rightPanel->marginRight = 10;
+    rightPanel->marginTop = 10;
+    rightPanel->marginBottom = 10;
     rightPanel->backgroundColor = Color(180, 130, 140);
     body->addChild(rightPanel);
 

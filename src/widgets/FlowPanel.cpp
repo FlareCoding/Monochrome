@@ -90,12 +90,15 @@ namespace mc {
                 // If the contents need to be stretched, set each element's
                 // height to be the same height as the flowpanel.
                 if (stretchContents) {
-                    child->size->height = size->height;
+                    child->size->height = size->height - child->marginBottom - child->marginTop;
                 }
 
                 // Keep track of the maximum content size
-                if (child->position->y + child->size->height > maxContentSize) {
-                    maxContentSize = child->position->y + child->size->height;
+                auto totalChildHeight =
+                    child->marginTop + child->size->height + child->marginBottom;
+
+                if (child->position->y + totalChildHeight > maxContentSize) {
+                    maxContentSize = child->position->y + totalChildHeight;
                 }
             } else {
                 // Logic gets simplified a lot since there
@@ -153,7 +156,7 @@ namespace mc {
 
         for (auto& child : d_children) {
             // Ignore elements in a different row
-            if (child->position->y != targetRowPositionY) {
+            if (child->position->y - child->marginTop != targetRowPositionY) {
                 continue;
             }
 
@@ -161,8 +164,10 @@ namespace mc {
             ++elementCount;
 
             // Track the greatest element height
-            if (child->size->height > rowHeight) {
-                rowHeight = child->size->height;
+            auto totalChildHeight = child->marginTop + child->size->height + child->marginBottom;
+
+            if (totalChildHeight > rowHeight) {
+                rowHeight = totalChildHeight;
             }
         }
 
@@ -183,7 +188,10 @@ namespace mc {
                 }
             }
 
-            child->position = pos;
+            child->position = {
+                pos.x + static_cast<int32_t>(child->marginLeft),
+                pos.y + static_cast<int32_t>(child->marginTop)
+            };
             break;
         }
         case FlowLayout::HorizontalReversed: {
@@ -199,19 +207,22 @@ namespace mc {
             }
 
             child->position = {
-                pos.x - static_cast<int32_t>(child->size->width),
-                pos.y
+                pos.x - static_cast<int32_t>(child->size->width + child->marginRight),
+                pos.y + static_cast<int32_t>(child->marginTop)
             };
             break;
         }
         case FlowLayout::Vertical: {
-            child->position = pos;
+            child->position = {
+                pos.x + static_cast<int32_t>(child->marginLeft),
+                pos.y + static_cast<int32_t>(child->marginTop)
+            };
             break;
         }
         case FlowLayout::VerticalReversed: {
             child->position = {
-                pos.x,
-                pos.y - static_cast<int32_t>(child->size->height)
+                pos.x + static_cast<int32_t>(child->marginLeft),
+                pos.y - static_cast<int32_t>(child->size->height + child->marginBottom)
             };
             break;
         }
@@ -228,7 +239,8 @@ namespace mc {
                 break;
             }
 
-            pos.x += child->size->width;
+            pos.x += static_cast<int32_t>(
+                        child->marginLeft + child->size->width + child->marginRight);
             break;
         }
         case FlowLayout::HorizontalReversed: {
@@ -238,7 +250,8 @@ namespace mc {
                 break;
             }
 
-            pos.x -= static_cast<int32_t>(child->size->width);
+            pos.x -= static_cast<int32_t>(
+                        child->marginLeft + child->size->width + child->marginRight);
             break;
         }
         case FlowLayout::Vertical: {
@@ -248,7 +261,8 @@ namespace mc {
                 break;
             }
 
-            pos.y += child->size->height;
+            pos.y += static_cast<int32_t>(
+                        child->marginTop + child->size->height + child->marginBottom);
             break;
         }
         case FlowLayout::VerticalReversed: {
@@ -258,7 +272,8 @@ namespace mc {
                 break;
             }
 
-            pos.y -= static_cast<int32_t>(child->size->height);
+            pos.y -= static_cast<int32_t>(
+                        child->marginTop + child->size->height + child->marginBottom);
             break;
         }
         default: break;
@@ -281,7 +296,7 @@ namespace mc {
 
             for (auto& child : d_children) {
                 // Ignore elements in a different row
-                if (child->position->y != positionY) {
+                if (child->position->y - child->marginTop != positionY) {
                     continue;
                 }
 
@@ -308,12 +323,14 @@ namespace mc {
 
             for (auto& child : d_children) {
                 // Ignore elements in a different row
-                if (child->position->y != positionY) {
+                if (child->position->y - child->marginTop != positionY) {
                     continue;
                 }
 
-                if (totalElemWidth + child->size->width <= size->width) {
-                    totalElemWidth += child->size->width;
+                auto totalChildWidth = child->marginLeft + child->size->width + child->marginRight;
+
+                if (totalElemWidth + totalChildWidth <= size->width) {
+                    totalElemWidth += totalChildWidth;
                     affectedElements.push_back(child.get());
                 }
             }
@@ -328,14 +345,17 @@ namespace mc {
             if (layout == Horizontal) {
                 int32_t newElemPos = static_cast<int32_t>(freeSpace);
                 for (auto& elem : affectedElements) {
-                    elem->position->x = newElemPos;
-                    newElemPos += elem->size->width;
+                    elem->position->x = newElemPos + elem->marginLeft;
+                    newElemPos += elem->marginLeft + elem->size->width + elem->marginRight;
                 }
             } else if (layout == HorizontalReversed) {
                 int32_t newElemPos = static_cast<int32_t>(size->width - freeSpace);
                 for (auto& elem : affectedElements) {
-                    elem->position->x = newElemPos - static_cast<int32_t>(elem->size->width);
-                    newElemPos -= static_cast<int32_t>(elem->size->width);
+                    elem->position->x = newElemPos - static_cast<int32_t>(
+                                                        elem->size->width + elem->marginRight);
+
+                    newElemPos -= static_cast<int32_t>(
+                                    elem->marginLeft + elem->size->width + elem->marginRight);
                 }
             }
             break;
@@ -349,12 +369,14 @@ namespace mc {
 
             for (auto& child : d_children) {
                 // Ignore elements in a different row
-                if (child->position->y != positionY) {
+                if (child->position->y - child->marginTop != positionY) {
                     continue;
                 }
 
-                if (totalElemWidth + child->size->width <= size->width) {
-                    totalElemWidth += child->size->width;
+                auto totalChildWidth = child->marginLeft + child->size->width + child->marginRight;
+
+                if (totalElemWidth + totalChildWidth <= size->width) {
+                    totalElemWidth += totalChildWidth;
                     affectedElements.push_back(child.get());
                 }
             }
@@ -367,7 +389,7 @@ namespace mc {
 
             // Calculate the space between elements
             uint32_t spaceBetweenElements = 0;
-            if (elementCount > 1) {
+            if (affectedElements.size() > 1) {
                 spaceBetweenElements =
                     totalFreeSpace / (static_cast<uint32_t>(affectedElements.size()) - 1);
             }
@@ -376,14 +398,20 @@ namespace mc {
             if (layout == Horizontal) {
                 int32_t newElemPos = 0;
                 for (auto& elem : affectedElements) {
-                    elem->position->x = newElemPos;
-                    newElemPos += elem->size->width + spaceBetweenElements;
+                    auto totalElemWidth = elem->marginLeft + elem->size->width + elem->marginRight;
+
+                    elem->position->x = newElemPos + elem->marginLeft;
+                    newElemPos += totalElemWidth + spaceBetweenElements;
                 }
             } else if (layout == HorizontalReversed) {
                 int32_t newElemPos = static_cast<int32_t>(size->width);
                 for (auto& elem : affectedElements) {
-                    elem->position->x = newElemPos - static_cast<int32_t>(elem->size->width);
-                    newElemPos -= static_cast<int32_t>(elem->size->width) + spaceBetweenElements;
+                    auto totalElemWidth = elem->marginLeft + elem->size->width + elem->marginRight;
+
+                    elem->position->x =
+                        newElemPos - static_cast<int32_t>(elem->size->width + elem->marginRight);
+
+                    newElemPos -= static_cast<int32_t>(totalElemWidth) + spaceBetweenElements;
                 }
             }
             break;
@@ -397,12 +425,14 @@ namespace mc {
 
             for (auto& child : d_children) {
                 // Ignore elements in a different row
-                if (child->position->y != positionY) {
+                if (child->position->y - child->marginTop != positionY) {
                     continue;
                 }
 
-                if (totalElemWidth + child->size->width <= size->width) {
-                    totalElemWidth += child->size->width;
+                auto totalChildWidth = child->marginLeft + child->size->width + child->marginRight;
+
+                if (totalElemWidth + totalChildWidth <= size->width) {
+                    totalElemWidth += totalChildWidth;
                     affectedElements.push_back(child.get());
                 }
             }
@@ -415,7 +445,7 @@ namespace mc {
 
             // Calculate the space between elements
             uint32_t spaceBetweenElements = 0;
-            if (elementCount > 1) {
+            if (affectedElements.size() > 1) {
                 spaceBetweenElements =
                     totalFreeSpace / (static_cast<uint32_t>(affectedElements.size()) + 1);
             }
@@ -424,14 +454,20 @@ namespace mc {
             if (layout == Horizontal) {
                 int32_t newElemPos = spaceBetweenElements;
                 for (auto& elem : affectedElements) {
-                    elem->position->x = newElemPos;
-                    newElemPos += elem->size->width + spaceBetweenElements;
+                    auto totalElemWidth = elem->marginLeft + elem->size->width + elem->marginRight;
+
+                    elem->position->x = newElemPos + elem->marginLeft;
+                    newElemPos += totalElemWidth + spaceBetweenElements;
                 }
             } else if (layout == HorizontalReversed) {
                 int32_t newElemPos = static_cast<int32_t>(size->width) - spaceBetweenElements;
                 for (auto& elem : affectedElements) {
-                    elem->position->x = newElemPos - static_cast<int32_t>(elem->size->width);
-                    newElemPos -= static_cast<int32_t>(elem->size->width) + spaceBetweenElements;
+                    auto totalElemWidth = elem->marginLeft + elem->size->width + elem->marginRight;
+
+                    elem->position->x =
+                        newElemPos - static_cast<int32_t>(elem->size->width + elem->marginRight);
+
+                    newElemPos -= static_cast<int32_t>(totalElemWidth) + spaceBetweenElements;
                 }
             }
             break;
@@ -455,60 +491,69 @@ namespace mc {
                 (layout == Vertical) ? 0 : static_cast<int32_t>(size->height);
 
             for (auto& child : d_children) {
-                child->size->height = elementHeight;
+                auto childElementHeight = elementHeight - child->marginTop - child->marginBottom;
+                child->size->height = childElementHeight;
 
                 if (layout == Vertical) {
-                    child->position->y = newElemPos;
-                    newElemPos += elementHeight;
+                    child->position->y = newElemPos + child->marginTop;
+                    newElemPos += childElementHeight + child->marginTop + child->marginBottom;
                 } else if (layout == VerticalReversed) {
-                    child->position->y = newElemPos - child->size->height;
-                    newElemPos -= elementHeight;
+                    child->position->y = newElemPos - child->size->height - child->marginBottom;
+                    newElemPos -= (childElementHeight + child->marginTop + child->marginBottom);
                 }
             }
             break;
         }
         case JustifyContentType::Center: {
             // Calculate the sum of all element heights.
-            uint32_t totalElemHeight = 0;
+            uint32_t totalChildHeight = 0;
 
             for (auto& child : d_children) {
-                totalElemHeight += child->size->height;
+                totalChildHeight += child->marginTop + child->size->height + child->marginBottom;
             }
 
             // Calculate the free space left
             uint32_t freeSpace = 0;
-            if (static_cast<int32_t>(size->height) - static_cast<int32_t>(totalElemHeight) > 0) {
-                freeSpace = (size->height - totalElemHeight) / 2;
+            if (static_cast<int32_t>(size->height) - static_cast<int32_t>(totalChildHeight) > 0) {
+                freeSpace = (size->height - totalChildHeight) / 2;
             }
 
             // Adjust the positions of each affected element in the column
             if (layout == Vertical) {
                 int32_t newElemPos = static_cast<int32_t>(freeSpace);
                 for (auto& elem : d_children) {
-                    elem->position->y = newElemPos;
-                    newElemPos += elem->size->height;
+                    auto totalElemHeight =
+                        elem->marginTop + elem->size->height + elem->marginBottom;
+
+                    elem->position->y = newElemPos + elem->marginTop;
+                    newElemPos += totalElemHeight;
                 }
             } else if (layout == VerticalReversed) {
                 int32_t newElemPos = static_cast<int32_t>(size->height - freeSpace);
                 for (auto& elem : d_children) {
-                    elem->position->y = newElemPos - static_cast<int32_t>(elem->size->height);
-                    newElemPos -= static_cast<int32_t>(elem->size->height);
+                    auto totalElemHeight =
+                        elem->marginTop + elem->size->height + elem->marginBottom;
+
+                    elem->position->y =
+                        newElemPos - static_cast<int32_t>(elem->size->height + elem->marginBottom);
+
+                    newElemPos -= static_cast<int32_t>(totalElemHeight);
                 }
             }
             break;
         }
         case JustifyContentType::SpaceBetween: {
             // Calculate the sum of all element heights.
-            uint32_t totalElemHeight = 0;
+            uint32_t totalChildHeight = 0;
 
             for (auto& child : d_children) {
-                totalElemHeight += child->size->height;
+                totalChildHeight += child->marginTop + child->size->height + child->marginBottom;
             }
 
             // Calculate the free space left
             uint32_t totalFreeSpace = 0;
-            if (static_cast<int32_t>(size->height) - static_cast<int32_t>(totalElemHeight) > 0) {
-                totalFreeSpace = size->height - totalElemHeight;
+            if (static_cast<int32_t>(size->height) - static_cast<int32_t>(totalChildHeight) > 0) {
+                totalFreeSpace = size->height - totalChildHeight;
             }
 
             // Calculate the space between elements
@@ -522,30 +567,38 @@ namespace mc {
             if (layout == Vertical) {
                 int32_t newElemPos = 0;
                 for (auto& elem : d_children) {
-                    elem->position->y = newElemPos;
-                    newElemPos += elem->size->height + spaceBetweenElements;
+                    auto totalElemHeight =
+                        elem->marginTop + elem->size->height + elem->marginBottom;
+
+                    elem->position->y = newElemPos + elem->marginTop;
+                    newElemPos += totalElemHeight + spaceBetweenElements;
                 }
             } else if (layout == VerticalReversed) {
                 int32_t newElemPos = static_cast<int32_t>(size->height);
                 for (auto& elem : d_children) {
-                    elem->position->y = newElemPos - static_cast<int32_t>(elem->size->height);
-                    newElemPos -= static_cast<int32_t>(elem->size->height) + spaceBetweenElements;
+                    auto totalElemHeight =
+                        elem->marginTop + elem->size->height + elem->marginBottom;
+
+                    elem->position->y =
+                        newElemPos - static_cast<int32_t>(elem->size->height + elem->marginBottom);
+
+                    newElemPos -= static_cast<int32_t>(totalElemHeight) + spaceBetweenElements;
                 }
             }
             break;
         }
         case JustifyContentType::SpaceAround: {
             // Calculate the sum of all element heights.
-            uint32_t totalElemHeight = 0;
+            uint32_t totalChildHeight = 0;
 
             for (auto& child : d_children) {
-                totalElemHeight += child->size->height;
+                totalChildHeight += child->marginTop + child->size->height + child->marginBottom;
             }
 
             // Calculate the free space left
             uint32_t totalFreeSpace = 0;
-            if (static_cast<int32_t>(size->height) - static_cast<int32_t>(totalElemHeight) > 0) {
-                totalFreeSpace = size->height - totalElemHeight;
+            if (static_cast<int32_t>(size->height) - static_cast<int32_t>(totalChildHeight) > 0) {
+                totalFreeSpace = size->height - totalChildHeight;
             }
 
             // Calculate the space between elements
@@ -559,14 +612,22 @@ namespace mc {
             if (layout == Vertical) {
                 int32_t newElemPos = spaceBetweenElements;
                 for (auto& elem : d_children) {
-                    elem->position->y = newElemPos;
-                    newElemPos += elem->size->height + spaceBetweenElements;
+                    auto totalElemHeight =
+                        elem->marginTop + elem->size->height + elem->marginBottom;
+
+                    elem->position->y = newElemPos + elem->marginTop;
+                    newElemPos += totalElemHeight + spaceBetweenElements;
                 }
             } else if (layout == VerticalReversed) {
                 int32_t newElemPos = static_cast<int32_t>(size->height) - spaceBetweenElements;
                 for (auto& elem : d_children) {
-                    elem->position->y = newElemPos - static_cast<int32_t>(elem->size->height);
-                    newElemPos -= static_cast<int32_t>(elem->size->height) + spaceBetweenElements;
+                    auto totalElemHeight =
+                        elem->marginTop + elem->size->height + elem->marginBottom;
+
+                    elem->position->y =
+                        newElemPos - static_cast<int32_t>(elem->size->height + elem->marginBottom);
+
+                    newElemPos -= static_cast<int32_t>(totalElemHeight) + spaceBetweenElements;
                 }
             }
             break;
