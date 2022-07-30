@@ -46,6 +46,10 @@ public:
 
     LRESULT CALLBACK win32WindowProcCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+    inline bool isFrontBufferRenderRequested() const { return d_requestedFrontBufferRender; }
+    inline void requestFrontBufferRender() { d_requestedFrontBufferRender = true; }
+    inline void completeFrontBufferRender() { d_requestedFrontBufferRender = false; }
+
 private:
     bool        d_visible = false;
     bool        d_focused = false;
@@ -58,6 +62,7 @@ private:
     std::string d_title;
     Position    d_previousMousePosition;
     uint64_t    d_windowFlags = 0;
+    bool        d_requestedFrontBufferRender = false;
 
     HWND d_windowHandle = nullptr;
     Shared<Win32RenderTarget> d_renderTarget = nullptr;

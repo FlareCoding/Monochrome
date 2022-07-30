@@ -310,6 +310,13 @@ namespace mc {
     LRESULT
     CALLBACK
     Win32NativeWindow::win32WindowProcCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+        // If there is an update callback from a native window owner, execute it.
+        auto updateCallback = getUpdateCallback();
+
+        if (updateCallback) {
+            updateCallback();
+        }
+
         // Process the received message
         switch (uMsg) {
         case WM_CLOSE: {
@@ -353,6 +360,10 @@ namespace mc {
             });
 
             fireEvent("sizeChanged", resizeEvent);
+
+            // While the window is resizing, the contents of
+            // the window should be rendered on the main thread.
+            requestFrontBufferRender();
             break;
         }
         case WM_GETMINMAXINFO: {

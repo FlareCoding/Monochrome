@@ -25,7 +25,6 @@ namespace mc {
         d_nativeWindow->setWidth(width);
         d_nativeWindow->setHeight(height);
         d_nativeWindow->setTitle(title);
-        d_nativeWindow->setUpdateCallback([this]() { this->update(); });
 
         d_nativeWindow->show();
 
@@ -102,6 +101,9 @@ namespace mc {
                 std::static_pointer_cast<KeyUpEvent>(e)
             );
         });
+
+        // Pass the update callback to the native window
+        d_nativeWindow->setUpdateCallback([this]() { this->update(); });
     }
 
     UIWindow::~UIWindow() {
@@ -203,19 +205,12 @@ namespace mc {
     }
 
     void UIWindow::update() {
-        if (!shouldRedraw()) {
-            d_nativeWindow->getRenderTarget()->swapBuffers();
-        }
-
-#ifdef MC_PLATFORM_MACOS
-        // Due to the way Cocoa rendering system doesn't let you
-        // reliably control the timing of drawRect being called
+        // Due to the way Cocoa and Direct2D rendering systems don't let you
+        // reliably control the timing of content rendering being called
         // preventing you from properly synchronizing buffer swapping,
         // while resizing, the scene has to be re-rendered manually
         // to the front buffer directly.
-        auto osxWindow = std::static_pointer_cast<OSXNativeWindow>(d_nativeWindow);
-
-        if (osxWindow->isFrontBufferRenderRequested()) {
+        if (d_nativeWindow->isFrontBufferRenderRequested()) {
             auto renderTarget = d_nativeWindow->getRenderTarget();
             renderTarget->lockBackBuffer();
             renderTarget->beginFrame();
@@ -227,9 +222,10 @@ namespace mc {
             renderTarget->swapBuffers();
 
             // Complete the request
-            osxWindow->completeFrontBufferRender();
+            d_nativeWindow->completeFrontBufferRender();
+        } else if (!shouldRedraw()) {
+            d_nativeWindow->getRenderTarget()->swapBuffers();
         }
-#endif
     }
 
     void UIWindow::setShouldRedraw() {
@@ -288,16 +284,12 @@ namespace mc {
 
     void UIWindow::_backgroundRenderingTask() {
         while (!d_isDestroyed) {
-#ifdef MC_PLATFORM_MACOS
-            // If the current platform is MacOS, to prevent screen
-            // flickering, the background thread has to be paused
-            // while the window is resizing.
-            auto osxWindow = std::static_pointer_cast<OSXNativeWindow>(d_nativeWindow);
-            if (osxWindow->isFrontBufferRenderRequested()) {
+            // To prevent screen from flickering, the background
+            // thread has to be paused while the window is resizing.
+            if (d_nativeWindow->isFrontBufferRenderRequested()) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(16));
                 continue;
             }
-#endif
 
             if (shouldRedraw()) {
                 auto renderTarget = d_nativeWindow->getRenderTarget();

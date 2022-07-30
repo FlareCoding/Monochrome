@@ -42,6 +42,10 @@ public:
 
     virtual Shared<RenderTarget> getRenderTarget() const = 0;
 
+    virtual bool isFrontBufferRenderRequested() const = 0;
+    virtual void requestFrontBufferRender() = 0;
+    virtual void completeFrontBufferRender() = 0;
+
 protected:
     NativeWindow();
 
