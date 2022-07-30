@@ -21,6 +21,10 @@ public:
     virtual const std::string& getTitle() const = 0;
     virtual void setWidth(uint32_t width) = 0;
     virtual void setHeight(uint32_t height) = 0;
+    virtual void setMinWidth(uint32_t minWidth) = 0;
+    virtual void setMaxWidth(uint32_t maxWidth) = 0;
+    virtual void setMinHeight(uint32_t minHeight) = 0;
+    virtual void setMaxHeight(uint32_t maxHeight) = 0;
     virtual void setPosition(const Position& pos) = 0;
     virtual void setTitle(const std::string& title) = 0;
     virtual bool isFocused() const = 0;

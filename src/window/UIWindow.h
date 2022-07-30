@@ -26,6 +26,10 @@ public:
     void setWidth(uint32_t width);
     void setHeight(uint32_t height);
     void setSize(uint32_t width, uint32_t height);
+    void setMinWidth(uint32_t minWidth);
+    void setMaxWidth(uint32_t maxWidth);
+    void setMinHeight(uint32_t minHeight);
+    void setMaxHeight(uint32_t maxHeight);
     void setPosition(const Position& pos);
     virtual void setTitle(const std::string& title);
     bool isFocused() const;

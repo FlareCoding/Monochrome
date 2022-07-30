@@ -234,6 +234,7 @@ int flowpanelDemo() {
 
     auto window = MakeRef<ModernWindow>(1060, 660, "Flowpanel Demo");
     window->setBackgroundColor(Color(28, 22, 28));
+    window->setMinWidth(580);
 
     auto body = window->getBody();
     body->stretchContents = true;

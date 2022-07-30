@@ -142,6 +142,22 @@ namespace mc {
         d_nativeWindow->setHeight(height);
     }
 
+    void UIWindow::setMinWidth(uint32_t minWidth) {
+        d_nativeWindow->setMinWidth(minWidth);
+    }
+
+    void UIWindow::setMaxWidth(uint32_t maxWidth) {
+        d_nativeWindow->setMaxWidth(maxWidth);
+    }
+
+    void UIWindow::setMinHeight(uint32_t minHeight) {
+        d_nativeWindow->setMinHeight(minHeight);
+    }
+
+    void UIWindow::setMaxHeight(uint32_t maxHeight) {
+        d_nativeWindow->setMaxHeight(maxHeight);
+    }
+
     void UIWindow::setPosition(const Position& pos) {
         d_nativeWindow->setPosition(pos);
     }

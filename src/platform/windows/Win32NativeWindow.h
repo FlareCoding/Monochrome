@@ -17,6 +17,10 @@ public:
 
     void setWidth(uint32_t width);
     void setHeight(uint32_t height);
+    void setMinWidth(uint32_t minWidth);
+    void setMaxWidth(uint32_t maxWidth);
+    void setMinHeight(uint32_t minHeight);
+    void setMaxHeight(uint32_t maxHeight);
     void setPosition(const Position& pos);
     void setTitle(const std::string& title);
 
@@ -47,6 +51,8 @@ private:
     bool        d_focused = false;
     uint32_t    d_width = 0;
     uint32_t    d_height = 0;
+    Size        d_minSize = { 460, 60 };
+    Size        d_maxSize = { 6500, 6500 };
     Position    d_position = { 0, 0 };
     float       d_scalingFactor = 1;
     std::string d_title;

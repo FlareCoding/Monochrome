@@ -104,6 +104,22 @@ namespace mc {
         _setWindowSize(d_width, d_height);
     }
 
+    void Win32NativeWindow::setMinWidth(uint32_t minWidth) {
+        d_minSize.width = minWidth;
+    }
+
+    void Win32NativeWindow::setMaxWidth(uint32_t maxWidth) {
+        d_maxSize.width = maxWidth;
+    }
+
+    void Win32NativeWindow::setMinHeight(uint32_t minHeight) {
+        d_minSize.height = minHeight;
+    }
+
+    void Win32NativeWindow::setMaxHeight(uint32_t maxHeight) {
+        d_maxSize.height = maxHeight;
+    }
+
     void Win32NativeWindow::setPosition(const Position& pos) {
         d_position = pos;
 
@@ -337,6 +353,14 @@ namespace mc {
             });
 
             fireEvent("sizeChanged", resizeEvent);
+            break;
+        }
+        case WM_GETMINMAXINFO: {
+            LPMINMAXINFO lpMMI = (LPMINMAXINFO)lParam;
+            lpMMI->ptMinTrackSize.x = static_cast<LONG>(d_minSize.width);
+            lpMMI->ptMinTrackSize.y = static_cast<LONG>(d_minSize.height);
+            lpMMI->ptMaxTrackSize.x = static_cast<LONG>(d_maxSize.width);
+            lpMMI->ptMaxTrackSize.y = static_cast<LONG>(d_maxSize.height);
             break;
         }
         case WM_NCHITTEST: {
