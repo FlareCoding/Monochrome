@@ -89,13 +89,33 @@ namespace mc {
 
 -(NSSize)windowWillResize:(NSWindow*)sender toSize:(NSSize)frameSize
 {
-    auto resizeEvent = MakeRef<Event>(eventDataMap_t{
-        { "width", uint32_t(frameSize.width) },
-        { "height", uint32_t(frameSize.height) }
-    });
-
     OSXWindowDelegate* delegate = ((OSXWindowDelegate*)sender.delegate);
     OSXNativeWindow* windowInstance = delegate.mcWindowHandle;
+
+    auto newWidth = uint32_t(frameSize.width);
+    auto newHeight = uint32_t(frameSize.height);
+
+    auto minSize = windowInstance->getMinSize();
+    auto maxSize = windowInstance->getMaxSize();
+
+    // Constraining the width
+    if (newWidth < minSize.width) {
+        newWidth = minSize.width;
+    } else if (newWidth > maxSize.width) {
+        newWidth = maxSize.width;
+    }
+
+    // Constraining the height
+    if (newHeight < minSize.height) {
+        newHeight = minSize.height;
+    } else if (newHeight > maxSize.height) {
+        newHeight = maxSize.height;
+    }
+
+    auto resizeEvent = MakeRef<Event>(eventDataMap_t{
+        { "width", newWidth },
+        { "height", newHeight }
+    });
 
     windowInstance->fireEvent("sizeChanged", resizeEvent);
 
@@ -106,7 +126,7 @@ namespace mc {
     // to the front buffer directly.
     windowInstance->requestFrontBufferRender();
 
-    return frameSize;
+    return NSMakeSize(newWidth, newHeight);
 }
 
 -(void)windowDidBecomeKey:(NSNotification*)notification
@@ -611,6 +631,22 @@ namespace mc
     void OSXNativeWindow::setHeight(uint32_t height) {
         d_height = height;
         _setWindowSize(d_width, d_height);
+    }
+
+    void OSXNativeWindow::setMinWidth(uint32_t minWidth) {
+        d_minSize.width = minWidth;
+    }
+
+    void OSXNativeWindow::setMaxWidth(uint32_t maxWidth) {
+        d_maxSize.width = maxWidth;
+    }
+
+    void OSXNativeWindow::setMinHeight(uint32_t minHeight) {
+        d_minSize.height = minHeight;
+    }
+
+    void OSXNativeWindow::setMaxHeight(uint32_t maxHeight) {
+        d_maxSize.height = maxHeight;
     }
 
     void OSXNativeWindow::setPosition(const Position& pos) {
