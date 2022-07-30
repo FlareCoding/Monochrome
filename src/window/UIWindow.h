@@ -6,6 +6,8 @@
 #include <atomic>
 
 namespace mc {
+class FlowPanel;
+
 class UIWindow : public EventEmitter {
 public:
     UIWindow(
@@ -51,9 +53,18 @@ public:
     Color getBackgroundColor() const { return d_backgroundColor; }
     virtual void setBackgroundColor(const Color& color) { d_backgroundColor = color; }
 
+    Shared<FlowPanel> getBody();
+
+protected:
+    void setBodyPanelOffset(const Size& offset);
+
 private:
     Shared<NativeWindow> d_nativeWindow = nullptr;
     Shared<WidgetHostController> d_widgetHostController = nullptr;
+
+    Shared<FlowPanel>    d_bodyPanel;
+    Size                 d_bodyPanelOffset = { 0, 0 };
+    void adjustBodyPanel();
 
     uuid_t d_uuid = 0;
     std::atomic_bool d_isDestroyed = false;

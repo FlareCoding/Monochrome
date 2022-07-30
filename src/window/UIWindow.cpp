@@ -1,5 +1,6 @@
 #include "UIWindow.h"
 #include <rendering/Renderer.h>
+#include <widgets/FlowPanel.h>
 #include <chrono>
 
 #ifdef MC_PLATFORM_MACOS
@@ -36,6 +37,12 @@ namespace mc {
         on("sizeChanged", [this](Shared<Event> event) {
             auto width = event->get<uint32_t>("width");
             auto height = event->get<uint32_t>("height");
+
+            // If the body flowpanel is present, stretch
+            // the body panel to fit into the window.
+            if (d_bodyPanel) {
+                adjustBodyPanel();
+            }
 
             setShouldRedraw();
         });
@@ -231,6 +238,36 @@ namespace mc {
 
     Shared<BaseWidget> UIWindow::findWidget(uuid_t uuid) {
         return d_widgetHostController->findWidget(uuid);
+    }
+
+    Shared<FlowPanel> UIWindow::getBody() {
+        if (!d_bodyPanel) {
+            d_bodyPanel = MakeRef<FlowPanel>();
+            d_bodyPanel->layout = Horizontal;
+            d_bodyPanel->backgroundColor = Color::transparent;
+            adjustBodyPanel();
+            addWidget(d_bodyPanel);
+        }
+
+        return d_bodyPanel;
+    }
+
+    void UIWindow::setBodyPanelOffset(const Size& offset) {
+        d_bodyPanelOffset = offset;
+        if (d_bodyPanel) {
+            adjustBodyPanel();
+        }
+    }
+
+    void UIWindow::adjustBodyPanel() {
+        d_bodyPanel->position = {
+            static_cast<int32_t>(d_bodyPanelOffset.width),
+            static_cast<int32_t>(d_bodyPanelOffset.height)
+        };
+        d_bodyPanel->size = {
+            static_cast<uint32_t>(getWidth() - d_bodyPanelOffset.width),
+            static_cast<uint32_t>(getHeight() - d_bodyPanelOffset.height)
+        };
     }
 
     void UIWindow::_backgroundRenderingTask() {
