@@ -8,11 +8,12 @@ namespace mc {
         Position& parentPositionOffset
     ) {
         // Calculating frame dimensions of the widget
-        int32_t xPos = parentPositionOffset.x + widget->position->x + widget->marginLeft;
-        int32_t yPos = parentPositionOffset.y + widget->position->y + widget->marginTop;
+        int32_t xPos = parentPositionOffset.x + widget->position->x;
+        int32_t yPos = parentPositionOffset.y + widget->position->y;
 
-        uint32_t width = widget->size->width - (widget->marginLeft + widget->marginRight);
-        uint32_t height = widget->size->height - (widget->marginBottom + widget->marginTop);
+        // Calculating any necessary changes to the widget's size
+        uint32_t width = widget->size->width;
+        uint32_t height = widget->size->height;
 
         return {
             Position(xPos, yPos),
