@@ -253,7 +253,7 @@ int flowpanelDemo() {
 
     auto rightPanel = MakeRef<ScrollPanel>();
     rightPanel->size->width = 300;
-    rightPanel->contentHeight = 700;
+    rightPanel->content->size->height = 700;
     rightPanel->marginRight = 10;
     rightPanel->marginTop = 10;
     rightPanel->marginBottom = 10;
@@ -261,7 +261,11 @@ int flowpanelDemo() {
     body->addChild(rightPanel);
 
     auto testButtonRight = MakeRef<Button>();
-    rightPanel->addChild(testButtonRight);
+    rightPanel->content->addChild(testButtonRight);
+
+    auto testButtonRight2 = MakeRef<Button>();
+    testButtonRight2->position->y = 200;
+    rightPanel->content->addChild(testButtonRight2);
 
     AppManager::startApplicationLoop();
     return 0;

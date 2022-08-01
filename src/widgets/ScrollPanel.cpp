@@ -9,11 +9,18 @@ namespace mc {
     }
 
     void ScrollPanel::_setupScrollPanelProperties() {
-        contentWidth = 0;
-        contentWidth.forwardEmittedEvents(this);
+        content = MakeRef<Panel>();
+        content->forwardEmittedEvents(this);
+        content->position = { 0, 0 };
+        addChild(content);
 
-        contentHeight = 0;
-        contentHeight.forwardEmittedEvents(this);
+        backgroundColor.on("propertyChanged", [this](auto e) {
+            content->backgroundColor = backgroundColor;
+        });
+
+        cornerRadius.on("propertyChanged", [this](auto e) {
+            content->cornerRadius = cornerRadius;
+        });
     }
 
     void ScrollPanel::_setupEventHandlers() {
@@ -22,35 +29,9 @@ namespace mc {
             _verifyScrollbars();
         });
 
-        contentWidth.on("propertyChanged", [this](Shared<Event> e) {
-            _verifyContentAreaBounds();
-            _verifyScrollbars();
-        });
-
-        contentHeight.on("propertyChanged", [this](Shared<Event> e) {
-            _verifyContentAreaBounds();
-            _verifyScrollbars();
-        });
-
         on("dynamicallyResized", [this](Shared<Event> e) {
             _verifyContentAreaBounds();
             _verifyScrollbars();
-        });
-
-        on("childAdded", [this](Shared<Event> e) {
-            auto child = e->get<BaseWidget*>("child");
-            child->position.on("propertyChanged", [this, child](Shared<Event> e) {
-                child->position->x = d_contentOrigin.x + child->position->x;
-                child->position->y = d_contentOrigin.y + child->position->y;
-            });
-
-            child->position->x = d_contentOrigin.x + child->position->x;
-            child->position->y = d_contentOrigin.y + child->position->y;
-        });
-
-        on("childRemoved", [this](Shared<Event> e) {
-            auto child = e->get<BaseWidget*>("child");
-            child->position.off("propertyChanged");
         });
 
         d_verticalScrollbar->on("mouseDown", [this](Shared<Event> e) {
@@ -82,10 +63,22 @@ namespace mc {
 
             int32_t diffY = localMousePosY - d_mousePositionWhenPressed.y;
             d_verticalScrollbar->position->y = d_verticalScrollbarPositionWhenPressed.y + diffY;
-            d_contentOrigin.y = d_contentOrigin.y - diffY;
-            printf("%i\n", d_contentOrigin.y);
 
+            // Sanity check the scrollbar position
             _verifyScrollbars();
+
+            // Adjust the content panel position
+            auto scrollbarMovableArea = size->height - d_verticalScrollbar->size->height;
+            float percentageScrolled =
+                static_cast<float>(d_verticalScrollbar->position->y) /
+                static_cast<float>(scrollbarMovableArea);
+
+            auto contentHeightDiff = content->size->height - size->height;
+            auto scrollAmount = static_cast<float>(contentHeightDiff) * percentageScrolled;
+
+            content->position->y = -static_cast<int32_t>(scrollAmount);
+
+            // Update the widget state and cause a re-render
             fireEvent("propertyChanged", Event::empty);
 
             d_mousePositionWhenPressed.y = localMousePosY;
@@ -94,16 +87,16 @@ namespace mc {
     }
 
     void ScrollPanel::_verifyContentAreaBounds() {
-        if (contentWidth < size->width) {
-            contentWidth = size->width;
+        if (content->size->width < size->width) {
+            content->size->width = size->width;
         }
 
-        if (contentHeight < size->height) {
-            contentHeight = size->height;
+        if (content->size->height < size->height) {
+            content->size->height = size->height;
         }
 
-        if (d_contentOrigin.x > 0) { d_contentOrigin.x = 0; }
-        if (d_contentOrigin.y > 0) { d_contentOrigin.y = 0; }
+        if (content->position->x > 0) { content->position->x = 0; }
+        if (content->position->y > 0) { content->position->y = 0; }
 
         _verifyScrollbars();
     }
@@ -114,7 +107,7 @@ namespace mc {
 
         // Calculate vertical scrollbar height
         float heightPercentageOfContent =
-            static_cast<float>(size->height) / static_cast<float>(contentHeight.get());
+            static_cast<float>(size->height) / static_cast<float>(content->size->height);
 
         uint32_t verticalScrollbarHeight = 0;
         if (heightPercentageOfContent < 1.0f) {
@@ -143,6 +136,13 @@ namespace mc {
         d_verticalScrollbar->zIndex = 65000;
         d_verticalScrollbar->backgroundColor = Color::darkGray;
         addChild(d_verticalScrollbar);
+
+        d_horizontalScrollbar = MakeRef<Button>();
+        d_horizontalScrollbar->text = "";
+        d_horizontalScrollbar->size = { 0, d_scrollbarThickness };
+        d_horizontalScrollbar->zIndex = 65000;
+        d_horizontalScrollbar->backgroundColor = Color::darkGray;
+        addChild(d_horizontalScrollbar);
     }
 
 } // namespace mc

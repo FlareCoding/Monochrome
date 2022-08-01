@@ -7,8 +7,7 @@ class ScrollPanel : public Panel {
 public:
     ScrollPanel();
 
-    PropertyObserver<uint32_t> contentWidth;
-    PropertyObserver<uint32_t> contentHeight;
+    Shared<Panel>               content;
 
 private:
     void _setupScrollPanelProperties();
@@ -20,8 +19,6 @@ private:
     Shared<Button>  d_verticalScrollbar;
     Shared<Button>  d_horizontalScrollbar;
     uint32_t        d_scrollbarThickness = 10;
-
-    Position d_contentOrigin = { 0, 0 };
 
     // Used in the mouseMoved handler to determine
     // if the mouse was dragging the scrollbar.
