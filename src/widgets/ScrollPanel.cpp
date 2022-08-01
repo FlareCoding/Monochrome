@@ -9,6 +9,12 @@ namespace mc {
     }
 
     void ScrollPanel::_setupScrollPanelProperties() {
+        verticalScroll = true;
+        verticalScroll.forwardEmittedEvents(this);
+
+        horizontalScroll = true;
+        horizontalScroll.forwardEmittedEvents(this);
+
         content = MakeRef<Panel>();
         content->forwardEmittedEvents(this);
         content->position = { 0, 0 };
@@ -35,7 +41,9 @@ namespace mc {
         });
 
         d_verticalScrollbar->on("mouseDown", [this](Shared<Event> e) {
-            d_mousePressed = true;
+            d_verticalScrollbar->backgroundColor->a = 255;
+
+            d_verticalScrollbarPressed = true;
             d_positionInWindow = getPositionInWindow();
 
             auto mouseMovedEvent = std::static_pointer_cast<MouseMovedEvent>(e);
@@ -47,13 +55,18 @@ namespace mc {
             d_verticalScrollbarPositionWhenPressed = d_verticalScrollbar->position;
         });
 
+        d_verticalScrollbar->on("hoveredOn", [this](Shared<Event> e) {
+            d_verticalScrollbar->backgroundColor->a = 255;
+        });
+
         d_verticalScrollbar->on("mouseUp", [this](Shared<Event> e) {
-            d_mousePressed = false;
+            d_verticalScrollbar->backgroundColor->a = 160;
+            d_verticalScrollbarPressed = false;
         });
 
         d_verticalScrollbar->on("mouseMoved", [this](Shared<Event> e) {
             // Only react to mouse "dragging"
-            if (!d_mousePressed) {
+            if (!d_verticalScrollbarPressed) {
                 return;
             }
 
@@ -68,21 +81,71 @@ namespace mc {
             _verifyScrollbars();
 
             // Adjust the content panel position
-            auto scrollbarMovableArea = size->height - d_verticalScrollbar->size->height;
-            float percentageScrolled =
-                static_cast<float>(d_verticalScrollbar->position->y) /
-                static_cast<float>(scrollbarMovableArea);
-
-            auto contentHeightDiff = content->size->height - size->height;
-            auto scrollAmount = static_cast<float>(contentHeightDiff) * percentageScrolled;
-
-            content->position->y = -static_cast<int32_t>(scrollAmount);
+            _adjustVerticalContentPosition();
 
             // Update the widget state and cause a re-render
             fireEvent("propertyChanged", Event::empty);
 
             d_mousePositionWhenPressed.y = localMousePosY;
             d_verticalScrollbarPositionWhenPressed.y = d_verticalScrollbar->position->y;
+        });
+
+        d_horizontalScrollbar->on("mouseDown", [this](Shared<Event> e) {
+            d_horizontalScrollbar->backgroundColor->a = 255;
+
+            d_horizontalScrollbarPressed = true;
+            d_positionInWindow = getPositionInWindow();
+
+            auto mouseMovedEvent = std::static_pointer_cast<MouseMovedEvent>(e);
+
+            int32_t mousePosX = mouseMovedEvent->getLocation().x;
+            int32_t localMousePosX = mousePosX - d_positionInWindow.x;
+
+            d_mousePositionWhenPressed.x = localMousePosX;
+            d_horizontalScrollbarPositionWhenPressed = d_horizontalScrollbar->position;
+        });
+
+        d_horizontalScrollbar->on("hoveredOn", [this](Shared<Event> e) {
+            d_horizontalScrollbar->backgroundColor->a = 255;
+        });
+
+        d_horizontalScrollbar->on("mouseUp", [this](Shared<Event> e) {
+            d_horizontalScrollbar->backgroundColor->a = 160;
+            d_horizontalScrollbarPressed = false;
+        });
+
+        d_horizontalScrollbar->on("mouseMoved", [this](Shared<Event> e) {
+            // Only react to mouse "dragging"
+            if (!d_horizontalScrollbarPressed) {
+                return;
+            }
+
+            auto mouseMovedEvent = std::static_pointer_cast<MouseMovedEvent>(e);
+            int32_t mousePosX = mouseMovedEvent->getLocation().x;
+            int32_t localMousePosX = mousePosX - d_positionInWindow.x;
+
+            int32_t diffX = localMousePosX - d_mousePositionWhenPressed.x;
+            d_horizontalScrollbar->position->x = d_horizontalScrollbarPositionWhenPressed.x + diffX;
+
+            // Sanity check the scrollbar position
+            _verifyScrollbars();
+
+            // Adjust the content panel position
+            _adjustHorizontalContentPosition();
+
+            // Update the widget state and cause a re-render
+            fireEvent("propertyChanged", Event::empty);
+
+            d_mousePositionWhenPressed.x = localMousePosX;
+            d_horizontalScrollbarPositionWhenPressed.x = d_horizontalScrollbar->position->x;
+        });
+
+        on("hoveredOff", [this](Shared<Event> e) {
+            d_verticalScrollbar->backgroundColor->a = 160;
+            d_verticalScrollbarPressed = false;
+
+            d_horizontalScrollbar->backgroundColor->a = 160;
+            d_horizontalScrollbarPressed = false;
         });
     }
 
@@ -102,6 +165,16 @@ namespace mc {
     }
 
     void ScrollPanel::_verifyScrollbars() {
+        _verifyVerticalScrollbar();
+        _verifyHorizontalScrollbar();
+    }
+
+    void ScrollPanel::_verifyVerticalScrollbar() {
+        if (!verticalScroll.get()) {
+            d_verticalScrollbar->size->height = 0;
+            return;
+        }
+
         // Calculate vertical scrollbar position
         d_verticalScrollbar->position->x = size->width - d_scrollbarThickness;
 
@@ -129,12 +202,46 @@ namespace mc {
         }
     }
 
+    void ScrollPanel::_verifyHorizontalScrollbar() {
+        if (!horizontalScroll.get()) {
+            d_horizontalScrollbar->size->width = 0;
+            return;
+        }
+
+        // Calculate horizontal scrollbar position
+        d_horizontalScrollbar->position->y = size->height - d_scrollbarThickness;
+
+        // Calculate vertical scrollbar height
+        float widthPercentageOfContent =
+            static_cast<float>(size->width) / static_cast<float>(content->size->width);
+
+        uint32_t horizontalScrollbarWidth = 0;
+        if (widthPercentageOfContent < 1.0f) {
+            horizontalScrollbarWidth =
+                static_cast<uint32_t>(widthPercentageOfContent * static_cast<float>(size->width));
+        }
+
+        d_horizontalScrollbar->size->width = horizontalScrollbarWidth;
+
+        // Sanity checking vertical scrollbar position
+        if (d_horizontalScrollbar->position->x < 0) {
+            d_horizontalScrollbar->position->x = 0;
+        }
+
+        if (d_horizontalScrollbar->position->x >
+            static_cast<int32_t>(size->width - horizontalScrollbarWidth)
+        ) {
+            d_horizontalScrollbar->position->x = size->width - horizontalScrollbarWidth;
+        }
+    }
+
     void ScrollPanel::_createScrollbars() {
         d_verticalScrollbar = MakeRef<Button>();
         d_verticalScrollbar->text = "";
         d_verticalScrollbar->size = { d_scrollbarThickness, 0 };
         d_verticalScrollbar->zIndex = 65000;
         d_verticalScrollbar->backgroundColor = Color::darkGray;
+        d_verticalScrollbar->backgroundColor->a = 160;
         addChild(d_verticalScrollbar);
 
         d_horizontalScrollbar = MakeRef<Button>();
@@ -142,7 +249,46 @@ namespace mc {
         d_horizontalScrollbar->size = { 0, d_scrollbarThickness };
         d_horizontalScrollbar->zIndex = 65000;
         d_horizontalScrollbar->backgroundColor = Color::darkGray;
+        d_horizontalScrollbar->backgroundColor->a = 160;
         addChild(d_horizontalScrollbar);
+    }
+
+    void ScrollPanel::_adjustVerticalContentPosition() {
+        // Get total distance that a scrollbar can move
+        auto scrollbarMovableArea = size->height - d_verticalScrollbar->size->height;
+
+        // Determine how much the scrollbar is scrolled
+        float percentageScrolled =
+            static_cast<float>(d_verticalScrollbar->position->y) /
+            static_cast<float>(scrollbarMovableArea);
+
+        // Get total scrollable distance of the content panel
+        auto contentHeightDiff = content->size->height - size->height;
+
+        // Calculate how much the content panel should be scrolled
+        auto scrollAmount = static_cast<float>(contentHeightDiff) * percentageScrolled;
+
+        // Adjust the content panel's position
+        content->position->y = -static_cast<int32_t>(scrollAmount);
+    }
+
+    void ScrollPanel::_adjustHorizontalContentPosition() {
+        // Get total distance that a scrollbar can move
+        auto scrollbarMovableArea = size->width - d_horizontalScrollbar->size->width;
+
+        // Determine how much the scrollbar is scrolled
+        float percentageScrolled =
+            static_cast<float>(d_horizontalScrollbar->position->x) /
+            static_cast<float>(scrollbarMovableArea);
+
+        // Get total scrollable distance of the content panel
+        auto contentWidthDiff = content->size->width - size->width;
+
+        // Calculate how much the content panel should be scrolled
+        auto scrollAmount = static_cast<float>(contentWidthDiff) * percentageScrolled;
+
+        // Adjust the content panel's position
+        content->position->x = -static_cast<int32_t>(scrollAmount);
     }
 
 } // namespace mc
