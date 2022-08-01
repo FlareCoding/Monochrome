@@ -91,6 +91,7 @@ namespace mc {
                 // height to be the same height as the flowpanel.
                 if (stretchContents) {
                     child->size->height = size->height - child->marginBottom - child->marginTop;
+                    child->fireEvent("dynamicallyResized", Event::empty);
                 }
 
                 // Keep track of the maximum content size
@@ -109,6 +110,7 @@ namespace mc {
                 // width to be the same width as the flowpanel.
                 if (stretchContents) {
                     child->size->width = size->width;
+                    child->fireEvent("dynamicallyResized", Event::empty);
                 }
 
                 // Keep track of the maximum content size
@@ -309,6 +311,8 @@ namespace mc {
                     child->position->x = newElemPos - child->size->width;
                     newElemPos -= elementWidth;
                 }
+
+                child->fireEvent("dynamicallyResized", Event::empty);
             }
             break;
         }
@@ -501,6 +505,8 @@ namespace mc {
                     child->position->y = newElemPos - child->size->height - child->marginBottom;
                     newElemPos -= (childElementHeight + child->marginTop + child->marginBottom);
                 }
+
+                child->fireEvent("dynamicallyResized", Event::empty);
             }
             break;
         }

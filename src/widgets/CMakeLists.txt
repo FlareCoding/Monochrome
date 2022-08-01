@@ -20,6 +20,7 @@ set(
     ${cwd}/DropdownButton.h
     ${cwd}/Combobox.h
     ${cwd}/FlowPanel.h
+    ${cwd}/ScrollPanel.h
     ${cwd}/CustomRenderedWidget.h
     ${cwd}/WidgetControlFrame.h
 
@@ -43,6 +44,7 @@ set(
     ${cwd}/DropdownButton.cpp
     ${cwd}/Combobox.cpp
     ${cwd}/FlowPanel.cpp
+    ${cwd}/ScrollPanel.cpp
     ${cwd}/WidgetControlFrame.cpp
 
     PARENT_SCOPE

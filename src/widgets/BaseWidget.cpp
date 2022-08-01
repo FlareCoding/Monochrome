@@ -10,6 +10,7 @@ namespace mc {
         appendAllowedEvent("zIndexChanged");
         appendAllowedEvent("widgetMoved");
         appendAllowedEvent("widgetResized");
+        appendAllowedEvent("dynamicallyResized");
         appendAllowedEvent("mouseDown");
         appendAllowedEvent("mouseUp");
         appendAllowedEvent("mouseMoved");

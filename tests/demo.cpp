@@ -251,8 +251,9 @@ int flowpanelDemo() {
     auto testButtonLeft = MakeRef<Button>();
     leftPanel->addChild(testButtonLeft);
 
-    auto rightPanel = MakeRef<Panel>();
+    auto rightPanel = MakeRef<ScrollPanel>();
     rightPanel->size->width = 300;
+    rightPanel->contentHeight = 700;
     rightPanel->marginRight = 10;
     rightPanel->marginTop = 10;
     rightPanel->marginBottom = 10;
