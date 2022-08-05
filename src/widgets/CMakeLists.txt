@@ -6,6 +6,11 @@ set(
 
     ${cwd}/Color.h
     ${cwd}/Layer.h
+    ${cwd}/visuals/VisualElement.h
+    ${cwd}/visuals/RectVisual.h
+    ${cwd}/visuals/TextVisual.h
+    ${cwd}/WidgetContainer.h
+    ${cwd}/BaseWidget.h
 
     PARENT_SCOPE
 )

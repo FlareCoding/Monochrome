@@ -6,6 +6,7 @@
 #include <window/ModernWindow.h>
 #include <window/Overlay.h>
 #include <widgets/Color.h>
+#include <widgets/BaseWidget.h>
 using namespace mc;
 
 int main() {
@@ -13,6 +14,8 @@ int main() {
 
     auto window = MakeRef<ClassicWindow>(1060, 660, "New Widget System Demo");
     window->setBackgroundColor(Color(18, 22, 28));
+
+    auto testWidget = MakeRef<BaseWidget>();
 
     AppManager::startApplicationLoop();
     return 0;
