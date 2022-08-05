@@ -1,6 +1,5 @@
 #include "UIWindow.h"
 #include <rendering/Renderer.h>
-#include <widgets/FlowPanel.h>
 #include <chrono>
 
 #ifdef MC_PLATFORM_MACOS
@@ -37,12 +36,6 @@ namespace mc {
             auto width = event->get<uint32_t>("width");
             auto height = event->get<uint32_t>("height");
 
-            // If the body flowpanel is present, stretch
-            // the body panel to fit into the window.
-            if (d_bodyPanel) {
-                adjustBodyPanel();
-            }
-
             setShouldRedraw();
         });
 
@@ -63,44 +56,6 @@ namespace mc {
 
         // Setup the background rendering thread
         d_renderingThread = std::thread(&UIWindow::_backgroundRenderingTask, this);
-
-        // Setup widget host controller
-        d_widgetHostController = MakeRef<WidgetHostController>();
-        d_widgetHostController->on("widgetTreeChanged", [this](Shared<Event> e) {
-            setShouldRedraw();
-        });
-        this->forwardEmittedEvents(d_widgetHostController.get());
-
-        // Setup the event handling callbacks
-        d_widgetHostController->on("mouseMoved", [this](auto e) {
-            d_widgetHostController->processMouseMovedEvent(
-                std::static_pointer_cast<MouseMovedEvent>(e)
-            );
-        });
-
-        d_widgetHostController->on("mouseDown", [this](auto e) {
-            d_widgetHostController->processMousePressedEvent(
-                std::static_pointer_cast<MouseButtonEvent>(e)
-            );
-        });
-
-        d_widgetHostController->on("mouseUp", [this](auto e) {
-            d_widgetHostController->processMouseReleasedEvent(
-                std::static_pointer_cast<MouseButtonEvent>(e)
-            );
-        });
-
-        d_widgetHostController->on("keyDown", [this](auto e) {
-            d_widgetHostController->processKeyDownEvent(
-                std::static_pointer_cast<KeyDownEvent>(e)
-            );
-        });
-
-        d_widgetHostController->on("keyUp", [this](auto e) {
-            d_widgetHostController->processKeyUpEvent(
-                std::static_pointer_cast<KeyUpEvent>(e)
-            );
-        });
 
         // Pass the update callback to the native window
         d_nativeWindow->setUpdateCallback([this]() { this->update(); });
@@ -232,56 +187,6 @@ namespace mc {
         d_shouldRedrawScene = true;
     }
 
-    void UIWindow::addWidget(Shared<BaseWidget> widget) {
-        d_widgetHostController->addWidget(widget);
-    }
-
-    bool UIWindow::removeWidget(Shared<BaseWidget> widget) {
-        return d_widgetHostController->removeWidget(widget);
-    }
-
-    bool UIWindow::removeWidget(uuid_t uuid) {
-        return d_widgetHostController->removeWidget(uuid);
-    }
-
-    void UIWindow::removeAllWidgets() {
-        d_widgetHostController->removeAllWidgets();
-    }
-
-    Shared<BaseWidget> UIWindow::findWidget(uuid_t uuid) {
-        return d_widgetHostController->findWidget(uuid);
-    }
-
-    Shared<FlowPanel> UIWindow::getBody() {
-        if (!d_bodyPanel) {
-            d_bodyPanel = MakeRef<FlowPanel>();
-            d_bodyPanel->layout = Horizontal;
-            d_bodyPanel->backgroundColor = Color::transparent;
-            adjustBodyPanel();
-            addWidget(d_bodyPanel);
-        }
-
-        return d_bodyPanel;
-    }
-
-    void UIWindow::setBodyPanelOffset(const Size& offset) {
-        d_bodyPanelOffset = offset;
-        if (d_bodyPanel) {
-            adjustBodyPanel();
-        }
-    }
-
-    void UIWindow::adjustBodyPanel() {
-        d_bodyPanel->position = {
-            static_cast<int32_t>(d_bodyPanelOffset.width),
-            static_cast<int32_t>(d_bodyPanelOffset.height)
-        };
-        d_bodyPanel->size = {
-            static_cast<uint32_t>(getWidth() - d_bodyPanelOffset.width),
-            static_cast<uint32_t>(getHeight() - d_bodyPanelOffset.height)
-        };
-    }
-
     void UIWindow::_backgroundRenderingTask() {
         while (!d_isDestroyed) {
             // To prevent screen from flickering, the background
@@ -319,6 +224,5 @@ namespace mc {
     }
 
     void UIWindow::_renderScene(Shared<RenderTarget>& renderTarget) {
-        Renderer::renderScene(d_backgroundColor, *d_widgetHostController, renderTarget);
     }
 } // namespace mc

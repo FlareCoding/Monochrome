@@ -72,11 +72,6 @@ namespace mc {
         );
     }
 
-    void Overlay::setContent(Shared<BaseWidget> content) {
-        d_overlayWindow->removeAllWidgets();
-        d_overlayWindow->addWidget(content);
-    }
-
     Color Overlay::getBackgroundColor() {
         return d_overlayWindow->getBackgroundColor();
     }
@@ -89,79 +84,8 @@ namespace mc {
         d_anchorPoint = point;
     }
 
-    void Overlay::setActivatorWidget(BaseWidget* widget) {
-        // Check if the previous activator widget needs to be detached
-        if (d_activatorWidget) {
-            d_activatorWidget->off("clicked");
-        }
-
-        d_activatorWidget = widget;
-
-        // If widget is nullptr, treat it as
-        // resetting and removing the activator widget.
-        if (!d_activatorWidget) {
-            return;
-        }
-
-        d_activatorWidget->on("clicked", [this](Shared<Event> e) {
-            auto clickEvent = std::static_pointer_cast<MouseButtonEvent>(e);
-            if (clickEvent->getButton() != MouseButton::Left) {
-                return;
-            }
-
-            // Calculate the anchor position
-            // according to the anchor point.
-            auto anchorPoint = _calculateAnchorPosition(clickEvent);
-
-            // Set the overlay's anchor point to be
-            // right below the activator widget.
-            setAnchor(anchorPoint);
-
-            // Open the overlay
-            show();
-        });
-    }
-
     void Overlay::addChildOverlay(Shared<Overlay> overlay) {
         d_childOverlays.push_back(overlay);
-    }
-
-    Position Overlay::_calculateAnchorPosition(Shared<MouseButtonEvent> e) {
-        // Get the anchor widget's position in the window
-        auto anchorPositionInWindow = d_activatorWidget->getPositionInWindow();
-
-        // Get click event's position information
-        auto clickPos = e->getLocation();
-        auto screenClickPos = e->getScreenLocation();
-
-        // Calculate click offset from the anchor's origin
-        Position anchorPosDiff = {
-            clickPos.x - anchorPositionInWindow.x,
-            clickPos.y - anchorPositionInWindow.y
-        };
-
-        // Calculate the anchor's origin
-        Point anchorOrigin = {
-            screenClickPos.x - anchorPosDiff.x,
-            screenClickPos.y - anchorPosDiff.y
-        };
-
-        // Get the virtual screen container
-        // from the placement constraint system.
-        auto screenContainer =
-            utils::PlacementConstraintSystem::getContainer(MAIN_SCREEN_CONTAINER_NAME);
-
-        // Calculate the anchor point according
-        // to the overlay's preferred spawn position.
-        auto anchorPosition = screenContainer->insertChild(
-            reinterpret_cast<uint64_t>(this), // ID
-            Size(d_overlayWindow->getWidth(), d_overlayWindow->getHeight()),
-            anchorOrigin,
-            d_activatorWidget->size,
-            spawnDirection
-        );
-
-        return anchorPosition;
     }
 
     bool Overlay::_isMouseClickedInOverlay(const Position& clickPosition) {

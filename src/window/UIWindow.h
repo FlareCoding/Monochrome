@@ -1,6 +1,5 @@
 #pragma once
 #include "NativeWindow.h"
-#include <widgets/WidgetHostController.h>
 #include <utils/uuid.h>
 #include <thread>
 #include <atomic>
@@ -48,27 +47,14 @@ public:
     void setShouldRedraw();
     inline bool shouldRedraw() const { return d_shouldRedrawScene; }
 
-    void addWidget(Shared<BaseWidget> widget);
-    bool removeWidget(Shared<BaseWidget> widget);
-    bool removeWidget(uuid_t uuid);
-    void removeAllWidgets();
-    Shared<BaseWidget> findWidget(uuid_t uuid);
-
     Color getBackgroundColor() const { return d_backgroundColor; }
     virtual void setBackgroundColor(const Color& color) { d_backgroundColor = color; }
-
-    Shared<FlowPanel> getBody();
 
 protected:
     void setBodyPanelOffset(const Size& offset);
 
 private:
     Shared<NativeWindow> d_nativeWindow = nullptr;
-    Shared<WidgetHostController> d_widgetHostController = nullptr;
-
-    Shared<FlowPanel>    d_bodyPanel;
-    Size                 d_bodyPanelOffset = { 0, 0 };
-    void adjustBodyPanel();
 
     uuid_t d_uuid = 0;
     std::atomic_bool d_isDestroyed = false;

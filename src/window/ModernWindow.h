@@ -1,7 +1,7 @@
 #pragma once
 #include "UIWindow.h"
-#include <widgets/Button.h>
-#include <widgets/Label.h>
+// #include <widgets/Button.h>
+// #include <widgets/Label.h>
 
 namespace mc {
 class ModernWindow : public UIWindow {
@@ -19,16 +19,16 @@ private:
     uint32_t d_decoratorWidgetWidth = 36;
     uint32_t d_decoratorWidgetHeight = 26;
 
-    Shared<Label> d_titleLabel;
-    Shared<Button> d_closeButton;
-    Shared<Button> d_minimizeButton;
-    Shared<Button> d_maximizeButton;
+    // Shared<Label> d_titleLabel;
+    // Shared<Button> d_closeButton;
+    // Shared<Button> d_minimizeButton;
+    // Shared<Button> d_maximizeButton;
     bool d_maximized = false;
 
     void _createDecoratorWidgets();
     void _setupEventHandlers();
 
     // Factory for a decorator widget
-    Shared<Button> _createDecoratorButton();
+    // Shared<Button> _createDecoratorButton();
 };
 } // namespace mc

@@ -1,6 +1,7 @@
 #pragma once
 #include "UIWindow.h"
-#include <widgets/BaseWidget.h>
+#include  <events/MouseEvents.h>
+//#include <widgets/BaseWidget.h>
 
 namespace mc {
 class Overlay {
@@ -12,13 +13,11 @@ public:
     void setSize(const Size& size);
     void show();
     void hide();
-    void setContent(Shared<BaseWidget> content);
 
     Color getBackgroundColor();
     void setBackgroundColor(const Color& color);
 
     void setAnchor(const Point& point);
-    void setActivatorWidget(BaseWidget* widget);
 
     // Specifies the preferred orientation for spawning
     // the overlay window around the activator widget.
@@ -36,13 +35,11 @@ public:
 private:
     Shared<UIWindow>    d_overlayWindow;
 
-    BaseWidget*         d_activatorWidget = nullptr;
     Point               d_anchorPoint = { 0, 0 };
     bool                d_overlayOpened = false;
 
     std::vector<Shared<Overlay>> d_childOverlays;
 
-    Position            _calculateAnchorPosition(Shared<MouseButtonEvent> e);
     bool                _isMouseClickedInOverlay(const Position& clickPosition);
 };
 } // namespace mc

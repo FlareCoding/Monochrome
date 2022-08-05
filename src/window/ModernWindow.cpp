@@ -11,32 +11,33 @@ namespace mc {
         : UIWindow(MC_MODERNWINDOW_FLAGS, width, height, title) {
         // Create the 'close', 'minimize', and 'maximize'
         // buttons as well as the title label.
-        _createDecoratorWidgets();
+        // _createDecoratorWidgets();
 
         // Setup events handlers
-        _setupEventHandlers();
+        // _setupEventHandlers();
 
         // Adjust the offset of the body panel that belongs to a UIWindow
-        setBodyPanelOffset({ 0, d_titleLabel->size->height + 8 });
+        //setBodyPanelOffset({ 0, d_titleLabel->size->height + 8 });
     }
 
     void ModernWindow::setBackgroundColor(const Color& color) {
         UIWindow::setBackgroundColor(color);
 
         // Blend the decorator widgets with the background
-        d_closeButton->backgroundColor = getBackgroundColor();
-        d_maximizeButton->backgroundColor = getBackgroundColor();
-        d_minimizeButton->backgroundColor = getBackgroundColor();
+        // d_closeButton->backgroundColor = getBackgroundColor();
+        // d_maximizeButton->backgroundColor = getBackgroundColor();
+        // d_minimizeButton->backgroundColor = getBackgroundColor();
     }
 
     void ModernWindow::setTitle(const std::string& title) {
         UIWindow::setTitle(title);
 
         // Modify the title label
-        d_titleLabel->text = title;
+        // d_titleLabel->text = title;
     }
 
     void ModernWindow::_createDecoratorWidgets() {
+        /*
         // Create the 'close' button
         d_closeButton = _createDecoratorButton();
         d_closeButton->position = { (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth, 0 };
@@ -93,30 +94,31 @@ namespace mc {
 
         // Add the 'title' label to the window
         addWidget(d_titleLabel);
+        */
     }
 
     void ModernWindow::_setupEventHandlers() {
-        on("sizeChanged", [this](Shared<Event> event) {
-            auto width = event->get<uint32_t>("width");
-            auto height = event->get<uint32_t>("height");
+        // on("sizeChanged", [this](Shared<Event> event) {
+        //     auto width = event->get<uint32_t>("width");
+        //     auto height = event->get<uint32_t>("height");
 
-            d_closeButton->position = { (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth, 0 };
-            d_maximizeButton->position = {
-                (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 2, 0
-            };
-            d_minimizeButton->position = {
-                (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 3, 0
-            };
-        });
+        //     d_closeButton->position = { (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth, 0 };
+        //     d_maximizeButton->position = {
+        //         (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 2, 0
+        //     };
+        //     d_minimizeButton->position = {
+        //         (int32_t)getWidth() - (int32_t)d_decoratorWidgetWidth * 3, 0
+        //     };
+        // });
     }
 
-    Shared<Button> ModernWindow::_createDecoratorButton() {
-        auto decoratorButton = MakeRef<Button>();
-        decoratorButton->size = { d_decoratorWidgetWidth, d_decoratorWidgetHeight };
-        decoratorButton->cornerRadius = 0;
-        decoratorButton->backgroundColor = getBackgroundColor();
-        decoratorButton->color = Color::white;
+    // Shared<Button> ModernWindow::_createDecoratorButton() {
+    //     auto decoratorButton = MakeRef<Button>();
+    //     decoratorButton->size = { d_decoratorWidgetWidth, d_decoratorWidgetHeight };
+    //     decoratorButton->cornerRadius = 0;
+    //     decoratorButton->backgroundColor = getBackgroundColor();
+    //     decoratorButton->color = Color::white;
 
-        return decoratorButton;
-    }
+    //     return decoratorButton;
+    // }
 } // namespace mc
