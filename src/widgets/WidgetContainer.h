@@ -119,7 +119,7 @@ protected:
 private:
     inline void _orderChildrenByZIndex() {
         std::sort(d_children.begin(), d_children.end(),
-            [](Shared<BaseWidget> a, Shared<BaseWidget> b) {
+            [](Shared<T> a, Shared<T> b) {
                 return a->zIndex.get() < b->zIndex.get();
         });
     }
