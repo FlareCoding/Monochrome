@@ -8,4 +8,4 @@ public:
 
     uint32_t cornerRadius = 2;
 };
-} // namespac mc
+} // namespace mc

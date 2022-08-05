@@ -28,4 +28,4 @@ public:
     // Possible options: "none", "word", "letter"
     std::string wordWrapMode;
 };
-} // namespac mc
+} // namespace mc
