@@ -1,7 +1,6 @@
 #include "Color.h"
 #include <random>
 namespace mc {
-    
     Color Color::randomColor() {
         static std::random_device rd;
         static std::mt19937 colorEngine(rd());

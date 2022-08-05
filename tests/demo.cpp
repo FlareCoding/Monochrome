@@ -273,5 +273,5 @@ int flowpanelDemo() {
 }
 
 int main() {
-    return flowpanelDemo();
+    return firstDemo();
 }
