@@ -31,7 +31,6 @@ namespace mc {
         d_label = MakeRef<Label>();
         _addChild(d_label);
 
-        position.forwardAssignment(&d_label->position);
         size.forwardAssignment(&d_label->size);
         textColor.forwardAssignment(&d_label->color);
         text.forwardAssignment(&d_label->text);
