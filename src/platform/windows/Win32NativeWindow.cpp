@@ -82,12 +82,12 @@ namespace mc {
 
         // Create the global low-level mouse hook
         if (!s_hMouseHook) {
-            s_hMouseHook = SetWindowsHookEx(
+            /*s_hMouseHook = SetWindowsHookEx(
                 WH_MOUSE_LL,
                 win32LowLevelMouseProc,
                 GetModuleHandle(NULL),
                 0
-            );
+            );*/
         }
 
         // Register the window instance

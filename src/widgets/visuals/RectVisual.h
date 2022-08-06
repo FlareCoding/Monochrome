@@ -6,6 +6,6 @@ class RectVisual : public VisualElement {
 public:
     inline const VisualType type() const override { return VisualTypeRect; }
 
-    uint32_t cornerRadius = 2;
+    PropertyObserver<uint32_t> cornerRadius;
 };
 } // namespace mc

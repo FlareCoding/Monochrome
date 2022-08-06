@@ -1,6 +1,7 @@
 #include "UIWindow.h"
 #include <rendering/Renderer.h>
 #include <chrono>
+#include <widgets/BaseWidget.h>
 
 #ifdef MC_PLATFORM_MACOS
 #include <platform/macos/OSXNativeWindow.h>
@@ -35,6 +36,10 @@ namespace mc {
         on("sizeChanged", [this](Shared<Event> event) {
             auto width = event->get<uint32_t>("width");
             auto height = event->get<uint32_t>("height");
+
+            if (d_rootWidget) {
+                d_rootWidget->size = getSize();
+            }
 
             setShouldRedraw();
         });
@@ -187,6 +192,13 @@ namespace mc {
         d_shouldRedrawScene = true;
     }
 
+    void UIWindow::setRootWidget(Shared<BaseWidget> root) {
+        d_rootWidget = root;
+        d_rootWidget->size = getSize();
+
+        setShouldRedraw();
+    }
+
     void UIWindow::_backgroundRenderingTask() {
         while (!d_isDestroyed) {
             // To prevent screen from flickering, the background
@@ -224,5 +236,6 @@ namespace mc {
     }
 
     void UIWindow::_renderScene(Shared<RenderTarget>& renderTarget) {
+        Renderer::renderScene(d_backgroundColor, d_rootWidget, renderTarget);
     }
 } // namespace mc

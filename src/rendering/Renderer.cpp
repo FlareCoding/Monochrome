@@ -1,141 +1,164 @@
 ﻿#include "Renderer.h"
 #include <core/InternalFlags.h>
 #include <application/AppManager.h>
+#include <widgets/BaseWidget.h>
 
 namespace mc {
-    //std::pair<Position, Size> Renderer::getWidgetTruePositionAndSize(
-    //    BaseWidget* widget,
-    //    Position& parentPositionOffset
-    //) {
-    //    // Calculating frame dimensions of the widget
-    //    int32_t xPos = parentPositionOffset.x + widget->position->x;
-    //    int32_t yPos = parentPositionOffset.y + widget->position->y;
+    void Renderer::renderScene(
+        const Color& backgroundColor,
+        Shared<BaseWidget> rootContainer,
+        Shared<RenderTarget>& renderTarget
+    ) {
+        renderTarget->clearScreen(
+            backgroundColor.r,
+            backgroundColor.g,
+            backgroundColor.b,
+            backgroundColor.a
+        );
 
-    //    // Calculating any necessary changes to the widget's size
-    //    uint32_t width = widget->size->width;
-    //    uint32_t height = widget->size->height;
+        renderWidget(renderTarget, rootContainer, { 0, 0 });
+    }
 
-    //    return {
-    //        Position(xPos, yPos),
-    //        Size(width, height)
-    //    };
-    //}
+    void Renderer::renderWidget(
+        Shared<RenderTarget>& renderTarget,
+        Shared<BaseWidget> widget,
+        Position parentOffset
+    ) {
+        if (!widget->visible.get()) {
+            return;
+        }
 
-    //std::pair<Position, Size> Renderer::getWidgetTruePositionAndSize(
-    //    const Shared<BaseWidget>& widget,
-    //    Position& parentPositionOffset
-    //) {
-    //    return getWidgetTruePositionAndSize(widget.get(), parentPositionOffset);
-    //}
+        Position widgetPosition = parentOffset + widget->position;
+        Size widgetSize = widget->getClientSize();
 
-    //void Renderer::renderScene(
-    //    Color& backgroundColor,
-    //    WidgetHostController& widgetHostController,
-    //    Shared<RenderTarget>& renderTarget
-    //) {
-    //    // Render the background color layer
-    //    renderTarget->clearScreen(
-    //        backgroundColor.r,
-    //        backgroundColor.g,
-    //        backgroundColor.b,
-    //        backgroundColor.a
-    //    );
+        // Create a clipping layer so the contents
+        // don't go outside the bounds of the widget.
+        renderTarget->pushClipLayer(
+            widgetPosition.x,
+            widgetPosition.y,
+            widgetSize.width,
+            widgetSize.height
+        );
 
-    //    std::vector<Shared<BaseWidget>> widgetsList(
-    //        widgetHostController.getSceneWidgetList()
-    //    );
-    //    Position originAnchor = { 0, 0 };
+        // First draw the core visual elements
+        // that the widget is comprised from.
+        for (auto& visual : widget->d_coreVisualElements) {
+            if (visual->visible) {
+                drawVisualElement(renderTarget, visual, widgetPosition);
+            }
+        }
 
-    //    for (auto& widget : widgetsList) {
-    //        renderWidget(renderTarget, widget, originAnchor);
-    //    }
-    //}
+        // Render all child elements
+        for (auto& child : widget->_getChildren()) {
+            renderWidget(renderTarget, child, widgetPosition);
+        }
 
-    //void Renderer::renderWidget(
-    //    Shared<RenderTarget>& renderTarget,
-    //    const Shared<BaseWidget>& widget,
-    //    Position& parentPositionOffset
-    //) {
-    //    // Before anything else, check if the widget is visible
-    //    if (!widget->visible) {
-    //        return;
-    //    }
+        // Lastly draw the overlay visual
+        // elements that the widget has.
+        for (auto& visual : widget->d_overlayVisualElements) {
+            if (visual->visible) {
+                drawVisualElement(renderTarget, visual, widgetPosition);
+            }
+        }
 
-    //    // First create a clipping layer so the contents
-    //    // don't go outside the bounds of the widget.
-    //    renderTarget->pushClipLayer(
-    //        parentPositionOffset.x + widget->position->x,
-    //        parentPositionOffset.y + widget->position->y,
-    //        widget->size->width,
-    //        widget->size->height
-    //    );
+        // Restore the clipping layer
+        renderTarget->popClipLayer();
+    }
 
-    //    auto widgetType = widget->getType();
+    void Renderer::drawVisualElement(
+        Shared<RenderTarget>& renderTarget,
+        Shared<VisualElement> visual,
+        Position& parentOffset
+    ) {
+        switch (visual->type()) {
+        case VisualType::VisualTypeRect: {
+            drawRectVisual(
+                renderTarget,
+                std::static_pointer_cast<RectVisual>(visual),
+                parentOffset
+            );
+            break;
+        }
+        case VisualType::VisualTypeBorder: {
+            drawBorderVisual(
+                renderTarget,
+                std::static_pointer_cast<BorderVisual>(visual),
+                parentOffset
+            );
+            break;
+        }
+        case VisualType::VisualTypeCircle: {
+            break;
+        }
+        case VisualType::VisualTypeText: {
+            drawTextVisual(
+                renderTarget,
+                std::static_pointer_cast<TextVisual>(visual),
+                parentOffset
+            );
+            break;
+        }
+        case VisualType::VisualTypeImage: {
+            break;
+        }
+        default: {
+            CORE_ASSERT(false, "Attempted to render an unknown visual type");
+            break;
+        }
+        }
+    }
 
-    //    if (widgetType == "panel") {
-    //        renderPanel(
-    //            renderTarget, std::static_pointer_cast<Panel>(widget),
-    //            parentPositionOffset
-    //        );
-    //    } else if (widgetType == "label") {
-    //        renderLabel(
-    //            renderTarget,
-    //            std::static_pointer_cast<Label>(widget),
-    //            parentPositionOffset
-    //        );
-    //    } else if (widgetType == "button") {
-    //        renderButton(
-    //            renderTarget,
-    //            std::static_pointer_cast<Button>(widget),
-    //            parentPositionOffset
-    //        );
-    //    } else if (widgetType == "checkbox") {
-    //        renderCheckbox(
-    //            renderTarget,
-    //            std::static_pointer_cast<Checkbox>(widget),
-    //            parentPositionOffset
-    //        );
-    //    } else if (widgetType == "slider") {
-    //        renderSlider(
-    //            renderTarget,
-    //            std::static_pointer_cast<Slider>(widget),
-    //            parentPositionOffset
-    //        );
-    //    } else if (widgetType == "entry") {
-    //        renderEntry(
-    //            renderTarget,
-    //            std::static_pointer_cast<Entry>(widget),
-    //            parentPositionOffset
-    //        );
-    //    } else if (widgetType == "customRenderedWidget") {
-    //        renderCustomRenderedWidget(
-    //            renderTarget,
-    //            std::dynamic_pointer_cast<IRenderable>(widget),
-    //            parentPositionOffset
-    //        );
-    //    }
+    void Renderer::drawRectVisual(
+        Shared<RenderTarget>& renderTarget,
+        Shared<RectVisual> visual,
+        Position& parentOffset
+    ) {
+        renderTarget->drawRectangle(
+            parentOffset.x + visual->position->x,
+            parentOffset.y + visual->position->y,
+            visual->size->width,
+            visual->size->height,
+            visual->color,
+            visual->cornerRadius,
+            true,
+            0
+        );
+    }
 
-    //    if (widget->isContainer()) {
-    //        // Get the list of all children widgets and clone it
-    //        std::vector<Shared<BaseWidget>> children(
-    //            std::static_pointer_cast<BaseContainerWidget>(widget)->getChildren()
-    //        );
+    void Renderer::drawBorderVisual(
+        Shared<RenderTarget>& renderTarget,
+        Shared<BorderVisual> visual,
+        Position& parentOffset
+    ) {
+        renderTarget->drawRectangle(
+            parentOffset.x + visual->position->x,
+            parentOffset.y + visual->position->y,
+            visual->size->width,
+            visual->size->height,
+            visual->color,
+            visual->cornerRadius,
+            false,
+            visual->thickness
+        );
+    }
 
-    //        for (auto& child : children) {
-    //            // Adjust combined parent offset to keep child
-    //            // widgets positioned in relation to their parents.
-    //            parentPositionOffset.x += widget->position->x;
-    //            parentPositionOffset.y += widget->position->y;
-
-    //            renderWidget(renderTarget, child, parentPositionOffset);
-
-    //            // Restore the combined parent offset value
-    //            parentPositionOffset.x -= widget->position->x;
-    //            parentPositionOffset.y -= widget->position->y;
-    //        }
-    //    }
-
-    //    // Restore the clipping layer
-    //    renderTarget->popClipLayer();
-    //}
+    void Renderer::drawTextVisual(
+        Shared<RenderTarget>& renderTarget,
+        Shared<TextVisual> visual,
+        Position& parentOffset
+    ) {
+        renderTarget->drawText(
+            parentOffset.x + visual->position->x,
+            parentOffset.y + visual->position->y,
+            visual->size->width,
+            visual->size->height,
+            visual->color,
+            visual->text,
+            visual->font,
+            visual->fontSize,
+            visual->fontStyle,
+            visual->alignment,
+            visual->wordWrapMode
+        );
+    }
 } // namespace mc

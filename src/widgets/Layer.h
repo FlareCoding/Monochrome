@@ -12,6 +12,34 @@ struct Position {
     inline friend bool operator==(const Position& lhs, const Position& rhs) {
         return (lhs.x == rhs.x) && (lhs.y == rhs.y);
     }
+
+    inline friend Position operator+(const Position& lhs, const Position& rhs) {
+        return {
+            lhs.x + rhs.x,
+            lhs.y + rhs.y
+        };
+    }
+
+    inline friend Position operator-(const Position& lhs, const Position& rhs) {
+        return {
+            lhs.x - rhs.x,
+            lhs.y - rhs.y
+        };
+    }
+
+    inline Position& operator+=(const Position& rhs) {
+        this->x += rhs.x;
+        this->y += rhs.y;
+
+        return *this;
+    }
+
+    inline Position& operator-=(const Position& rhs) {
+        this->x -= rhs.x;
+        this->y -= rhs.y;
+
+        return *this;
+    }
 };
 
 using Point = Position;

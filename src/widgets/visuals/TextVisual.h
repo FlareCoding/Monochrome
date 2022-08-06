@@ -6,26 +6,22 @@ class TextVisual : public VisualElement {
 public:
     inline const VisualType type() const override { return VisualTypeText; }
 
-    std::string     text;
-    std::string     font;
-    uint32_t        fontSize;
-
     // Text to be displayed on the label
-    std::string text;
+    PropertyObserver<std::string> text;
 
     // Font of the text displayed
-    std::string font;
+    PropertyObserver<std::string> font = PropertyObserver<std::string>("Arial");
 
     // Size of the text font
-    uint32_t fontSize;
+    PropertyObserver<uint32_t> fontSize = PropertyObserver<uint32_t>(12);
 
     // Possible options: "left", "right", "center"
-    std::string alignment;
+    PropertyObserver<std::string> alignment = PropertyObserver<std::string>("center");
 
     // Possible options: "bold", "italic", "normal"
-    std::string fontStyle;
+    PropertyObserver<std::string> fontStyle = PropertyObserver<std::string>("normal");
 
     // Possible options: "none", "word", "letter"
-    std::string wordWrapMode;
+    PropertyObserver<std::string> wordWrapMode = PropertyObserver<std::string>("none");
 };
 } // namespace mc

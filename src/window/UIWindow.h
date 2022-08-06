@@ -5,7 +5,7 @@
 #include <atomic>
 
 namespace mc {
-class FlowPanel;
+class BaseWidget;
 
 class UIWindow : public EventEmitter {
 public:
@@ -50,11 +50,11 @@ public:
     Color getBackgroundColor() const { return d_backgroundColor; }
     virtual void setBackgroundColor(const Color& color) { d_backgroundColor = color; }
 
-protected:
-    void setBodyPanelOffset(const Size& offset);
+    void setRootWidget(Shared<BaseWidget> root);
 
 private:
     Shared<NativeWindow> d_nativeWindow = nullptr;
+    Shared<BaseWidget> d_rootWidget;
 
     uuid_t d_uuid = 0;
     std::atomic_bool d_isDestroyed = false;

@@ -5,6 +5,7 @@ namespace mc {
 template <typename T>
 class PropertyObserver : public EventEmitter {
     T _property;
+    std::vector<PropertyObserver<T>*> _dependants;
 
 public:
     PropertyObserver() : _property(T()), EventEmitter({"propertyChanged"}) {}
@@ -18,15 +19,15 @@ public:
         return const_cast<T*>(&_property);
     }
 
-    auto& operator=(const T& rvalue) {
-        _property = rvalue;
+    auto& operator=(const T& other) {
+        set(other);
 
         fireEvent("propertyChanged", Event::empty);
         return *this;
     }
 
-    auto& operator=(const PropertyObserver<T>& rvalue) {
-        _property = rvalue.get();
+    auto& operator=(const PropertyObserver<T>& other) {
+        set(other);
 
         fireEvent("propertyChanged", Event::empty);
         return *this;
@@ -34,6 +35,26 @@ public:
 
     const T& get() const {
         return _property;
+    }
+
+    inline void set(const T& val) {
+        _property = val;
+
+        for (auto& dependant : _dependants) {
+            dependant->set(val);
+        }
+    }
+
+    inline void set(const PropertyObserver<T>& other) {
+        _property = other.get();
+
+        for (auto& dependant : _dependants) {
+            dependant->set(other.get());
+        }
+    }
+
+    inline void forwardAssignment(PropertyObserver<T>* other) {
+        _dependants.push_back(other);
     }
 };
 } // namespace mc
