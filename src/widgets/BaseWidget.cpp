@@ -59,6 +59,12 @@ namespace mc {
 
         marginRight = 0;
         marginRight.forwardEmittedEvents(this);
+
+        horizontalAlignment = HorizontalAlignment::HALeft;
+        horizontalAlignment.forwardEmittedEvents(this);
+
+        verticalAlignment = VerticalAlignment::VATop;
+        verticalAlignment.forwardEmittedEvents(this);
     }
 
     Size BaseWidget::getClientSize() {

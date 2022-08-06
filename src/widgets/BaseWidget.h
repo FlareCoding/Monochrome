@@ -7,6 +7,20 @@
 #define NOT_SET 0
 
 namespace mc {
+enum HorizontalAlignment {
+    HALeft,
+    HARight,
+    HACenter,
+    HAFill
+};
+
+enum VerticalAlignment{
+    VATop,
+    VABottom,
+    VACenter,
+    VAFill
+};
+
 class BaseWidget : public PrivateWidgetContainer {
 friend class Renderer;
 
@@ -33,6 +47,9 @@ public:
     PropertyObserver<uint32_t>      marginBottom;
     PropertyObserver<uint32_t>      marginLeft;
     PropertyObserver<uint32_t>      marginRight;
+
+    PropertyObserver<HorizontalAlignment>   horizontalAlignment;
+    PropertyObserver<VerticalAlignment>     verticalAlignment;
 
     inline void setParent(BaseWidget* parent) { d_parent = parent; }
     inline BaseWidget* getParent() const { return d_parent; }
