@@ -11,7 +11,6 @@ namespace mc {
         // Setup the button's body rectangle
         auto buttonBodyRect = MakeRef<RectVisual>();
 
-        size.forwardAssignment(&buttonBodyRect->size);
         cornerRadius.forwardAssignment(&buttonBodyRect->cornerRadius);
         backgroundColor.forwardAssignment(&buttonBodyRect->color);
         addCoreVisualElement(buttonBodyRect);
@@ -19,7 +18,6 @@ namespace mc {
         // Setup the button's border
         auto buttonBorder = MakeRef<BorderVisual>();
 
-        size.forwardAssignment(&buttonBorder->size);
         cornerRadius.forwardAssignment(&buttonBorder->cornerRadius);
         borderColor.forwardAssignment(&buttonBorder->color);
         borderThickness.forwardAssignment(&buttonBorder->thickness);
@@ -31,7 +29,8 @@ namespace mc {
         d_label = MakeRef<Label>();
         _addChild(d_label);
 
-        size.forwardAssignment(&d_label->size);
+        width.forwardAssignment(&d_label->width);
+        height.forwardAssignment(&d_label->height);
         textColor.forwardAssignment(&d_label->color);
         text.forwardAssignment(&d_label->text);
         font.forwardAssignment(&d_label->font);
@@ -40,7 +39,8 @@ namespace mc {
         alignment.forwardAssignment(&d_label->alignment);
         wordWrapMode.forwardAssignment(&d_label->wordWrapMode);
 
-        size = { 140, 40 };
+        width = 140;
+        height = 30;
         backgroundColor = Color::gray;
         borderColor = Color::white;
         borderThickness = 2;

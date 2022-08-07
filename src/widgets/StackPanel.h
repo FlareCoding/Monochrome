@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseWidget.h"
+#include "layouts/Layout.h"
 
 namespace mc {
 class StackPanel : public BaseContainerWidget {
@@ -12,6 +13,10 @@ public:
     // Color of the panel's body
     PropertyObserver<Color>         backgroundColor;
 
+    // Direction in which the content
+    // will be layed out inside the panel.
+    PropertyObserver<Orientaion>    orientation;
+
 private:
     void _createVisuals();
     void _setupProperties();
@@ -19,7 +24,10 @@ private:
     void _onChildAdded(BaseWidget* child);
     void _onChildRemoved(BaseWidget* child);
 
+    void _layoutUpdate();
+
 private:
-    Position nextAvailableCellPosition = { 0, 0 };
+    Shared<Layout> d_verticalLayout;
+    Shared<Layout> d_horizontalLayout;
 };
 } // namespace mc

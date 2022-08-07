@@ -23,31 +23,36 @@ private:
     static void drawVisualElement(
         Shared<RenderTarget>& renderTarget,
         Shared<VisualElement> visual,
-        Position& parentOffset
+        Position& parentOffset,
+        const Size& visualSize
     );
 
     static void drawRectVisual(
         Shared<RenderTarget>& renderTarget,
         Shared<RectVisual> visual,
-        Position& parentOffset
+        Position& parentOffset,
+        const Size& visualSize
     );
 
     static void drawBorderVisual(
         Shared<RenderTarget>& renderTarget,
         Shared<BorderVisual> visual,
-        Position& parentOffset
+        Position& parentOffset,
+        const Size& visualSize
     );
 
     /*static void drawCircleVisual(
         Shared<RenderTarget>& renderTarget,
         Shared<BorderVisual> visual,
-        Position& parentOffset
+        Position& parentOffset,
+        const Size& visualSize
     );*/
 
     static void drawTextVisual(
         Shared<RenderTarget>& renderTarget,
         Shared<TextVisual> visual,
-        Position& parentOffset
+        Position& parentOffset,
+        const Size& visualSize
     );
 };
 } // namespace mc

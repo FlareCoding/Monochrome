@@ -38,7 +38,8 @@ namespace mc {
             auto height = event->get<uint32_t>("height");
 
             if (d_rootWidget) {
-                d_rootWidget->size = getSize();
+                d_rootWidget->width = getWidth();
+                d_rootWidget->height = getHeight();
             }
 
             setShouldRedraw();
@@ -194,8 +195,9 @@ namespace mc {
 
     void UIWindow::setRootWidget(Shared<BaseWidget> root) {
         d_rootWidget = root;
-        d_rootWidget->size = getSize();
 
+        d_rootWidget->width = getWidth();
+        d_rootWidget->height = getHeight();
         setShouldRedraw();
     }
 

@@ -95,4 +95,9 @@ enum OverflowDirection {
     Left,
     Right
 };
+
+enum Orientaion {
+    Horizontal,
+    Vertical
+};
 } // namespace mc

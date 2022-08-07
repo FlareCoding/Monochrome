@@ -42,11 +42,41 @@ namespace mc {
         position = { 0, 0 };
         position.forwardEmittedEvents(this);
 
-        size = { 10, 10 };
-        size.forwardEmittedEvents(this);
-        size.on("propertyChanged", [this](auto e) {
-            this->fireEvent("widgetResized", Event::empty);
-        });
+        width = 0;
+        width.forwardEmittedEvents(this);
+        
+        minWidth = 0;
+        minWidth.forwardEmittedEvents(this);
+        
+        maxWidth = 65000;
+        maxWidth.forwardEmittedEvents(this);
+
+        height = 0;
+        height.forwardEmittedEvents(this);
+        
+        minHeight = 0;
+        minHeight.forwardEmittedEvents(this);
+        
+        maxHeight = 65000;
+        maxHeight.forwardEmittedEvents(this);
+
+        width.on("propertyChanged", [this](auto e) {
+            this->fireEvent("widgetResized", Event::empty); });
+
+        minWidth.on("propertyChanged", [this](auto e) {
+            this->fireEvent("widgetResized", Event::empty); });
+
+        maxWidth.on("propertyChanged", [this](auto e) {
+            this->fireEvent("widgetResized", Event::empty); });
+
+        height.on("propertyChanged", [this](auto e) {
+            this->fireEvent("widgetResized", Event::empty); });
+
+        minHeight.on("propertyChanged", [this](auto e) {
+            this->fireEvent("widgetResized", Event::empty); });
+
+        maxHeight.on("propertyChanged", [this](auto e) {
+            this->fireEvent("widgetResized", Event::empty); });
 
         marginTop = 0;
         marginTop.forwardEmittedEvents(this);
@@ -69,8 +99,8 @@ namespace mc {
 
     Size BaseWidget::getClientSize() {
         return {
-            marginLeft + size->width + marginRight,
-            marginTop + size->height + marginBottom
+            marginLeft + width + marginRight,
+            marginTop + height + marginBottom
         };
     }
 

@@ -16,6 +16,8 @@ int main() {
     window->setBackgroundColor(Color(18, 22, 28));
 
     auto rootPanel = MakeRef<StackPanel>();
+    rootPanel->orientation = Horizontal;
+    rootPanel->backgroundColor = Color(40, 40, 40);
     window->setRootWidget(rootPanel);
 
     auto fillButton = MakeRef<Button>();
@@ -25,6 +27,7 @@ int main() {
     fillButton->marginTop = 5;
     fillButton->marginBottom = 5;
     fillButton->horizontalAlignment = HAFill;
+    fillButton->verticalAlignment = VAFill;
     rootPanel->addChild(fillButton);
 
     auto leftButton = MakeRef<Button>();
@@ -34,6 +37,7 @@ int main() {
     leftButton->marginTop = 5;
     leftButton->marginBottom = 5;
     leftButton->horizontalAlignment = HALeft;
+    leftButton->verticalAlignment = VATop;
     rootPanel->addChild(leftButton);
 
     auto rightButton = MakeRef<Button>();
@@ -43,6 +47,7 @@ int main() {
     rightButton->marginTop = 5;
     rightButton->marginBottom = 5;
     rightButton->horizontalAlignment = HARight;
+    rightButton->verticalAlignment = VABottom;
     rootPanel->addChild(rightButton);
 
     auto centerButton = MakeRef<Button>();
@@ -52,6 +57,7 @@ int main() {
     centerButton->marginTop = 5;
     centerButton->marginBottom = 5;
     centerButton->horizontalAlignment = HACenter;
+    centerButton->verticalAlignment = VACenter;
     rootPanel->addChild(centerButton);
 
     AppManager::startApplicationLoop();

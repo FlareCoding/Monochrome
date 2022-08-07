@@ -11,7 +11,6 @@ namespace mc {
         // Text visual
         auto visual = MakeRef<TextVisual>();
 
-        size.forwardAssignment(&visual->size);
         color.forwardAssignment(&visual->color);
         text.forwardAssignment(&visual->text);
         font.forwardAssignment(&visual->font);
@@ -24,7 +23,8 @@ namespace mc {
     }
 
     void Label::_setupProperties() {
-        size = { 140, 40 };
+        width = 140;
+        height = 30;
         text = "Text";
         color = Color::white;
     }

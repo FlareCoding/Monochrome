@@ -39,10 +39,17 @@ public:
     PropertyObserver<bool>          visible;
     PropertyObserver<bool>          focused;
     PropertyObserver<CursorType>    cursorType;
+    
     PropertyObserver<Position>      position;
-    PropertyObserver<Size>          size;
-    PropertyObserver<Size>          minSize;
-    PropertyObserver<Size>          maxSize;
+    
+    PropertyObserver<uint32_t>      width;
+    PropertyObserver<uint32_t>      minWidth;
+    PropertyObserver<uint32_t>      maxWidth;
+    
+    PropertyObserver<uint32_t>      height;
+    PropertyObserver<uint32_t>      minHeight;
+    PropertyObserver<uint32_t>      maxHeight;
+    
     PropertyObserver<uint32_t>      marginTop;
     PropertyObserver<uint32_t>      marginBottom;
     PropertyObserver<uint32_t>      marginLeft;

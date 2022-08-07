@@ -43,9 +43,16 @@ namespace mc {
         // First draw the core visual elements
         // that the widget is comprised from.
         for (auto& visual : widget->d_coreVisualElements) {
-            if (visual->visible) {
-                drawVisualElement(renderTarget, visual, widgetPosition);
+            if (!visual->visible) {
+                continue;
             }
+
+            Size visualSize = { visual->width, visual->height };
+            if (visualSize.width == NOT_SET && visualSize.height == NOT_SET) {
+                visualSize = { widget->width, widget->height };
+            }
+
+            drawVisualElement(renderTarget, visual, widgetPosition, visualSize);
         }
 
         // Render all child elements
@@ -56,9 +63,16 @@ namespace mc {
         // Lastly draw the overlay visual
         // elements that the widget has.
         for (auto& visual : widget->d_overlayVisualElements) {
-            if (visual->visible) {
-                drawVisualElement(renderTarget, visual, widgetPosition);
+            if (!visual->visible) {
+                continue;
             }
+
+            Size visualSize = { visual->width, visual->height };
+            if (visualSize.width == NOT_SET && visualSize.height == NOT_SET) {
+                visualSize = { widget->width, widget->height };
+            }
+
+            drawVisualElement(renderTarget, visual, widgetPosition, visualSize);
         }
 
         // Restore the clipping layer
@@ -68,14 +82,16 @@ namespace mc {
     void Renderer::drawVisualElement(
         Shared<RenderTarget>& renderTarget,
         Shared<VisualElement> visual,
-        Position& parentOffset
+        Position& parentOffset,
+        const Size& visualSize
     ) {
         switch (visual->type()) {
         case VisualType::VisualTypeRect: {
             drawRectVisual(
                 renderTarget,
                 std::static_pointer_cast<RectVisual>(visual),
-                parentOffset
+                parentOffset,
+                visualSize
             );
             break;
         }
@@ -83,7 +99,8 @@ namespace mc {
             drawBorderVisual(
                 renderTarget,
                 std::static_pointer_cast<BorderVisual>(visual),
-                parentOffset
+                parentOffset,
+                visualSize
             );
             break;
         }
@@ -94,7 +111,8 @@ namespace mc {
             drawTextVisual(
                 renderTarget,
                 std::static_pointer_cast<TextVisual>(visual),
-                parentOffset
+                parentOffset,
+                visualSize
             );
             break;
         }
@@ -111,13 +129,14 @@ namespace mc {
     void Renderer::drawRectVisual(
         Shared<RenderTarget>& renderTarget,
         Shared<RectVisual> visual,
-        Position& parentOffset
+        Position& parentOffset,
+        const Size& visualSize
     ) {
         renderTarget->drawRectangle(
             parentOffset.x + visual->position->x,
             parentOffset.y + visual->position->y,
-            visual->size->width,
-            visual->size->height,
+            visualSize.width,
+            visualSize.height,
             visual->color,
             visual->cornerRadius,
             true,
@@ -128,13 +147,14 @@ namespace mc {
     void Renderer::drawBorderVisual(
         Shared<RenderTarget>& renderTarget,
         Shared<BorderVisual> visual,
-        Position& parentOffset
+        Position& parentOffset,
+        const Size& visualSize
     ) {
         renderTarget->drawRectangle(
             parentOffset.x + visual->position->x,
             parentOffset.y + visual->position->y,
-            visual->size->width,
-            visual->size->height,
+            visualSize.width,
+            visualSize.height,
             visual->color,
             visual->cornerRadius,
             false,
@@ -145,13 +165,14 @@ namespace mc {
     void Renderer::drawTextVisual(
         Shared<RenderTarget>& renderTarget,
         Shared<TextVisual> visual,
-        Position& parentOffset
+        Position& parentOffset,
+        const Size& visualSize
     ) {
         renderTarget->drawText(
             parentOffset.x + visual->position->x,
             parentOffset.y + visual->position->y,
-            visual->size->width,
-            visual->size->height,
+            visualSize.width,
+            visualSize.height,
             visual->color,
             visual->text,
             visual->font,

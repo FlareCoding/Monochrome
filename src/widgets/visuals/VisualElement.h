@@ -21,7 +21,8 @@ public:
 
     PropertyObserver<bool>        visible   = PropertyObserver<bool>(true);
     PropertyObserver<Position>    position  = PropertyObserver<Position>({ 0, 0 });
-    PropertyObserver<Size>        size      = PropertyObserver<Size>({ 0, 0 });
+    PropertyObserver<uint32_t>    width     = PropertyObserver<uint32_t>(0);
+    PropertyObserver<uint32_t>    height    = PropertyObserver<uint32_t>(0);
     PropertyObserver<Color>       color     = PropertyObserver<Color>(Color::black);
 };
 } // namespace mc
