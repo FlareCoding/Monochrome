@@ -16,7 +16,9 @@ namespace mc {
             backgroundColor.a
         );
 
-        renderWidget(renderTarget, rootContainer, { 0, 0 });
+        if (rootContainer.get()) {
+            renderWidget(renderTarget, rootContainer, { 0, 0 });
+        }
     }
 
     void Renderer::renderWidget(

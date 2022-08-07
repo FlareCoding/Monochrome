@@ -22,7 +22,7 @@ namespace mc {
         // Automatically determine the vertical position
         result.x = cellPosition.x + static_cast<int32_t>(child->marginLeft);
 
-        switch (child->horizontalAlignment) {
+        switch (child->verticalAlignment) {
         case VerticalAlignment::VATop: {
             result.y = static_cast<int32_t>(child->marginTop);
             break;
@@ -48,7 +48,7 @@ namespace mc {
     Size HorizontalStackLayout::calculateChildSize(BaseWidget* child) {
         Size result = { child->width, child->height };
 
-        switch (child->horizontalAlignment) {
+        switch (child->verticalAlignment) {
         case VerticalAlignment::VAFill: {
             // Stretch the size of the child to fit into the entire cell
             auto childMargins = child->marginTop + child->marginBottom;
@@ -58,8 +58,7 @@ namespace mc {
             // Sanity checking child's new width
             if (result.height > child->maxHeight) {
                 result.height = child->maxHeight;
-            }
-            else if (result.height < child->minHeight) {
+            } else if (result.height < child->minHeight) {
                 result.height = child->minHeight;
             }
             break;

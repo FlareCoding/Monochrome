@@ -8,6 +8,12 @@
 #include <mutex>
 using namespace mc;
 
+@implementation NSWindow (TitleBarHeight)
+- (CGFloat) titlebarHeight {
+    return self.frame.size.height - [self contentRectForFrameRect: self.frame].size.height;
+}
+@end
+
 namespace mc {
     static std::mutex s_windowMapMutex;
 	static std::vector<OSXNativeWindow*> s_registeredWindows; // used for tracking registered windows
@@ -463,7 +469,7 @@ namespace mc
             auto newHeight = event->get<uint32_t>("height");
 
             d_width = newWidth;
-            d_height = newHeight;
+            d_height = newHeight - d_windowHandle.titlebarHeight;
 
             d_renderTarget->resize(d_width, d_height);
         });
