@@ -13,6 +13,8 @@ public:
         Shared<RenderTarget>& renderTarget
     );
 
+    static bool enableDebugBoundingBoxes;
+
 private:
     static void renderWidget(
         Shared<RenderTarget>& renderTarget,

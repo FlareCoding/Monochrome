@@ -9,56 +9,84 @@
 #include <widgets/AllWidgets.h>
 using namespace mc;
 
+#include <rendering/Renderer.h>
+
 int main() {
     AppManager::registerApplication("appId-041587");
+    Renderer::enableDebugBoundingBoxes = true;
 
     auto window = MakeRef<ClassicWindow>(1060, 660, "New Widget System Demo");
     window->setBackgroundColor(Color(18, 22, 28));
 
     auto rootPanel = MakeRef<StackPanel>();
-    rootPanel->orientation = Horizontal;
     rootPanel->backgroundColor = Color(40, 40, 40);
     window->setRootWidget(rootPanel);
 
-    auto fillButton = MakeRef<Button>();
-    fillButton->text = "Fill";
-    fillButton->marginLeft = 5;
-    fillButton->marginRight = 5;
-    fillButton->marginTop = 5;
-    fillButton->marginBottom = 5;
-    fillButton->horizontalAlignment = HAFill;
-    fillButton->verticalAlignment = VAFill;
-    rootPanel->addChild(fillButton);
+    auto demoPanel = MakeRef<StackPanel>();
+    demoPanel->marginLeft = 50;
+    demoPanel->marginTop = 50;
+    demoPanel->orientation = Vertical;
+    demoPanel->backgroundColor = Color(0, 60, 20);
+    rootPanel->addChild(demoPanel);
 
-    auto leftButton = MakeRef<Button>();
-    leftButton->text = "Left";
-    leftButton->marginLeft = 5;
-    leftButton->marginRight = 5;
-    leftButton->marginTop = 5;
-    leftButton->marginBottom = 5;
-    leftButton->horizontalAlignment = HALeft;
-    leftButton->verticalAlignment = VATop;
-    rootPanel->addChild(leftButton);
+    auto first = MakeRef<Button>();
+    first->label->text = "First Button";
+    first->marginLeft = 6;
+    first->marginTop = 6;
+    first->marginBottom = 6;
+    demoPanel->addChild(first);
 
-    auto rightButton = MakeRef<Button>();
-    rightButton->text = "Right";
-    rightButton->marginLeft = 5;
-    rightButton->marginRight = 5;
-    rightButton->marginTop = 5;
-    rightButton->marginBottom = 5;
-    rightButton->horizontalAlignment = HARight;
-    rightButton->verticalAlignment = VABottom;
-    rootPanel->addChild(rightButton);
+    auto second = MakeRef<Button>();
+    second->label->text = "Second Button";
+    second->marginLeft = 6;
+    second->marginTop = 6;
+    second->marginRight = 6;
+    second->marginBottom = 6;
+    demoPanel->addChild(second);
 
-    auto centerButton = MakeRef<Button>();
-    centerButton->text = "Center";
-    centerButton->marginLeft = 5;
-    centerButton->marginRight = 5;
-    centerButton->marginTop = 5;
-    centerButton->marginBottom = 5;
-    centerButton->horizontalAlignment = HACenter;
-    centerButton->verticalAlignment = VACenter;
-    rootPanel->addChild(centerButton);
+    /*auto label = MakeRef<Label>();
+    label->position = { 100, 100 };
+    label->color = Color::white;
+    label->fontSize = 22;
+    label->text = "StackPanel Demo";
+    label->marginTop = 10;
+    label->marginBottom = 10;
+    label->marginLeft = 6;
+    label->marginRight = 6;
+    demoPanel->addChild(label);
+
+    for (auto i = 0; i < 3; ++i) {
+        auto btn = MakeRef<Button>();
+        btn->label->text = "Button " + std::to_string(i);
+        btn->label->fontSize = 14;
+        btn->marginLeft = 10;
+        demoPanel->addChild(btn);
+    }
+
+    label = MakeRef<Label>();
+    label->position = { 100, 100 };
+    label->color = Color::white;
+    label->fontSize = 16;
+    label->text = "Smaller label";
+    label->marginTop = 10;
+    label->marginBottom = 10;
+    label->marginLeft = 6;
+    label->marginRight = 6;
+    demoPanel->addChild(label);
+
+    auto button = MakeRef<Button>();
+    button->label->text = "This is a very long button text";
+    button->label->fontSize = 24;
+    button->fixedWidth = 460;
+    button->fixedHeight = 100;
+    demoPanel->addChild(button);
+
+    for (auto i = 3; i < 7; ++i) {
+        auto btn = MakeRef<Button>();
+        btn->label->text = "Button " + std::to_string(i);
+        btn->label->fontSize = 14;
+        demoPanel->addChild(btn);
+    }*/
 
     AppManager::startApplicationLoop();
     return 0;

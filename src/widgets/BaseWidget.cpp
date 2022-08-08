@@ -6,7 +6,7 @@ namespace mc {
 
         appendAllowedEvent("propertyChanged");
         appendAllowedEvent("zIndexChanged");
-        appendAllowedEvent("widgetResized");
+        appendAllowedEvent("layoutChanged");
         appendAllowedEvent("dynamicallyResized");
         appendAllowedEvent("mouseDown");
         appendAllowedEvent("mouseUp");
@@ -42,8 +42,8 @@ namespace mc {
         position = { 0, 0 };
         position.forwardEmittedEvents(this);
 
-        width = 0;
-        width.forwardEmittedEvents(this);
+        fixedWidth = NOT_SET;
+        fixedWidth.forwardEmittedEvents(this);
 
         minWidth = 0;
         minWidth.forwardEmittedEvents(this);
@@ -51,8 +51,8 @@ namespace mc {
         maxWidth = 65000;
         maxWidth.forwardEmittedEvents(this);
 
-        height = 0;
-        height.forwardEmittedEvents(this);
+        fixedHeight = NOT_SET;
+        fixedHeight.forwardEmittedEvents(this);
 
         minHeight = 0;
         minHeight.forwardEmittedEvents(this);
@@ -60,28 +60,28 @@ namespace mc {
         maxHeight = 65000;
         maxHeight.forwardEmittedEvents(this);
 
-        width.on("propertyChanged", [this](auto e) {
-            this->fireEvent("widgetResized", Event::empty);
+        fixedWidth.on("propertyChanged", [this](auto e) {
+            this->fireEvent("layoutChanged", Event::empty);
         });
 
         minWidth.on("propertyChanged", [this](auto e) {
-            this->fireEvent("widgetResized", Event::empty);
+            this->fireEvent("layoutChanged", Event::empty);
         });
 
         maxWidth.on("propertyChanged", [this](auto e) {
-            this->fireEvent("widgetResized", Event::empty);
+            this->fireEvent("layoutChanged", Event::empty);
         });
 
-        height.on("propertyChanged", [this](auto e) {
-            this->fireEvent("widgetResized", Event::empty);
+        fixedHeight.on("propertyChanged", [this](auto e) {
+            this->fireEvent("layoutChanged", Event::empty);
         });
 
         minHeight.on("propertyChanged", [this](auto e) {
-            this->fireEvent("widgetResized", Event::empty);
+            this->fireEvent("layoutChanged", Event::empty);
         });
 
         maxHeight.on("propertyChanged", [this](auto e) {
-            this->fireEvent("widgetResized", Event::empty);
+            this->fireEvent("layoutChanged", Event::empty);
         });
 
         marginTop = 0;
@@ -103,11 +103,47 @@ namespace mc {
         verticalAlignment.forwardEmittedEvents(this);
     }
 
-    Size BaseWidget::getClientSize() {
+    Size BaseWidget::getDesiredSize() {
+        return d_desiredSize;
+    }
+
+    Size BaseWidget::getDesiredSizeWithMargins() {
         return {
-            marginLeft + width + marginRight,
-            marginTop + height + marginBottom
+            marginLeft + d_desiredSize.width + marginRight,
+            marginTop + d_desiredSize.height + marginBottom
         };
+    }
+
+    Size BaseWidget::getComputedSize() {
+        return d_computedSize;
+    }
+
+    Size BaseWidget::getComputedSizeWithMargins() {
+        return {
+            marginLeft + d_computedSize.width + marginRight,
+            marginTop + d_computedSize.height + marginBottom
+        };
+    }
+
+    void BaseWidget::measure() {
+        for (auto& child : _getChildren()) {
+            child->measure();
+        }
+
+        d_desiredSize = _measureSize();
+
+        if (fixedWidth != NOT_SET) {
+            d_desiredSize.width = fixedWidth;
+        }
+
+        if (fixedHeight != NOT_SET) {
+            d_desiredSize.height = fixedHeight;
+        }
+    }
+
+    void BaseWidget::setComputedSize(const Size& size) {
+        d_computedSize = size;
+        _onSetComputedSize(size);
     }
 
     Position BaseWidget::getPositionInWindow() const {

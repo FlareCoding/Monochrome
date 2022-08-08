@@ -12,6 +12,7 @@ protected:
     PrivateContainer<T>() {
         appendAllowedEvent("childAdded");
         appendAllowedEvent("childRemoved");
+        appendAllowedEvent("layoutChanged");
     }
 
     virtual ~PrivateContainer<T>() = default;
@@ -33,6 +34,7 @@ protected:
         child->forwardEmittedEvent(this, "propertyChanged");
         child->forwardEmittedEvent(this, "requestedFocusGain");
         child->forwardEmittedEvent(this, "requestedFocusLoss");
+        child->forwardEmittedEvent(this, "layoutChanged");
 
         // If the child's z-index changes, the container
         // should reorder all children in ascending order.
@@ -43,6 +45,8 @@ protected:
         fireEvent("childAdded", {
             { "child", child.get() }
         });
+
+        fireEvent("layoutChanged", Event::empty);
     }
 
     // Removes a child from the list of children
@@ -73,6 +77,8 @@ protected:
                 fireEvent("childRemoved", {
                     { "child", child }
                 });
+
+                fireEvent("layoutChanged", Event::empty);
                 return true;
             }
         }

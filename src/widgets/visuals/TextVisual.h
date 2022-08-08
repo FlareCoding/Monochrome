@@ -5,6 +5,7 @@ namespace mc {
 class TextVisual : public VisualElement {
 public:
     inline const VisualType type() const override { return VisualTypeText; }
+    Size measureSize() const override;
 
     // Text to be displayed on the label
     PropertyObserver<std::string> text;

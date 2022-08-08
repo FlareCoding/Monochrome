@@ -1,51 +1,29 @@
 #pragma once
 #include "Label.h"
+#include "visuals/RectVisual.h"
+#include "visuals/BorderVisual.h"
 
 namespace mc {
 class Button : public BaseWidget {
 public:
     Button();
 
-    // Radius of the button's corners
-    PropertyObserver<uint32_t>      cornerRadius;
+    PropertyObserver<uint32_t>  cornerRadius;
+    PropertyObserver<uint32_t>  borderThickness;
+    PropertyObserver<Color>     backgroundColor;
+    PropertyObserver<Color>     borderColor;
 
-    // Thickness of the border around the button
-    PropertyObserver<uint32_t>      borderThickness;
+    Shared<Label> label;
 
-    // Color of the button's body
-    PropertyObserver<Color>         backgroundColor;
-
-    // Color of the border around the button
-    PropertyObserver<Color>         borderColor;
-
-    // Color of the text
-    PropertyObserver<Color>         textColor;
-
-    // Specifies whether there should be a border around the button
-    PropertyObserver<bool>          showBorder;
-
-    // Text to be displayed on the button
-    PropertyObserver<std::string>   text;
-
-    // Font of the text displayed
-    PropertyObserver<std::string>   font;
-
-    // Size of the text font
-    PropertyObserver<uint32_t>      fontSize;
-
-    // Possible options: "left", "right", "center"
-    PropertyObserver<std::string>   alignment;
-
-    // Possible options: "bold", "italic", "normal"
-    PropertyObserver<std::string>   fontStyle;
-
-    // Possible options: "none", "word", "letter"
-    PropertyObserver<std::string>   wordWrapMode;
+protected:
+    Size _measureSize() override;
+    void _onSetComputedSize(const Size& size);
 
 private:
     void _createVisuals();
     void _setupProperties();
 
-    Shared<Label> d_label;
+    Shared<RectVisual> d_bodyVisual;
+    Shared<BorderVisual> d_borderVisual;
 };
 } // namespace mc

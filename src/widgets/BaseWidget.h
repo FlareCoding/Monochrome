@@ -42,11 +42,11 @@ public:
 
     PropertyObserver<Position>      position;
 
-    PropertyObserver<uint32_t>      width;
+    PropertyObserver<uint32_t>      fixedWidth;
     PropertyObserver<uint32_t>      minWidth;
     PropertyObserver<uint32_t>      maxWidth;
 
-    PropertyObserver<uint32_t>      height;
+    PropertyObserver<uint32_t>      fixedHeight;
     PropertyObserver<uint32_t>      minHeight;
     PropertyObserver<uint32_t>      maxHeight;
 
@@ -61,13 +61,27 @@ public:
     inline void setParent(BaseWidget* parent) { d_parent = parent; }
     inline BaseWidget* getParent() const { return d_parent; }
 
-    Size getClientSize();
+    Size getDesiredSize();
+    Size getDesiredSizeWithMargins();
+    Size getComputedSize();
+    Size getComputedSizeWithMargins();
+
+    void measure();
+    virtual Size _measureSize() = 0;
+
+    void setComputedSize(const Size& size);
 
 protected:
     BaseWidget* d_parent = nullptr;
 
     void addCoreVisualElement(Shared<VisualElement> visual);
     void addOverlayVisualElement(Shared<VisualElement> visual);
+
+    virtual void _onSetComputedSize(const Size& size) {}
+
+private:
+    Size d_desiredSize = Size(0, 0);
+    Size d_computedSize = Size(0, 0);
 
 private:
     uuid_t d_uuid;
@@ -89,6 +103,10 @@ class BaseContainerWidget : public BaseWidget {
 public:
     BaseContainerWidget() = default;
     virtual ~BaseContainerWidget() = default;
+
+    // Measures and arranges the children according to its layout rules
+    // @returns Calculated size of the content elements
+    virtual Size updateLayout() = 0;
 
     // Adds a child to the list of widgets
     // @param child Child element to be added

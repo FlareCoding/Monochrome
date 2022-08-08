@@ -9,6 +9,10 @@ namespace mc {
         _setupProperties();
     }
 
+    Size StackPanel::_measureSize() {
+        return updateLayout();
+    }
+
     void StackPanel::_createVisuals() {
         // Setup the panel's body rectangle
         auto bodyRect = MakeRef<RectVisual>();
@@ -19,12 +23,6 @@ namespace mc {
     }
 
     void StackPanel::_setupProperties() {
-        d_verticalLayout = MakeRef<VerticalStackLayout>();
-        d_horizontalLayout = MakeRef<HorizontalStackLayout>();
-
-        d_verticalLayout->setSize(width, height);
-        d_horizontalLayout->setSize(width, height);
-
         backgroundColor = Color::lightGray;
         backgroundColor.forwardEmittedEvents(this);
 
@@ -33,38 +31,56 @@ namespace mc {
 
         orientation = Orientaion::Vertical;
         orientation.forwardEmittedEvents(this);
-
-        on("childAdded", [this](Shared<Event> e) {
-            auto child = e->get<BaseWidget*>("child");
-            _onChildAdded(child);
-        });
-
-        on("childRemoved", [this](Shared<Event> e) {
-            auto child = e->get<BaseWidget*>("child");
-            _onChildRemoved(child);
-        });
-
-        on("widgetResized", [this](Shared<Event> e) {
-            d_verticalLayout->setSize(width, height);
-            d_horizontalLayout->setSize(width, height);
-
-            _layoutUpdate();
-        });
     }
 
-    void StackPanel::_onChildAdded(BaseWidget* child) {
-        _layoutUpdate();
-    }
-
-    void StackPanel::_onChildRemoved(BaseWidget* child) {
-        _layoutUpdate();
-    }
-
-    void StackPanel::_layoutUpdate() {
-        if (orientation == Horizontal) {
-            d_horizontalLayout->positionChildren(_getChildren());
-        } else {
-            d_verticalLayout->positionChildren(_getChildren());
+    Size StackPanel::updateLayout() {
+        // Measure phase
+        for (auto& child : _getChildren()) {
+            child->measure();
         }
+
+        // Arrange phase
+        Position availablePos = Position(0, 0);
+        Size contentSize = Size(0, 0);
+
+        for (auto& child : _getChildren()) {
+            auto finalSize = child->getDesiredSize();
+            
+            if (child->fixedWidth != NOT_SET) {
+                finalSize.width = child->fixedWidth;
+            }
+
+            if (child->fixedHeight != NOT_SET) {
+                finalSize.height = child->fixedHeight;
+            }
+
+            // Set the child's final computed size
+            child->setComputedSize(finalSize);
+
+            // Set child's position
+            child->position = {
+                static_cast<int32_t>(child->marginLeft) + availablePos.x,
+                static_cast<int32_t>(child->marginTop) + availablePos.y
+            };
+
+            auto childSizeWithMargins = child->getComputedSizeWithMargins();
+            //availablePos.y += childSizeWithMargins.height;
+            availablePos.x += childSizeWithMargins.width;
+
+            // Keeping track of content size
+            /*if (contentSize.width < childSizeWithMargins.width) {
+                contentSize.width = childSizeWithMargins.width;
+            }
+
+            contentSize.height += childSizeWithMargins.height;*/
+
+            if (contentSize.height < childSizeWithMargins.height) {
+                contentSize.height = childSizeWithMargins.height;
+            }
+
+            contentSize.width += childSizeWithMargins.width;
+        }
+
+        return contentSize;
     }
 } // namespace mc

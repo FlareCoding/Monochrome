@@ -10,62 +10,63 @@ namespace mc {
         Position& cellPosition,
         BaseWidget* widget
     ) const {
-        cellPosition.x += widget->getClientSize().width;
+        //cellPosition.x += widget->getClientSize().width;
     }
 
     Position HorizontalStackLayout::calculateChildPosition(BaseWidget* child) {
-        Position result;
+        Position result = Position(0, 0);
 
-        auto& cellPosition = getCellPosition();
-        auto widgetSize = child->getClientSize();
+        //auto& cellPosition = getCellPosition();
+        //auto widgetSize = child->getClientSize();
 
-        // Automatically determine the vertical position
-        result.x = cellPosition.x + static_cast<int32_t>(child->marginLeft);
+        //// Automatically determine the vertical position
+        //result.x = cellPosition.x + static_cast<int32_t>(child->marginLeft);
 
-        switch (child->verticalAlignment) {
-        case VerticalAlignment::VATop: {
-            result.y = static_cast<int32_t>(child->marginTop);
-            break;
-        }
-        case VerticalAlignment::VABottom: {
-            result.y = static_cast<int32_t>(d_height - child->marginBottom - child->height);
-            break;
-        }
-        case VerticalAlignment::VACenter: {
-            result.y = static_cast<int32_t>((d_height / 2) - (widgetSize.height / 2));
-            break;
-        }
-        case VerticalAlignment::VAFill: {
-            result.y = static_cast<int32_t>(child->marginTop);
-            break;
-        }
-        default: break;
-        }
+        //switch (child->verticalAlignment) {
+        //case VerticalAlignment::VATop: {
+        //    result.y = static_cast<int32_t>(child->marginTop);
+        //    break;
+        //}
+        //case VerticalAlignment::VABottom: {
+        //    result.y = static_cast<int32_t>(d_height - child->marginBottom - child->height);
+        //    break;
+        //}
+        //case VerticalAlignment::VACenter: {
+        //    result.y = static_cast<int32_t>((d_height / 2) - (widgetSize.height / 2));
+        //    break;
+        //}
+        //case VerticalAlignment::VAFill: {
+        //    result.y = static_cast<int32_t>(child->marginTop);
+        //    break;
+        //}
+        //default: break;
+        //}
 
         return result;
     }
 
     Size HorizontalStackLayout::calculateChildSize(BaseWidget* child) {
-        Size result = { child->width, child->height };
+        //Size result = { child->width, child->height };
 
-        switch (child->verticalAlignment) {
-        case VerticalAlignment::VAFill: {
-            // Stretch the size of the child to fit into the entire cell
-            auto childMargins = child->marginTop + child->marginBottom;
+        //switch (child->verticalAlignment) {
+        //case VerticalAlignment::VAFill: {
+        //    // Stretch the size of the child to fit into the entire cell
+        //    auto childMargins = child->marginTop + child->marginBottom;
 
-            result.height = d_height - childMargins;
+        //    result.height = d_height - childMargins;
 
-            // Sanity checking child's new width
-            if (result.height > child->maxHeight) {
-                result.height = child->maxHeight;
-            } else if (result.height < child->minHeight) {
-                result.height = child->minHeight;
-            }
-            break;
-        }
-        default: break;
-        }
+        //    // Sanity checking child's new width
+        //    if (result.height > child->maxHeight) {
+        //        result.height = child->maxHeight;
+        //    } else if (result.height < child->minHeight) {
+        //        result.height = child->minHeight;
+        //    }
+        //    break;
+        //}
+        //default: break;
+        //}
 
+        Size result = Size(0, 0);
         return result;
     }
 } // namespace mc

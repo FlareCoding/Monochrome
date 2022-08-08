@@ -29,8 +29,8 @@ namespace mc {
             auto size = calculateChildSize(child.get());
 
             child->position = position;
-            child->width = size.width;
-            child->height = size.height;
+            /*child->width = size.width;
+            child->height = size.height;*/
 
             advanceCellPosition(d_nextAvailableCellPosition, child.get());
         }

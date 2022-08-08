@@ -31,6 +31,8 @@ set(
 set(
     WIDGETS_SOURCES
 
+    ${cwd}/visuals/TextVisual.cpp
+
     ${cwd}/layouts/Layout.cpp
     ${cwd}/layouts/VerticalStackLayout.cpp
     ${cwd}/layouts/HorizontalStackLayout.cpp

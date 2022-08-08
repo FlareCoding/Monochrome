@@ -5,7 +5,7 @@
 #include <atomic>
 
 namespace mc {
-class BaseWidget;
+class BaseContainerWidget;
 
 class UIWindow : public EventEmitter {
 public:
@@ -50,11 +50,11 @@ public:
     Color getBackgroundColor() const { return d_backgroundColor; }
     virtual void setBackgroundColor(const Color& color) { d_backgroundColor = color; }
 
-    void setRootWidget(Shared<BaseWidget> root);
+    void setRootWidget(Shared<BaseContainerWidget> root);
 
 private:
     Shared<NativeWindow> d_nativeWindow = nullptr;
-    Shared<BaseWidget> d_rootWidget;
+    Shared<BaseContainerWidget> d_rootWidget;
 
     uuid_t d_uuid = 0;
     std::atomic_bool d_isDestroyed = false;

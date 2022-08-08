@@ -17,17 +17,13 @@ public:
     // will be layed out inside the panel.
     PropertyObserver<Orientaion>    orientation;
 
+    Size updateLayout() override;
+
+protected:
+    Size _measureSize() override;
+
 private:
     void _createVisuals();
     void _setupProperties();
-
-    void _onChildAdded(BaseWidget* child);
-    void _onChildRemoved(BaseWidget* child);
-
-    void _layoutUpdate();
-
-private:
-    Shared<Layout> d_verticalLayout;
-    Shared<Layout> d_horizontalLayout;
 };
 } // namespace mc

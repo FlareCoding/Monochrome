@@ -4,6 +4,8 @@
 #include <widgets/BaseWidget.h>
 
 namespace mc {
+    bool Renderer::enableDebugBoundingBoxes = false;
+
     void Renderer::renderScene(
         const Color& backgroundColor,
         Shared<BaseWidget> rootContainer,
@@ -31,7 +33,7 @@ namespace mc {
         }
 
         Position widgetPosition = parentOffset + widget->position;
-        Size widgetSize = widget->getClientSize();
+        Size widgetSize = widget->getComputedSize();
 
         // Create a clipping layer so the contents
         // don't go outside the bounds of the widget.
@@ -49,12 +51,7 @@ namespace mc {
                 continue;
             }
 
-            Size visualSize = { visual->width, visual->height };
-            if (visualSize.width == NOT_SET && visualSize.height == NOT_SET) {
-                visualSize = { widget->width, widget->height };
-            }
-
-            drawVisualElement(renderTarget, visual, widgetPosition, visualSize);
+            drawVisualElement(renderTarget, visual, widgetPosition, widgetSize);
         }
 
         // Render all child elements
@@ -69,16 +66,22 @@ namespace mc {
                 continue;
             }
 
-            Size visualSize = { visual->width, visual->height };
-            if (visualSize.width == NOT_SET && visualSize.height == NOT_SET) {
-                visualSize = { widget->width, widget->height };
-            }
-
-            drawVisualElement(renderTarget, visual, widgetPosition, visualSize);
+            drawVisualElement(renderTarget, visual, widgetPosition, widgetSize);
         }
 
         // Restore the clipping layer
         renderTarget->popClipLayer();
+
+        if (enableDebugBoundingBoxes) {
+            renderTarget->drawRectangle(
+                widgetPosition.x,
+                widgetPosition.y,
+                widgetSize.width,
+                widgetSize.height,
+                Color(180, 0, 0, 255),
+                0, false, 2
+            );
+        }
     }
 
     void Renderer::drawVisualElement(

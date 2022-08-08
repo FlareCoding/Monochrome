@@ -2,6 +2,7 @@
 #include <rendering/Renderer.h>
 #include <chrono>
 #include <widgets/BaseWidget.h>
+#include <widgets/StackPanel.h>
 
 #ifdef MC_PLATFORM_MACOS
 #include <platform/macos/OSXNativeWindow.h>
@@ -38,8 +39,8 @@ namespace mc {
             auto height = event->get<uint32_t>("height");
 
             if (d_rootWidget) {
-                d_rootWidget->width = getWidth();
-                d_rootWidget->height = getHeight();
+                d_rootWidget->setComputedSize(getSize());
+                d_rootWidget->fireEvent("layoutChanged", Event::empty);
             }
 
             setShouldRedraw();
@@ -193,11 +194,17 @@ namespace mc {
         d_shouldRedrawScene = true;
     }
 
-    void UIWindow::setRootWidget(Shared<BaseWidget> root) {
-        d_rootWidget = root;
+    void UIWindow::setRootWidget(Shared<BaseContainerWidget> root) {
+        if (d_rootWidget) {
+            d_rootWidget->off("layoutChanged");
+        }
 
-        d_rootWidget->width = getWidth();
-        d_rootWidget->height = getHeight();
+        d_rootWidget = root;
+        d_rootWidget->setComputedSize(getSize());
+        d_rootWidget->on("layoutChanged", [this](Shared<Event> e) {
+            d_rootWidget->updateLayout();
+        });
+
         setShouldRedraw();
     }
 
