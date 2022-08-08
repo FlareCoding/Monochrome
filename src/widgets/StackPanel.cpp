@@ -116,8 +116,7 @@ namespace mc {
         // Min/max height constraints
         if (contentSize.height > maxHeight) {
             contentSize.height = maxHeight;
-        }
-        else if (contentSize.height < minHeight) {
+        } else if (contentSize.height < minHeight) {
             contentSize.height = minHeight;
         }
 
