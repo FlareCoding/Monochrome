@@ -96,11 +96,19 @@ namespace mc {
         marginRight = 0;
         marginRight.forwardEmittedEvents(this);
 
-        horizontalAlignment = HorizontalAlignment::HALeft;
+        horizontalAlignment = HorizontalAlignment::HAFill;
         horizontalAlignment.forwardEmittedEvents(this);
 
-        verticalAlignment = VerticalAlignment::VATop;
+        verticalAlignment = VerticalAlignment::VAFill;
         verticalAlignment.forwardEmittedEvents(this);
+
+        horizontalAlignment.on("propertyChanged", [this](auto e) {
+            this->fireEvent("layoutChanged", Event::empty);
+        });
+
+        verticalAlignment.on("propertyChanged", [this](auto e) {
+            this->fireEvent("layoutChanged", Event::empty);
+        });
     }
 
     Size BaseWidget::getDesiredSize() {

@@ -46,6 +46,18 @@ namespace mc {
         for (auto& child : _getChildren()) {
             auto finalSize = child->getDesiredSize();
 
+            /*if (orientation == Orientaion::Vertical) {
+                if (child->horizontalAlignment == HAFill) {
+                    finalSize.width =
+                        getComputedSize().width - child->marginLeft - child->marginRight;
+                }
+            } else {
+                if (child->verticalAlignment == VAFill) {
+                    finalSize.height =
+                        getComputedSize().height - child->marginTop - child->marginBottom;
+                }
+            }*/
+
             if (child->fixedWidth != NOT_SET) {
                 finalSize.width = child->fixedWidth;
             }
@@ -64,21 +76,49 @@ namespace mc {
             };
 
             auto childSizeWithMargins = child->getComputedSizeWithMargins();
-            //availablePos.y += childSizeWithMargins.height;
-            availablePos.x += childSizeWithMargins.width;
 
-            // Keeping track of content size
-            /*if (contentSize.width < childSizeWithMargins.width) {
-                contentSize.width = childSizeWithMargins.width;
+            if (orientation == Orientaion::Vertical) {
+                availablePos.y += childSizeWithMargins.height;
+
+                // Keeping track of content size
+                if (contentSize.width < childSizeWithMargins.width) {
+                    contentSize.width = childSizeWithMargins.width;
+                }
+
+                contentSize.height += childSizeWithMargins.height;
+            } else {
+                availablePos.x += childSizeWithMargins.width;
+
+                // Keeping track of content size
+                if (contentSize.height < childSizeWithMargins.height) {
+                    contentSize.height = childSizeWithMargins.height;
+                }
+
+                contentSize.width += childSizeWithMargins.width;
             }
+        }
 
-            contentSize.height += childSizeWithMargins.height;*/
+        if (fixedWidth != NOT_SET) {
+            contentSize.width = fixedWidth;
+        }
 
-            if (contentSize.height < childSizeWithMargins.height) {
-                contentSize.height = childSizeWithMargins.height;
-            }
+        if (fixedHeight != NOT_SET) {
+            contentSize.height = fixedHeight;
+        }
 
-            contentSize.width += childSizeWithMargins.width;
+        // Min/max width constraints
+        if (contentSize.width > maxWidth) {
+            contentSize.width = maxWidth;
+        } else if (contentSize.width < minWidth) {
+            contentSize.width = minWidth;
+        }
+
+        // Min/max height constraints
+        if (contentSize.height > maxHeight) {
+            contentSize.height = maxHeight;
+        }
+        else if (contentSize.height < minHeight) {
+            contentSize.height = minHeight;
         }
 
         return contentSize;
