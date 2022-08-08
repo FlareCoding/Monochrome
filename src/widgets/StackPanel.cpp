@@ -45,7 +45,7 @@ namespace mc {
 
         for (auto& child : _getChildren()) {
             auto finalSize = child->getDesiredSize();
-            
+
             if (child->fixedWidth != NOT_SET) {
                 finalSize.width = child->fixedWidth;
             }
