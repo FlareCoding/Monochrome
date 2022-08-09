@@ -1,7 +1,5 @@
 #include "StackPanel.h"
 #include "visuals/Visuals.h"
-#include "layouts/VerticalStackLayout.h"
-#include "layouts/HorizontalStackLayout.h"
 
 namespace mc {
     StackPanel::StackPanel() {

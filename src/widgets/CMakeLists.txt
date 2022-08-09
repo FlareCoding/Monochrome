@@ -10,10 +10,6 @@ set(
     ${cwd}/visuals/BorderVisual.h
     ${cwd}/visuals/TextVisual.h
 
-    ${cwd}/layouts/Layout.h
-    ${cwd}/layouts/VerticalStackLayout.h
-    ${cwd}/layouts/HorizontalStackLayout.h
-
     ${cwd}/Color.h
     ${cwd}/Layer.h
 
@@ -32,10 +28,6 @@ set(
     WIDGETS_SOURCES
 
     ${cwd}/visuals/TextVisual.cpp
-
-    ${cwd}/layouts/Layout.cpp
-    ${cwd}/layouts/VerticalStackLayout.cpp
-    ${cwd}/layouts/HorizontalStackLayout.cpp
 
     ${cwd}/Color.cpp
     ${cwd}/BaseWidget.cpp

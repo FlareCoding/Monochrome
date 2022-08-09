@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseWidget.h"
-#include "layouts/Layout.h"
 
 namespace mc {
 class StackPanel : public BaseContainerWidget {
