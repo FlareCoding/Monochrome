@@ -148,7 +148,6 @@ namespace mc {
             child->measure();
         }
 
-        printf("%p updated desired size\n", this);
         d_desiredSize = _measureSize();
 
         // Check against a fixed specified width
