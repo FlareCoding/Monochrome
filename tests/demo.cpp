@@ -10,6 +10,7 @@
 using namespace mc;
 
 #include <rendering/Renderer.h>
+#include <events/KeyboardEvents.h>
 
 Shared<StackPanel> createLargePanel() {
     auto panel = MakeRef<StackPanel>();
@@ -83,6 +84,14 @@ int main() {
 
     auto window = MakeRef<ClassicWindow>(1060, 660, "New Widget System Demo");
     window->setBackgroundColor(Color(18, 22, 28));
+    window->on("keyDown", [window](Shared<Event> e) {
+        auto pressedChar = std::static_pointer_cast<KeyDownEvent>(e)->getChar();
+
+        if (pressedChar == 'x') {
+            Renderer::enableDebugBoundingBoxes = !Renderer::enableDebugBoundingBoxes;
+            window->setShouldRedraw();
+        }
+    });
 
     auto rootPanel = MakeRef<StackPanel>();
     rootPanel->backgroundColor = Color(40, 40, 40);
@@ -107,6 +116,15 @@ int main() {
     demoPanel->verticalAlignment = VAFill;
     centerPanel->addChild(demoPanel);
 
+    auto hintLabel = MakeRef<Label>();
+    hintLabel->text = "Press X to toggle debug boxes";
+    hintLabel->fontSize = 26;
+    hintLabel->marginTop = 10;
+    hintLabel->marginBottom = 10;
+    hintLabel->marginLeft = 10;
+    hintLabel->marginRight = 10;
+    demoPanel->addChild(hintLabel);
+
     auto first = MakeRef<Button>();
     first->label->text = "First Button";
     first->label->fontSize = 18;
@@ -122,8 +140,12 @@ int main() {
     second->marginLeft = 6;
     second->marginRight = 6;
     second->marginTop = 6;
-    second->marginBottom = 6;
+    second->marginBottom = 16;
     demoPanel->addChild(second);
+
+    auto checkbox = MakeRef<Checkbox>();
+    checkbox->marginLeft = 6;
+    demoPanel->addChild(checkbox);
 
     centerPanel->addChild(createLargePanel());
 
