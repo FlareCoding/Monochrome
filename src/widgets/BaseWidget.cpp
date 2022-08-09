@@ -140,12 +140,43 @@ namespace mc {
 
         d_desiredSize = _measureSize();
 
+        // Check against a fixed specified width
         if (fixedWidth != NOT_SET) {
             d_desiredSize.width = fixedWidth;
         }
 
+        // Check against a fixed specified height
         if (fixedHeight != NOT_SET) {
             d_desiredSize.height = fixedHeight;
+        }
+
+        // Min/max width constraints
+        if (d_desiredSize.width > maxWidth) {
+            d_desiredSize.width = maxWidth;
+
+        } else if (d_desiredSize.width < minWidth) {
+            d_desiredSize.width = minWidth;
+        }
+
+        // Min/max height constraints
+        if (d_desiredSize.height > maxHeight) {
+            d_desiredSize.height = maxHeight;
+
+        } else if (d_desiredSize.height < minHeight) {
+            d_desiredSize.height = minHeight;
+        }
+    }
+
+    void BaseWidget::arrangeChildren() {
+        // At this point, the computed size
+        // will be set for 'this' widget.
+        _onArrangeChildren();
+
+        // After arranging the children is done, all
+        // direct children will have computed sizes, so
+        // it's safe to arrange their internal children next.
+        for (auto& child : _getChildren()) {
+            child->arrangeChildren();
         }
     }
 

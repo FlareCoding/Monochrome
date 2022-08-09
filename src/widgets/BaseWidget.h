@@ -61,14 +61,34 @@ public:
     inline void setParent(BaseWidget* parent) { d_parent = parent; }
     inline BaseWidget* getParent() const { return d_parent; }
 
+    // Used to retrieve the currently marked
+    // size that the widget prefers to have.
     Size getDesiredSize();
+
+    // Returns the desired size of the widget in
+    // addition to the margins around the widget.
     Size getDesiredSizeWithMargins();
+
+    // Returns the final computed size of the widget
     Size getComputedSize();
+
+    // Returns the final computed size of the
+    // widget including the surrounding margins.
     Size getComputedSizeWithMargins();
 
+    // Recursively descends down the widget tree
+    // and calculates each widget's desired size
+    // according to the internal _measuredSize override.
     void measure();
-    virtual Size _measureSize() = 0;
 
+    // Recursively arranges the children using the
+    // internal _onArrangeChildren() override.
+    //
+    // *Note* By the time _onArrangeChildren() is called,
+    // the computed size of the widget is already set.
+    void arrangeChildren();
+
+    // Directly sets the final computed size of the widget
     void setComputedSize(const Size& size);
 
 protected:
@@ -78,6 +98,16 @@ protected:
     void addOverlayVisualElement(Shared<VisualElement> visual);
 
     virtual void _onSetComputedSize(const Size& size) {}
+
+    // Called during the measure() routine during
+    // the measure phase of the layout system.
+    // @returns Minimum required size to contain all children
+    virtual Size _measureSize() = 0;
+
+    // Called during the arrangeChildren() routine during
+    // the arrange phase of the layout system. Responsible
+    // for arranging the children and setting their computed sizes.
+    virtual void _onArrangeChildren() {}
 
 private:
     Size d_desiredSize = Size(0, 0);
@@ -103,10 +133,6 @@ class BaseContainerWidget : public BaseWidget {
 public:
     BaseContainerWidget() = default;
     virtual ~BaseContainerWidget() = default;
-
-    // Measures and arranges the children according to its layout rules
-    // @returns Calculated size of the content elements
-    virtual Size updateLayout() = 0;
 
     // Adds a child to the list of widgets
     // @param child Child element to be added

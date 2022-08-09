@@ -17,7 +17,7 @@ public:
 
 protected:
     Size _measureSize() override;
-    void _onSetComputedSize(const Size& size);
+    void _onSetComputedSize(const Size& size) override;
 
 private:
     void _createVisuals();

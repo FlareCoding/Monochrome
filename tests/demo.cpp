@@ -34,7 +34,6 @@ Shared<StackPanel> createLargePanel() {
         auto btn = MakeRef<Button>();
         btn->label->text = "Button " + std::to_string(i);
         btn->label->fontSize = 14;
-        btn->marginLeft = 10;
         panel->addChild(btn);
     }
 
@@ -50,10 +49,13 @@ Shared<StackPanel> createLargePanel() {
     panel->addChild(label);
 
     auto button = MakeRef<Button>();
-    button->label->text = "This is a very long button text";
+    button->label->text = "This is a very larged button text";
     button->label->fontSize = 24;
     button->fixedWidth = 460;
     button->fixedHeight = 100;
+    button->marginLeft = 10;
+    button->marginRight = 10;
+    button->marginBottom = 10;
     panel->addChild(button);
 
     for (auto i = 3; i < 7; ++i) {
@@ -84,10 +86,12 @@ int main() {
     demoPanel->marginRight = 20;
     demoPanel->orientation = Vertical;
     demoPanel->backgroundColor = Color(0, 60, 20);
+    demoPanel->minWidth = 300;
     rootPanel->addChild(demoPanel);
 
     auto first = MakeRef<Button>();
     first->label->text = "First Button";
+    first->label->fontSize = 18;
     first->marginLeft = 6;
     first->marginRight = 6;
     first->marginTop = 6;
@@ -96,6 +100,7 @@ int main() {
 
     auto second = MakeRef<Button>();
     second->label->text = "Second Button";
+    second->label->fontSize = 18;
     second->marginLeft = 6;
     second->marginRight = 6;
     second->marginTop = 6;

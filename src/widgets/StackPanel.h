@@ -17,10 +17,9 @@ public:
     // will be layed out inside the panel.
     PropertyObserver<Orientaion>    orientation;
 
-    Size updateLayout() override;
-
 protected:
     Size _measureSize() override;
+    void _onArrangeChildren() override;
 
 private:
     void _createVisuals();

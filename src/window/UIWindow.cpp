@@ -202,7 +202,21 @@ namespace mc {
         d_rootWidget = root;
         d_rootWidget->setComputedSize(getSize());
         d_rootWidget->on("layoutChanged", [this](Shared<Event> e) {
-            d_rootWidget->updateLayout();
+            std::thread layoutThread([this]() {
+                // Measure phase will measure all the child widgets
+                // recursively and set each child's desired size.
+                d_rootWidget->measure();
+
+                // First we need to set the current widget's computed size
+                d_rootWidget->setComputedSize(getSize());
+
+                // After the computed size has been set,
+                // recursively arrange all the children inside.
+                d_rootWidget->arrangeChildren();
+            });
+
+            // Perform layout operations asynchronously
+            layoutThread.detach();
         });
 
         setShouldRedraw();
