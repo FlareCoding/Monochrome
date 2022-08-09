@@ -63,7 +63,7 @@ namespace mc {
         button->label->text = "✔";
         button->label->fontSize = 10;
         button->label->color = Color::white;
-        button->marginRight = 8;
+        button->marginRight = 2;
         button->borderColor = Color::transparent;
         button->cornerRadius = 0;
         button->forwardEmittedEvents(this);
