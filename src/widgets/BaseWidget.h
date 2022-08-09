@@ -91,6 +91,14 @@ public:
     // Directly sets the final computed size of the widget
     void setComputedSize(const Size& size);
 
+    // Returns whether or not a layout recalculation
+    // should occur after a layout-dependent property update.
+    inline bool isLayoutDirty() const { return d_isLayoutDirty; }
+
+    // Forcefully marks the current widget's layout state
+    // as dirty, forcing a redraw with a layout recalculation.
+    void markLayoutDirty();
+
 protected:
     BaseWidget* d_parent = nullptr;
 
@@ -112,6 +120,8 @@ protected:
 private:
     Size d_desiredSize = Size(0, 0);
     Size d_computedSize = Size(0, 0);
+
+    bool d_isLayoutDirty = true;
 
 private:
     uuid_t d_uuid;

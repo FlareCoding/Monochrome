@@ -109,6 +109,10 @@ namespace mc {
         verticalAlignment.on("propertyChanged", [this](auto e) {
             this->fireEvent("layoutChanged", Event::empty);
         });
+
+        on("layoutChanged", [this](auto e) {
+            d_isLayoutDirty = true;
+        });
     }
 
     Size BaseWidget::getDesiredSize() {
@@ -134,10 +138,17 @@ namespace mc {
     }
 
     void BaseWidget::measure() {
+        // Ignore measuring children if the layout
+        // has not been marked as dirty or been changed.
+        if (!isLayoutDirty()) {
+            return;
+        }
+
         for (auto& child : _getChildren()) {
             child->measure();
         }
 
+        printf("%p updated desired size\n", this);
         d_desiredSize = _measureSize();
 
         // Check against a fixed specified width
@@ -168,6 +179,12 @@ namespace mc {
     }
 
     void BaseWidget::arrangeChildren() {
+        // Ignore arranging children if the layout
+        // has not been marked as dirty or been changed.
+        if (!isLayoutDirty()) {
+            return;
+        }
+
         // At this point, the computed size
         // will be set for 'this' widget.
         _onArrangeChildren();
@@ -178,6 +195,8 @@ namespace mc {
         for (auto& child : _getChildren()) {
             child->arrangeChildren();
         }
+
+        d_isLayoutDirty = false;
     }
 
     void BaseWidget::setComputedSize(const Size& size) {
@@ -197,6 +216,11 @@ namespace mc {
         }
 
         return result;
+    }
+
+    void BaseWidget::markLayoutDirty() {
+        d_isLayoutDirty = true;
+        fireEvent("layoutChanged", Event::empty);
     }
 
     void BaseWidget::addCoreVisualElement(Shared<VisualElement> visual) {
