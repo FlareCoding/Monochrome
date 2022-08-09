@@ -21,6 +21,12 @@ protected:
     Size _measureSize() override;
     void _onArrangeChildren() override;
 
+    void _finalizeChild(
+        Shared<BaseWidget> child,
+        const Size& contentSize,
+        const Position& childSlotPosition
+    );
+
 private:
     void _createVisuals();
     void _setupProperties();

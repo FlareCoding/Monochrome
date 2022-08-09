@@ -46,38 +46,89 @@ namespace mc {
     }
 
     void StackPanel::_onArrangeChildren() {
-        Position availablePos = Position(0, 0);
+        Position childSlotPosition = Position(0, 0);
         auto contentSize = getComputedSize();
 
         for (auto& child : _getChildren()) {
-            auto desiredSize = child->getDesiredSize();
-
-            // Set child's position
-            child->position = {
-                static_cast<int32_t>(child->marginLeft) + availablePos.x,
-                static_cast<int32_t>(child->marginTop) + availablePos.y
-            };
-
-            // Calculate the final size for each child
-            auto finalSize = desiredSize;
-
-            if (orientation == Orientaion::Vertical) {
-                if (child->horizontalAlignment == HorizontalAlignment::HAFill) {
-                    finalSize.width = contentSize.width - child->marginLeft - child->marginRight;
-                }
-            }
-
-            child->setComputedSize(finalSize);
+            // Calculate the final position and size for each child
+            _finalizeChild(child, contentSize, childSlotPosition);
 
             // Advance the available insertion position
             auto childSizeWithMargins = child->getComputedSizeWithMargins();
 
             if (orientation == Orientaion::Vertical) {
-                availablePos.y += childSizeWithMargins.height;
+                childSlotPosition.y += childSizeWithMargins.height;
             } else {
-                availablePos.x += childSizeWithMargins.width;
+                childSlotPosition.x += childSizeWithMargins.width;
             }
         }
+    }
+
+    void StackPanel::_finalizeChild(
+        Shared<BaseWidget> child,
+        const Size& contentSize,
+        const Position& childSlotPosition
+    ) {
+        auto finalSize = child->getDesiredSize();
+        auto finalPosition = Position(0, 0);
+
+        if (orientation == Orientaion::Vertical) {
+            finalPosition.y = static_cast<int32_t>(child->marginTop) + childSlotPosition.y;
+
+            switch (child->horizontalAlignment) {
+            case HALeft: {
+                finalPosition.x = static_cast<int32_t>(child->marginLeft);
+                break;
+            }
+            case HARight: {
+                finalPosition.x =
+                    static_cast<int32_t>(contentSize.width - finalSize.width - child->marginRight);
+                break;
+            }
+            case HACenter: {
+                finalPosition.x = static_cast<int32_t>(
+                    contentSize.width / 2 - finalSize.width / 2
+                );
+                break;
+            }
+            case HAFill: {
+                finalPosition.x = static_cast<int32_t>(child->marginLeft);
+                finalSize.width = contentSize.width - child->marginLeft - child->marginRight;
+                break;
+            }
+            default: break;
+            }
+        } else {
+            finalPosition.x = static_cast<int32_t>(child->marginLeft) + childSlotPosition.x;
+
+            switch (child->verticalAlignment) {
+            case VATop: {
+                finalPosition.y = static_cast<int32_t>(child->marginTop);
+                break;
+            }
+            case VABottom: {
+                finalPosition.y = static_cast<int32_t>(
+                    contentSize.height - finalSize.height - child->marginBottom
+                );
+                break;
+            }
+            case VACenter: {
+                finalPosition.y = static_cast<int32_t>(
+                    contentSize.height / 2 - finalSize.height / 2
+                );
+                break;
+            }
+            case VAFill: {
+                finalPosition.y = static_cast<int32_t>(child->marginTop);
+                finalSize.height = contentSize.height - child->marginTop - child->marginBottom;
+                break;
+            }
+            default: break;
+            }
+        }
+
+        child->position = finalPosition;
+        child->setComputedSize(finalSize);
     }
 
     void StackPanel::_createVisuals() {

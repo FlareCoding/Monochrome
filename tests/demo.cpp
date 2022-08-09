@@ -14,9 +14,11 @@ using namespace mc;
 Shared<StackPanel> createLargePanel() {
     auto panel = MakeRef<StackPanel>();
     panel->marginLeft = 20;
-    panel->marginTop = 20;
     panel->marginRight = 20;
+    panel->marginTop = 20;
+    panel->marginBottom = 20;
     panel->orientation = Vertical;
+    panel->verticalAlignment = VACenter;
     panel->backgroundColor = Color(0, 60, 20);
 
     auto label = MakeRef<Label>();
@@ -28,25 +30,29 @@ Shared<StackPanel> createLargePanel() {
     label->marginBottom = 10;
     label->marginLeft = 6;
     label->marginRight = 6;
+    label->horizontalAlignment = HAFill;
     panel->addChild(label);
 
     for (auto i = 0; i < 3; ++i) {
         auto btn = MakeRef<Button>();
         btn->label->text = "Button " + std::to_string(i);
         btn->label->fontSize = 14;
+        btn->marginLeft = 10;
+        btn->marginRight = 10;
         panel->addChild(btn);
     }
 
-    label = MakeRef<Label>();
-    label->position = { 100, 100 };
-    label->color = Color::white;
-    label->fontSize = 16;
-    label->text = "Smaller label";
-    label->marginTop = 10;
-    label->marginBottom = 10;
-    label->marginLeft = 6;
-    label->marginRight = 6;
-    panel->addChild(label);
+    auto smallerlabel = MakeRef<Label>();
+    smallerlabel->position = { 100, 100 };
+    smallerlabel->color = Color::white;
+    smallerlabel->fontSize = 18;
+    smallerlabel->text = "Smaller label";
+    smallerlabel->marginTop = 10;
+    smallerlabel->marginBottom = 10;
+    smallerlabel->marginLeft = 6;
+    smallerlabel->marginRight = 6;
+    smallerlabel->horizontalAlignment = HACenter;
+    panel->addChild(smallerlabel);
 
     auto button = MakeRef<Button>();
     button->label->text = "This is a very larged button text";
@@ -62,6 +68,9 @@ Shared<StackPanel> createLargePanel() {
         auto btn = MakeRef<Button>();
         btn->label->text = "Button " + std::to_string(i);
         btn->label->fontSize = 14;
+        btn->marginLeft = 10;
+        btn->marginRight = 10;
+        btn->horizontalAlignment = HARight;
         panel->addChild(btn);
     }
 
@@ -77,17 +86,26 @@ int main() {
 
     auto rootPanel = MakeRef<StackPanel>();
     rootPanel->backgroundColor = Color(40, 40, 40);
-    rootPanel->orientation = Horizontal;
+    rootPanel->orientation = Vertical;
     window->setRootWidget(rootPanel);
 
+    auto centerPanel = MakeRef<StackPanel>();
+    centerPanel->backgroundColor = Color(40, 40, 180);
+    centerPanel->orientation = Horizontal;
+    centerPanel->horizontalAlignment = HACenter;
+    centerPanel->marginTop = 80;
+    rootPanel->addChild(centerPanel);
+
     auto demoPanel = MakeRef<StackPanel>();
-    demoPanel->marginLeft = 20;
-    demoPanel->marginTop = 20;
+    demoPanel->marginLeft = 60;
     demoPanel->marginRight = 20;
+    demoPanel->marginTop = 20;
+    demoPanel->marginBottom = 20;
     demoPanel->orientation = Vertical;
     demoPanel->backgroundColor = Color(0, 60, 20);
     demoPanel->minWidth = 300;
-    rootPanel->addChild(demoPanel);
+    demoPanel->verticalAlignment = VAFill;
+    centerPanel->addChild(demoPanel);
 
     auto first = MakeRef<Button>();
     first->label->text = "First Button";
@@ -107,7 +125,7 @@ int main() {
     second->marginBottom = 6;
     demoPanel->addChild(second);
 
-    rootPanel->addChild(createLargePanel());
+    centerPanel->addChild(createLargePanel());
 
     AppManager::startApplicationLoop();
     return 0;

@@ -96,10 +96,10 @@ namespace mc {
         marginRight = 0;
         marginRight.forwardEmittedEvents(this);
 
-        horizontalAlignment = HorizontalAlignment::HAFill;
+        horizontalAlignment = HorizontalAlignment::HALeft;
         horizontalAlignment.forwardEmittedEvents(this);
 
-        verticalAlignment = VerticalAlignment::VAFill;
+        verticalAlignment = VerticalAlignment::VATop;
         verticalAlignment.forwardEmittedEvents(this);
 
         horizontalAlignment.on("propertyChanged", [this](auto e) {
