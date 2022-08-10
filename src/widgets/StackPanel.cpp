@@ -8,11 +8,6 @@ namespace mc {
     }
 
     Size StackPanel::_measureSize() {
-        // Measure phase
-        for (auto& child : _getChildren()) {
-            child->measure();
-        }
-
         Position availablePos = Position(0, 0);
         Size contentSize = Size(0, 0);
 
