@@ -21,6 +21,7 @@ set(
     ${cwd}/Button.h
     ${cwd}/Checkbox.h
     ${cwd}/StackPanel.h
+    ${cwd}/ProgressBar.h
 
     PARENT_SCOPE
 )
@@ -37,6 +38,7 @@ set(
     ${cwd}/Button.cpp
     ${cwd}/Checkbox.cpp
     ${cwd}/StackPanel.cpp
+    ${cwd}/ProgressBar.cpp
 
     PARENT_SCOPE
 )
