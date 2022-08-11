@@ -190,7 +190,7 @@ namespace mc {
                 // Process the event for all the children
                 _processMouseUpEvent(event, widget->_getChildren(), widgetPosition);
 
-                // Since the widget received mouseDown event on the current
+                // Since the widget received mouseUp event on the current
                 // layer, it means it was on top of all other widgets at
                 // that position and the event should stop getting processed.
                 break;
