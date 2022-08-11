@@ -147,6 +147,11 @@ int main() {
     checkbox->marginLeft = 6;
     demoPanel->addChild(checkbox);
 
+    auto progressBar = MakeRef<ProgressBar>();
+    progressBar->marginTop = 16;
+    progressBar->marginLeft = 6;
+    demoPanel->addChild(progressBar);
+
     centerPanel->addChild(createLargePanel());
 
     AppManager::startApplicationLoop();
