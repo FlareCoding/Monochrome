@@ -1,138 +1,159 @@
-#include "Monochrome.h"
+#if defined(NDEBUG) && defined(_WIN32)
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#endif // !NDEBUG
+
+#include <window/ClassicWindow.h>
+#include <window/ModernWindow.h>
+#include <window/Overlay.h>
+#include <widgets/Color.h>
+#include <widgets/AllWidgets.h>
 using namespace mc;
 
-Ref<UICheckbox> checkbox;
-Ref<UISlider> slider;
-Ref<UITextArea> textArea;
-Ref<UIProgressBar> progressBar;
-Ref<UICircularProgressBar> circularProgressBar;
+#include <rendering/Renderer.h>
+#include <events/KeyboardEvents.h>
 
-void Checkbox_ValueChanged(bool checked, UICheckbox* sender)
-{
-	slider->Value = (checked) ? 95.0f : 32.0f;
+Shared<StackPanel> createLargePanel() {
+    auto panel = MakeRef<StackPanel>();
+    panel->marginLeft = 20;
+    panel->marginRight = 20;
+    panel->marginTop = 20;
+    panel->marginBottom = 20;
+    panel->orientation = Vertical;
+    panel->verticalAlignment = VACenter;
+    panel->backgroundColor = Color(0, 60, 20);
+
+    auto label = MakeRef<Label>();
+    label->position = { 100, 100 };
+    label->color = Color::white;
+    label->fontSize = 22;
+    label->text = "StackPanel Demo";
+    label->marginTop = 10;
+    label->marginBottom = 10;
+    label->marginLeft = 6;
+    label->marginRight = 6;
+    label->horizontalAlignment = HAFill;
+    panel->addChild(label);
+
+    for (auto i = 0; i < 3; ++i) {
+        auto btn = MakeRef<Button>();
+        btn->label->text = "Button " + std::to_string(i);
+        btn->label->fontSize = 14;
+        btn->marginLeft = 10;
+        btn->marginRight = 10;
+        panel->addChild(btn);
+    }
+
+    auto smallerlabel = MakeRef<Label>();
+    smallerlabel->position = { 100, 100 };
+    smallerlabel->color = Color::white;
+    smallerlabel->fontSize = 18;
+    smallerlabel->text = "Smaller label";
+    smallerlabel->marginTop = 10;
+    smallerlabel->marginBottom = 10;
+    smallerlabel->marginLeft = 6;
+    smallerlabel->marginRight = 6;
+    smallerlabel->horizontalAlignment = HACenter;
+    panel->addChild(smallerlabel);
+
+    auto button = MakeRef<Button>();
+    button->label->text = "This is a very larged button text";
+    button->label->fontSize = 24;
+    button->fixedWidth = 460;
+    button->fixedHeight = 100;
+    button->marginLeft = 10;
+    button->marginRight = 10;
+    button->marginBottom = 10;
+    panel->addChild(button);
+
+    for (auto i = 3; i < 7; ++i) {
+        auto btn = MakeRef<Button>();
+        btn->label->text = "Button " + std::to_string(i);
+        btn->label->fontSize = 14;
+        btn->marginLeft = 10;
+        btn->marginRight = 10;
+        btn->horizontalAlignment = HARight;
+        panel->addChild(btn);
+    }
+
+    return panel;
 }
 
-void Slider_ValueChanged(float value, UISlider* sender)
-{
-	printf("Slider Value: %f\n", value);
-}
+int main() {
+    AppManager::registerApplication("appId-041587");
+    Renderer::enableDebugBoundingBoxes = true;
 
-void ChangeProgressBarValue()
-{
-	while (true)
-	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
-		progressBar->Value += 1;
-		circularProgressBar->Value += 1;
+    auto window = MakeRef<ClassicWindow>(1060, 660, "New Widget System Demo");
+    window->setBackgroundColor(Color(18, 22, 28));
+    window->on("keyDown", [window](Shared<Event> e) {
+        auto pressedChar = std::static_pointer_cast<KeyDownEvent>(e)->getChar();
 
-		if (progressBar->Value > 100)
-		{
-			progressBar->Value = 0;
-			circularProgressBar->Value = 0;
-		}
-	}
-}
+        if (pressedChar == 'x') {
+            Renderer::enableDebugBoundingBoxes = !Renderer::enableDebugBoundingBoxes;
+            window->setShouldRedraw();
+        }
+    });
 
-int main()
-{
-	auto window = UIWindow::Create(WindowStyle::Modern, 1220, 760, "Demo App");
-	window->SetBackgroundColor(Color(28, 21, 31, 1.0f));
-	window->SetModernWindowButtonsColor(Color(28, 21, 31, 1.0f));
+    auto rootPanel = MakeRef<StackPanel>();
+    rootPanel->backgroundColor = Color(40, 40, 40);
+    rootPanel->orientation = Vertical;
+    window->setRootWidget(rootPanel);
 
-	Ref<UIButton> button = MakeRef<UIButton>();
-	button->layer.frame = Frame({ 280, 120 }, { 200, 36 });
-	button->Label->Text = "Click Me";
-	button->AddEventHandler<EventType::MouseButtonClicked>([](Event& evt, UIView* sender) -> bool {
-		checkbox->Checked = !checkbox->Checked;
-		return EVENT_HANDLED;
-	});
-	window->AddView(button);
+    auto centerPanel = MakeRef<StackPanel>();
+    centerPanel->backgroundColor = Color(40, 40, 180);
+    centerPanel->orientation = Horizontal;
+    centerPanel->horizontalAlignment = HACenter;
+    centerPanel->marginTop = 80;
+    rootPanel->addChild(centerPanel);
 
-	checkbox = MakeRef<UICheckbox>();
-	checkbox->layer.frame = Frame(Position{ 160, 160 }, Size{ 300, 40 });
-	checkbox->AddValueChangedEventHandler(Checkbox_ValueChanged);
-	window->AddView(checkbox);
+    auto demoPanel = MakeRef<StackPanel>();
+    demoPanel->marginLeft = 60;
+    demoPanel->marginRight = 20;
+    demoPanel->marginTop = 20;
+    demoPanel->marginBottom = 20;
+    demoPanel->orientation = Vertical;
+    demoPanel->backgroundColor = Color(0, 60, 20);
+    demoPanel->minWidth = 300;
+    demoPanel->verticalAlignment = VAFill;
+    centerPanel->addChild(demoPanel);
 
-	slider = MakeRef<UISlider>();
-	slider->layer.frame = Frame({ 160, 240 }, { 200, 20 });
-	slider->SliderKnobShape = Shape::Circle;
-	slider->AddValueChangedEventHandler(Slider_ValueChanged);
-	window->AddView(slider);
+    auto hintLabel = MakeRef<Label>();
+    hintLabel->text = "Press X to toggle debug boxes";
+    hintLabel->fontSize = 26;
+    hintLabel->marginTop = 10;
+    hintLabel->marginBottom = 10;
+    hintLabel->marginLeft = 10;
+    hintLabel->marginRight = 10;
+    demoPanel->addChild(hintLabel);
 
-	Ref<UITextbox> textbox = MakeRef<UITextbox>();
-	textbox->layer.frame = Frame(Position{ 220, 340 }, Size{ 260, 34 });
-	textbox->textProperties.FontSize = 16;
-	textbox->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
-		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
-			printf("Text entered from Textbox 1!\n");
+    auto first = MakeRef<Button>();
+    first->label->text = "First Button";
+    first->label->fontSize = 18;
+    first->marginLeft = 6;
+    first->marginRight = 6;
+    first->marginTop = 6;
+    first->marginBottom = 6;
+    demoPanel->addChild(first);
 
-		return EVENT_HANDLED;
-	});
-	window->AddView(textbox);
+    auto second = MakeRef<Button>();
+    second->label->text = "Second Button";
+    second->label->fontSize = 18;
+    second->marginLeft = 6;
+    second->marginRight = 6;
+    second->marginTop = 6;
+    second->marginBottom = 16;
+    demoPanel->addChild(second);
 
-	Ref<UITextbox> textbox2 = MakeRef<UITextbox>();
-	textbox2->layer.frame = Frame(Position{ 220, 400 }, Size{ 260, 34 });
-	textbox2->textProperties.FontSize = 16;
-	textbox2->Placeholder = "Enter Username";
-	textbox2->AddEventHandler<EventType::KeyPressed>([](Event& e, UIView* sender) -> bool {
-		if (((KeyPressedEvent&)e).keycode == KeyCode::KEY_RETURN)
-			printf("Text entered from Textbox 2!\n");
+    auto checkbox = MakeRef<Checkbox>();
+    checkbox->marginLeft = 6;
+    demoPanel->addChild(checkbox);
 
-		return EVENT_HANDLED;
-	});
-	window->AddView(textbox2);
+    auto progressBar = MakeRef<ProgressBar>();
+    progressBar->marginTop = 16;
+    progressBar->marginLeft = 6;
+    demoPanel->addChild(progressBar);
 
-	Ref<UIScrollPanel> scrollPanel = MakeRef<UIScrollPanel>();
-	scrollPanel->layer.frame = Frame(Position{ 560, 100 }, Size{ 340, 500 });
-	scrollPanel->layer.color = Color(200, 200, 200, 1.0f);
-	scrollPanel->ContentView->layer.frame.size = { 340, 800 };
-	scrollPanel->ContentView->layer.color = Color::gray;
-	window->AddView(scrollPanel);
+    centerPanel->addChild(createLargePanel());
 
-	for (int i = 0; i < 10; i++)
-	{
-		Ref<UIButton> btn = MakeRef<UIButton>();
-		btn->layer.frame = Frame({ 70, 30 + (float)i * 70 }, { 200, 36 });
-		btn->Label->Text = "Button " + std::to_string(i + 1);
-		scrollPanel->AddChild(btn);
-	}
-
-	Ref<UICombobox> combobox = MakeRef<UICombobox>();
-	combobox->layer.frame = Frame(Position{ 960, 100 }, Size{ 180, 100 });
-	std::vector<std::string> items = { "Red", "Green", "Blue", "Purple", "Cyan", "Pink", "Brown" };
-	combobox->SetItems(items);
-	combobox->SetItemBackgroundColor(Color(58, 58, 59, 1));
-	combobox->SetItemTextColor(Color::white);
-	combobox->layer.color = Color(62, 62, 63, 1);
-	combobox->SetDropdownArrowColor(Color::white);
-	combobox->SetSelectedItemColor(Color::white);
-	combobox->AddItemChangedEventHandler([](size_t index, UICombobox* sender) {
-		printf("Selected \"%s\" at index %zu\n", sender->GetItem(index).c_str(), index);
-	});
-	window->AddView(combobox);
-
-	textArea = MakeRef<UITextArea>();
-	textArea->layer.frame = Frame(Position{ 140, 470 }, Size{ 320, 220 });
-	textArea->RightMargins = 4.0f;
-	textArea->LeftMargins = 4.0f;
-	window->AddView(textArea);
-
-	progressBar = MakeRef<UIProgressBar>();
-	progressBar->layer.frame = Frame(Position { 600, 660 }, Size { 240, 12 });
-	progressBar->Value = 0;
-	window->AddView(progressBar);
-
-	circularProgressBar = MakeRef<UICircularProgressBar>();
-	circularProgressBar->layer.frame = Frame(Position{ 980, 460 }, Size{ 80, 80 });
-	circularProgressBar->Value = 0;
-	circularProgressBar->layer.color = Color(64, 64, 66, 1.0f);
-	circularProgressBar->ProgressColor = Color::green;
-	window->AddView(circularProgressBar);
-	std::thread progressBarThread(ChangeProgressBarValue);
-	progressBarThread.detach();
-
-	window->StartWindowLoop();
-
-	printf("End of control flow reached, clean up code should go here\n");
-	return 0;
+    AppManager::startApplicationLoop();
+    return 0;
 }

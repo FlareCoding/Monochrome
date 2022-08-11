@@ -1,14 +1,22 @@
-cmake_minimum_required(VERSION 3.0)
+set(CMAKE_CURRENT_SOURCE_DIR src/core)
+set(cwd ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(
-    MC_CORE_HEADERS
+    CORE_HEADERS
 
-    src/core/Core.h
+    ${cwd}/Core.h
+    ${cwd}/InternalFlags.h
+    ${cwd}/StackTracer.h
 
     PARENT_SCOPE
 )
 
 set(
-    MC_CORE_SOURCES
+    CORE_SOURCES
+
+    ${cwd}/Core.cpp
+    ${cwd}/InternalFlags.cpp
+    ${cwd}/StackTracer.cpp
+
     PARENT_SCOPE
 )

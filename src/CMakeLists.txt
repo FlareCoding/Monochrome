@@ -1,39 +1,42 @@
-cmake_minimum_required(VERSION 3.0)
-
 set(CMAKE_CURRENT_SOURCE_DIR src)
+set(cwd ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(core)
-add_subdirectory(events)
-add_subdirectory(graphics)
-add_subdirectory(ui)
-add_subdirectory(window)
+add_subdirectory(application)
 add_subdirectory(platform)
+add_subdirectory(window)
+add_subdirectory(events)
+add_subdirectory(utils)
+add_subdirectory(widgets)
+add_subdirectory(rendering)
 
 set(
-    MC_HEADERS
+    MONOCHROME_HEADERS
 
-    ${MC_CORE_HEADERS}
-    ${MC_EVENTS_HEADERS}
-    ${MC_GRAPHICS_HEADERS}
-    ${MC_UI_HEADERS}
-    ${MC_WINDOW_HEADERS}
-    ${MC_PLATFORM_HEADERS}
+    ${CORE_HEADERS}
+    ${APPLICATION_HEADERS}
+    ${WINDOW_SYSTEM_HEADERS}
+    ${EVENT_SYSTEM_HEADERS}
+    ${UTILS_HEADERS}
+    ${WIDGETS_HEADERS}
+    ${RENDERING_HEADERS}
 
-    src/Monochrome.h
+    ${PLATFORM_HEADERS}
 
     PARENT_SCOPE
 )
 
 set(
-    MC_SOURCES
+    MONOCHROME_SOURCES
 
-    ${MC_EVENTS_SOURCES}
-    ${MC_GRAPHICS_SOURCES}
-    ${MC_UI_SOURCES}
-    ${MC_WINDOW_SOURCES}
-    ${MC_PLATFORM_SOURCES}
+    ${CORE_SOURCES}
+    ${APPLICATION_SOURCES}
+    ${WINDOW_SYSTEM_SOURCES}
+    ${EVENT_SYSTEM_SOURCES}
+    ${UTILS_SOURCES}
+    ${WIDGETS_SOURCES}
+    ${RENDERING_SOURCES}
 
+    ${PLATFORM_SOURCES}
     PARENT_SCOPE
 )
-
-
