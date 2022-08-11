@@ -70,6 +70,7 @@ namespace mc {
         button->borderColor = Color::transparent;
         button->cornerRadius = 0;
         button->forwardEmittedEvent(this, "propertyChanged");
+        cursorType.forwardAssignment(&button->cursorType);
         _addChild(button);
 
         label = MakeRef<Label>();
@@ -78,7 +79,10 @@ namespace mc {
         label->fontSize = 14;
         label->horizontalPadding = 10;
         label->forwardEmittedEvent(this, "propertyChanged");
+        cursorType.forwardAssignment(&label->cursorType);
         _addChild(label);
+
+        cursorType = CursorType::Hand;
 
         checked = false;
         checked.forwardEmittedEvents(this);

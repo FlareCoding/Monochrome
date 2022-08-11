@@ -48,7 +48,8 @@ namespace mc {
         label->color = Color(200, 200, 200);
         label->horizontalPadding = 30;
         label->verticalPadding = 10;
-        label->forwardEmittedEvents(this);
+        cursorType.forwardAssignment(&label->cursorType);
+        label->forwardEmittedEvent(this, "propertyChanged");
         _addChild(label);
 
         borderColor = Color::white;
@@ -65,6 +66,8 @@ namespace mc {
 
         borderThickness = 2;
         borderThickness.forwardEmittedEvents(this);
+
+        cursorType = CursorType::Hand;
 
         on("hoveredOn", &Button::_onHoveredOn, this);
         on("hoveredOff", &Button::_onHoveredOff, this);

@@ -2,6 +2,10 @@
 #include <core/InternalFlags.h>
 
 namespace mc {
+    EventProcessor::EventProcessor() {
+        appendAllowedEvent("widgetTreeChanged");
+    }
+
     void EventProcessor::processMouseDownEvent(Shared<Event> event) {
         if (!d_rootWidget) {
             return;
@@ -232,6 +236,9 @@ namespace mc {
 
                 // Set the widget-specific cursor type
                 utils::Cursor::setActiveCursor(widget->cursorType);
+
+                // Tell the window to redraw
+                fireEvent("widgetTreeChanged", Event::empty);
             }
 
             // Mouse just left the frame
@@ -249,6 +256,9 @@ namespace mc {
 
                 // Reset the cursor icon
                 utils::Cursor::setActiveCursor(DEFAULT_CURSOR_TYPE);
+
+                // Tell the window to redraw
+                fireEvent("widgetTreeChanged", Event::empty);
             }
 
             // If the event is handled, return

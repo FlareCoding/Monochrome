@@ -4,9 +4,9 @@
 #include <widgets/BaseWidget.h>
 
 namespace mc {
-class EventProcessor {
+class EventProcessor : public EventEmitter {
 public:
-    EventProcessor() = default;
+    EventProcessor();
 
     void processMouseDownEvent(Shared<Event> event);
     void processMouseUpEvent(Shared<Event> event);

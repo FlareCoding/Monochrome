@@ -63,6 +63,9 @@ namespace mc {
 
         // Create the event processor
         d_eventProcessor = MakeRef<EventProcessor>();
+        d_eventProcessor->on("widgetTreeChanged", [this](Shared<Event> e) {
+            setShouldRedraw();
+        });
 
         on("mouseDown",  &EventProcessor::processMouseDownEvent,  d_eventProcessor.get());
         on("mouseUp",    &EventProcessor::processMouseUpEvent,    d_eventProcessor.get());
