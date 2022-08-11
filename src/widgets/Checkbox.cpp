@@ -69,7 +69,7 @@ namespace mc {
         button->marginRight = 2;
         button->borderColor = Color::transparent;
         button->cornerRadius = 0;
-        button->forwardEmittedEvents(this);
+        button->forwardEmittedEvent(this, "propertyChanged");
         _addChild(button);
 
         label = MakeRef<Label>();
@@ -77,7 +77,7 @@ namespace mc {
         label->color = Color::white;
         label->fontSize = 14;
         label->horizontalPadding = 10;
-        label->forwardEmittedEvents(this);
+        label->forwardEmittedEvent(this, "propertyChanged");
         _addChild(label);
 
         checked = false;
