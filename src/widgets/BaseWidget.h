@@ -23,6 +23,7 @@ enum VerticalAlignment{
 
 class BaseWidget : public PrivateWidgetContainer {
 friend class Renderer;
+friend class EventProcessor;
 
 public:
     BaseWidget();

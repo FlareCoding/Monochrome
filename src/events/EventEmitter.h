@@ -5,7 +5,9 @@
 #include <functional>
 
 namespace mc {
-    using eventEmiterCallback_t = std::function<void(Shared<Event>)>;
+using eventEmiterCallback_t = std::function<void(Shared<Event>)>;
+
+class BaseWidget;
 
 class EventEmitter {
 public:
@@ -16,6 +18,13 @@ public:
     void off(const std::string& eventName);
     void fireEvent(const std::string& eventName, Shared<Event> event);
     void fireEvent(const std::string& eventName, const eventDataMap_t& data);
+
+    template <typename T>
+    void on(const std::string& eventName, void (T::*fn)(Shared<Event>), T* obj) {
+        on(eventName, [fn, obj](Shared<Event> e) {
+            (obj->*fn)(e);
+        });
+    }
 
     void forwardEmittedEvents(EventEmitter* emitter);
     void forwardEmittedEvent(EventEmitter* emitter, const std::string& eventName);

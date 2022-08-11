@@ -3,6 +3,7 @@
 #include <utils/uuid.h>
 #include <thread>
 #include <atomic>
+#include "EventProcessor.h"
 
 namespace mc {
 class BaseContainerWidget;
@@ -55,6 +56,7 @@ public:
 private:
     Shared<NativeWindow> d_nativeWindow = nullptr;
     Shared<BaseContainerWidget> d_rootWidget;
+    Shared<EventProcessor> d_eventProcessor;
 
     uuid_t d_uuid = 0;
     std::atomic_bool d_isDestroyed = false;

@@ -3,6 +3,8 @@
 
 namespace mc {
     Checkbox::Checkbox() {
+        appendAllowedEvent("valueChanged");
+
         _setupProperties();
     }
 
@@ -63,6 +65,7 @@ namespace mc {
         button->label->text = "✔";
         button->label->fontSize = 10;
         button->label->color = Color::white;
+        button->label->visible = false;
         button->marginRight = 2;
         button->borderColor = Color::transparent;
         button->cornerRadius = 0;
@@ -76,5 +79,26 @@ namespace mc {
         label->horizontalPadding = 10;
         label->forwardEmittedEvents(this);
         _addChild(label);
+
+        checked = false;
+        checked.forwardEmittedEvents(this);
+        checked.on("propertyChanged", [this](Shared<Event> e) {
+            button->label->visible = checked;
+
+            fireEvent("valueChanged", {
+                { "checked", checked }
+            });
+        });
+
+        on("clicked", &Checkbox::_onClick, this);
+    }
+
+    void Checkbox::_onClick(Shared<Event> e) {
+        checked = !checked;
+        button->label->visible = checked;
+
+        fireEvent("valueChanged", {
+            { "checked", checked }
+        });
     }
 } // namespace mc
