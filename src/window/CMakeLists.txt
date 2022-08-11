@@ -9,6 +9,7 @@ set(
     ${cwd}/ClassicWindow.h
     ${cwd}/ModernWindow.h
     ${cwd}/Overlay.h
+    ${cwd}/EventProcessor.h
 
     PARENT_SCOPE
 )
@@ -21,6 +22,7 @@ set(
     ${cwd}/ClassicWindow.cpp
     ${cwd}/ModernWindow.cpp
     ${cwd}/Overlay.cpp
+    ${cwd}/EventProcessor.cpp
 
     PARENT_SCOPE
 )

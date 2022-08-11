@@ -61,6 +61,18 @@ namespace mc {
             _requestOnDemandBufferSwap();
         });
 
+        // Create the event processor
+        d_eventProcessor = MakeRef<EventProcessor>();
+        d_eventProcessor->on("widgetTreeChanged", [this](Shared<Event> e) {
+            setShouldRedraw();
+        });
+
+        on("mouseDown",  &EventProcessor::processMouseDownEvent,  d_eventProcessor.get());
+        on("mouseUp",    &EventProcessor::processMouseUpEvent,    d_eventProcessor.get());
+        on("mouseMoved", &EventProcessor::processMouseMovedEvent, d_eventProcessor.get());
+        on("keyDown",    &EventProcessor::processKeyDownEvent,    d_eventProcessor.get());
+        on("keyUp",      &EventProcessor::processKeyUpEvent,      d_eventProcessor.get());
+
         // Setup the background rendering thread
         d_renderingThread = std::thread(&UIWindow::_backgroundRenderingTask, this);
 
@@ -196,6 +208,7 @@ namespace mc {
 
     void UIWindow::setRootWidget(Shared<BaseContainerWidget> root) {
         if (d_rootWidget) {
+            d_rootWidget->off("propertyChanged");
             d_rootWidget->off("layoutChanged");
         }
 
@@ -214,7 +227,15 @@ namespace mc {
             d_rootWidget->arrangeChildren();
         });
 
+        d_rootWidget->on("propertyChanged", [this](Shared<Event> e) {
+            // Since the widget tree has changed, a redraw is required
+            setShouldRedraw();
+        });
+
         setShouldRedraw();
+
+        // Update the event processor's root widget
+        d_eventProcessor->setRootWidget(d_rootWidget);
     }
 
     void UIWindow::_backgroundRenderingTask() {

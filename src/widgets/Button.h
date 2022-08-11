@@ -25,5 +25,12 @@ private:
 
     Shared<RectVisual> d_bodyVisual;
     Shared<BorderVisual> d_borderVisual;
+
+    Color d_preservedBackgroundColor;
+
+    void _onHoveredOn(Shared<Event> e);
+    void _onHoveredOff(Shared<Event> e);
+    void _onMouseDown(Shared<Event> e);
+    void _onMouseUp(Shared<Event> e);
 };
 } // namespace mc
