@@ -69,7 +69,6 @@ namespace mc {
         button->marginRight = 2;
         button->borderColor = Color::transparent;
         button->cornerRadius = 0;
-        button->forwardEmittedEvent(this, "propertyChanged");
         cursorType.forwardAssignment(&button->cursorType);
         _addChild(button);
 
@@ -78,7 +77,6 @@ namespace mc {
         label->color = Color::white;
         label->fontSize = 14;
         label->horizontalPadding = 10;
-        label->forwardEmittedEvent(this, "propertyChanged");
         cursorType.forwardAssignment(&label->cursorType);
         _addChild(label);
 

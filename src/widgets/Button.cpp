@@ -49,7 +49,6 @@ namespace mc {
         label->horizontalPadding = 30;
         label->verticalPadding = 10;
         cursorType.forwardAssignment(&label->cursorType);
-        label->forwardEmittedEvent(this, "propertyChanged");
         _addChild(label);
 
         borderColor = Color::white;
