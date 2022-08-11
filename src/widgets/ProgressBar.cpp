@@ -11,7 +11,7 @@ namespace mc {
     }
 
     void ProgressBar::_onSetComputedSize(const Size& size) {
-        float percentage =	static_cast<float>(value - minValue) /
+        float percentage =  static_cast<float>(value - minValue) /
                             static_cast<float>(maxValue - minValue);
 
         float progressWidth = size.width * percentage;
