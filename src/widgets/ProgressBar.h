@@ -10,9 +10,13 @@ namespace mc {
 
 		PropertyObserver<Color>       backgroundColor;
 		PropertyObserver<Color>       progressColor;
+		PropertyObserver<uint32_t>    progression;
+		PropertyObserver<int32_t>     maxValue;
+		PropertyObserver<int32_t>     minValue;
 
 	protected:
 		Size _measureSize() override;
+		void _onSetComputedSize(const Size& size) override;
 
 	private:
 		void _createVisuals();

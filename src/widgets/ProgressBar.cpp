@@ -10,6 +10,11 @@ namespace mc {
 		return Size(fixedWidth, fixedHeight);
 	}
 
+	void ProgressBar::_onSetComputedSize(const Size& size) {
+		float percentage = (float)progression / (maxValue - minValue);
+		d_progressVisual->customWidth = size.width * percentage;
+	}
+
 	void ProgressBar::_createVisuals() {
 		d_bodyVisual = MakeRef<RectVisual>();
 		backgroundColor.forwardAssignment(&d_bodyVisual->color);
@@ -22,7 +27,10 @@ namespace mc {
 
 	void ProgressBar::_setupProperties() {
 		fixedHeight = 20;
-		fixedWidth = 200;
+		fixedWidth = 400;
+		minValue = 0;
+		maxValue = 100;
+		progression = 33;
 		backgroundColor = Color::gray;
 		progressColor = Color::red;
 		backgroundColor.forwardEmittedEvents(this);

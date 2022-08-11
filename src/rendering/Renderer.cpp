@@ -51,7 +51,16 @@ namespace mc {
                 continue;
             }
 
-            drawVisualElement(renderTarget, visual, widgetPosition, widgetSize);
+            auto visualSize = widgetSize;
+            if (visual->customWidth != NOT_SET) {
+                visualSize.width = visual->customWidth;
+            }
+
+            if (visual->customHeight != NOT_SET) {
+                visualSize.height = visual->customHeight;
+            }
+
+            drawVisualElement(renderTarget, visual, widgetPosition, visualSize);
         }
 
         // Render all child elements
@@ -66,7 +75,16 @@ namespace mc {
                 continue;
             }
 
-            drawVisualElement(renderTarget, visual, widgetPosition, widgetSize);
+            auto visualSize = widgetSize;
+            if (visual->customWidth != NOT_SET) {
+                visualSize.width = visual->customWidth;
+            }
+
+            if (visual->customHeight != NOT_SET) {
+                visualSize.height = visual->customHeight;
+            }
+
+            drawVisualElement(renderTarget, visual, widgetPosition, visualSize);
         }
 
         // Restore the clipping layer
