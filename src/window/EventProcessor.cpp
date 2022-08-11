@@ -59,15 +59,19 @@ namespace mc {
     }
 
     void EventProcessor::processKeyDownEvent(Shared<Event> event) {
-        if (!d_rootWidget) {
+        if (!d_rootWidget || !d_focusedWidget) {
             return;
         }
+
+        d_focusedWidget->fireEvent("keyDown", event);
     }
 
     void EventProcessor::processKeyUpEvent(Shared<Event> event) {
-        if (!d_rootWidget) {
+        if (!d_rootWidget || !d_focusedWidget) {
             return;
         }
+
+        d_focusedWidget->fireEvent("keyUp", event);
     }
 
     void EventProcessor::_handlePotentialFocusChanged(Shared<BaseWidget>& candidate) {
