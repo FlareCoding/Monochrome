@@ -82,8 +82,7 @@ int main()
 	});
 	window->AddView(textbox2);
 
-	Ref<UIScrollPanel> scrollPanel = MakeRef<UIScrollPanel>();
-	scrollPanel->layer.frame = Frame(Position{ 560, 100 }, Size{ 340, 500 });
+	Ref<UIScrollPanel> scrollPanel = MakeRef<UIScrollPanel>(Frame(Position{ 560, 100 }, Size{ 340, 500 }));
 	scrollPanel->layer.color = Color(200, 200, 200, 1.0f);
 	scrollPanel->ContentView->layer.frame.size = { 340, 800 };
 	scrollPanel->ContentView->layer.color = Color::gray;
@@ -98,7 +97,7 @@ int main()
 	}
 
 	Ref<UICombobox> combobox = MakeRef<UICombobox>();
-	combobox->layer.frame = Frame(Position{ 960, 100 }, Size{ 180, 100 });
+	combobox->layer.frame = Frame(Position{ 960, 100 }, Size{ 180, 50 });
 	std::vector<std::string> items = { "Red", "Green", "Blue", "Purple", "Cyan", "Pink", "Brown" };
 	combobox->SetItems(items);
 	combobox->SetItemBackgroundColor(Color(58, 58, 59, 1));
@@ -111,8 +110,7 @@ int main()
 	});
 	window->AddView(combobox);
 
-	textArea = MakeRef<UITextArea>();
-	textArea->layer.frame = Frame(Position{ 140, 470 }, Size{ 320, 220 });
+	textArea = MakeRef<UITextArea>(Frame(Position{ 140, 470 }, Size{ 320, 220 }));
 	textArea->RightMargins = 4.0f;
 	textArea->LeftMargins = 4.0f;
 	window->AddView(textArea);
