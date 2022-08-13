@@ -20,8 +20,9 @@ set(
     ${cwd}/Label.h
     ${cwd}/Button.h
     ${cwd}/Checkbox.h
-    ${cwd}/StackPanel.h
+    ${cwd}/Entry.h
     ${cwd}/ProgressBar.h
+    ${cwd}/StackPanel.h
 
     PARENT_SCOPE
 )
@@ -37,8 +38,9 @@ set(
     ${cwd}/Label.cpp
     ${cwd}/Button.cpp
     ${cwd}/Checkbox.cpp
-    ${cwd}/StackPanel.cpp
+    ${cwd}/Entry.cpp
     ${cwd}/ProgressBar.cpp
+    ${cwd}/StackPanel.cpp
 
     PARENT_SCOPE
 )

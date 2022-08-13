@@ -152,6 +152,11 @@ int main() {
     progressBar->marginLeft = 6;
     demoPanel->addChild(progressBar);
 
+    auto entry = MakeRef<Entry>();
+    entry->marginTop = 16;
+    entry->marginLeft = 6;
+    demoPanel->addChild(entry);
+
     centerPanel->addChild(createLargePanel());
 
     AppManager::startApplicationLoop();
