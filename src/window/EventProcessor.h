@@ -14,13 +14,14 @@ public:
     void processKeyDownEvent(Shared<Event> event);
     void processKeyUpEvent(Shared<Event> event);
 
+    void handlePotentialFocusChanged(Shared<BaseWidget>& candidate);
+    void handlePotentialFocusChanged(BaseWidget* candidate);
+
     inline void setRootWidget(Shared<BaseWidget> root) { d_rootWidget = root; }
 
 private:
     Shared<BaseWidget> d_rootWidget = nullptr;
-    Shared<BaseWidget> d_focusedWidget = nullptr;
-
-    void _handlePotentialFocusChanged(Shared<BaseWidget>& candidate);
+    BaseWidget* d_focusedWidget = nullptr;
 
     void _processMouseDownEvent(
         Shared<MouseButtonEvent> event,

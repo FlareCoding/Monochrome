@@ -27,7 +27,7 @@ namespace mc {
             focusChangeCandidate
         );
 
-        _handlePotentialFocusChanged(focusChangeCandidate);
+        handlePotentialFocusChanged(focusChangeCandidate);
     }
 
     void EventProcessor::processMouseUpEvent(Shared<Event> event) {
@@ -51,12 +51,16 @@ namespace mc {
             return;
         }
 
-        d_rootWidget->fireEvent("mouseMoved", Event::empty);
+        auto mme = std::static_pointer_cast<MouseMovedEvent>(event);
+
+        d_rootWidget->fireEvent("mouseMoved", {
+            { "location", mme->getLocation() }
+        });
 
         Position positionOffset = Position(0, 0);
 
         _processMouseMovedEvent(
-            std::static_pointer_cast<MouseMovedEvent>(event),
+            mme,
             d_rootWidget->_getChildren(),
             positionOffset
         );
@@ -78,7 +82,11 @@ namespace mc {
         d_focusedWidget->fireEvent("keyUp", event);
     }
 
-    void EventProcessor::_handlePotentialFocusChanged(Shared<BaseWidget>& candidate) {
+    void EventProcessor::handlePotentialFocusChanged(Shared<BaseWidget>& candidate) {
+        handlePotentialFocusChanged(candidate.get());
+    }
+
+    void EventProcessor::handlePotentialFocusChanged(BaseWidget* candidate) {
         // Check if the currently focused widget has lost
         // focus and if a new widget has become focused.
         if (candidate != d_focusedWidget) {
@@ -210,6 +218,11 @@ namespace mc {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
+
+            // Immediately fire the mouse moved event
+            widget->fireEvent("mouseMoved", {
+                { "location", event->getLocation() }
+            });
 
             // Determine if the mouse was previously in the widget's frame
             bool wasMouseInFrame =

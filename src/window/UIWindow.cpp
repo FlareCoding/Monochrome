@@ -232,6 +232,15 @@ namespace mc {
             setShouldRedraw();
         });
 
+        d_rootWidget->on("requestedFocusGain", [this](Shared<Event> e) {
+            BaseWidget* target = e->get<BaseWidget*>("target");
+            d_eventProcessor->handlePotentialFocusChanged(target);
+        });
+
+        d_rootWidget->on("requestedFocusLoss", [this](Shared<Event> e) {
+            d_eventProcessor->handlePotentialFocusChanged(nullptr);
+        });
+
         setShouldRedraw();
 
         // Update the event processor's root widget

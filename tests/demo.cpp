@@ -80,7 +80,7 @@ Shared<StackPanel> createLargePanel() {
 
 int main() {
     AppManager::registerApplication("appId-041587");
-    Renderer::enableDebugBoundingBoxes = true;
+    //Renderer::enableDebugBoundingBoxes = true;
 
     auto window = MakeRef<ClassicWindow>(1060, 660, "New Widget System Demo");
     window->setBackgroundColor(Color(18, 22, 28));
