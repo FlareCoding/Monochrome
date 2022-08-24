@@ -18,7 +18,13 @@ namespace mc {
     }
 
     void Entry::_onSetComputedSize(const Size& size) {
+        // Calculate the minimum text visual width (within clipping region)
         auto minimumTextVisualWidth = size.width - d_textPadding * 2;
+
+        // Adjust the clipping region according to the size of the entry
+        d_textClippingRegionVisual->position = Position(d_textPadding, 0);
+        d_textClippingRegionVisual->customWidth = minimumTextVisualWidth;
+        d_textClippingRegionVisual->customHeight = size.height;
 
         // Make sure that the area that displays text is
         // always at least the available size inside the entry.
@@ -36,12 +42,23 @@ namespace mc {
         backgroundColor.forwardAssignment(&d_bodyVisual->color);
         addCoreVisualElement(d_bodyVisual);
 
+        // Entry's border
+        d_borderVisual = MakeRef<BorderVisual>();
+        cornerRadius.forwardAssignment(&d_borderVisual->cornerRadius);
+        borderColor.forwardAssignment(&d_borderVisual->color);
+        borderThickness.forwardAssignment(&d_borderVisual->thickness);
+        addCoreVisualElement(d_borderVisual);
+
         // Selection highlight visual
         d_selectionHighlightVisual = MakeRef<RectVisual>();
         d_selectionHighlightVisual->customWidth = 1;
         d_selectionHighlightVisual->customHeight = 1;
         selectionHighlightColor.forwardAssignment(&d_selectionHighlightVisual->color);
         addCoreVisualElement(d_selectionHighlightVisual);
+
+        // Text clipping region
+        d_textClippingRegionVisual = MakeRef<ClipRegionVisual>();
+        addCoreVisualElement(d_textClippingRegionVisual);
 
         // Text visual
         d_textVisual = MakeRef<TextVisual>();
@@ -54,13 +71,6 @@ namespace mc {
         d_textVisual->alignment = "left";
         d_textVisual->wordWrapMode = "none";
         addCoreVisualElement(d_textVisual);
-
-        // Entry's border
-        d_borderVisual = MakeRef<BorderVisual>();
-        cornerRadius.forwardAssignment(&d_borderVisual->cornerRadius);
-        borderColor.forwardAssignment(&d_borderVisual->color);
-        borderThickness.forwardAssignment(&d_borderVisual->thickness);
-        addCoreVisualElement(d_borderVisual);
 
         // Cursor visual
         d_cursorVisual = MakeRef<RectVisual>();
@@ -560,7 +570,8 @@ namespace mc {
         // the text needs to be scrolled back only after the
         // cursor reaches the right boundary of the clip region.
         int32_t cursorPoint =
-                d_textVisual->position->x + static_cast<int32_t>(preCursorTextWidth);
+                d_textVisual->position->x + static_cast<int32_t>(preCursorTextWidth) +
+                d_cursorVisual->customWidth;
 
         int32_t rightBoundary = computedSize.width - d_textPadding;
         int32_t postCursorDiff = cursorPoint - rightBoundary;

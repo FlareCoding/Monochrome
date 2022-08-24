@@ -22,6 +22,13 @@ private:
         Position parentOffset
     );
 
+    static void drawVisualElementList(
+        Shared<RenderTarget>& renderTarget,
+        std::vector<Shared<VisualElement>>& visualElements,
+        Position& widgetPosition,
+        Size& widgetSize
+    );
+
     static void drawVisualElement(
         Shared<RenderTarget>& renderTarget,
         Shared<VisualElement> visual,

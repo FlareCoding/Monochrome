@@ -9,6 +9,7 @@ set(
     ${cwd}/visuals/RectVisual.h
     ${cwd}/visuals/BorderVisual.h
     ${cwd}/visuals/TextVisual.h
+    ${cwd}/visuals/ClipRegionVisual.h
 
     ${cwd}/Color.h
     ${cwd}/Layer.h

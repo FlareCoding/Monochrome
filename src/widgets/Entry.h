@@ -3,6 +3,7 @@
 #include "visuals/RectVisual.h"
 #include "visuals/BorderVisual.h"
 #include "visuals/TextVisual.h"
+#include "visuals/ClipRegionVisual.h"
 #include <stack>
 
 namespace mc {
@@ -74,11 +75,12 @@ private:
     void _createVisuals();
     void _setupProperties();
 
-    Shared<RectVisual>      d_bodyVisual;
-    Shared<BorderVisual>    d_borderVisual;
-    Shared<RectVisual>      d_selectionHighlightVisual;
-    Shared<TextVisual>      d_textVisual;
-    Shared<RectVisual>      d_cursorVisual;
+    Shared<RectVisual>       d_bodyVisual;
+    Shared<BorderVisual>     d_borderVisual;
+    Shared<RectVisual>       d_selectionHighlightVisual;
+    Shared<ClipRegionVisual> d_textClippingRegionVisual;
+    Shared<TextVisual>       d_textVisual;
+    Shared<RectVisual>       d_cursorVisual;
 
     void _gainedFocus(Shared<Event> e);
     void _lostFocus(Shared<Event> e);
