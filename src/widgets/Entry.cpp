@@ -2,6 +2,7 @@
 #include <events/KeyboardEvents.h>
 #include <events/MouseEvents.h>
 #include <application/AppManager.h>
+#include <cmath>
 
 namespace mc {
     Entry::Entry() {
@@ -328,6 +329,11 @@ namespace mc {
             _eraseSelectedText();
         }
 
+        // If the TextVisual's text contains a placeholder, remove it
+        if (text->empty()) {
+            d_textVisual->text = "";
+        }
+
         // Insert the character into the text string
         text->insert(text->begin() + d_cursorPos, inputChar);
 
@@ -485,7 +491,7 @@ namespace mc {
     }
 
     void Entry::_updateTextFrameSize() {
-        auto& computedSize = getComputedSize();
+        auto computedSize = getComputedSize();
 
         // Default the visual color to text color before placeholder check
         d_textVisual->color = textColor;
@@ -495,7 +501,7 @@ namespace mc {
 
         if (isEmpty()) {
             d_textVisual->text = placeholder.get();
-            displayedText = placeholder;
+            displayedText = placeholder.get();
 
             // Slightly dim the color of the text
             // if a placeholder is being used.
@@ -588,7 +594,7 @@ namespace mc {
     }
 
     void Entry::_calculateCursorSizeAndOffset() {
-        auto& computedSize = getComputedSize();
+        auto computedSize = getComputedSize();
 
         // Get runtime utility functions
         auto& runtimeFunctions =
@@ -630,7 +636,7 @@ namespace mc {
         }
 
         // Get the entry's computed size
-        auto& computedSize = getComputedSize();
+        auto computedSize = getComputedSize();
 
         // Determine the selection start index and size
         uint64_t selectionStartIndex = d_selectionBeganIndex;
