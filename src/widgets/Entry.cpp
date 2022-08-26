@@ -2,6 +2,7 @@
 #include <events/KeyboardEvents.h>
 #include <events/MouseEvents.h>
 #include <application/AppManager.h>
+#include <utils/Clipboard.h>
 #include <cmath>
 
 namespace mc {
@@ -303,11 +304,140 @@ namespace mc {
         d_undoHistory = std::stack<std::string>();
     }
 
+    bool Entry::_handleShortcut(char cmdChar) {
+        switch (cmdChar) {
+        case 'c': {
+            // Copy operation
+            if (hasSelectedText()) {
+                auto selectedText = getSelectedText();
+                utils::Clipboard::saveToClipboard(selectedText);
+            }
+
+            return true;
+        }
+        case 'v': {
+            // Paste operation
+
+            // Do nothing if the entry
+            // is in a read-only mode.
+            if (readOnly) {
+                break;
+            }
+
+            // Check if there is currently a selection,
+            // and if so, replace it with pasted contents
+            if (hasSelectedText()) {
+                _eraseSelectedText();
+                clearSelection();
+            }
+
+            auto pastedText = utils::Clipboard::getClipboardText();
+
+            // Validate pasted text
+            if (d_entryInputValidator) {
+                for (uint64_t i = 0; i < pastedText.size(); ++i) {
+                    if (!d_entryInputValidator(pastedText.at(i))) {
+                        // Return true in order to indicate
+                        // that the shortcut was handled properly.
+                        return true;
+                    }
+                }
+            }
+
+            text->insert(d_cursorPos, pastedText);
+            d_textVisual->text->insert(d_cursorPos, pastedText);
+
+            d_cursorPos += pastedText.size();
+            _handleEntryTextChanged();
+
+            return true;
+        }
+        case 'x': {
+            // Do nothing if the entry
+            // is in a read-only mode.
+            if (readOnly) {
+                break;
+            }
+
+            // Cut operation
+            if (hasSelectedText()) {
+                auto selectedText = getSelectedText();
+                utils::Clipboard::saveToClipboard(selectedText);
+
+                _eraseSelectedText();
+                clearSelection();
+                _handleEntryTextChanged();
+            }
+
+            return true;
+        }
+        case 'z': {
+            // Do nothing if the entry
+            // is in a read-only mode.
+            if (readOnly) {
+                break;
+            }
+            // Undo operation
+            if (d_history.size() >= 2) {
+                // Update the undo history
+                d_undoHistory.push(text.get());
+
+                // Pop the latest change
+                d_history.pop();
+
+                // Set the text to the last changed text
+                text->assign(d_history.top());
+
+                // Sync the visual's text
+                d_textVisual->text->assign(d_history.top());
+
+                // Sanitize the cursor position
+                d_cursorPos = text->size();
+            }
+
+            return true;
+        }
+        case 'y': {
+            // Do nothing if the entry
+            // is in a read-only mode.
+            if (readOnly) {
+                break;
+            }
+
+            // Redo operation
+            if (!d_undoHistory.empty()) {
+                // Update the text
+                text->assign(d_undoHistory.top());
+
+                // Sync the visual's text
+                d_textVisual->text->assign(d_undoHistory.top());
+
+                // Pop the last undo operation
+                d_undoHistory.pop();
+
+                // Sanitize the cursor position
+                d_cursorPos = text->size();
+            }
+
+            return true;
+        }
+        default: break;
+        }
+
+        return false;
+    }
+
     void Entry::_onCharacterAppended(char inputChar, bool ctrlPressed) {
         // Check for any potential shortcuts
         // such as Ctrl+C, Ctrl+V, etc.
         if (ctrlPressed) {
-            // TO-DO
+            bool shortcutHandled = _handleShortcut(inputChar);
+
+            if (shortcutHandled) {
+                _updateTextFrameSize();
+                fireEvent("propertyChanged", Event::empty);
+                return;
+            }
         }
 
         // Do not handle any other key presses

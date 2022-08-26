@@ -90,6 +90,7 @@ private:
     void _onMouseMoved(Shared<Event> e);
 
     void _onTextAssigned();
+    bool _handleShortcut(char cmdChar);
 
     void _onCharacterAppended(char inputChar, bool ctrlPressed);
     void _onBackspace(bool ctrlPressed);
