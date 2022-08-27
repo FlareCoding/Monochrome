@@ -344,9 +344,18 @@ namespace mc {
     NSPoint cursorPoint = [ event locationInWindow ];
     mc::Distance distance = mc::Distance((int32_t)[event deltaX], (int32_t)[event deltaY]);
 
+    NSPoint screenCursorPoint = [window convertPointToScreen:cursorPoint];
+    int32_t screenHeight = (int32_t)[[NSScreen mainScreen] visibleFrame].size.height;
+
+    mc::Position screenLocation = mc::Position(
+        (int32_t)screenCursorPoint.x,
+        (int32_t)(screenHeight - screenCursorPoint.y)
+    );
+
     OSXNativeWindow* windowInstance = [self mcWindowHandle];
     auto mouseMovedEvent = MakeRef<Event>(eventDataMap_t{
         { "location", mc::Position((uint32_t)cursorPoint.x, (uint32_t)(contentHeight - cursorPoint.y)) },
+        { "screenLocation", screenLocation },
         { "distance", distance }
     });
 
@@ -437,6 +446,18 @@ namespace mc {
 
     OSXNativeWindow* windowInstance = [self mcWindowHandle];
     windowInstance->fireEvent("keyUp", keyUpEvent);
+}
+
+-(void)mouseEntered:(NSEvent*) event
+{
+    OSXNativeWindow* windowInstance = [self mcWindowHandle];
+    windowInstance->fireEvent("mouseEnteredWindow", Event::empty);
+}
+
+-(void)mouseExited:(NSEvent*) event
+{
+    OSXNativeWindow* windowInstance = [self mcWindowHandle];
+    windowInstance->fireEvent("mouseLeftWindow", Event::empty);
 }
 
 @end
