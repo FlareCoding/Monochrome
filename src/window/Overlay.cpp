@@ -217,7 +217,7 @@ namespace mc {
         // Otherwise return false
         return false;
     }
-    
+
     void Overlay::_hideThisAndChildOverlays() {
         // Hide all children first
         for (auto& child : d_childOverlays) {
