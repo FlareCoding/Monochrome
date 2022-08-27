@@ -220,9 +220,7 @@ namespace mc {
             auto& widgetFlags = widget->getInternalFlags();
 
             // Immediately fire the mouse moved event
-            widget->fireEvent("mouseMoved", {
-                { "location", event->getLocation() }
-            });
+            widget->fireEvent("mouseMoved", event);
 
             // Determine if the mouse was previously in the widget's frame
             bool wasMouseInFrame =
@@ -245,7 +243,7 @@ namespace mc {
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, true);
 
-                widget->fireEvent("hoveredOn", Event::empty);
+                widget->fireEvent("hoveredOn", event);
 
                 // Set the widget-specific cursor type
                 utils::Cursor::setActiveCursor(widget->cursorType);
@@ -265,7 +263,7 @@ namespace mc {
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::MouseDownOnWidget, false);
 
-                widget->fireEvent("hoveredOff", Event::empty);
+                widget->fireEvent("hoveredOff", event);
 
                 // Reset the cursor icon
                 utils::Cursor::setActiveCursor(DEFAULT_CURSOR_TYPE);

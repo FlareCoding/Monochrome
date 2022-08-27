@@ -12,6 +12,57 @@ using namespace mc;
 #include <rendering/Renderer.h>
 #include <events/KeyboardEvents.h>
 
+Shared<MenuList> createMenuList() {
+    auto extraMenu = MakeRef<MenuList>("Actions...");
+    extraMenu->addMenuItem("Like");
+    extraMenu->addMenuItem("Notify");
+    extraMenu->addMenuItem("Subscribe");
+    extraMenu->on("itemSelected", [](Shared<Event> e) {
+        auto item = e->get<MenuItem>("item");
+        printf("Item Selected: %s\n", item.c_str());
+    });
+    extraMenu->borderColor = Color::red;
+    extraMenu->itemTextColor = Color::yellow;
+
+    auto moreMenu = MakeRef<MenuList>("More...");
+    moreMenu->addMenuItem("Save");
+    moreMenu->addMenuItem("Save As");
+    moreMenu->addMenuItem("Open");
+    moreMenu->addSubMenu(extraMenu);
+    moreMenu->on("itemSelected", [](Shared<Event> e) {
+        auto item = e->get<MenuItem>("item");
+        printf("Item Selected: %s\n", item.c_str());
+    });
+    moreMenu->borderColor = Color::yellow;
+    moreMenu->itemTextColor = Color::white;
+
+    auto zoomMenu = MakeRef<MenuList>("Zoom...");
+    zoomMenu->addMenuItem("200%");
+    zoomMenu->addMenuItem("150%");
+    zoomMenu->addMenuItem("100%");
+    zoomMenu->addMenuItem("75%");
+    zoomMenu->on("itemSelected", [](Shared<Event> e) {
+        auto item = e->get<MenuItem>("item");
+        printf("Item Selected: %s\n", item.c_str());
+    });
+    zoomMenu->borderColor = Color::white;
+
+    auto mainMenuList = MakeRef<MenuList>();
+    mainMenuList->on("itemSelected", [](Shared<Event> e) {
+        auto item = e->get<MenuItem>("item");
+        printf("Item Selected: %s\n", item.c_str());
+    });
+    mainMenuList->addMenuItem("New Project");
+    mainMenuList->addSubMenu(moreMenu);
+    mainMenuList->addSubMenu(zoomMenu);
+    mainMenuList->addMenuItem("Exit");
+    mainMenuList->borderColor = Color::blue;
+    mainMenuList->itemTextColor = Color::green;
+    mainMenuList->borderThickness = 2;
+
+    return mainMenuList;
+}
+
 Shared<StackPanel> createLargePanel() {
     auto panel = MakeRef<StackPanel>();
     panel->marginLeft = 20;
@@ -156,6 +207,13 @@ int main() {
     entry->marginTop = 16;
     entry->marginLeft = 6;
     demoPanel->addChild(entry);
+
+    auto dropdownButton = MakeRef<DropdownButton>();
+    dropdownButton->marginTop = 16;
+    dropdownButton->marginLeft = 6;
+    dropdownButton->label->text = "Open menu";
+    dropdownButton->setMenuList(createMenuList());
+    demoPanel->addChild(dropdownButton);
 
     centerPanel->addChild(createLargePanel());
 

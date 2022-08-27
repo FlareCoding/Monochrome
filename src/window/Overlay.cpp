@@ -30,6 +30,12 @@ namespace mc {
                 hide();
             }
         });
+
+        // If the mouse is entering the current
+        // overlay, all child overlays should get hidden.
+        d_overlayWindow->on("mouseEnteredWindow", [this](Shared<Event> e) {
+            closeChildOverlays();
+        });
     }
 
     Overlay::~Overlay() {
@@ -42,6 +48,10 @@ namespace mc {
 
     void Overlay::setSize(const Size& size) {
         d_overlayWindow->setSize(size.width, size.height);
+    }
+
+    Size Overlay::getSize() {
+        return d_overlayWindow->getSize();
     }
 
     void Overlay::show() {
@@ -88,6 +98,105 @@ namespace mc {
         d_childOverlays.push_back(overlay);
     }
 
+    void Overlay::setContent(Shared<BaseContainerWidget> root) {
+        d_overlayWindow->setRootWidget(root);
+    }
+
+    void Overlay::setActivatorWidget(BaseWidget* widget, OverlayActivationType activationType) {
+        // Check if the previous activator widget needs to be detached
+        if (d_activatorWidget) {
+            d_activatorWidget->off("clicked");
+        }
+
+        d_activatorWidget = widget;
+
+        // If widget is nullptr, treat it as
+        // resetting and removing the activator widget.
+        if (!d_activatorWidget) {
+            return;
+        }
+
+        if (activationType == OnHover) {
+            d_activatorWidget->on("hoveredOn", [this](Shared<Event> e) {
+                auto mme = std::static_pointer_cast<MouseMovedEvent>(e);
+
+                // Calculate the anchor position
+                // according to the anchor point.
+                auto anchorPoint = _calculateAnchorPosition(mme);
+
+                // Set the overlay's anchor point to be
+                // right below the activator widget.
+                setAnchor(anchorPoint);
+
+                // Open the overlay
+                show();
+            });
+        } else if (activationType == OnClick) {
+            d_activatorWidget->on("clicked", [this](Shared<Event> e) {
+                auto clickEvent = std::static_pointer_cast<MouseButtonEvent>(e);
+                if (clickEvent->getButton() != MouseButton::Left) {
+                    return;
+                }
+
+                // Calculate the anchor position
+                // according to the anchor point.
+                auto mme = std::static_pointer_cast<MouseMovedEvent>(e);
+                auto anchorPoint = _calculateAnchorPosition(mme);
+
+                // Set the overlay's anchor point to be
+                // right below the activator widget.
+                setAnchor(anchorPoint);
+
+                // Open the overlay
+                show();
+            });
+        }
+    }
+
+    void Overlay::closeChildOverlays() {
+        for (auto& child : d_childOverlays) {
+            child->_hideThisAndChildOverlays();
+        }
+    }
+
+    Position Overlay::_calculateAnchorPosition(Shared<MouseMovedEvent> e) {
+        // Get the anchor widget's position in the window
+        auto anchorPositionInWindow = d_activatorWidget->getPositionInWindow();
+
+        // Get event's position information
+        auto mousePos = e->getLocation();
+        auto screenMousePos = e->getScreenLocation();
+
+        // Calculate click offset from the anchor's origin
+        Position anchorPosDiff = {
+            mousePos.x - anchorPositionInWindow.x,
+            mousePos.y - anchorPositionInWindow.y
+        };
+
+        // Calculate the anchor's origin
+        Point anchorOrigin = {
+            screenMousePos.x - anchorPosDiff.x,
+            screenMousePos.y - anchorPosDiff.y
+        };
+
+        // Get the virtual screen container
+        // from the placement constraint system.
+        auto screenContainer =
+            utils::PlacementConstraintSystem::getContainer(MAIN_SCREEN_CONTAINER_NAME);
+
+        // Calculate the anchor point according
+        // to the overlay's preferred spawn position.
+        auto anchorPosition = screenContainer->insertChild(
+            reinterpret_cast<uint64_t>(this), // ID
+            Size(d_overlayWindow->getWidth(), d_overlayWindow->getHeight()),
+            anchorOrigin,
+            d_activatorWidget->getComputedSize(),
+            spawnDirection
+        );
+
+        return anchorPosition;
+    }
+
     bool Overlay::_isMouseClickedInOverlay(const Position& clickPosition) {
         auto windowFrame = Frame(d_overlayWindow->getPosition(), d_overlayWindow->getSize());
         auto clickedInsideOverlay = windowFrame.containsPoint(clickPosition);
@@ -107,5 +216,17 @@ namespace mc {
 
         // Otherwise return false
         return false;
+    }
+    
+    void Overlay::_hideThisAndChildOverlays() {
+        // Hide all children first
+        for (auto& child : d_childOverlays) {
+            child->_hideThisAndChildOverlays();
+        }
+
+        // Hide current overlay window
+        if (d_overlayOpened) {
+            hide();
+        }
     }
 } // namespace mc

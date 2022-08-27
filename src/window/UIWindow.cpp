@@ -210,6 +210,8 @@ namespace mc {
         if (d_rootWidget) {
             d_rootWidget->off("propertyChanged");
             d_rootWidget->off("layoutChanged");
+            d_rootWidget->off("requestedFocusGain");
+            d_rootWidget->off("requestedFocusLoss");
         }
 
         d_rootWidget = root;

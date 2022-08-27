@@ -647,9 +647,26 @@ namespace mc {
         }
         case WM_MOUSEMOVE:
         {
+            // Detecting mouse entering the window
+            if (!d_mouseInClientArea) {
+                d_mouseInClientArea = true;
+                fireEvent("mouseEnteredWindow", Event::empty);
+            }
+
+            POINT windowCursorPoint = POINT{
+                (LONG)GET_X_LPARAM(lParam),
+                (LONG)GET_Y_LPARAM(lParam)
+            };
+
             Position cursorPoint = Position(
                 (uint32_t)GET_X_LPARAM(lParam),
                 (uint32_t)GET_Y_LPARAM(lParam)
+            );
+
+            ClientToScreen(hwnd, &windowCursorPoint);
+            Position screenCursorPoint = Position(
+                windowCursorPoint.x,
+                windowCursorPoint.y
             );
 
             Distance distance = Distance(
@@ -659,6 +676,7 @@ namespace mc {
 
             auto mouseMovedEvent = MakeRef<Event>(eventDataMap_t{
                 { "location", cursorPoint },
+                { "screenLocation", screenCursorPoint },
                 { "distance", distance }
             });
 
@@ -721,11 +739,9 @@ namespace mc {
             break;
         }
         case WM_MOUSELEAVE: {
-            //
-            // *** Potential Development ***
-            // Currently not supported on MacOS or Linux
-            //
-            //fireEvent("mouseLeftWindow", Event::empty);
+            d_mouseInClientArea = false;
+
+            fireEvent("mouseLeftWindow", Event::empty);
             break;
         }
         default: break;

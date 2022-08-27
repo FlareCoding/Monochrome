@@ -51,6 +51,7 @@ public:
     Color getBackgroundColor() const { return d_backgroundColor; }
     virtual void setBackgroundColor(const Color& color) { d_backgroundColor = color; }
 
+    inline Shared<BaseContainerWidget> getRootWidget() const { return d_rootWidget; }
     void setRootWidget(Shared<BaseContainerWidget> root);
 
 private:

@@ -24,6 +24,8 @@ set(
     ${cwd}/Entry.h
     ${cwd}/ProgressBar.h
     ${cwd}/StackPanel.h
+    ${cwd}/MenuList.h
+    ${cwd}/DropdownButton.h
 
     PARENT_SCOPE
 )
@@ -42,6 +44,8 @@ set(
     ${cwd}/Entry.cpp
     ${cwd}/ProgressBar.cpp
     ${cwd}/StackPanel.cpp
+    ${cwd}/MenuList.cpp
+    ${cwd}/DropdownButton.cpp
 
     PARENT_SCOPE
 )

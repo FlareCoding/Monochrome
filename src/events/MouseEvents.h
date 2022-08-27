@@ -12,6 +12,7 @@ enum class MouseButton {
 class MouseMovedEvent : public Event {
 public:
     inline Position getLocation() { return get<Position>("location");  }
+    inline Position getScreenLocation() { return get<Position>("screenLocation"); }
     inline Distance getDistance() { return get<Distance>("distance");  }
 };
 
