@@ -1,4 +1,5 @@
 #include "BaseWidget.h"
+#include <core/InternalFlags.h>
 
 namespace mc {
     BaseWidget::BaseWidget() {
@@ -220,6 +221,10 @@ namespace mc {
     void BaseWidget::markLayoutDirty() {
         d_isLayoutDirty = true;
         fireEvent("layoutChanged", Event::empty);
+    }
+
+    void BaseWidget::markMouseDraggable() {
+        setInternalFlag(d_internalFlags, InternalWidgetFlag::IsMouseDraggable, true);
     }
 
     void BaseWidget::addCoreVisualElement(Shared<VisualElement> visual) {

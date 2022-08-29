@@ -23,9 +23,10 @@ set(
     ${cwd}/Checkbox.h
     ${cwd}/Entry.h
     ${cwd}/ProgressBar.h
-    ${cwd}/StackPanel.h
     ${cwd}/MenuList.h
     ${cwd}/DropdownButton.h
+    ${cwd}/StackPanel.h
+    ${cwd}/ScrollPanel.h
 
     PARENT_SCOPE
 )
@@ -43,9 +44,10 @@ set(
     ${cwd}/Checkbox.cpp
     ${cwd}/Entry.cpp
     ${cwd}/ProgressBar.cpp
-    ${cwd}/StackPanel.cpp
     ${cwd}/MenuList.cpp
     ${cwd}/DropdownButton.cpp
+    ${cwd}/StackPanel.cpp
+    ${cwd}/ScrollPanel.cpp
 
     PARENT_SCOPE
 )

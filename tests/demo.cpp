@@ -129,6 +129,31 @@ Shared<StackPanel> createLargePanel() {
     return panel;
 }
 
+Shared<ScrollPanel> createScrollPanel() {
+    auto contentPanel = MakeRef<StackPanel>();
+    contentPanel->backgroundColor = Color(80, 180, 80);
+    
+    for (int i = 0; i < 10; ++i) {
+        auto button = MakeRef<Button>();
+        button->marginLeft = 6;
+        button->marginRight = 6;
+        button->marginTop = 6;
+        button->marginBottom = 6;
+        button->label->horizontalPadding = 80;
+        button->label->text = "Test Button " + std::to_string(i + 1);
+        button->borderColor = Color::transparent;
+
+        contentPanel->addChild(button);
+    }
+
+    auto scrollPanel = MakeRef<ScrollPanel>();
+    scrollPanel->horizontalAlignment = HACenter;
+    scrollPanel->marginTop = 20;
+    scrollPanel->fixedHeight = 200;
+    scrollPanel->addChild(contentPanel);
+    return scrollPanel;
+}
+
 int main() {
     AppManager::registerApplication("appId-041587");
     //Renderer::enableDebugBoundingBoxes = true;
@@ -216,6 +241,8 @@ int main() {
     demoPanel->addChild(dropdownButton);
 
     centerPanel->addChild(createLargePanel());
+
+    rootPanel->addChild(createScrollPanel());
 
     AppManager::startApplicationLoop();
     return 0;

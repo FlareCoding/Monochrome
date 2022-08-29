@@ -154,6 +154,8 @@ namespace mc {
         cornerRadius = 2;
         fixedWidth = 160;
         text = "";
+
+        markMouseDraggable();
     }
 
     void Entry::clear() {

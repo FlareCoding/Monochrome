@@ -129,6 +129,11 @@ namespace mc {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
 
+            // Ignore invisible widgets
+            if (!widget->visible) {
+                continue;
+            }
+
             // Calculate the widget's runtime absolute position and size
             auto widgetPosition = widget->position + positionOffset;
             auto widgetSize = widget->getComputedSize();
@@ -178,6 +183,11 @@ namespace mc {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
 
+            // Ignore invisible widgets
+            if (!widget->visible) {
+                continue;
+            }
+
             // Calculate the widget's runtime absolute position and size
             auto widgetPosition = widget->position + positionOffset;
             auto widgetSize = widget->getComputedSize();
@@ -187,7 +197,14 @@ namespace mc {
 
             bool isMouseInFrame = widgetFrame.containsPoint(event->getLocation());
 
-            if (isMouseInFrame) {
+            // This logic is used for widgets that are draggable such
+            // as slider knob or scrollbars that need to process mouse
+            // release event potentially when the mouse is off the widget.
+            bool wasMousePressed =
+                getInternalFlag(widgetFlags, InternalWidgetFlag::MouseDownOnWidget) &&
+                getInternalFlag(widgetFlags, InternalWidgetFlag::IsMouseDraggable);
+
+            if (isMouseInFrame || wasMousePressed) {
                 widget->fireEvent("mouseUp", event);
                 widget->fireEvent("clicked", event);
 
@@ -218,6 +235,11 @@ namespace mc {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
+
+            // Ignore invisible widgets
+            if (!widget->visible) {
+                continue;
+            }
 
             // Immediately fire the mouse moved event
             widget->fireEvent("mouseMoved", event);
@@ -259,9 +281,6 @@ namespace mc {
 
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, false);
-
-                setInternalFlag(
-                    widgetFlags, InternalWidgetFlag::MouseDownOnWidget, false);
 
                 widget->fireEvent("hoveredOff", event);
 
