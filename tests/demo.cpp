@@ -129,7 +129,7 @@ Shared<StackPanel> createLargePanel() {
     return panel;
 }
 
-Shared<ScrollPanel> createScrollPanel() {
+Shared<ScrollPanel> createVerticalScrollPanel() {
     auto contentPanel = MakeRef<StackPanel>();
     contentPanel->backgroundColor = Color(80, 180, 80);
     
@@ -154,11 +154,37 @@ Shared<ScrollPanel> createScrollPanel() {
     return scrollPanel;
 }
 
+Shared<ScrollPanel> createHorizontalScrollPanel() {
+    auto contentPanel = MakeRef<StackPanel>();
+    contentPanel->backgroundColor = Color(80, 180, 80);
+    contentPanel->orientation = Horizontal;
+    
+    for (int i = 0; i < 6; ++i) {
+        auto button = MakeRef<Button>();
+        button->marginLeft = 6;
+        button->marginRight = 6;
+        button->marginTop = 6;
+        button->marginBottom = 6;
+        button->label->horizontalPadding = 50;
+        button->label->text = "Test Button " + std::to_string(i + 1);
+        button->borderColor = Color::transparent;
+
+        contentPanel->addChild(button);
+    }
+
+    auto scrollPanel = MakeRef<ScrollPanel>();
+    scrollPanel->horizontalAlignment = HACenter;
+    scrollPanel->marginTop = 20;
+    scrollPanel->fixedWidth = 400;
+    scrollPanel->addChild(contentPanel);
+    return scrollPanel;
+}
+
 int main() {
     AppManager::registerApplication("appId-041587");
     //Renderer::enableDebugBoundingBoxes = true;
 
-    auto window = MakeRef<ClassicWindow>(1060, 660, "New Widget System Demo");
+    auto window = MakeRef<ClassicWindow>(1180, 860, "New Widget System Demo");
     window->setBackgroundColor(Color(18, 22, 28));
     window->on("keyDown", [window](Shared<Event> e) {
         auto pressedChar = std::static_pointer_cast<KeyDownEvent>(e)->getChar();
@@ -242,7 +268,8 @@ int main() {
 
     centerPanel->addChild(createLargePanel());
 
-    rootPanel->addChild(createScrollPanel());
+    rootPanel->addChild(createVerticalScrollPanel());
+    rootPanel->addChild(createHorizontalScrollPanel());
 
     AppManager::startApplicationLoop();
     return 0;

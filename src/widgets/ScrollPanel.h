@@ -1,5 +1,6 @@
 #pragma once
 #include "Button.h"
+#include "StackPanel.h"
 #include "visuals/RectVisual.h"
 
 namespace mc {
@@ -11,6 +12,7 @@ public:
     PropertyObserver<Color>     backgroundColor;
 
     void scrollContentVertically(int32_t amount);
+    void scrollContentHorizontally(int32_t amount);
 
 protected:
     Size _measureSize() override;
@@ -22,17 +24,27 @@ private:
 
     Shared<RectVisual> d_bodyVisual;
 
+    Shared<StackPanel> d_verticalScrollbarTrack;
     Shared<Button> d_verticalTrackUpButton;
     Shared<Button> d_verticalTrackDownButton;
     Shared<Button> d_verticalScrollbar;
+
+    Shared<StackPanel> d_horizontalScrollbarTrack;
+    Shared<Button> d_horizontalTrackLeftButton;
+    Shared<Button> d_horizontalTrackRightButton;
+    Shared<Button> d_horizontalScrollbar;
 
     void _clampContentPosition();
 
     uint32_t _calculateVerticalScrollbarSize();
     void _calculateVerticalScrollbarPosition();
 
+    uint32_t _calculateHorizontalScrollbarSize();
+    void _calculateHorizontalScrollbarPosition();
+
 private:
-    bool        d_mousePressed = false;
+    bool        d_verticalScrollbarPressed = false;
+    bool        d_horizontalScrollbarPressed = false;
     Position    d_mousePressLocation = Point(0, 0);
     Position    d_positionInWindow = Point(0, 0);
     int32_t     d_preScrollContentPosition = 0;
@@ -41,11 +53,26 @@ private:
     void _verticalScrollbarOnMouseUp(Shared<Event> e);
     void _verticalScrollbarOnMouseMoved(Shared<Event> e);
 
+    void _horizontalScrollbarOnMouseDown(Shared<Event> e);
+    void _horizontalScrollbarOnMouseUp(Shared<Event> e);
+    void _horizontalScrollbarOnMouseMoved(Shared<Event> e);
+
     void _showVerticalScrollElements();
     void _hideVerticalScrollElements();
 
+    void _showHorizontalScrollElements();
+    void _hideHorizontalScrollElements();
+
+    float       _getVerticalScrollbarScrolledPercentage();
+    uint32_t    _getVerticalScrollbarMovableDistance();
+    uint32_t    _getMaxPossibleVerticalScroll();
+
+    float       _getHorizontalScrollbarScrolledPercentage();
+    uint32_t    _getHorizontalScrollbarMovableDistance();
+    uint32_t    _getMaxPossibleHorizontalScroll();
+
 private:
-    const uint64_t d_privateWidgets = 3;
+    const uint64_t d_privateWidgets = 8; // Scroll track elements + scrollbars
     const uint32_t d_scrollbarTrackSize = 14;
 };
 } // namespace mc
