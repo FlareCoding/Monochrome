@@ -8,8 +8,21 @@ class ScrollPanel : public BaseContainerWidget {
 public:
     ScrollPanel();
 
+    // Corner radius of the panel
     PropertyObserver<uint32_t>  cornerRadius;
-    PropertyObserver<Color>     backgroundColor;
+
+    // Color of the tracks that contain
+    // vertical and horizontal scrollbars.
+    PropertyObserver<Color>     scrollbarTracksColor;
+
+    // Background color of the buttons on the scrollbar tracks
+    PropertyObserver<Color>     scrollbarTrackButtonBackground;
+
+    // Arrow color of the buttons on the scrollbar tracks
+    PropertyObserver<Color>     scrollbarTrackButtonColor;
+
+    // Color of the scrollbars
+    PropertyObserver<Color>     scrollbarColor;
 
     void scrollContentVertically(int32_t amount);
     void scrollContentHorizontally(int32_t amount);
@@ -19,10 +32,7 @@ protected:
     void _onArrangeChildren() override;
 
 private:
-    void _createVisuals();
     void _setupProperties();
-
-    Shared<RectVisual> d_bodyVisual;
 
     Shared<StackPanel> d_verticalScrollbarTrack;
     Shared<Button> d_verticalTrackUpButton;

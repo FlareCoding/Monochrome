@@ -3,7 +3,6 @@
 
 namespace mc {
     ScrollPanel::ScrollPanel() {
-        _createVisuals();
         _setupProperties();
     }
 
@@ -129,29 +128,15 @@ namespace mc {
         d_horizontalScrollbar->setComputedSize(horizontalScrollbarSize);
     }
 
-    void ScrollPanel::_createVisuals() {
-        // Setup the panel's body rectangle
-        d_bodyVisual = MakeRef<RectVisual>();
-
-        cornerRadius.forwardAssignment(&d_bodyVisual->cornerRadius);
-        backgroundColor.forwardAssignment(&d_bodyVisual->color);
-        addCoreVisualElement(d_bodyVisual);
-    }
-
     void ScrollPanel::_setupProperties() {
         // Required for scrollbars to be draggable
         markMouseDraggable();
-
-        backgroundColor = Color::lightGray;
-        backgroundColor.forwardEmittedEvents(this);
-
-        cornerRadius = 2;
-        cornerRadius.forwardEmittedEvents(this);
 
         // Vertical track background panel
         d_verticalScrollbarTrack = MakeRef<StackPanel>();
         d_verticalScrollbarTrack->zIndex = std::numeric_limits<uint32_t>::max() - 1;
         d_verticalScrollbarTrack->fixedWidth = d_scrollbarTrackSize;
+        scrollbarTracksColor.forwardAssignment(&d_verticalScrollbarTrack->backgroundColor);
         _addChild(d_verticalScrollbarTrack);
 
         // Vertical track UP button
@@ -200,7 +185,6 @@ namespace mc {
         d_verticalScrollbar->marginTop = 2;
         d_verticalScrollbar->marginBottom = 2;
         d_verticalScrollbar->borderColor = Color::transparent;
-        d_verticalScrollbar->backgroundColor = Color::gray;
         d_verticalScrollbar->on("mouseDown", &ScrollPanel::_verticalScrollbarOnMouseDown, this);
         d_verticalScrollbar->on("mouseUp", &ScrollPanel::_verticalScrollbarOnMouseUp, this);
         d_verticalScrollbar->on("mouseMoved", &ScrollPanel::_verticalScrollbarOnMouseMoved, this);
@@ -214,6 +198,7 @@ namespace mc {
         d_horizontalScrollbarTrack = MakeRef<StackPanel>();
         d_horizontalScrollbarTrack->zIndex = std::numeric_limits<uint32_t>::max() - 1;
         d_horizontalScrollbarTrack->fixedHeight = d_scrollbarTrackSize;
+        scrollbarTracksColor.forwardAssignment(&d_horizontalScrollbarTrack->backgroundColor);
         _addChild(d_horizontalScrollbarTrack);
 
         // Horizontal track LEFT button
@@ -262,7 +247,6 @@ namespace mc {
         d_horizontalScrollbar->marginTop = 2;
         d_horizontalScrollbar->marginBottom = 2;
         d_horizontalScrollbar->borderColor = Color::transparent;
-        d_horizontalScrollbar->backgroundColor = Color::gray;
         d_horizontalScrollbar->on("mouseDown", &ScrollPanel::_horizontalScrollbarOnMouseDown, this);
         d_horizontalScrollbar->on("mouseUp", &ScrollPanel::_horizontalScrollbarOnMouseUp, this);
         d_horizontalScrollbar->on(
@@ -273,6 +257,29 @@ namespace mc {
 
         // Initially hide the horizontal scroll elements
         _hideHorizontalScrollElements();
+
+        // Setting up ScrollPanel public properties
+        cornerRadius = 2;
+        cornerRadius.forwardEmittedEvents(this);
+
+        scrollbarTracksColor = Color::lightGray;
+        scrollbarTracksColor.forwardEmittedEvents(this);
+
+        scrollbarColor.forwardAssignment(&d_verticalScrollbar->backgroundColor);
+        scrollbarColor.forwardAssignment(&d_horizontalScrollbar->backgroundColor);
+        scrollbarColor = Color::gray;
+
+        scrollbarTrackButtonBackground.forwardAssignment(&d_verticalTrackDownButton->backgroundColor);
+        scrollbarTrackButtonBackground.forwardAssignment(&d_verticalTrackUpButton->backgroundColor);
+        scrollbarTrackButtonBackground.forwardAssignment(&d_horizontalTrackLeftButton->backgroundColor);
+        scrollbarTrackButtonBackground.forwardAssignment(&d_horizontalTrackRightButton->backgroundColor);
+        scrollbarTrackButtonBackground = Color::gray;
+        
+        scrollbarTrackButtonColor.forwardAssignment(&d_verticalTrackDownButton->label->color);
+        scrollbarTrackButtonColor.forwardAssignment(&d_verticalTrackUpButton->label->color);
+        scrollbarTrackButtonColor.forwardAssignment(&d_horizontalTrackLeftButton->label->color);
+        scrollbarTrackButtonColor.forwardAssignment(&d_horizontalTrackRightButton->label->color);
+        scrollbarTrackButtonColor = Color::white;
     }
 
     void ScrollPanel::_clampContentPosition() {
