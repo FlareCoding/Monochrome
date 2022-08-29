@@ -26,7 +26,7 @@ private:
     Shared<RectVisual> d_bodyVisual;
     Shared<BorderVisual> d_borderVisual;
 
-    Color d_preservedBackgroundColor;
+    PropertyObserver<Color> d_preservedBackgroundColor;
 
     void _onHoveredOn(Shared<Event> e);
     void _onHoveredOff(Shared<Event> e);

@@ -55,9 +55,7 @@ namespace mc {
         borderColor.forwardEmittedEvents(this);
 
         backgroundColor.forwardEmittedEvents(this);
-        backgroundColor.on("propertyChanged", [this](Shared<Event> e) {
-            d_preservedBackgroundColor = backgroundColor.get();
-        });
+        backgroundColor.forwardAssignment(&d_preservedBackgroundColor);
         backgroundColor = Color::gray;
 
         cornerRadius = 2;
