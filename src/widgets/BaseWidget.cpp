@@ -218,6 +218,16 @@ namespace mc {
         return result;
     }
 
+    void BaseWidget::focus() {
+        fireEvent("requestedFocusGain", {
+            { "target", this }
+        });
+    }
+
+    void BaseWidget::unfocus() {
+        fireEvent("requestedFocusLoss", Event::empty);
+    }
+
     void BaseWidget::markLayoutDirty() {
         d_isLayoutDirty = true;
         fireEvent("layoutChanged", Event::empty);

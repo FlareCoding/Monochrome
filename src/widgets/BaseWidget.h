@@ -62,6 +62,12 @@ public:
     inline void setParent(BaseWidget* parent) { d_parent = parent; }
     inline BaseWidget* getParent() const { return d_parent; }
 
+    // Requests focus to be set to this widget
+    void focus();
+
+    // Requests focus to be removed from this widget
+    void unfocus();
+
     // Used to retrieve the currently marked
     // size that the widget prefers to have.
     Size getDesiredSize();
