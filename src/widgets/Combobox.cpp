@@ -61,6 +61,10 @@ namespace mc {
         label->text = d_selectedItem;
     }
 
+    std::string Combobox::getSelectedItem() {
+        return d_selectedItem;
+    }
+
     void Combobox::_setupProperties() {
         d_menuList = MakeRef<MenuList>();
         d_menuList->forwardEmittedEvent(this, "itemSelected");

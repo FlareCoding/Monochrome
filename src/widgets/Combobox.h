@@ -44,6 +44,10 @@ public:
     // Returns the number of items in the combobox
     inline size_t getItemCount() const { return d_menuList->getItemCount(); }
 
+    // Returns the currently selected item
+    // or en empty string if no item is selected.
+    std::string getSelectedItem();
+
 protected:
     void _onSetComputedSize(const Size& size) override;
 
