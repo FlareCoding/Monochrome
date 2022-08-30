@@ -269,12 +269,20 @@ namespace mc {
         scrollbarColor.forwardAssignment(&d_horizontalScrollbar->backgroundColor);
         scrollbarColor = Color::gray;
 
-        scrollbarTrackButtonBackground.forwardAssignment(&d_verticalTrackDownButton->backgroundColor);
-        scrollbarTrackButtonBackground.forwardAssignment(&d_verticalTrackUpButton->backgroundColor);
-        scrollbarTrackButtonBackground.forwardAssignment(&d_horizontalTrackLeftButton->backgroundColor);
-        scrollbarTrackButtonBackground.forwardAssignment(&d_horizontalTrackRightButton->backgroundColor);
+        scrollbarTrackButtonBackground.forwardAssignment(
+            &d_verticalTrackDownButton->backgroundColor);
+
+        scrollbarTrackButtonBackground.forwardAssignment(
+            &d_verticalTrackUpButton->backgroundColor);
+
+        scrollbarTrackButtonBackground.forwardAssignment(
+            &d_horizontalTrackLeftButton->backgroundColor);
+
+        scrollbarTrackButtonBackground.forwardAssignment(
+            &d_horizontalTrackRightButton->backgroundColor);
+
         scrollbarTrackButtonBackground = Color::gray;
-        
+
         scrollbarTrackButtonColor.forwardAssignment(&d_verticalTrackDownButton->label->color);
         scrollbarTrackButtonColor.forwardAssignment(&d_verticalTrackUpButton->label->color);
         scrollbarTrackButtonColor.forwardAssignment(&d_horizontalTrackLeftButton->label->color);
@@ -283,7 +291,7 @@ namespace mc {
     }
 
     void ScrollPanel::_clampContentPosition() {
-        auto& content = getChild(0);
+        auto content = getChild(0);
         auto contentSize = content->getComputedSize();
 
         auto visibleSize = getComputedSize();
@@ -319,7 +327,7 @@ namespace mc {
     }
 
     uint32_t ScrollPanel::_calculateVerticalScrollbarSize() {
-        auto& content = getChild(0);
+        auto content = getChild(0);
         auto visibleSize = getComputedSize();
 
         auto contentHeightF = static_cast<float>(content->getComputedSize().height);
@@ -347,7 +355,7 @@ namespace mc {
     }
 
     uint32_t ScrollPanel::_calculateHorizontalScrollbarSize() {
-        auto& content = getChild(0);
+        auto content = getChild(0);
         auto visibleSize = getComputedSize();
 
         auto contentWidthF = static_cast<float>(content->getComputedSize().width);
@@ -380,7 +388,7 @@ namespace mc {
         d_positionInWindow = getPositionInWindow();
         d_mousePressLocation = mbe->getLocation() - d_positionInWindow;
 
-        auto& content = getChild(0);
+        auto content = getChild(0);
         d_preScrollContentPosition = content->position->y;
 
         d_verticalScrollbarPressed = true;
@@ -397,7 +405,7 @@ namespace mc {
 
         auto mme = std::static_pointer_cast<MouseMovedEvent>(e);
 
-        auto& content = getChild(0);
+        auto content = getChild(0);
         auto contentSize = content->getComputedSize();
 
         // Get local mouse position
@@ -437,7 +445,7 @@ namespace mc {
         d_positionInWindow = getPositionInWindow();
         d_mousePressLocation = mbe->getLocation() - d_positionInWindow;
 
-        auto& content = getChild(0);
+        auto content = getChild(0);
         d_preScrollContentPosition = content->position->x;
 
         d_horizontalScrollbarPressed = true;
@@ -454,7 +462,7 @@ namespace mc {
 
         auto mme = std::static_pointer_cast<MouseMovedEvent>(e);
 
-        auto& content = getChild(0);
+        auto content = getChild(0);
         auto contentSize = content->getComputedSize();
 
         // Get local mouse position
@@ -519,7 +527,7 @@ namespace mc {
     }
 
     float ScrollPanel::_getVerticalScrollbarScrolledPercentage() {
-        auto& content = getChild(0);
+        auto content = getChild(0);
 
         auto maxVerticalScrollAmount = _getMaxPossibleVerticalScroll();
         auto scrolledAmount = -1 * content->position->y;
@@ -531,7 +539,7 @@ namespace mc {
     }
 
     uint32_t ScrollPanel::_getVerticalScrollbarMovableDistance() {
-        auto& content = getChild(0);
+        auto content = getChild(0);
         auto contentSize = content->getComputedSize();
 
         auto visibleSize = getComputedSize();
@@ -544,7 +552,7 @@ namespace mc {
     }
 
     uint32_t ScrollPanel::_getMaxPossibleVerticalScroll() {
-        auto& content = getChild(0);
+        auto content = getChild(0);
         auto contentSize = content->getComputedSize();
         auto visibleSize = getComputedSize();
 
@@ -552,7 +560,7 @@ namespace mc {
     }
 
     float ScrollPanel::_getHorizontalScrollbarScrolledPercentage() {
-        auto& content = getChild(0);
+        auto content = getChild(0);
 
         auto maxHorizontalScrollAmount = _getMaxPossibleHorizontalScroll();
         auto scrolledAmount = -1 * content->position->x;
@@ -564,7 +572,7 @@ namespace mc {
     }
 
     uint32_t ScrollPanel::_getHorizontalScrollbarMovableDistance() {
-        auto& content = getChild(0);
+        auto content = getChild(0);
         auto contentSize = content->getComputedSize();
 
         auto visibleSize = getComputedSize();
@@ -578,7 +586,7 @@ namespace mc {
     }
 
     uint32_t ScrollPanel::_getMaxPossibleHorizontalScroll() {
-        auto& content = getChild(0);
+        auto content = getChild(0);
         auto contentSize = content->getComputedSize();
         auto visibleSize = getComputedSize();
 
@@ -588,7 +596,7 @@ namespace mc {
     void ScrollPanel::scrollContentVertically(int32_t amount) {
         CORE_ASSERT(getChildren().size() > d_privateWidgets, "ScrollPanel content not set");
 
-        auto& content = getChild(0);
+        auto content = getChild(0);
         content->position->y += amount;
 
         // Make sure the content isn't moved beyond its scrollable bounds
@@ -601,7 +609,7 @@ namespace mc {
     void ScrollPanel::scrollContentHorizontally(int32_t amount) {
         CORE_ASSERT(getChildren().size() > d_privateWidgets, "ScrollPanel content not set");
 
-        auto& content = getChild(0);
+        auto content = getChild(0);
         content->position->x += amount;
 
         // Make sure the content isn't moved beyond its scrollable bounds
