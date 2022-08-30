@@ -764,8 +764,12 @@ namespace mc {
         if (!hasSelectedText()) {
             d_selectionHighlightVisual->customWidth = 1;
             d_selectionHighlightVisual->customHeight = 1;
+            d_selectionHighlightVisual->visible = false;
             return;
         }
+
+        // Enable the selection highlight visual
+        d_selectionHighlightVisual->visible = true;
 
         // Get the entry's computed size
         auto computedSize = getComputedSize();
