@@ -25,6 +25,7 @@ set(
     ${cwd}/ProgressBar.h
     ${cwd}/MenuList.h
     ${cwd}/DropdownButton.h
+    ${cwd}/Combobox.h
     ${cwd}/StackPanel.h
     ${cwd}/ScrollPanel.h
 
@@ -46,6 +47,7 @@ set(
     ${cwd}/ProgressBar.cpp
     ${cwd}/MenuList.cpp
     ${cwd}/DropdownButton.cpp
+    ${cwd}/Combobox.cpp
     ${cwd}/StackPanel.cpp
     ${cwd}/ScrollPanel.cpp
 

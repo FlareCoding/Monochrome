@@ -5,5 +5,6 @@
 #include "Entry.h"
 #include "ProgressBar.h"
 #include "DropdownButton.h"
+#include "Combobox.h"
 #include "StackPanel.h"
 #include "ScrollPanel.h"

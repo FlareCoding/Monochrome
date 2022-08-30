@@ -266,6 +266,20 @@ int main() {
     dropdownButton->setMenuList(createMenuList());
     demoPanel->addChild(dropdownButton);
 
+    auto combobox = MakeRef<Combobox>();
+    combobox->marginTop = 16;
+    combobox->marginLeft = 6;
+    combobox->fixedWidth = 200;
+    combobox->fixedHeight = 18;
+    combobox->label->color = Color::white;
+    combobox->backgroundColor = Color(60, 60, 82);
+    combobox->on("itemSelected", [](Shared<Event> e) {
+        auto item = e->get<std::string>("item");
+        printf("Combobox selected item: %s\n", item.c_str());
+    });
+    combobox->addItems({ "Chicken", "Beef", "Milk", "Bread", "Water", "Juice" });
+    demoPanel->addChild(combobox);
+
     centerPanel->addChild(createLargePanel());
 
     rootPanel->addChild(createVerticalScrollPanel());

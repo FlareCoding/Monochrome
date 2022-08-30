@@ -13,6 +13,12 @@ public:
     PropertyObserver<Color>     backgroundColor;
     PropertyObserver<Color>     borderColor;
 
+    // Optional text that can be displayed on the left side of the button
+    PropertyObserver<std::string> secondaryLeftText;
+
+    // Optional text that can be displayed on the right side of the button
+    PropertyObserver<std::string> secondaryRightText;
+
     Shared<Label> label;
 
 protected:
@@ -25,6 +31,11 @@ private:
 
     Shared<RectVisual> d_bodyVisual;
     Shared<BorderVisual> d_borderVisual;
+
+    Shared<Label> d_secondaryLeftLabel;
+    Shared<Label> d_secondaryRightLabel;
+
+    const uint32_t d_secondaryTextPadding = 5;
 
     PropertyObserver<Color> d_preservedBackgroundColor;
 

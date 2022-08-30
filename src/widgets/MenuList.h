@@ -72,6 +72,7 @@ public:
 protected:
     // Inherited via BaseWidget
     Size _measureSize() override;
+    void _onSetComputedSize(const Size& size) override;
 
 private:
     void _setupProperties();

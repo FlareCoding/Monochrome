@@ -25,6 +25,13 @@ namespace mc {
 
     void Button::_onSetComputedSize(const Size& size) {
         label->setComputedSize(size);
+
+        Size secondaryLabelsSize = Size(
+            size.width - d_secondaryTextPadding * 2, size.height
+        );
+
+        d_secondaryLeftLabel->setComputedSize(secondaryLabelsSize);
+        d_secondaryRightLabel->setComputedSize(secondaryLabelsSize);
     }
 
     void Button::_createVisuals() {
@@ -43,12 +50,31 @@ namespace mc {
     }
 
     void Button::_setupProperties() {
+        d_secondaryLeftLabel = MakeRef<Label>();
+        d_secondaryLeftLabel->text = "";
+        d_secondaryLeftLabel->alignment = "left";
+        d_secondaryLeftLabel->position->x = d_secondaryTextPadding;
+        _addChild(d_secondaryLeftLabel);
+
+        d_secondaryRightLabel = MakeRef<Label>();
+        d_secondaryRightLabel->text = "";
+        d_secondaryRightLabel->alignment = "right";
+        d_secondaryRightLabel->position->x = d_secondaryTextPadding;
+        _addChild(d_secondaryRightLabel);
+
         label = MakeRef<Label>();
+        label->color.forwardAssignment(&d_secondaryLeftLabel->color);
+        label->color.forwardAssignment(&d_secondaryRightLabel->color);
+        label->font.forwardAssignment(&d_secondaryLeftLabel->font);
+        label->font.forwardAssignment(&d_secondaryRightLabel->font);
+        label->fontSize.forwardAssignment(&d_secondaryLeftLabel->fontSize);
+        label->fontSize.forwardAssignment(&d_secondaryRightLabel->fontSize);
+        label->fontStyle.forwardAssignment(&d_secondaryLeftLabel->fontStyle);
+        label->fontStyle.forwardAssignment(&d_secondaryRightLabel->fontStyle);
         label->text = "Button";
         label->color = Color(200, 200, 200);
         label->horizontalPadding = 30;
         label->verticalPadding = 10;
-        cursorType.forwardAssignment(&label->cursorType);
         _addChild(label);
 
         borderColor = Color::white;
@@ -64,6 +90,17 @@ namespace mc {
         borderThickness = 2;
         borderThickness.forwardEmittedEvents(this);
 
+        secondaryLeftText = "";
+        secondaryLeftText.forwardAssignment(&d_secondaryLeftLabel->text);
+        secondaryLeftText.forwardEmittedEvents(this);
+
+        secondaryRightText = "";
+        secondaryRightText.forwardAssignment(&d_secondaryRightLabel->text);
+        secondaryRightText.forwardEmittedEvents(this);
+
+        cursorType.forwardAssignment(&label->cursorType);
+        cursorType.forwardAssignment(&d_secondaryLeftLabel->cursorType);
+        cursorType.forwardAssignment(&d_secondaryRightLabel->cursorType);
         cursorType = CursorType::Hand;
 
         on("hoveredOn", &Button::_onHoveredOn, this);

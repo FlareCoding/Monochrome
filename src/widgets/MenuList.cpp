@@ -110,6 +110,14 @@ namespace mc {
             ++itemIndex;
         }
 
+        if (fixedWidth != NOT_SET) {
+            desiredOverlaySize.width = fixedWidth;
+        }
+
+        if (fixedHeight != NOT_SET) {
+            desiredOverlaySize.height = fixedHeight;
+        }
+
         // Resize the overlay to fit the content
         d_overlay->setSize(desiredOverlaySize);
     }
@@ -130,11 +138,21 @@ namespace mc {
         return d_overlay->getSize();
     }
 
+    void MenuList::_onSetComputedSize(const Size& size) {
+        for (auto& [name, menuItem] : d_menuItems) {
+            auto& menuButton = menuItem.first;
+            menuButton->fixedWidth = size.width;
+        }
+
+        d_overlay->setSize(size);
+    }
+
     void MenuList::addSubMenu(Shared<MenuList> menu) {
         auto menuButton = MakeRef<Button>();
         menuButton->cornerRadius = 0;
         menuButton->label->text = menu->name;
         menuButton->label->fontSize = itemSize;
+        menuButton->label->color = itemTextColor;
         menuButton->borderColor = Color::transparent;
         menuButton->horizontalAlignment = HAFill;
         menuButton->on("hoveredOff", [this, menuButton](Shared<Event> e) {
@@ -177,6 +195,7 @@ namespace mc {
         menuItemButton->cornerRadius = 0;
         menuItemButton->label->text = item;
         menuItemButton->label->fontSize = itemSize;
+        menuItemButton->label->color = itemTextColor;
         menuItemButton->borderColor = Color::transparent;
         menuItemButton->horizontalAlignment = HAFill;
         menuItemButton->on("clicked", [this, item](auto e) {
