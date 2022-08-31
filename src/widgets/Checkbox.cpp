@@ -84,13 +84,6 @@ namespace mc {
 
         checked = false;
         checked.forwardEmittedEvents(this);
-        checked.on("propertyChanged", [this](Shared<Event> e) {
-            button->label->visible = checked;
-
-            fireEvent("valueChanged", {
-                { "checked", checked }
-            });
-        });
 
         on("clicked", &Checkbox::_onClick, this);
     }
@@ -100,7 +93,7 @@ namespace mc {
         button->label->visible = checked;
 
         fireEvent("valueChanged", {
-            { "checked", checked }
+            { "checked", checked.get() }
         });
     }
 } // namespace mc
