@@ -10,4 +10,4 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-python@v1
     - run: pip install cpplint
-    - run: cpplint --linelength=100 --filter=-whitespace/comments,-whitespace/indent,-whitespace/parens,-legal/copyright,-readability/multiline_comment,-build/include_what_you_use,-build/c++11,-build/include,-build/include_subdir,-runtime/references --exclude=tests/* --recursive .
+    - run: cpplint --linelength=100 --filter=-whitespace/comments,-whitespace/indent,-whitespace/parens,-legal/copyright,-readability/multiline_comment,-build/include_what_you_use,-build/c++11,-build/include,-build/include_subdir,-runtime/references --exclude=tests/*,monodev/* --recursive .

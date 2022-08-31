@@ -84,3 +84,4 @@ elseif(MSVC)
 endif()
 
 add_subdirectory(tests)
+add_subdirectory(monodev)
