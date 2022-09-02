@@ -1,4 +1,4 @@
-#if defined(NDEBUG) && defined(_WIN32)
+﻿#if defined(NDEBUG) && defined(_WIN32)
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif // !NDEBUG
 

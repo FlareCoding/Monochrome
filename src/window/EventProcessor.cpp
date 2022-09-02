@@ -2,6 +2,12 @@
 #include <core/InternalFlags.h>
 
 namespace mc {
+    using WidgetList_t = std::vector<Shared<BaseWidget>>;
+    static WidgetList_t cloneWidgetList(const WidgetList_t& original) {
+        WidgetList_t clone(original);
+        return clone;
+    }
+
     EventProcessor::EventProcessor() {
         appendAllowedEvent("widgetTreeChanged");
     }
@@ -22,7 +28,7 @@ namespace mc {
 
         _processMouseDownEvent(
             std::static_pointer_cast<MouseButtonEvent>(event),
-            d_rootWidget->_getChildren(),
+            cloneWidgetList(d_rootWidget->_getChildren()),
             positionOffset,
             focusChangeCandidate
         );
@@ -41,7 +47,7 @@ namespace mc {
 
         _processMouseUpEvent(
             std::static_pointer_cast<MouseButtonEvent>(event),
-            d_rootWidget->_getChildren(),
+            cloneWidgetList(d_rootWidget->_getChildren()),
             positionOffset
         );
     }
@@ -161,7 +167,7 @@ namespace mc {
                 // Process the event for all the children
                 _processMouseDownEvent(
                     event,
-                    widget->_getChildren(),
+                    cloneWidgetList(widget->_getChildren()),
                     widgetPosition,
                     focusChangeCandidate
                 );
@@ -217,7 +223,11 @@ namespace mc {
                 }
 
                 // Process the event for all the children
-                _processMouseUpEvent(event, widget->_getChildren(), widgetPosition);
+                _processMouseUpEvent(
+                    event,
+                    cloneWidgetList(widget->_getChildren()),
+                    widgetPosition
+                );
 
                 // Since the widget received mouseUp event on the current
                 // layer, it means it was on top of all other widgets at

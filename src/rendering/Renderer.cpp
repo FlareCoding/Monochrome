@@ -4,6 +4,12 @@
 #include <widgets/BaseWidget.h>
 
 namespace mc {
+    using WidgetList_t = std::vector<Shared<BaseWidget>>;
+    static WidgetList_t cloneWidgetList(const WidgetList_t& original) {
+        WidgetList_t clone(original);
+        return clone;
+    }
+
     bool Renderer::enableDebugBoundingBoxes = false;
 
     void Renderer::renderScene(
@@ -50,7 +56,7 @@ namespace mc {
             widget->d_coreVisualElements, widgetPosition, widgetSize);
 
         // Render all child elements
-        for (auto& child : widget->_getChildren()) {
+        for (auto& child : cloneWidgetList(widget->_getChildren())) {
             renderWidget(renderTarget, child, widgetPosition);
         }
 
