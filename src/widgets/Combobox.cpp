@@ -122,6 +122,11 @@ namespace mc {
         label->text = "";
         backgroundColor = Color::lightGray;
         itemBackgroundColor = Color::darkGray;
-        secondaryRightText = "▼";
+
+        // A manual utf8 buffer has to be used because of
+        // a compiler bug that misinterprets a string literal.
+        // The secondary text represents a dropdown arrow: '▼'.
+        const char secondaryTextBuffer[4] = { -30, -106, -68, 0 };
+        secondaryRightText = secondaryTextBuffer;
     }
 }  // namespace mc
