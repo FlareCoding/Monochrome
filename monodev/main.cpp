@@ -241,8 +241,20 @@ Shared<StackPanel> createPropertyCell(
     removePropButton->borderColor = Color::transparent;
     removePropButton->backgroundColor = Color(57, 59, 59);
     removePropButton->on("clicked", [removePropButton](Shared<Event> e) {
-        auto cell = removePropButton->getParent();
+        auto cell = dynamic_cast<StackPanel*>(removePropButton->getParent());
         s_propertiesListPanel->removeChild(cell->getID());
+
+        auto propName = std::dynamic_pointer_cast<Label>(cell->getChild(1))->text.get();
+
+        for (auto& it = s_widgetConfiguration.publicProperties.begin();
+            it != s_widgetConfiguration.publicProperties.end();
+            ++it
+        ) {
+            if (it->second == propName) {
+                s_widgetConfiguration.publicProperties.erase(it);
+                break;
+            }
+        }
     });
     cellPanel->addChild(removePropButton);
 
