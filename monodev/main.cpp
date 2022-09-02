@@ -59,9 +59,9 @@ std::string generateCppSource();
 int main() {
     AppManager::registerApplication("appId-monodev-devtools");
 
-    auto window = MakeRef<ClassicWindow>(680, 500, "MonoDev");
+    auto window = MakeRef<ClassicWindow>(680, 530, "MonoDev");
     window->setMinWidth(680);
-    window->setMinHeight(500);
+    window->setMinHeight(530);
 
     auto rootPanel = MakeRef<StackPanel>();
     rootPanel->backgroundColor = Color(18, 22, 28);
