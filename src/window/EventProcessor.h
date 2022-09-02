@@ -25,14 +25,14 @@ private:
 
     void _processMouseDownEvent(
         Shared<MouseButtonEvent> event,
-        std::vector<Shared<BaseWidget>>& widgets,
+        const std::vector<Shared<BaseWidget>>& widgets,
         Position& positionOffset,
         Shared<BaseWidget>& focusChangeCandidate
     );
 
     void _processMouseUpEvent(
         Shared<MouseButtonEvent> event,
-        std::vector<Shared<BaseWidget>>& widgets,
+        const std::vector<Shared<BaseWidget>>& widgets,
         Position& positionOffset
     );
 

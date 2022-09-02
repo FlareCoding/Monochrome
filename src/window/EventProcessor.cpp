@@ -3,7 +3,7 @@
 
 namespace mc {
     using WidgetList_t = std::vector<Shared<BaseWidget>>;
-    static WidgetList_t cloneWidgetList(const WidgetList_t& original) {
+    static WidgetList_t cloneWidgetList(WidgetList_t& original) {
         WidgetList_t clone(original);
         return clone;
     }
@@ -127,7 +127,7 @@ namespace mc {
 
     void EventProcessor::_processMouseDownEvent(
         Shared<MouseButtonEvent> event,
-        std::vector<Shared<BaseWidget>>& widgets,
+        const std::vector<Shared<BaseWidget>>& widgets,
         Position& positionOffset,
         Shared<BaseWidget>& focusChangeCandidate
     ) {
@@ -182,7 +182,7 @@ namespace mc {
 
     void EventProcessor::_processMouseUpEvent(
         Shared<MouseButtonEvent> event,
-        std::vector<Shared<BaseWidget>>& widgets,
+        const std::vector<Shared<BaseWidget>>& widgets,
         Position& positionOffset
     ) {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
