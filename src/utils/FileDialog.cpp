@@ -1,7 +1,10 @@
 #include "FileDialog.h"
 
 namespace mc::utils {
-    void FileDialogFilter::addFilter(const std::string& name, const std::string& formats) {
+    void FileDialogFilter::addFilter(
+        const std::string& name,
+        const std::vector<std::string>& formats
+    ) {
         d_filterMap.insert({ name, formats });
     }
 

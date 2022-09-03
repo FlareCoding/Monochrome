@@ -11,6 +11,7 @@ using namespace mc;
 
 #include <rendering/Renderer.h>
 #include <events/KeyboardEvents.h>
+#include <utils/FileDialog.h>
 
 Shared<MenuList> createMenuList() {
     auto extraMenu = MakeRef<MenuList>("Actions...");
@@ -284,6 +285,22 @@ int main() {
 
     rootPanel->addChild(createVerticalScrollPanel());
     rootPanel->addChild(createHorizontalScrollPanel());
+
+    rootPanel->on("mouseUp", [](Shared<Event> e) {
+        auto filter = utils::FileDialogFilter();
+        filter.addFilter("Images", {
+            "png",
+            "jpg",
+            "tiff",
+            "gif"
+        });
+
+        auto fd = utils::FileDialog::create();
+        fd->setFilter(filter);
+        printf("%s\n", fd->chooseFolderDialog().c_str());
+        printf("%s\n", fd->openFileDialog().c_str());
+        printf("%s\n", fd->saveFileDialog().c_str());
+    });
 
     AppManager::startApplicationLoop();
     return 0;

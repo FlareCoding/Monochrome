@@ -7,6 +7,7 @@ set(
     ${cwd}/OSXApplicationContext.h
     ${cwd}/OSXNativeWindow.h
     ${cwd}/OSXRenderTarget.h
+    ${cwd}/OSXFileDialog.h
 
     PARENT_SCOPE
 )
@@ -19,6 +20,7 @@ set(
     ${cwd}/OSXRenderTarget.mm
     ${cwd}/OSXClipboard.mm
     ${cwd}/OSXCursor.mm
+    ${cwd}/OSXFileDialog.mm
 
     PARENT_SCOPE
 )

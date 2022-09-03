@@ -1,6 +1,7 @@
 #pragma once
 #include <core/Core.h>
 #include <string>
+#include <vector>
 #include <map>
 
 namespace mc::utils {
@@ -11,18 +12,18 @@ public:
     // @param name Describes the file formats being filtered.
     // @param formats String of file formats separated
     // by a semicolon, (i.e "*.png;*.jpg;*.jpeg;*.psd").
-    virtual void addFilter(const std::string& name, const std::string& formats);
+    virtual void addFilter(const std::string& name, const std::vector<std::string>& formats);
 
     // @returns Tells whether any filters have been registered.
     bool hasFilters();
 
     // Returns the list of all filters in a map form.
-    std::map<std::string, std::string>& getFilters() {
+    std::map<std::string, std::vector<std::string>>& getFilters() {
         return d_filterMap;
     }
 
 private:
-    std::map<std::string, std::string> d_filterMap;
+    std::map<std::string, std::vector<std::string>> d_filterMap;
 };
 
 class FileDialog {
