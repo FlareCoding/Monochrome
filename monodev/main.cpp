@@ -12,7 +12,7 @@ using namespace mc;
 
 struct WidgetConfiguration {
     std::string name;
-    bool isContainer;
+    bool isContainer = false;
 
     std::vector<
         std::pair<std::string, std::string>
