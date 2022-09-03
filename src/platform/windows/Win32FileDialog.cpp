@@ -3,18 +3,44 @@
 #include <vector>
 
 namespace mc::utils {
-    static std::vector<COMDLG_FILTERSPEC> GetComDlgFilterSpecs(FileDialogFilter& filter) {
+    static std::string createFilterSpec(std::vector<std::string>& fileTypes) {
+        std::string result = "";
+
+        for (size_t i = 0; i < fileTypes.size(); ++i) {
+            result += "*." + fileTypes.at(i);
+
+            if (i < fileTypes.size() - 1) {
+                result += ";";
+            }
+        }
+
+        return result;
+    }
+
+    std::vector<COMDLG_FILTERSPEC> Win32FileDialog::_getComDlgFilterSpecs(
+        FileDialogFilter& filter
+    ) {
         std::vector<COMDLG_FILTERSPEC> filters;
 
-        for (auto& [name, spec] : filter.getFilters()) {
+        uint64_t idx = 0;
+        for (auto& [name, allowedFileTypes] : filter.getFilters()) {
             auto nameWideStr = utils::convertToWideString(name);
-            auto specWideStr = utils::convertToWideString(spec);
+            auto specWideStr = utils::convertToWideString(createFilterSpec(allowedFileTypes));
+
+            if (nameWideStr.size() < MAX_SPEC_SIZE) {
+                std::wmemcpy(d_filterSpecBuffer[idx].name, &nameWideStr[0], nameWideStr.size());
+            }
+
+            if (specWideStr.size() < MAX_SPEC_SIZE) {
+                std::wmemcpy(d_filterSpecBuffer[idx].spec, &specWideStr[0], specWideStr.size());
+            }
 
             COMDLG_FILTERSPEC filterSpec;
-            filterSpec.pszName = nameWideStr.c_str();
-            filterSpec.pszSpec = specWideStr.c_str();
+            filterSpec.pszName = d_filterSpecBuffer[idx].name;
+            filterSpec.pszSpec = d_filterSpecBuffer[idx].spec;
 
             filters.push_back(filterSpec);
+            ++idx;
         }
 
         return filters;
@@ -25,18 +51,18 @@ namespace mc::utils {
     }
 
     std::string Win32FileDialog::chooseFolderDialog() {
-        return fireOpenFileDialogue(FOS_PICKFOLDERS | FOS_PATHMUSTEXIST, true);
+        return _fireOpenFileDialogue(FOS_PICKFOLDERS | FOS_PATHMUSTEXIST, true);
     }
 
     std::string Win32FileDialog::openFileDialog() {
-        return fireOpenFileDialogue(FOS_FILEMUSTEXIST | FOS_PATHMUSTEXIST, true);
+        return _fireOpenFileDialogue(FOS_FILEMUSTEXIST | FOS_PATHMUSTEXIST, true);
     }
 
     std::string Win32FileDialog::saveFileDialog() {
-        return fireOpenFileDialogue(FOS_PATHMUSTEXIST, false);
+        return _fireOpenFileDialogue(FOS_PATHMUSTEXIST, false);
     }
 
-    std::string Win32FileDialog::fireOpenFileDialogue(
+    std::string Win32FileDialog::_fireOpenFileDialogue(
         FILEOPENDIALOGOPTIONS options,
         bool openDialogue
     ) {
@@ -65,7 +91,7 @@ namespace mc::utils {
         }
 
         if (d_filter.hasFilters()) {
-            auto filterspecs = GetComDlgFilterSpecs(d_filter);
+            auto filterspecs = _getComDlgFilterSpecs(d_filter);
             d_pFileOpenDialogue->SetFileTypes((UINT)filterspecs.size(), &filterspecs[0]);
         }
 

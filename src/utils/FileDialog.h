@@ -10,8 +10,7 @@ class FileDialogFilter {
 public:
     // Registers a filter for specific file format(s).
     // @param name Describes the file formats being filtered.
-    // @param formats String of file formats separated
-    // by a semicolon, (i.e "*.png;*.jpg;*.jpeg;*.psd").
+    // @param formats List of allowed file formats.
     virtual void addFilter(const std::string& name, const std::vector<std::string>& formats);
 
     // @returns Tells whether any filters have been registered.
