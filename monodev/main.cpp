@@ -256,7 +256,7 @@ Shared<StackPanel> createPropertyCell(
 
         auto propName = std::dynamic_pointer_cast<Label>(cell->getChild(1))->text.get();
 
-        for (auto& it = s_widgetConfiguration.publicProperties.begin();
+        for (auto it = s_widgetConfiguration.publicProperties.begin();
             it != s_widgetConfiguration.publicProperties.end();
             ++it
         ) {
