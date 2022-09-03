@@ -7,6 +7,7 @@ set(
     ${cwd}/Win32ApplicationContext.h
     ${cwd}/Win32NativeWindow.h
     ${cwd}/Win32RenderTarget.h
+    ${cwd}/Win32FileDialog.h
     ${cwd}/D2DGraphics.h
 
     PARENT_SCOPE
@@ -21,6 +22,7 @@ set(
     ${cwd}/D2DGraphics.cpp
     ${cwd}/Win32Clipboard.cpp
     ${cwd}/Win32Cursor.cpp
+    ${cwd}/Win32FileDialog.cpp
 
     PARENT_SCOPE
 )

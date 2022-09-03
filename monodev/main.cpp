@@ -4,9 +4,11 @@
 
 #include <window/ClassicWindow.h>
 #include <widgets/AllWidgets.h>
+#include <utils/FileDialog.h>
 using namespace mc;
 
 #include <fstream>
+#include <filesystem>
 
 struct WidgetConfiguration {
     std::string name;
@@ -113,15 +115,23 @@ int main() {
     generateSourcesButton->borderColor = Color::transparent;
     generateSourcesButton->backgroundColor = Color(57, 59, 59);
     generateSourcesButton->on("clicked", [](Shared<Event> e) {
+        auto fileDialog = utils::FileDialog::create();
+        fileDialog->setDefaultPath(std::filesystem::current_path().string());
+        auto path = fileDialog->chooseFolderDialog();
+
+        if (path.empty()) {
+            return;
+        }
+
         auto headerSource = generateHeaderSource();
         auto cppSource = generateCppSource();
         
         // Create files on the filesystem
-        std::ofstream headerFile(s_widgetConfiguration.name + ".h");
+        std::ofstream headerFile(path + "/" + s_widgetConfiguration.name + ".h");
         headerFile << headerSource;
         headerFile.close();
 
-        std::ofstream cppFile(s_widgetConfiguration.name + ".cpp");
+        std::ofstream cppFile(path + "/" + s_widgetConfiguration.name + ".cpp");
         cppFile << cppSource;
         cppFile.close();
     });
