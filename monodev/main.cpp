@@ -272,7 +272,7 @@ Shared<StackPanel> createPropertyCell(
 }
 
 std::string generateHeaderSource() {
-    std::string baseClass = s_widgetConfiguration.isContainer ? "BaseContainerWidget" : "BaseWidget";
+    std::string baseClass = "BaseWidget";
     std::string widgetName = s_widgetConfiguration.name;
 
     std::string source = "#pragma once\n";
@@ -339,7 +339,7 @@ std::string generateCppSource() {
     }
 
     // Setup default cursor type
-    source.append("\t\tcursorType = Cursor::Hand;\n");
+    source.append("\t\tcursorType = CursorType::Hand;\n");
 
     // End the _setupProperties() method
     source.append("\t}\n");
