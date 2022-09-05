@@ -40,6 +40,7 @@ public:
     PropertyObserver<bool>          visible;
     PropertyObserver<bool>          focused;
     PropertyObserver<CursorType>    cursorType;
+    PropertyObserver<DockAnchor>    dockAnchor;
 
     PropertyObserver<Position>      position;
 

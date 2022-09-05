@@ -40,6 +40,13 @@ namespace mc {
         cursorType = CursorType::Arrow;
         cursorType.forwardEmittedEvents(this);
 
+        dockAnchor = DockAnchor::Left;
+        dockAnchor.forwardEmittedEvents(this);
+
+        dockAnchor.on("propertyChanged", [this](auto e) {
+            this->fireEvent("layoutChanged", Event::empty);
+        });
+
         position = { 0, 0 };
         position.forwardEmittedEvents(this);
 

@@ -28,6 +28,7 @@ set(
     ${cwd}/Combobox.h
     ${cwd}/StackPanel.h
     ${cwd}/ScrollPanel.h
+    ${cwd}/DockPanel.h
 
     PARENT_SCOPE
 )
@@ -50,6 +51,7 @@ set(
     ${cwd}/Combobox.cpp
     ${cwd}/StackPanel.cpp
     ${cwd}/ScrollPanel.cpp
+    ${cwd}/DockPanel.cpp
 
     PARENT_SCOPE
 )
