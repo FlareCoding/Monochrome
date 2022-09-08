@@ -16,7 +16,7 @@ auto makeButton() {
 }
 
 int main() {
-    AppManager::registerApplication("appId-monodev-devtools");
+    AppManager::registerApplication("appId-dockpanel-demo");
 
     auto window = MakeRef<ClassicWindow>(860, 640, "DockPanel Demo");
 

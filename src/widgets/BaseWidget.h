@@ -69,6 +69,12 @@ public:
     // Requests focus to be removed from this widget
     void unfocus();
 
+    // Sets the visibility to true and triggers a layout update
+    void show();
+
+    // Sets the visibility to false and triggers a layout update
+    void hide();
+
     // Used to retrieve the currently marked
     // size that the widget prefers to have.
     Size getDesiredSize();

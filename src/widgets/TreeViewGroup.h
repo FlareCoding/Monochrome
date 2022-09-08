@@ -38,5 +38,24 @@ private:
 
     std::map<std::string, Shared<Button>> d_items;
     std::map<std::string, Shared<TreeViewGroup>> d_subGroups;
+
+private:
+    const char downArrowUtf8Prefix[6] = {
+        static_cast<char>(0x20),
+        static_cast<char>(0xe2),
+        static_cast<char>(0x96),
+        static_cast<char>(0xbc),
+        static_cast<char>(0x20),
+        0
+    };
+
+    const char rightArrowUtf8Prefix[6] = {
+        static_cast<char>(0x20),
+        static_cast<char>(0xe2),
+        static_cast<char>(0x96),
+        static_cast<char>(0xba),
+        static_cast<char>(0x20),
+        0
+    };
 };
 } // namespace mc

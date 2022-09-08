@@ -14,14 +14,13 @@ namespace mc {
             contentSize = content->getDesiredSizeWithMargins();
 
             auto visibleSize = Size(fixedWidth, fixedHeight);
-            auto computedSize = getComputedSize();
 
             if (visibleSize.width == NOT_SET) {
-                visibleSize.width = computedSize.width;
+                visibleSize.width = contentSize.width;
             }
 
             if (visibleSize.height == NOT_SET) {
-                visibleSize.height = computedSize.height;
+                visibleSize.height = contentSize.height;
             }
 
             // Determine if there should be space for a vertical scrollbar
@@ -29,6 +28,10 @@ namespace mc {
                 if (contentSize.height > visibleSize.height) {
                     contentSize.width += d_scrollbarTrackSize;
                     _showVerticalScrollElements();
+
+                    // Since it was previously invisible, it's measure step was skipped
+                    d_verticalScrollbar->markLayoutDirty();
+                    d_verticalScrollbar->measure();
                 } else {
                     _hideVerticalScrollElements();
                 }
@@ -36,9 +39,15 @@ namespace mc {
 
             // Determine if there should be space for a horizontal scrollbar
             if (visibleSize.width != NOT_SET) {
-                if (contentSize.width > visibleSize.width) {
+                auto widthOffset = d_verticalScrollbar->visible ? d_scrollbarTrackSize : 0;
+
+                if (contentSize.width - widthOffset > visibleSize.width) {
                     contentSize.height += d_scrollbarTrackSize;
                     _showHorizontalScrollElements();
+
+                    // Since it was previously invisible, it's measure step was skipped
+                    d_horizontalScrollbar->markLayoutDirty();
+                    d_horizontalScrollbar->measure();
                 } else {
                     _hideHorizontalScrollElements();
                 }

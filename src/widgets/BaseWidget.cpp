@@ -34,10 +34,6 @@ namespace mc {
         visible = true;
         visible.forwardEmittedEvents(this);
 
-        visible.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
-
         focused = true;
         focused.forwardEmittedEvents(this);
 
@@ -246,9 +242,18 @@ namespace mc {
         fireEvent("requestedFocusLoss", Event::empty);
     }
 
+    void BaseWidget::show() {
+        visible = true;
+        markLayoutDirty();
+    }
+
+    void BaseWidget::hide() {
+        visible = false;
+        markLayoutDirty();
+    }
+
     void BaseWidget::markLayoutDirty() {
         d_isLayoutDirty = true;
-        fireEvent("layoutChanged", Event::empty);
     }
 
     void BaseWidget::markMouseDraggable() {

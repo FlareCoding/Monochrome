@@ -68,9 +68,9 @@ namespace mc {
     }
 
     void TreeViewGroup::_onGroupNameChanged(Shared<Event> e) {
-        std::string prefix = " ► ";
+        std::string prefix = rightArrowUtf8Prefix;
         if (d_groupOpened) {
-            prefix = " ▼ ";
+            prefix = downArrowUtf8Prefix;
         }
 
         d_expandGroupButton->label->text = prefix + name.get();
@@ -80,18 +80,18 @@ namespace mc {
         if (d_groupOpened) {
             auto& children = _getChildren();
             for (uint64_t i = 1; i < children.size(); ++i) {
-                children.at(i)->visible = false;
+                children.at(i)->hide();
             }
 
-            d_expandGroupButton->label->text = " ► " + name.get();
+            d_expandGroupButton->label->text = rightArrowUtf8Prefix + name.get();
             d_groupOpened = false;
         } else {
             auto& children = _getChildren();
             for (uint64_t i = 1; i < children.size(); ++i) {
-                children.at(i)->visible = true;
+                children.at(i)->show();
             }
 
-            d_expandGroupButton->label->text = " ▼ " + name.get();
+            d_expandGroupButton->label->text = downArrowUtf8Prefix + name.get();
             d_groupOpened = true;
         }
     }
