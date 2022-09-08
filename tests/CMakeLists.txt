@@ -5,3 +5,6 @@ target_link_libraries(Demo PUBLIC Monochrome)
 
 add_executable(DockPanel_Demo dockpanel_demo.cpp)
 target_link_libraries(DockPanel_Demo PUBLIC Monochrome)
+
+add_executable(TreeView_Demo treeview_demo.cpp)
+target_link_libraries(TreeView_Demo PUBLIC Monochrome)

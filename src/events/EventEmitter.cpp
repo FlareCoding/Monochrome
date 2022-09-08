@@ -29,7 +29,11 @@ namespace mc {
         }
     }
 
-    void EventEmitter::fireEvent(const std::string& eventName, Shared<Event> event) {
+    void EventEmitter::fireEvent(
+        const std::string& eventName,
+        Shared<Event> event,
+        BaseWidget* target
+    ) {
         // Check if the event name is allowed
         CORE_ASSERT(
             std::count(d_allowedEvents.begin(), d_allowedEvents.end(), eventName),
@@ -37,6 +41,7 @@ namespace mc {
         );
 
         event->name = eventName;
+        event->target = target;
 
         if (d_handlers.find(eventName) != d_handlers.end()) {
             auto& eventHandlers = d_handlers[eventName];
@@ -46,8 +51,14 @@ namespace mc {
         }
     }
 
-    void EventEmitter::fireEvent(const std::string& eventName, const eventDataMap_t& data) {
-        fireEvent(eventName, MakeRef<Event>(data));
+    void EventEmitter::fireEvent(
+        const std::string& eventName,
+        const eventDataMap_t& data,
+        BaseWidget* target
+    ) {
+        auto event = MakeRef<Event>(data);
+        event->target = target;
+        fireEvent(eventName, event);
     }
 
     void EventEmitter::forwardEmittedEvents(EventEmitter* emitter) {

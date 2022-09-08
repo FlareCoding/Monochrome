@@ -34,6 +34,10 @@ namespace mc {
         visible = true;
         visible.forwardEmittedEvents(this);
 
+        visible.on("propertyChanged", [this](auto e) {
+            this->fireEvent("layoutChanged", Event::empty);
+        });
+
         focused = true;
         focused.forwardEmittedEvents(this);
 
@@ -149,6 +153,13 @@ namespace mc {
         // Ignore measuring children if the layout
         // has not been marked as dirty or been changed.
         if (!isLayoutDirty()) {
+            return;
+        }
+
+        // Check the special case when the widget is
+        // invisible and therefore doesn't take up any space.
+        if (!visible.get()) {
+            d_desiredSize = Size(0, 0);
             return;
         }
 

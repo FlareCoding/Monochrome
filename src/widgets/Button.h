@@ -19,6 +19,12 @@ public:
     // Optional text that can be displayed on the right side of the button
     PropertyObserver<std::string> secondaryRightText;
 
+    // Custom color to replace the background color when the button is hovered on
+    PropertyObserver<Color>       hoverOnColor;
+
+    // Custom color to replace the background color when the button is pressed on
+    PropertyObserver<Color>       mousePressedColor;
+
     Shared<Label> label;
 
 protected:

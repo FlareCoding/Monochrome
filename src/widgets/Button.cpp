@@ -90,6 +90,12 @@ namespace mc {
         borderThickness = 2;
         borderThickness.forwardEmittedEvents(this);
 
+        hoverOnColor = Color::transparent;
+        hoverOnColor.forwardEmittedEvents(this);
+
+        mousePressedColor = Color::transparent;
+        mousePressedColor.forwardEmittedEvents(this);
+
         secondaryLeftText = "";
         secondaryLeftText.forwardAssignment(&d_secondaryLeftLabel->text);
         secondaryLeftText.forwardEmittedEvents(this);
@@ -110,8 +116,17 @@ namespace mc {
     }
 
     void Button::_onHoveredOn(Shared<Event> e) {
-        dimColor(backgroundColor);
-        dimColor(d_bodyVisual->color);
+        if (hoverOnColor.get() != Color::transparent) {
+            backgroundColor->r = hoverOnColor->r;
+            backgroundColor->g = hoverOnColor->g;
+            backgroundColor->b = hoverOnColor->b;
+            backgroundColor->a = hoverOnColor->a;
+            d_bodyVisual->color = hoverOnColor;
+        } else {
+            dimColor(backgroundColor);
+            dimColor(d_bodyVisual->color);
+        }
+
         fireEvent("propertyChanged", Event::empty);
     }
 
@@ -125,8 +140,18 @@ namespace mc {
             return;
         }
 
-        dimColor(backgroundColor);
-        dimColor(d_bodyVisual->color);
+        if (mousePressedColor.get() != Color::transparent) {
+            backgroundColor->r = mousePressedColor->r;
+            backgroundColor->g = mousePressedColor->g;
+            backgroundColor->b = mousePressedColor->b;
+            backgroundColor->a = mousePressedColor->a;
+            d_bodyVisual->color = mousePressedColor;
+        } else {
+            dimColor(backgroundColor);
+            dimColor(d_bodyVisual->color);
+        }
+
+        e->stopPropagation();
         fireEvent("propertyChanged", Event::empty);
     }
 
@@ -136,8 +161,18 @@ namespace mc {
             return;
         }
 
-        undimColor(backgroundColor);
-        undimColor(d_bodyVisual->color);
+        if (hoverOnColor.get() != Color::transparent) {
+            backgroundColor->r = hoverOnColor->r;
+            backgroundColor->g = hoverOnColor->g;
+            backgroundColor->b = hoverOnColor->b;
+            backgroundColor->a = hoverOnColor->a;
+            d_bodyVisual->color = hoverOnColor;
+        } else {
+            undimColor(backgroundColor);
+            undimColor(d_bodyVisual->color);
+        }
+
+        e->stopPropagation();
         fireEvent("propertyChanged", Event::empty);
     }
 } // namespace mc

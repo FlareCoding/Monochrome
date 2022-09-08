@@ -17,14 +17,14 @@ namespace mc {
             return;
         }
 
-        d_rootWidget->fireEvent("mouseDown", Event::empty);
+        d_rootWidget->fireEvent("mouseDown", event, d_rootWidget.get());
 
         Position positionOffset = Position(0, 0);
 
         // Pointer to the widget that the focus
         // should potentially switch to unless it
         // is the same widget being pressed on again.
-        Shared<BaseWidget> focusChangeCandidate = nullptr;
+        Shared<BaseWidget> focusChangeCandidate = d_rootWidget;
 
         _processMouseDownEvent(
             std::static_pointer_cast<MouseButtonEvent>(event),
@@ -41,7 +41,7 @@ namespace mc {
             return;
         }
 
-        d_rootWidget->fireEvent("mouseUp", Event::empty);
+        d_rootWidget->fireEvent("mouseUp", event, d_rootWidget.get());
 
         Position positionOffset = Position(0, 0);
 
@@ -61,7 +61,7 @@ namespace mc {
 
         d_rootWidget->fireEvent("mouseMoved", {
             { "location", mme->getLocation() }
-        });
+        }, d_rootWidget.get());
 
         Position positionOffset = Position(0, 0);
 
@@ -105,7 +105,7 @@ namespace mc {
                     false
                 );
 
-                d_focusedWidget->fireEvent("lostFocus", Event::empty);
+                d_focusedWidget->fireEvent("lostFocus", Event::empty, d_focusedWidget);
             }
 
             if (candidate) {
@@ -117,7 +117,7 @@ namespace mc {
                     true
                 );
 
-                candidate->fireEvent("gainedFocus", Event::empty);
+                candidate->fireEvent("gainedFocus", Event::empty, candidate);
             }
 
             // Update the focused widget pointer
@@ -157,7 +157,7 @@ namespace mc {
                 focusChangeCandidate = widget;
 
                 // Fire the event
-                widget->fireEvent("mouseDown", event);
+                widget->fireEvent("mouseDown", event, widget.get());
 
                 // If the event is handled, return
                 if (event->isHandled()) {
@@ -211,8 +211,8 @@ namespace mc {
                 getInternalFlag(widgetFlags, InternalWidgetFlag::IsMouseDraggable);
 
             if (isMouseInFrame || wasMousePressed) {
-                widget->fireEvent("mouseUp", event);
-                widget->fireEvent("clicked", event);
+                widget->fireEvent("mouseUp", event, widget.get());
+                widget->fireEvent("clicked", event, widget.get());
 
                 // Set the internal widget flags
                 setInternalFlag(widgetFlags, InternalWidgetFlag::MouseDownOnWidget, false);
@@ -252,7 +252,7 @@ namespace mc {
             }
 
             // Immediately fire the mouse moved event
-            widget->fireEvent("mouseMoved", event);
+            widget->fireEvent("mouseMoved", event, widget.get());
 
             // Determine if the mouse was previously in the widget's frame
             bool wasMouseInFrame =
@@ -275,7 +275,7 @@ namespace mc {
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, true);
 
-                widget->fireEvent("hoveredOn", event);
+                widget->fireEvent("hoveredOn", event, widget.get());
 
                 // Set the widget-specific cursor type
                 utils::Cursor::setActiveCursor(widget->cursorType);
@@ -292,7 +292,7 @@ namespace mc {
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, false);
 
-                widget->fireEvent("hoveredOff", event);
+                widget->fireEvent("hoveredOff", event, widget.get());
 
                 // Reset the cursor icon
                 utils::Cursor::setActiveCursor(DEFAULT_CURSOR_TYPE);
