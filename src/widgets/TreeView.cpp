@@ -72,4 +72,32 @@ namespace mc {
 
         _addChild(group);
     }
+
+    void TreeView::removeGroup(const std::string& name) {
+        for (auto it = d_groups.begin(); it != d_groups.end(); ++it) {
+            auto group = *it;
+
+            if (group->name.get() == name) {
+                d_groups.erase(it);
+                _removeChild(group);
+                break;
+            }
+        }
+    }
+
+    void TreeView::removeGroup(Shared<TreeViewGroup> group) {
+        removeGroup(group->name);
+    }
+
+    Shared<TreeViewGroup> TreeView::getGroup(const std::string& name) {
+        for (auto it = d_groups.begin(); it != d_groups.end(); ++it) {
+            auto group = *it;
+
+            if (group->name.get() == name) {
+                return group;
+            }
+        }
+
+        return nullptr;
+    }
 } // namespace mc

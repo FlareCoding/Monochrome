@@ -34,14 +34,14 @@ int main() {
     });
     rootPanel->addChild(treeView);
 
-    auto macLaptopsGroup = MakeRef<TreeViewGroup>("Apple");
-    macLaptopsGroup->addItem("Macbook Pro 13-inch");
-    macLaptopsGroup->addItem("Macbook Pro 15-inch");
-    macLaptopsGroup->addItem("Macbook Air");
+    auto appleLaptopsGroup = MakeRef<TreeViewGroup>("Apple");
+    appleLaptopsGroup->addItem("Macbook Pro 13-inch");
+    appleLaptopsGroup->addItem("Macbook Pro 15-inch");
+    appleLaptopsGroup->addItem("Macbook Air");
 
     auto laptopsGroup = MakeRef<TreeViewGroup>("Laptops");
     laptopsGroup->addItem("Dell");
-    laptopsGroup->addSubGroup(macLaptopsGroup);
+    laptopsGroup->addSubGroup(appleLaptopsGroup);
     laptopsGroup->addItem("HP");
     laptopsGroup->addItem("Acer");
     treeView->addGroup(laptopsGroup);

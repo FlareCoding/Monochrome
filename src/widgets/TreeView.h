@@ -22,6 +22,9 @@ public:
     PropertyObserver<uint32_t> itemSize;
 
     void addGroup(Shared<TreeViewGroup> group);
+    void removeGroup(const std::string& name);
+    void removeGroup(Shared<TreeViewGroup> group);
+    Shared<TreeViewGroup> getGroup(const std::string& name);
 
 protected:
     Size _measureSize() override;

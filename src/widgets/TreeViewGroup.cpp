@@ -21,6 +21,8 @@ namespace mc {
         subGroup->horizontalAlignment = HAFill;
         subGroup->forwardEmittedEvent(this, "itemSelected");
         addChild(subGroup);
+
+        d_subGroups.insert({ subGroup->name.get(), subGroup });
     }
 
     void TreeViewGroup::addItem(const TreeViewItem& item) {
@@ -39,6 +41,8 @@ namespace mc {
         itemButton->on("clicked", &TreeViewGroup::_onItemClicked, this);
         itemButton->on("lostFocus", &TreeViewGroup::_onItemLostFocus, this);
         addChild(itemButton);
+
+        d_items.insert({ item, itemButton });
     }
 
     void TreeViewGroup::_setupProperties() {
@@ -108,5 +112,35 @@ namespace mc {
 
         button->backgroundColor = Color::transparent;
         button->borderColor = Color::transparent;
+    }
+
+    bool TreeViewGroup::remove(const std::string& name) {
+        // Check if the name is from the item
+        if (d_items.find(name) != d_items.end()) {
+            auto itemButton = d_items.at(name);
+            removeChild(itemButton);
+
+            d_items.erase(name);
+            return true;
+        }
+
+        // Check if the name is from the subgroup
+        if (d_subGroups.find(name) != d_subGroups.end()) {
+            auto subGroup = d_subGroups.at(name);
+            removeChild(subGroup);
+
+            d_subGroups.erase(name);
+            return true;
+        }
+
+        return false;
+    }
+
+    Shared<TreeViewGroup> TreeViewGroup::getGroup(const std::string& name) {
+        if (d_subGroups.find(name) == d_subGroups.end()) {
+            return nullptr;
+        }
+
+        return d_subGroups.at(name);
     }
 } // namespace mc

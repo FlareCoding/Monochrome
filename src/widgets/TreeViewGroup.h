@@ -17,6 +17,14 @@ public:
     void addSubGroup(Shared<TreeViewGroup> subGroup);
     void addItem(const TreeViewItem& item);
 
+    // Removes an item or a sub-group that matches the given name.
+    // @returns true if the item or sub-group was
+    // successfully found and removed, false otherwise.
+    bool remove(const std::string& name);
+
+    // @returns Shared pointer to the TreeViewGroup associated with the given name
+    Shared<TreeViewGroup> getGroup(const std::string& name);
+
 private:
     void _setupProperties();
 
@@ -27,5 +35,8 @@ private:
 
     bool d_groupOpened = true;
     Shared<Button> d_expandGroupButton;
+
+    std::map<std::string, Shared<Button>> d_items;
+    std::map<std::string, Shared<TreeViewGroup>> d_subGroups;
 };
 } // namespace mc
