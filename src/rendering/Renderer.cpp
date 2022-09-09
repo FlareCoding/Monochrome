@@ -4,6 +4,12 @@
 #include <widgets/BaseWidget.h>
 
 namespace mc {
+    using WidgetList_t = std::vector<Shared<BaseWidget>>;
+    static WidgetList_t cloneWidgetList(const WidgetList_t& original) {
+        WidgetList_t clone(original);
+        return clone;
+    }
+
     bool Renderer::enableDebugBoundingBoxes = false;
 
     void Renderer::renderScene(
@@ -46,46 +52,18 @@ namespace mc {
 
         // First draw the core visual elements
         // that the widget is comprised from.
-        for (auto& visual : widget->d_coreVisualElements) {
-            if (!visual->visible) {
-                continue;
-            }
-
-            auto visualSize = widgetSize;
-            if (visual->customWidth != NOT_SET) {
-                visualSize.width = visual->customWidth;
-            }
-
-            if (visual->customHeight != NOT_SET) {
-                visualSize.height = visual->customHeight;
-            }
-
-            drawVisualElement(renderTarget, visual, widgetPosition, visualSize);
-        }
+        drawVisualElementList(renderTarget,
+            widget->d_coreVisualElements, widgetPosition, widgetSize);
 
         // Render all child elements
-        for (auto& child : widget->_getChildren()) {
+        for (auto& child : cloneWidgetList(widget->_getChildren())) {
             renderWidget(renderTarget, child, widgetPosition);
         }
 
         // Lastly draw the overlay visual
         // elements that the widget has.
-        for (auto& visual : widget->d_overlayVisualElements) {
-            if (!visual->visible) {
-                continue;
-            }
-
-            auto visualSize = widgetSize;
-            if (visual->customWidth != NOT_SET) {
-                visualSize.width = visual->customWidth;
-            }
-
-            if (visual->customHeight != NOT_SET) {
-                visualSize.height = visual->customHeight;
-            }
-
-            drawVisualElement(renderTarget, visual, widgetPosition, visualSize);
-        }
+        drawVisualElementList(renderTarget,
+            widget->d_overlayVisualElements, widgetPosition, widgetSize);
 
         // Restore the clipping layer
         renderTarget->popClipLayer();
@@ -99,6 +77,55 @@ namespace mc {
                 Color(180, 0, 0, 255),
                 0, false, 2
             );
+        }
+    }
+
+    void Renderer::drawVisualElementList(
+        Shared<RenderTarget>& renderTarget,
+        std::vector<Shared<VisualElement>>& visualElements,
+        Position& widgetPosition,
+        Size& widgetSize
+    ) {
+        uint64_t clipRegions = 0;
+
+        for (auto& visual : visualElements) {
+            // Special handling for clip region elements
+            if (visual->type() == VisualTypeClipRegion) {
+                auto clipRegion = std::static_pointer_cast<ClipRegionVisual>(visual);
+
+                // Push the clip layer
+                renderTarget->pushClipLayer(
+                    widgetPosition.x + clipRegion->position->x,
+                    widgetPosition.y + clipRegion->position->y,
+                    clipRegion->customWidth, clipRegion->customHeight
+                );
+
+                // Keep track of how many clip regions were pushed to pop them
+                // after all other visuals finish rendering for the current widget.
+                ++clipRegions;
+                continue;
+            }
+
+            if (!visual->visible) {
+                continue;
+            }
+
+            auto visualSize = widgetSize;
+            if (visual->customWidth != NOT_SET) {
+                visualSize.width = visual->customWidth;
+            }
+
+            if (visual->customHeight != NOT_SET) {
+                visualSize.height = visual->customHeight;
+            }
+
+            drawVisualElement(renderTarget, visual, widgetPosition, visualSize);
+        }
+
+        // Pop the clip layers if there were any
+        while (clipRegions) {
+            renderTarget->popClipLayer();
+            --clipRegions;
         }
     }
 

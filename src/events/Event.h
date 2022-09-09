@@ -6,6 +6,7 @@
 
 namespace mc {
 using eventDataMap_t = std::map<std::string, std::any>;
+class BaseWidget;
 
 class Event {
 public:
@@ -28,6 +29,7 @@ public:
     inline void stopPropagation() { d_shouldPropagate = false; }
 
     std::string name;
+    BaseWidget* target = nullptr;
 
     Event() = default;
     explicit Event(const eventDataMap_t& data) : d_data(data) {}

@@ -89,7 +89,7 @@ struct Frame {
     }
 };
 
-enum OverflowDirection {
+enum class OverflowDirection {
     Down,
     Up,
     Left,
@@ -99,5 +99,11 @@ enum OverflowDirection {
 enum Orientaion {
     Horizontal,
     Vertical
+};
+
+enum class DockAnchor {
+    Top, Bottom,
+    Left, Right,
+    Fill
 };
 } // namespace mc

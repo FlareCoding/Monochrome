@@ -210,6 +210,8 @@ namespace mc {
         if (d_rootWidget) {
             d_rootWidget->off("propertyChanged");
             d_rootWidget->off("layoutChanged");
+            d_rootWidget->off("requestedFocusGain");
+            d_rootWidget->off("requestedFocusLoss");
         }
 
         d_rootWidget = root;
@@ -230,6 +232,15 @@ namespace mc {
         d_rootWidget->on("propertyChanged", [this](Shared<Event> e) {
             // Since the widget tree has changed, a redraw is required
             setShouldRedraw();
+        });
+
+        d_rootWidget->on("requestedFocusGain", [this](Shared<Event> e) {
+            BaseWidget* target = e->get<BaseWidget*>("target");
+            d_eventProcessor->handlePotentialFocusChanged(target);
+        });
+
+        d_rootWidget->on("requestedFocusLoss", [this](Shared<Event> e) {
+            d_eventProcessor->handlePotentialFocusChanged(nullptr);
         });
 
         setShouldRedraw();

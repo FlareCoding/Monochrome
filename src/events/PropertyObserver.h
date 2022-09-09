@@ -15,6 +15,14 @@ public:
         return _property;
     }
 
+    bool operator==(const PropertyObserver<T>& other) const {
+        return this->_property == other.get();
+    }
+
+    bool operator!=(const PropertyObserver<T>& other) const {
+        return this->_property != other.get();
+    }
+
     T* operator->() const {
         return const_cast<T*>(&_property);
     }

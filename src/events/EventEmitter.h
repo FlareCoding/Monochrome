@@ -16,8 +16,12 @@ public:
 
     void on(const std::string& eventName, eventEmiterCallback_t handler);
     void off(const std::string& eventName);
-    void fireEvent(const std::string& eventName, Shared<Event> event);
-    void fireEvent(const std::string& eventName, const eventDataMap_t& data);
+    void fireEvent(const std::string& eventName, Shared<Event> event, BaseWidget* target = nullptr);
+    void fireEvent(
+        const std::string& eventName,
+        const eventDataMap_t& data,
+        BaseWidget* target = nullptr
+    );
 
     template <typename T>
     void on(const std::string& eventName, void (T::*fn)(Shared<Event>), T* obj) {

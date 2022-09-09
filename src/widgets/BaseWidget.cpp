@@ -1,4 +1,5 @@
 #include "BaseWidget.h"
+#include <core/InternalFlags.h>
 
 namespace mc {
     BaseWidget::BaseWidget() {
@@ -38,6 +39,13 @@ namespace mc {
 
         cursorType = CursorType::Arrow;
         cursorType.forwardEmittedEvents(this);
+
+        dockAnchor = DockAnchor::Left;
+        dockAnchor.forwardEmittedEvents(this);
+
+        dockAnchor.on("propertyChanged", [this](auto e) {
+            this->fireEvent("layoutChanged", Event::empty);
+        });
 
         position = { 0, 0 };
         position.forwardEmittedEvents(this);
@@ -144,6 +152,13 @@ namespace mc {
             return;
         }
 
+        // Check the special case when the widget is
+        // invisible and therefore doesn't take up any space.
+        if (!visible.get()) {
+            d_desiredSize = Size(0, 0);
+            return;
+        }
+
         for (auto& child : _getChildren()) {
             child->measure();
         }
@@ -217,9 +232,32 @@ namespace mc {
         return result;
     }
 
+    void BaseWidget::focus() {
+        fireEvent("requestedFocusGain", {
+            { "target", this }
+        });
+    }
+
+    void BaseWidget::unfocus() {
+        fireEvent("requestedFocusLoss", Event::empty);
+    }
+
+    void BaseWidget::show() {
+        visible = true;
+        markLayoutDirty();
+    }
+
+    void BaseWidget::hide() {
+        visible = false;
+        markLayoutDirty();
+    }
+
     void BaseWidget::markLayoutDirty() {
         d_isLayoutDirty = true;
-        fireEvent("layoutChanged", Event::empty);
+    }
+
+    void BaseWidget::markMouseDraggable() {
+        setInternalFlag(d_internalFlags, InternalWidgetFlag::IsMouseDraggable, true);
     }
 
     void BaseWidget::addCoreVisualElement(Shared<VisualElement> visual) {

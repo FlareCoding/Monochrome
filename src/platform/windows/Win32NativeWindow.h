@@ -62,6 +62,7 @@ private:
     std::string d_title;
     Position    d_previousMousePosition;
     uint64_t    d_windowFlags = 0;
+    bool        d_mouseInClientArea = false;
     bool        d_requestedFrontBufferRender = false;
 
     HWND d_windowHandle = nullptr;

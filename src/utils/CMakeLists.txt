@@ -9,6 +9,7 @@ set(
     ${cwd}/Cursor.h
     ${cwd}/TextUtils.h
     ${cwd}/PlacementConstraintSystem.h
+    ${cwd}/FileDialog.h
 
     PARENT_SCOPE
 )
@@ -19,6 +20,7 @@ set(
     ${cwd}/uuid.cpp
     ${cwd}/TextUtils.cpp
     ${cwd}/PlacementConstraintSystem.cpp
+    ${cwd}/FileDialog.cpp
 
     PARENT_SCOPE
 )

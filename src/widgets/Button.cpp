@@ -1,4 +1,4 @@
-#include "Button.h"
+﻿#include "Button.h"
 #include <events/MouseEvents.h>
 
 namespace mc {
@@ -25,6 +25,13 @@ namespace mc {
 
     void Button::_onSetComputedSize(const Size& size) {
         label->setComputedSize(size);
+
+        Size secondaryLabelsSize = Size(
+            size.width - d_secondaryTextPadding * 2, size.height
+        );
+
+        d_secondaryLeftLabel->setComputedSize(secondaryLabelsSize);
+        d_secondaryRightLabel->setComputedSize(secondaryLabelsSize);
     }
 
     void Button::_createVisuals() {
@@ -43,21 +50,38 @@ namespace mc {
     }
 
     void Button::_setupProperties() {
+        d_secondaryLeftLabel = MakeRef<Label>();
+        d_secondaryLeftLabel->text = "";
+        d_secondaryLeftLabel->alignment = "left";
+        d_secondaryLeftLabel->position->x = d_secondaryTextPadding;
+        _addChild(d_secondaryLeftLabel);
+
+        d_secondaryRightLabel = MakeRef<Label>();
+        d_secondaryRightLabel->text = "";
+        d_secondaryRightLabel->alignment = "right";
+        d_secondaryRightLabel->position->x = d_secondaryTextPadding;
+        _addChild(d_secondaryRightLabel);
+
         label = MakeRef<Label>();
+        label->color.forwardAssignment(&d_secondaryLeftLabel->color);
+        label->color.forwardAssignment(&d_secondaryRightLabel->color);
+        label->font.forwardAssignment(&d_secondaryLeftLabel->font);
+        label->font.forwardAssignment(&d_secondaryRightLabel->font);
+        label->fontSize.forwardAssignment(&d_secondaryLeftLabel->fontSize);
+        label->fontSize.forwardAssignment(&d_secondaryRightLabel->fontSize);
+        label->fontStyle.forwardAssignment(&d_secondaryLeftLabel->fontStyle);
+        label->fontStyle.forwardAssignment(&d_secondaryRightLabel->fontStyle);
         label->text = "Button";
         label->color = Color(200, 200, 200);
         label->horizontalPadding = 30;
         label->verticalPadding = 10;
-        cursorType.forwardAssignment(&label->cursorType);
         _addChild(label);
 
         borderColor = Color::white;
         borderColor.forwardEmittedEvents(this);
 
         backgroundColor.forwardEmittedEvents(this);
-        backgroundColor.on("propertyChanged", [this](Shared<Event> e) {
-            d_preservedBackgroundColor = backgroundColor.get();
-        });
+        backgroundColor.forwardAssignment(&d_preservedBackgroundColor);
         backgroundColor = Color::gray;
 
         cornerRadius = 2;
@@ -66,6 +90,23 @@ namespace mc {
         borderThickness = 2;
         borderThickness.forwardEmittedEvents(this);
 
+        hoverOnColor = Color::transparent;
+        hoverOnColor.forwardEmittedEvents(this);
+
+        mousePressedColor = Color::transparent;
+        mousePressedColor.forwardEmittedEvents(this);
+
+        secondaryLeftText = "";
+        secondaryLeftText.forwardAssignment(&d_secondaryLeftLabel->text);
+        secondaryLeftText.forwardEmittedEvents(this);
+
+        secondaryRightText = "";
+        secondaryRightText.forwardAssignment(&d_secondaryRightLabel->text);
+        secondaryRightText.forwardEmittedEvents(this);
+
+        cursorType.forwardAssignment(&label->cursorType);
+        cursorType.forwardAssignment(&d_secondaryLeftLabel->cursorType);
+        cursorType.forwardAssignment(&d_secondaryRightLabel->cursorType);
         cursorType = CursorType::Hand;
 
         on("hoveredOn", &Button::_onHoveredOn, this);
@@ -75,8 +116,17 @@ namespace mc {
     }
 
     void Button::_onHoveredOn(Shared<Event> e) {
-        dimColor(backgroundColor);
-        dimColor(d_bodyVisual->color);
+        if (hoverOnColor.get() != Color::transparent) {
+            backgroundColor->r = hoverOnColor->r;
+            backgroundColor->g = hoverOnColor->g;
+            backgroundColor->b = hoverOnColor->b;
+            backgroundColor->a = hoverOnColor->a;
+            d_bodyVisual->color = hoverOnColor;
+        } else {
+            dimColor(backgroundColor);
+            dimColor(d_bodyVisual->color);
+        }
+
         fireEvent("propertyChanged", Event::empty);
     }
 
@@ -90,8 +140,18 @@ namespace mc {
             return;
         }
 
-        dimColor(backgroundColor);
-        dimColor(d_bodyVisual->color);
+        if (mousePressedColor.get() != Color::transparent) {
+            backgroundColor->r = mousePressedColor->r;
+            backgroundColor->g = mousePressedColor->g;
+            backgroundColor->b = mousePressedColor->b;
+            backgroundColor->a = mousePressedColor->a;
+            d_bodyVisual->color = mousePressedColor;
+        } else {
+            dimColor(backgroundColor);
+            dimColor(d_bodyVisual->color);
+        }
+
+        e->stopPropagation();
         fireEvent("propertyChanged", Event::empty);
     }
 
@@ -101,8 +161,18 @@ namespace mc {
             return;
         }
 
-        undimColor(backgroundColor);
-        undimColor(d_bodyVisual->color);
+        if (hoverOnColor.get() != Color::transparent) {
+            backgroundColor->r = hoverOnColor->r;
+            backgroundColor->g = hoverOnColor->g;
+            backgroundColor->b = hoverOnColor->b;
+            backgroundColor->a = hoverOnColor->a;
+            d_bodyVisual->color = hoverOnColor;
+        } else {
+            undimColor(backgroundColor);
+            undimColor(d_bodyVisual->color);
+        }
+
+        e->stopPropagation();
         fireEvent("propertyChanged", Event::empty);
     }
 } // namespace mc

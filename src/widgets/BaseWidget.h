@@ -40,6 +40,7 @@ public:
     PropertyObserver<bool>          visible;
     PropertyObserver<bool>          focused;
     PropertyObserver<CursorType>    cursorType;
+    PropertyObserver<DockAnchor>    dockAnchor;
 
     PropertyObserver<Position>      position;
 
@@ -61,6 +62,18 @@ public:
 
     inline void setParent(BaseWidget* parent) { d_parent = parent; }
     inline BaseWidget* getParent() const { return d_parent; }
+
+    // Requests focus to be set to this widget
+    void focus();
+
+    // Requests focus to be removed from this widget
+    void unfocus();
+
+    // Sets the visibility to true and triggers a layout update
+    void show();
+
+    // Sets the visibility to false and triggers a layout update
+    void hide();
 
     // Used to retrieve the currently marked
     // size that the widget prefers to have.
@@ -99,6 +112,11 @@ public:
     // Forcefully marks the current widget's layout state
     // as dirty, forcing a redraw with a layout recalculation.
     void markLayoutDirty();
+
+    // Sets the internal IsDraggable flag on.
+    // Use only when you need to process mouseUp
+    // events when mouse is outside of the widget.
+    void markMouseDraggable();
 
 protected:
     BaseWidget* d_parent = nullptr;

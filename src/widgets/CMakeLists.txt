@@ -9,6 +9,7 @@ set(
     ${cwd}/visuals/RectVisual.h
     ${cwd}/visuals/BorderVisual.h
     ${cwd}/visuals/TextVisual.h
+    ${cwd}/visuals/ClipRegionVisual.h
 
     ${cwd}/Color.h
     ${cwd}/Layer.h
@@ -20,8 +21,16 @@ set(
     ${cwd}/Label.h
     ${cwd}/Button.h
     ${cwd}/Checkbox.h
-    ${cwd}/StackPanel.h
+    ${cwd}/Entry.h
     ${cwd}/ProgressBar.h
+    ${cwd}/MenuList.h
+    ${cwd}/DropdownButton.h
+    ${cwd}/Combobox.h
+    ${cwd}/TreeViewGroup.h
+    ${cwd}/TreeView.h
+    ${cwd}/StackPanel.h
+    ${cwd}/ScrollPanel.h
+    ${cwd}/DockPanel.h
 
     PARENT_SCOPE
 )
@@ -37,8 +46,16 @@ set(
     ${cwd}/Label.cpp
     ${cwd}/Button.cpp
     ${cwd}/Checkbox.cpp
-    ${cwd}/StackPanel.cpp
+    ${cwd}/Entry.cpp
     ${cwd}/ProgressBar.cpp
+    ${cwd}/MenuList.cpp
+    ${cwd}/DropdownButton.cpp
+    ${cwd}/Combobox.cpp
+    ${cwd}/TreeViewGroup.cpp
+    ${cwd}/TreeView.cpp
+    ${cwd}/StackPanel.cpp
+    ${cwd}/ScrollPanel.cpp
+    ${cwd}/DockPanel.cpp
 
     PARENT_SCOPE
 )

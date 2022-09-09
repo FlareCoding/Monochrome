@@ -9,7 +9,8 @@ enum VisualType {
     VisualTypeCircle,
     VisualTypeBorder,
     VisualTypeText,
-    VisualTypeImage
+    VisualTypeImage,
+    VisualTypeClipRegion
 };
 
 class VisualElement {

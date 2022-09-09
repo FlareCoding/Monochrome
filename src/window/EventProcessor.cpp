@@ -2,6 +2,12 @@
 #include <core/InternalFlags.h>
 
 namespace mc {
+    using WidgetList_t = std::vector<Shared<BaseWidget>>;
+    static WidgetList_t cloneWidgetList(WidgetList_t& original) {
+        WidgetList_t clone(original);
+        return clone;
+    }
+
     EventProcessor::EventProcessor() {
         appendAllowedEvent("widgetTreeChanged");
     }
@@ -11,23 +17,23 @@ namespace mc {
             return;
         }
 
-        d_rootWidget->fireEvent("mouseDown", Event::empty);
+        d_rootWidget->fireEvent("mouseDown", event, d_rootWidget.get());
 
         Position positionOffset = Position(0, 0);
 
         // Pointer to the widget that the focus
         // should potentially switch to unless it
         // is the same widget being pressed on again.
-        Shared<BaseWidget> focusChangeCandidate = nullptr;
+        Shared<BaseWidget> focusChangeCandidate = d_rootWidget;
 
         _processMouseDownEvent(
             std::static_pointer_cast<MouseButtonEvent>(event),
-            d_rootWidget->_getChildren(),
+            cloneWidgetList(d_rootWidget->_getChildren()),
             positionOffset,
             focusChangeCandidate
         );
 
-        _handlePotentialFocusChanged(focusChangeCandidate);
+        handlePotentialFocusChanged(focusChangeCandidate);
     }
 
     void EventProcessor::processMouseUpEvent(Shared<Event> event) {
@@ -35,13 +41,13 @@ namespace mc {
             return;
         }
 
-        d_rootWidget->fireEvent("mouseUp", Event::empty);
+        d_rootWidget->fireEvent("mouseUp", event, d_rootWidget.get());
 
         Position positionOffset = Position(0, 0);
 
         _processMouseUpEvent(
             std::static_pointer_cast<MouseButtonEvent>(event),
-            d_rootWidget->_getChildren(),
+            cloneWidgetList(d_rootWidget->_getChildren()),
             positionOffset
         );
     }
@@ -51,12 +57,16 @@ namespace mc {
             return;
         }
 
-        d_rootWidget->fireEvent("mouseMoved", Event::empty);
+        auto mme = std::static_pointer_cast<MouseMovedEvent>(event);
+
+        d_rootWidget->fireEvent("mouseMoved", {
+            { "location", mme->getLocation() }
+        }, d_rootWidget.get());
 
         Position positionOffset = Position(0, 0);
 
         _processMouseMovedEvent(
-            std::static_pointer_cast<MouseMovedEvent>(event),
+            mme,
             d_rootWidget->_getChildren(),
             positionOffset
         );
@@ -78,7 +88,11 @@ namespace mc {
         d_focusedWidget->fireEvent("keyUp", event);
     }
 
-    void EventProcessor::_handlePotentialFocusChanged(Shared<BaseWidget>& candidate) {
+    void EventProcessor::handlePotentialFocusChanged(Shared<BaseWidget>& candidate) {
+        handlePotentialFocusChanged(candidate.get());
+    }
+
+    void EventProcessor::handlePotentialFocusChanged(BaseWidget* candidate) {
         // Check if the currently focused widget has lost
         // focus and if a new widget has become focused.
         if (candidate != d_focusedWidget) {
@@ -91,7 +105,7 @@ namespace mc {
                     false
                 );
 
-                d_focusedWidget->fireEvent("lostFocus", Event::empty);
+                d_focusedWidget->fireEvent("lostFocus", Event::empty, d_focusedWidget);
             }
 
             if (candidate) {
@@ -103,7 +117,7 @@ namespace mc {
                     true
                 );
 
-                candidate->fireEvent("gainedFocus", Event::empty);
+                candidate->fireEvent("gainedFocus", Event::empty, candidate);
             }
 
             // Update the focused widget pointer
@@ -113,13 +127,18 @@ namespace mc {
 
     void EventProcessor::_processMouseDownEvent(
         Shared<MouseButtonEvent> event,
-        std::vector<Shared<BaseWidget>>& widgets,
+        const std::vector<Shared<BaseWidget>>& widgets,
         Position& positionOffset,
         Shared<BaseWidget>& focusChangeCandidate
     ) {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
+
+            // Ignore invisible widgets
+            if (!widget->visible) {
+                continue;
+            }
 
             // Calculate the widget's runtime absolute position and size
             auto widgetPosition = widget->position + positionOffset;
@@ -138,7 +157,7 @@ namespace mc {
                 focusChangeCandidate = widget;
 
                 // Fire the event
-                widget->fireEvent("mouseDown", event);
+                widget->fireEvent("mouseDown", event, widget.get());
 
                 // If the event is handled, return
                 if (event->isHandled()) {
@@ -148,7 +167,7 @@ namespace mc {
                 // Process the event for all the children
                 _processMouseDownEvent(
                     event,
-                    widget->_getChildren(),
+                    cloneWidgetList(widget->_getChildren()),
                     widgetPosition,
                     focusChangeCandidate
                 );
@@ -163,12 +182,17 @@ namespace mc {
 
     void EventProcessor::_processMouseUpEvent(
         Shared<MouseButtonEvent> event,
-        std::vector<Shared<BaseWidget>>& widgets,
+        const std::vector<Shared<BaseWidget>>& widgets,
         Position& positionOffset
     ) {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
+
+            // Ignore invisible widgets
+            if (!widget->visible) {
+                continue;
+            }
 
             // Calculate the widget's runtime absolute position and size
             auto widgetPosition = widget->position + positionOffset;
@@ -179,9 +203,16 @@ namespace mc {
 
             bool isMouseInFrame = widgetFrame.containsPoint(event->getLocation());
 
-            if (isMouseInFrame) {
-                widget->fireEvent("mouseUp", event);
-                widget->fireEvent("clicked", event);
+            // This logic is used for widgets that are draggable such
+            // as slider knob or scrollbars that need to process mouse
+            // release event potentially when the mouse is off the widget.
+            bool wasMousePressed =
+                getInternalFlag(widgetFlags, InternalWidgetFlag::MouseDownOnWidget) &&
+                getInternalFlag(widgetFlags, InternalWidgetFlag::IsMouseDraggable);
+
+            if (isMouseInFrame || wasMousePressed) {
+                widget->fireEvent("mouseUp", event, widget.get());
+                widget->fireEvent("clicked", event, widget.get());
 
                 // Set the internal widget flags
                 setInternalFlag(widgetFlags, InternalWidgetFlag::MouseDownOnWidget, false);
@@ -192,7 +223,11 @@ namespace mc {
                 }
 
                 // Process the event for all the children
-                _processMouseUpEvent(event, widget->_getChildren(), widgetPosition);
+                _processMouseUpEvent(
+                    event,
+                    cloneWidgetList(widget->_getChildren()),
+                    widgetPosition
+                );
 
                 // Since the widget received mouseUp event on the current
                 // layer, it means it was on top of all other widgets at
@@ -210,6 +245,14 @@ namespace mc {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
+
+            // Ignore invisible widgets
+            if (!widget->visible) {
+                continue;
+            }
+
+            // Immediately fire the mouse moved event
+            widget->fireEvent("mouseMoved", event, widget.get());
 
             // Determine if the mouse was previously in the widget's frame
             bool wasMouseInFrame =
@@ -232,7 +275,7 @@ namespace mc {
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, true);
 
-                widget->fireEvent("hoveredOn", Event::empty);
+                widget->fireEvent("hoveredOn", event, widget.get());
 
                 // Set the widget-specific cursor type
                 utils::Cursor::setActiveCursor(widget->cursorType);
@@ -249,10 +292,7 @@ namespace mc {
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, false);
 
-                setInternalFlag(
-                    widgetFlags, InternalWidgetFlag::MouseDownOnWidget, false);
-
-                widget->fireEvent("hoveredOff", Event::empty);
+                widget->fireEvent("hoveredOff", event, widget.get());
 
                 // Reset the cursor icon
                 utils::Cursor::setActiveCursor(DEFAULT_CURSOR_TYPE);
