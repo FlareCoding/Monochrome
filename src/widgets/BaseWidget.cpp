@@ -195,7 +195,7 @@ namespace mc {
     void BaseWidget::arrangeChildren() {
         // Ignore arranging children if the layout
         // has not been marked as dirty or been changed.
-        if (!isLayoutDirty()) {
+        if (!isLayoutDirty() && !isContainer()) {
             return;
         }
 

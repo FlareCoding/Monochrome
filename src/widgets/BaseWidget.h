@@ -163,6 +163,8 @@ public:
     BaseContainerWidget() = default;
     virtual ~BaseContainerWidget() = default;
 
+    bool isContainer() const override { return true; }
+
     // Adds a child to the list of widgets
     // @param child Child element to be added
     void addChild(Shared<BaseWidget> child);

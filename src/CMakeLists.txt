@@ -9,6 +9,7 @@ add_subdirectory(events)
 add_subdirectory(utils)
 add_subdirectory(widgets)
 add_subdirectory(rendering)
+add_subdirectory(mcx)
 
 set(
     MONOCHROME_HEADERS
@@ -20,9 +21,9 @@ set(
     ${UTILS_HEADERS}
     ${WIDGETS_HEADERS}
     ${RENDERING_HEADERS}
+    ${MCX_HEADERS}
 
     ${PLATFORM_HEADERS}
-
     PARENT_SCOPE
 )
 
@@ -36,6 +37,7 @@ set(
     ${UTILS_SOURCES}
     ${WIDGETS_SOURCES}
     ${RENDERING_SOURCES}
+    ${MCX_SOURCES}
 
     ${PLATFORM_SOURCES}
     PARENT_SCOPE
