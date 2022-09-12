@@ -19,6 +19,7 @@ set(
     ${cwd}/ProgressBarMcxAdapter.h
     ${cwd}/TreeViewGroupMcxAdapter.h
     ${cwd}/TreeViewMcxAdapter.h
+    ${cwd}/UserWidgetMcxAdapter.h
 
     PARENT_SCOPE
 )
@@ -40,6 +41,7 @@ set(
     ${cwd}/ProgressBarMcxAdapter.cpp
     ${cwd}/TreeViewGroupMcxAdapter.cpp
     ${cwd}/TreeViewMcxAdapter.cpp
+    ${cwd}/UserWidgetMcxAdapter.cpp
 
     PARENT_SCOPE
 )

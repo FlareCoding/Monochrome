@@ -7,7 +7,7 @@ public:
     ComboboxMcxAdapter();
 
     /// @brief Creates and returns a native widget instance.
-    Shared<BaseWidget> createWidgetInstance() override;
+    Shared<BaseWidget> createWidgetInstance(Shared<McxNode>& mcxNode) override;
 
     /// @brief Parses the mcx node and applies the provided
     /// mcx attributes to the appropriate widget instance members.

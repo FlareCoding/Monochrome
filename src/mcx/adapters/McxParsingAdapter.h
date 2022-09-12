@@ -11,7 +11,7 @@ public:
     virtual ~McxParsingAdapter() = default;
 
     /// @brief Creates and returns a native widget instance.
-    virtual Shared<BaseWidget> createWidgetInstance() = 0;
+    virtual Shared<BaseWidget> createWidgetInstance(Shared<McxNode>& mcxNode) = 0;
 
     /// @brief Parses the mcx node and applies the provided
     /// mcx attributes to the appropriate widget instance members.

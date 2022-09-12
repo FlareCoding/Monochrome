@@ -2,7 +2,7 @@
 #include <widgets/ProgressBar.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> ProgressBarMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> ProgressBarMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<ProgressBar>();
     }
 

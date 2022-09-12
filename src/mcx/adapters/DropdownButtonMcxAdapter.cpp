@@ -7,7 +7,7 @@ namespace mc::mcx {
         d_buttonAdapter = MakeRef<ButtonMcxAdapter>();
     }
 
-    Shared<BaseWidget> DropdownButtonMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> DropdownButtonMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<DropdownButton>();
     }
 

@@ -2,7 +2,7 @@
 #include <widgets/Entry.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> EntryMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> EntryMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<Entry>();
     }
 

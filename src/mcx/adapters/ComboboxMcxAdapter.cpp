@@ -6,7 +6,7 @@ namespace mc::mcx {
         d_buttonAdapter = MakeRef<ButtonMcxAdapter>();
     }
 
-    Shared<BaseWidget> ComboboxMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> ComboboxMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<Combobox>();
     }
 

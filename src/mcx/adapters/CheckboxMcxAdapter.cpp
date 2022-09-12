@@ -2,7 +2,7 @@
 #include <widgets/Checkbox.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> CheckboxMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> CheckboxMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<Checkbox>();
     }
 

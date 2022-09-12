@@ -5,15 +5,25 @@
 namespace mc::mcx {
 class McxEngine {
 public:
-    // Parses an xml-based .mcx file containing a window tag as the root.
-    // @param path Path to the .mcx file containing the source
-    // @returns Shared pointer to the instantiated ClassicWindow object from the mcx source
+    /// @brief Parses an xml-based .mcx file containing a window as the root.
+    /// @param path Path to the .mcx file containing the source
+    /// @returns Shared pointer to the instantiated ClassicWindow object from the mcx source
     static Shared<ClassicWindow> parseWindowFile(const std::string& path);
 
-    // Parses the xml-based mcx source code string.
-    // @param source String containing mcx source code
-    // @returns Shared pointer to the instantiated ClassicWindow object from the mcx source
+    /// @brief Parses the xml-based mcx source code string with window as the root.
+    /// @param source String containing mcx source code
+    /// @returns Shared pointer to the instantiated ClassicWindow object from the mcx source
     static Shared<ClassicWindow> parseWindowSource(char* source);
+
+    /// @brief Parses an xml-based .mcx file containing a custom widget as the root.
+    /// @param path Path to the .mcx file containing the source
+    /// @returns Shared pointer to the native widget instance from the mcx source
+    static Shared<BaseWidget> parseUserWidgetFile(const std::string& path);
+
+    /// @brief Parses the xml-based mcx source code string with custom widget as the root.
+    /// @param source String containing mcx source code
+    /// @returns Shared pointer to the native widget instance from the mcx source
+    static Shared<BaseWidget> parseUserWidgetSource(char* source);
 
     /// @brief Associates the mcx parsing adapter with a given widget name.
     /// Each widget has to have a corresponding adapter registerd.

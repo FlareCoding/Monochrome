@@ -3,7 +3,7 @@
 #include <mcx/McxEngine.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> MenuListMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> MenuListMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<MenuList>();
     }
 

@@ -2,7 +2,7 @@
 #include <widgets/StackPanel.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> StackPanelMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> StackPanelMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<StackPanel>();
     }
 

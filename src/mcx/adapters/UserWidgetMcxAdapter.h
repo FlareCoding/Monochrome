@@ -2,7 +2,7 @@
 #include "McxParsingAdapter.h"
 
 namespace mc::mcx {
-class BaseWidgetMcxAdapter : public McxParsingAdapter {
+class UserWidgetMcxAdapter : public McxParsingAdapter {
 public:
     /// @brief Creates and returns a native widget instance.
     Shared<BaseWidget> createWidgetInstance(Shared<McxNode>& mcxNode) override;

@@ -19,6 +19,7 @@
 #include "adapters/ProgressBarMcxAdapter.h"
 #include "adapters/TreeViewGroupMcxAdapter.h"
 #include "adapters/TreeViewMcxAdapter.h"
+#include "adapters/UserWidgetMcxAdapter.h"
 
 namespace mc::mcx {
     bool McxEngine::s_mcxEngineInitialized = false;
@@ -82,12 +83,56 @@ namespace mc::mcx {
         return window;
     }
 
+    Shared<BaseWidget> McxEngine::parseUserWidgetFile(const std::string& path) {
+        bool fileExists = std::filesystem::is_regular_file(path);
+        if (!fileExists) {
+            printf("'%s' could not be found\n", path.c_str());
+            return nullptr;
+        }
+
+        rapidxml::file<> xmlFile(path.c_str());
+        return parseUserWidgetSource(xmlFile.data());
+    }
+
+    Shared<BaseWidget> McxEngine::parseUserWidgetSource(char* source) {
+        if (!s_mcxEngineInitialized) {
+            _initializeMcxEngine();
+        }
+
+        rapidxml::xml_document<> doc;
+        doc.parse<0>(source);
+
+        auto rootNode = MakeRef<McxNode>(doc.first_node());
+        const auto rootType = rootNode->getAttribute("type");
+
+        // Making sure that the type of the root node is a window
+        if (rootType != "widget") {
+            printf("McxEngineError: root node is not a widget, '%s' type found\n",
+                rootType.c_str());
+            return nullptr;
+        }
+
+        auto& children = rootNode->getChildren();
+        if (children.size() != 1) {
+            printf("Custom user widget must have only one root widget\n");
+            return nullptr;
+        }
+
+        auto& rootWidgetNode = children.at(0);
+
+        Shared<BaseWidget> widgetInstance = parseWidget(rootWidgetNode);
+        return widgetInstance;
+    }
+
     Shared<BaseWidget> McxEngine::parseWidget(Shared<McxNode>& node) {
         // Get the appropriate parsing adapter
-        const auto mcxAdapter = s_mcxAdapters.at(node->getType());
+        const auto mcxAdapter = getMcxAdapter(node->getType());
+        if (!mcxAdapter) {
+            throw std::runtime_error("Could not find adapter for type: " + node->getType());
+        }
 
         // Create the native widget instance
-        auto widgetInstance = mcxAdapter->createWidgetInstance();
+        auto widgetInstance = mcxAdapter->createWidgetInstance(node);
 
         // Apply basic widget properties
         s_baseWidgetMcxAdapter->applyProperties(widgetInstance, node);
@@ -146,6 +191,7 @@ namespace mc::mcx {
         registerMcxAdapter("ProgressBar", MakeRef<ProgressBarMcxAdapter>());
         registerMcxAdapter("TreeViewGroup", MakeRef<TreeViewGroupMcxAdapter>());
         registerMcxAdapter("TreeView", MakeRef<TreeViewMcxAdapter>());
+        registerMcxAdapter("UserWidget", MakeRef<UserWidgetMcxAdapter>());
 
         s_mcxEngineInitialized = true;
     }

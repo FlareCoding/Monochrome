@@ -2,7 +2,7 @@
 #include <widgets/DockPanel.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> DockPanelMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> DockPanelMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<DockPanel>();
     }
 

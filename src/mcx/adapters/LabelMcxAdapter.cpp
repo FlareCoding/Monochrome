@@ -2,7 +2,7 @@
 #include <widgets/Label.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> LabelMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> LabelMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<Label>();
     }
 

@@ -2,7 +2,7 @@
 #include <widgets/Button.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> ButtonMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> ButtonMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<Button>();
     }
 
@@ -55,5 +55,8 @@ namespace mc::mcx {
 
         button->label->horizontalPadding =
             mcxNode->getUIntAttribute("horizontalPadding", button->label->horizontalPadding);
+
+        button->label->color =
+            mcxNode->getColorAttribute("textColor", button->label->color);
     }
 } //namespace mc::mcx

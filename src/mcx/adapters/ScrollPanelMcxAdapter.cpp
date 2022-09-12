@@ -2,7 +2,7 @@
 #include <widgets/ScrollPanel.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> ScrollPanelMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> ScrollPanelMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<ScrollPanel>();
     }
 

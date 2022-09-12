@@ -3,7 +3,7 @@
 #include <mcx/McxEngine.h>
 
 namespace mc::mcx {
-    Shared<BaseWidget> TreeViewGroupMcxAdapter::createWidgetInstance() {
+    Shared<BaseWidget> TreeViewGroupMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
         return MakeRef<TreeViewGroup>();
     }
 
