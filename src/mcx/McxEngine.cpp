@@ -27,21 +27,25 @@ namespace mc::mcx {
     static Shared<BaseWidgetMcxAdapter> s_baseWidgetMcxAdapter = MakeRef<BaseWidgetMcxAdapter>();
 
     Shared<ClassicWindow> McxEngine::parseWindowFile(const std::string& path) {
+        bool fileExists = std::filesystem::is_regular_file(path);
+        if (!fileExists) {
+            printf("'%s' could not be found\n", path.c_str());
+            return nullptr;
+        }
+
+        rapidxml::file<> xmlFile(path.c_str());
+        return parseWindowSource(xmlFile.data());
+    }
+
+    Shared<ClassicWindow> McxEngine::parseWindowSource(char* source) {
         if (!s_mcxEngineInitialized) {
             _initializeMcxEngine();
         }
 
         Shared<ClassicWindow> window = nullptr;
 
-        bool fileExists = std::filesystem::is_regular_file(path);
-        if (!fileExists) {
-            printf("'%s' could not be found\n", path.c_str());
-            return window;
-        }
-
-        rapidxml::file<> xmlFile(path.c_str());
         rapidxml::xml_document<> doc;
-        doc.parse<0>(xmlFile.data());
+        doc.parse<0>(source);
 
         auto rootNode = MakeRef<McxNode>(doc.first_node());
         const auto rootType = rootNode->getAttribute("type");
@@ -76,14 +80,6 @@ namespace mc::mcx {
 
         window->setRootWidget(std::static_pointer_cast<BaseContainerWidget>(rootWidgetInstance));
         return window;
-    }
-
-    Shared<ClassicWindow> McxEngine::parseWindowSource(const std::string& source) {
-        if (!s_mcxEngineInitialized) {
-            _initializeMcxEngine();
-        }
-
-        return nullptr;
     }
 
     Shared<BaseWidget> McxEngine::parseWidget(Shared<McxNode>& node) {

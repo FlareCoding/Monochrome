@@ -13,8 +13,7 @@ public:
     // Parses the xml-based mcx source code string.
     // @param source String containing mcx source code
     // @returns Shared pointer to the instantiated ClassicWindow object from the mcx source
-    static Shared<ClassicWindow> parseWindowSource(const std::string& source);
-
+    static Shared<ClassicWindow> parseWindowSource(char* source);
 
     /// @brief Associates the mcx parsing adapter with a given widget name.
     /// Each widget has to have a corresponding adapter registerd.
