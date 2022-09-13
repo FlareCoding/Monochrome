@@ -12,6 +12,10 @@ int main() {
 
     auto window = mcx::McxEngine::parseWindowFile("../tests/mcxapp_demo.mcx");
 
+    auto progressBar = getWidgetById<ProgressBar>("mainProgressBar");
+    progressBar->progressColor = Color(240, 170, 0);
+    progressBar->value = 75;
+
     AppManager::startApplicationLoop();
     return 0;
 }

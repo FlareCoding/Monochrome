@@ -80,5 +80,11 @@ namespace mc::mcx {
         } else if (dockAnchor == "fill") {
             widget->dockAnchor = DockAnchor::Fill;
         }
+
+        // Parsing the user defined ID
+        auto userDefinedId = mcxNode->getAttribute("id");
+        if (!userDefinedId.empty()) {
+            registerWidgetWithUserId(userDefinedId, widget);
+        }
     }
 } //namespace mc::mcx

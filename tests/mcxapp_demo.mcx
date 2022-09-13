@@ -29,7 +29,7 @@
                 </MenuList>
             </DropdownButton>
             <Entry horizontalAlignment="center" marginTop="20" placeholder="placeholder..."/>
-            <ProgressBar horizontalAlignment="center" marginTop="20" value="30" fixedHeight="12"/>
+            <ProgressBar id="mainProgressBar" horizontalAlignment="center" marginTop="20" value="30" fixedHeight="12"/>
             <TreeView horizontalAlignment="center" marginTop="20" minWidth="300" backgroundColor="Color(40, 40, 40)">
                 <TreeViewGroup name="Laptops">
                     <TreeViewGroup name="Apple">
