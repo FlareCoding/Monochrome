@@ -1,0 +1,10 @@
+<root type="widget">
+    <StackPanel backgroundColor="Color(20, 20, 20)" dockAnchor="left">
+        <Button textColor="Color(220, 210, 0)" text="Click Me" horizontalAlignment="center" marginTop="10"/>
+        <Button text="Second Button" backgroundColor="Color(180, 120, 20)" horizontalAlignment="center" marginTop="20"/>
+        <StackPanel orientation="horizontal" backgroundColor="Color(20, 20, 20)" horizontalAlignment="center" marginTop="20">
+            <Label text="Sample checkbox" marginLeft="10" marginRight="20"/>
+            <Checkbox text="status" marginRight="10"/>
+        </StackPanel>
+    </StackPanel>
+</root>

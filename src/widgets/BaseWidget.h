@@ -163,6 +163,8 @@ public:
     BaseContainerWidget() = default;
     virtual ~BaseContainerWidget() = default;
 
+    bool isContainer() const override { return true; }
+
     // Adds a child to the list of widgets
     // @param child Child element to be added
     void addChild(Shared<BaseWidget> child);
@@ -193,4 +195,24 @@ public:
     // @returns A list of all direct children widgets
     std::vector<Shared<BaseWidget>>& getChildren();
 };
+
+/// @brief Adds an entry into a special widget
+/// registry that relates user defined IDs to widget instances.
+/// @param id User defined ID string
+/// @param widget Widget instance to be mapped to the given ID
+void registerWidgetWithUserId(const std::string& id, Shared<BaseWidget> widget);
+
+/// @param id User defined ID string
+/// @returns The widget instance that corresponds
+/// to the given ID, nullptr if entry was not found.
+Shared<BaseWidget> __getBaseWidgetById(const std::string& id);
+
+/// @tparam T Widget class type
+/// @param id User defined ID string
+/// @returns The widget instance that corresponds
+/// to the given ID, nullptr if entry was not found.
+template <typename T = BaseWidget>
+Shared<T> getWidgetById(const std::string& id) {
+    return std::static_pointer_cast<T>(__getBaseWidgetById(id));
+}
 } // namespace mc

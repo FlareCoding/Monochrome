@@ -24,5 +24,7 @@ private:
 
     Shared<RectVisual> d_bodyVisual;
     Shared<RectVisual> d_progressVisual;
+
+    void _computeProgressVisualSize();
 };
 } // namespace mc

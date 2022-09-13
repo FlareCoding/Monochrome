@@ -1,0 +1,48 @@
+<root type="window" width="860" height="640" title="Mcx Demo">
+    <DockPanel>
+        <UserWidget path="../tests/mcxapp_custom_panel.mcx"/>
+        <StackPanel backgroundColor="Color(20, 20, 20)" dockAnchor="right">
+            <Button id="firstButton" text="Click Me" horizontalAlignment="center" marginTop="10"/>
+            <Button text="Second Button" backgroundColor="Color(20, 120, 20)" horizontalAlignment="center" marginTop="20"/>
+            <StackPanel orientation="horizontal" backgroundColor="Color(20, 20, 20)" horizontalAlignment="center" marginTop="20">
+                <Label text="Sample checkbox" marginLeft="10" marginRight="20"/>
+                <Checkbox text="status" marginRight="10"/>
+            </StackPanel>
+            <Combobox fixedWidth="140" fixedHeight="18" horizontalAlignment="center" marginTop="20" overlayBorderColor="Color(120, 200, 40)">
+                <item value="Chicken"/>
+                <item value="Beef"/>
+                <item value="Tuna"/>
+                <item value="Salmon"/>
+                <item value="Protein Powder"/>
+            </Combobox>
+            <DropdownButton text="Dropdown" horizontalAlignment="center" marginTop="20">
+                <MenuList>
+                    <item value="Save"/>
+                    <item value="Open"/>
+                    <item value="Close"/>
+                    <MenuList name="Zoom...">
+                        <item value="200%"/>
+                        <item value="150%"/>
+                        <item value="100%"/>
+                        <item value="50%"/>
+                    </MenuList>
+                </MenuList>
+            </DropdownButton>
+            <Entry horizontalAlignment="center" marginTop="20" placeholder="placeholder..."/>
+            <ProgressBar id="mainProgressBar" horizontalAlignment="center" marginTop="20" value="30" fixedHeight="12"/>
+            <TreeView horizontalAlignment="center" marginTop="20" minWidth="300" backgroundColor="Color(40, 40, 40)">
+                <TreeViewGroup name="Laptops">
+                    <TreeViewGroup name="Apple">
+                        <item value="Macbook Pro 13-inch"/>
+                        <item value="Macbook Pro 15-inch"/>
+                        <item value="Macbook Air"/>
+                        <item value="Macbook Pro (2014 edition)"/>
+                    </TreeViewGroup>
+                    <item value="Dell"/>
+                    <item value="HP"/>
+                    <item value="Acer"/>
+                </TreeViewGroup>
+            </TreeView>
+        </StackPanel>
+    </DockPanel>
+</root>

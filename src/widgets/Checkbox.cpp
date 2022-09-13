@@ -9,23 +9,22 @@ namespace mc {
     }
 
     Size Checkbox::_measureSize() {
-        // Find the button's desired size and make sure
-        // its width is the same as height, so it's a square.
-        auto buttonDesiredSize = button->getDesiredSize();
-        buttonDesiredSize.width = buttonDesiredSize.height;
-
         // Get the label's desired size
         auto labelDesiredSize = label->getDesiredSize();
+
+        auto buttonWidth = static_cast<uint32_t>(
+            static_cast<float>(labelDesiredSize.height * 0.75f)
+        );
 
         Size checkboxSize = Size(0, 0);
 
         // Set the checkbox's width to be the sum of the sizes
         // of the button and the label plus the margins in between.
         checkboxSize.width =
-            buttonDesiredSize.width + labelDesiredSize.width + button->marginRight;
+            buttonWidth + labelDesiredSize.width + button->marginRight;
 
         // Set the checkbox's to fit both the button and the label
-        checkboxSize.height = std::max(buttonDesiredSize.height, labelDesiredSize.height);
+        checkboxSize.height = labelDesiredSize.height;
 
         return checkboxSize;
     }
@@ -75,7 +74,7 @@ namespace mc {
         label = MakeRef<Label>();
         label->text = "Checkbox";
         label->color = Color::white;
-        label->fontSize = 14;
+        label->fontSize = 12;
         label->horizontalPadding = 10;
         cursorType.forwardAssignment(&label->cursorType);
         _addChild(label);

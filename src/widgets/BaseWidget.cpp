@@ -2,6 +2,9 @@
 #include <core/InternalFlags.h>
 
 namespace mc {
+    // Special widget-id dictionary that maps user-defined IDs to widget instances
+    static std::map<std::string, Shared<BaseWidget>> s_widgetUserIdRegistry;
+
     BaseWidget::BaseWidget() {
         d_uuid = utils::generateUUID();
 
@@ -195,7 +198,7 @@ namespace mc {
     void BaseWidget::arrangeChildren() {
         // Ignore arranging children if the layout
         // has not been marked as dirty or been changed.
-        if (!isLayoutDirty()) {
+        if (!isLayoutDirty() && !isContainer()) {
             return;
         }
 
@@ -294,5 +297,17 @@ namespace mc {
 
     std::vector<Shared<BaseWidget>>& BaseContainerWidget::getChildren() {
         return _getChildren();
+    }
+
+    void registerWidgetWithUserId(const std::string& id, Shared<BaseWidget> widget) {
+        s_widgetUserIdRegistry[id] = widget;
+    }
+
+    Shared<BaseWidget> __getBaseWidgetById(const std::string& id) {
+        if (s_widgetUserIdRegistry.find(id) == s_widgetUserIdRegistry.end()) {
+            return nullptr;
+        }
+
+        return s_widgetUserIdRegistry.at(id);
     }
 } // namespace mc

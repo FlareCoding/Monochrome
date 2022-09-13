@@ -31,6 +31,12 @@ namespace mc {
     }
 
     void Label::_setupProperties() {
+        font = "Arial";
+        fontSize = 12;
+        fontStyle = "normal";
+        alignment = "center";
+        wordWrapMode = "none";
+
         text = "Text";
         text.on("propertyChanged", [this](Shared<Event> e) {
             // Since the text will be taking up a potentially different

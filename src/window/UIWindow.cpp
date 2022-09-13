@@ -247,6 +247,9 @@ namespace mc {
 
         // Update the event processor's root widget
         d_eventProcessor->setRootWidget(d_rootWidget);
+
+        // Fire the layout changed event to trigger a first time root layout update
+        d_rootWidget->fireEvent("layoutChanged", Event::empty);
     }
 
     void UIWindow::_backgroundRenderingTask() {
