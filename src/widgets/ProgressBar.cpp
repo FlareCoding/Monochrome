@@ -11,12 +11,7 @@ namespace mc {
     }
 
     void ProgressBar::_onSetComputedSize(const Size& size) {
-        float percentage =  static_cast<float>(value - minValue) /
-                            static_cast<float>(maxValue - minValue);
-
-        float progressWidth = size.width * percentage;
-
-        d_progressVisual->customWidth = static_cast<uint32_t>(progressWidth);
+        _computeProgressVisualSize();
     }
 
     void ProgressBar::_createVisuals() {
@@ -32,12 +27,38 @@ namespace mc {
     void ProgressBar::_setupProperties() {
         fixedHeight = 20;
         fixedWidth = 220;
+
         minValue = 0;
+        minValue.forwardEmittedEvents(this);
+        minValue.on("propertyChanged", [this](Shared<Event> e) {
+            _computeProgressVisualSize();
+        });
+
         maxValue = 100;
+        maxValue.forwardEmittedEvents(this);
+        maxValue.on("propertyChanged", [this](Shared<Event> e) {
+            _computeProgressVisualSize();
+        });
+
         value = 33;
+        value.forwardEmittedEvents(this);
+        value.on("propertyChanged", [this](Shared<Event> e) {
+            _computeProgressVisualSize();
+        });
+
         backgroundColor = Color::gray;
-        progressColor = Color::blue;
         backgroundColor.forwardEmittedEvents(this);
+
+        progressColor = Color::blue;
         progressColor.forwardEmittedEvents(this);
+    }
+
+    void ProgressBar::_computeProgressVisualSize() {
+        float percentage =  static_cast<float>(value - minValue) /
+                            static_cast<float>(maxValue - minValue);
+
+        float progressWidth = getComputedSize().width * percentage;
+
+        d_progressVisual->customWidth = static_cast<uint32_t>(progressWidth);
     }
 } // namespace mc
