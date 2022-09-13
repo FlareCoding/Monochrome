@@ -1,6 +1,11 @@
 #include "McxNode.h"
 #include "rapidxml/rapidxml.hpp"
 #include <inttypes.h>
+#include <string>
+
+#ifdef MC_PLATFORM_WINDOWS
+    #define _CRT_SECURE_NO_WARNINGS
+#endif
 
 using xml_node = rapidxml::xml_node<char>;
 using xml_attrib = rapidxml::xml_attribute<char>;
