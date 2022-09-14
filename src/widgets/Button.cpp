@@ -59,11 +59,11 @@ namespace mc {
         label->position->x = iconOffset;
 
         Size secondaryLabelsSize = Size(
-            size.width - d_secondaryTextPadding * 2, size.height
+            size.width - d_secondaryTextPadding * 2 - iconOffset, size.height
         );
 
-        d_secondaryLeftLabel->setComputedSize(Size(size.width - iconOffset, size.height));
-        d_secondaryRightLabel->setComputedSize(Size(size.width - iconOffset, size.height));
+        d_secondaryLeftLabel->setComputedSize(secondaryLabelsSize);
+        d_secondaryRightLabel->setComputedSize(secondaryLabelsSize);
     }
 
     void Button::_createVisuals() {
