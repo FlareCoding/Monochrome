@@ -11,3 +11,6 @@ target_link_libraries(TreeView_Demo PUBLIC Monochrome)
 
 add_executable(McxApp_Demo mcxapp_demo.cpp)
 target_link_libraries(McxApp_Demo PUBLIC Monochrome)
+
+add_executable(Image_Demo image_demo.cpp)
+target_link_libraries(Image_Demo PUBLIC Monochrome)

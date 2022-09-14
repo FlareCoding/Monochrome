@@ -64,6 +64,13 @@ public:
         const std::string& wrapMode = "none"
     );
 
+    void drawBitmap(
+        int32_t x, int32_t y,
+        uint32_t width, uint32_t height,
+        Shared<Bitmap> bitmap,
+        uint32_t opacity = 255
+    );
+
     std::pair<float, float> runtimeCalculateTextSize(
         uint64_t maxWidth,
         uint64_t maxHeight,

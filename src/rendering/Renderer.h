@@ -63,5 +63,12 @@ private:
         Position& parentOffset,
         const Size& visualSize
     );
+
+    static void drawImageVisual(
+        Shared<RenderTarget>& renderTarget,
+        Shared<ImageVisual> visual,
+        Position& parentOffset,
+        const Size& visualSize
+    );
 };
 } // namespace mc
