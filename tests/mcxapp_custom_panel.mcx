@@ -6,5 +6,8 @@
             <Label text="Sample checkbox" marginLeft="10" marginRight="20"/>
             <Checkbox text="status" marginRight="10"/>
         </StackPanel>
+        <Button text="Icon Button" horizontalAlignment="center" marginTop="20" imagePlacement="icon" borderColor="Color(0, 0, 0, 0)">
+            <Image url="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678077-computer-1024.png"/>
+        </Button>
     </StackPanel>
 </root>

@@ -19,6 +19,7 @@
 #include "adapters/ProgressBarMcxAdapter.h"
 #include "adapters/TreeViewGroupMcxAdapter.h"
 #include "adapters/TreeViewMcxAdapter.h"
+#include "adapters/ImageMcxAdapter.h"
 #include "adapters/UserWidgetMcxAdapter.h"
 
 namespace mc::mcx {
@@ -191,6 +192,7 @@ namespace mc::mcx {
         registerMcxAdapter("ProgressBar", MakeRef<ProgressBarMcxAdapter>());
         registerMcxAdapter("TreeViewGroup", MakeRef<TreeViewGroupMcxAdapter>());
         registerMcxAdapter("TreeView", MakeRef<TreeViewMcxAdapter>());
+        registerMcxAdapter("Image", MakeRef<ImageMcxAdapter>());
         registerMcxAdapter("UserWidget", MakeRef<UserWidgetMcxAdapter>());
 
         s_mcxEngineInitialized = true;
