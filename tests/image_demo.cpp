@@ -20,7 +20,30 @@ int main() {
     topImage->horizontalAlignment = HACenter;
     topImage->fixedWidth = 500;
     topImage->fixedHeight = 400;
+    topImage->marginTop = 10;
+    topImage->marginBottom = 10;
     rootPanel->addChild(topImage);
+
+    auto iconButton = MakeRef<Button>();
+    iconButton->horizontalAlignment = HACenter;
+    iconButton->marginTop = 10;
+    iconButton->marginBottom = 10;
+    iconButton->setImage(Image::loadFromWebUrl("https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678077-computer-1024.png"));
+    iconButton->imagePlacement = Icon;
+    iconButton->label->text = "Computer Button";
+    rootPanel->addChild(iconButton);
+
+    auto imageButton = MakeRef<Button>();
+    imageButton->horizontalAlignment = HACenter;
+    imageButton->marginTop = 10;
+    imageButton->marginBottom = 10;
+    imageButton->setImage(Image::loadFromWebUrl("https://cdn0.iconfinder.com/data/icons/seo-web-4-1/128/Vigor_Movie-Video-Player-youtube-256.png"));
+    imageButton->imagePlacement = Cover;
+    imageButton->label->text = "";
+    imageButton->fixedWidth = 90;
+    imageButton->fixedHeight = 90;
+    imageButton->borderColor = Color::transparent;
+    rootPanel->addChild(imageButton);
 
     AppManager::startApplicationLoop();
     return 0;

@@ -283,7 +283,9 @@ namespace mc {
         NSImage* img = static_cast<NSImage*>(bitmap->getData());
 
 		NSRect rect = NSMakeRect(x, y, width, height);
-		[img drawInRect:rect fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0f];
+        float opacityFraction = static_cast<float>(opacity) / 255.0f;
+
+		[img drawInRect:rect fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:opacityFraction];
     }
 
     std::pair<float, float> OSXRenderTarget::runtimeCalculateTextSize(

@@ -15,6 +15,7 @@ namespace mc {
         _createVisuals();
 
         d_imageVisual->imageBitmap = bitmap;
+        opacity.forwardAssignment(&d_imageVisual->opacity);
     }
 
     Size Image::_measureSize() {
@@ -24,5 +25,10 @@ namespace mc {
     void Image::_createVisuals() {
         d_imageVisual = MakeRef<ImageVisual>();
         addCoreVisualElement(d_imageVisual);
+    }
+
+    void Image::_setupProperties() {
+        opacity = 255;
+        opacity.forwardEmittedEvents(this);
     }
 } // namespace mc

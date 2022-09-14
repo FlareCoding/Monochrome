@@ -20,18 +20,50 @@ namespace mc {
     }
 
     Size Button::_measureSize() {
-        return label->getDesiredSize();
+        // Check for a specific case when there is
+        // no text, but instead a cover button.
+        if (d_image && imagePlacement == Cover && label->text->empty()) {
+            return d_image->getDesiredSize();
+        }
+
+        auto contentSize = label->getDesiredSize();
+
+        if (d_image && imagePlacement == Icon) {
+            auto imageSize = contentSize.height;
+            contentSize.width += imageSize;
+        }
+
+        return contentSize;
     }
 
     void Button::_onSetComputedSize(const Size& size) {
-        label->setComputedSize(size);
+        uint32_t iconOffset = 0;
+
+        if (d_image) {
+            if (imagePlacement == Icon) {
+                d_image->position = Position(4, 0);
+                d_image->setComputedSize(Size(
+                    size.height - borderThickness,
+                    size.height - borderThickness
+                )); // Square
+
+                iconOffset = size.height;
+
+            } else if (imagePlacement == Cover) {
+                d_image->position = Position(0, 0);
+                d_image->setComputedSize(size); // Square
+            }
+        }
+
+        label->setComputedSize(Size(size.width - iconOffset, size.height));
+        label->position->x = iconOffset;
 
         Size secondaryLabelsSize = Size(
             size.width - d_secondaryTextPadding * 2, size.height
         );
 
-        d_secondaryLeftLabel->setComputedSize(secondaryLabelsSize);
-        d_secondaryRightLabel->setComputedSize(secondaryLabelsSize);
+        d_secondaryLeftLabel->setComputedSize(Size(size.width - iconOffset, size.height));
+        d_secondaryRightLabel->setComputedSize(Size(size.width - iconOffset, size.height));
     }
 
     void Button::_createVisuals() {
@@ -109,6 +141,9 @@ namespace mc {
         cursorType.forwardAssignment(&d_secondaryRightLabel->cursorType);
         cursorType = CursorType::Hand;
 
+        imagePlacement = Cover;
+        imagePlacement.forwardEmittedEvents(this);
+
         on("hoveredOn", &Button::_onHoveredOn, this);
         on("hoveredOff", &Button::_onHoveredOff, this);
         on("mouseDown", &Button::_onMouseDown, this);
@@ -174,5 +209,17 @@ namespace mc {
 
         e->stopPropagation();
         fireEvent("propertyChanged", Event::empty);
+    }
+
+    void Button::setImage(Shared<Image> image) {
+        if (d_image) {
+            _removeChild(d_image->getID());
+        }
+
+        d_image = image;
+
+        if (image) {
+            _addChild(image);
+        }
     }
 } // namespace mc
