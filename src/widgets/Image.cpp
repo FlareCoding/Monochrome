@@ -13,6 +13,7 @@ namespace mc {
 
     Image::Image(Shared<Bitmap> bitmap) {
         _createVisuals();
+        _setupProperties();
 
         d_imageVisual->imageBitmap = bitmap;
         opacity.forwardAssignment(&d_imageVisual->opacity);
