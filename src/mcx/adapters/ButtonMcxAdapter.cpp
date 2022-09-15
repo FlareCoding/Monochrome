@@ -1,5 +1,6 @@
 #include "ButtonMcxAdapter.h"
 #include <widgets/Button.h>
+#include <mcx/McxEngine.h>
 
 namespace mc::mcx {
     Shared<BaseWidget> ButtonMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
@@ -58,5 +59,38 @@ namespace mc::mcx {
 
         button->label->color =
             mcxNode->getColorAttribute("textColor", button->label->color);
+
+        auto imagePlacement = mcxNode->getAttribute("imagePlacement", "cover");
+        if (imagePlacement == "cover") {
+            button->imagePlacement = ButtonImagePlacement::Cover;
+        } else if (imagePlacement == "icon") {
+            button->imagePlacement = ButtonImagePlacement::Icon;
+        }
+
+        // Only raw buttons can have an image child node
+        if (mcxNode->getType() != "Button") {
+            return;
+        }
+
+        mcxNode->childrenHandled = true;
+
+        auto& children = mcxNode->getChildren();
+        if (children.empty()) {
+            return;
+        }
+
+        if (children.size() > 1) {
+            printf("Button can have only one child of type Image to set the button's image\n");
+            return;
+        }
+
+        auto& childNode = children.at(0);
+        if (childNode->getType() != "Image") {
+            printf("Button can have only one child of type Image to set the button's image\n");
+            return;
+        }
+
+        auto imageInstance = std::static_pointer_cast<Image>(McxEngine::parseWidget(childNode));
+        button->setImage(imageInstance);
     }
 } //namespace mc::mcx

@@ -10,6 +10,7 @@ set(
     ${cwd}/visuals/BorderVisual.h
     ${cwd}/visuals/TextVisual.h
     ${cwd}/visuals/ClipRegionVisual.h
+    ${cwd}/visuals/ImageVisual.h
 
     ${cwd}/Color.h
     ${cwd}/Layer.h
@@ -28,6 +29,7 @@ set(
     ${cwd}/Combobox.h
     ${cwd}/TreeViewGroup.h
     ${cwd}/TreeView.h
+    ${cwd}/Image.h
     ${cwd}/StackPanel.h
     ${cwd}/ScrollPanel.h
     ${cwd}/DockPanel.h
@@ -53,6 +55,7 @@ set(
     ${cwd}/Combobox.cpp
     ${cwd}/TreeViewGroup.cpp
     ${cwd}/TreeView.cpp
+    ${cwd}/Image.cpp
     ${cwd}/StackPanel.cpp
     ${cwd}/ScrollPanel.cpp
     ${cwd}/DockPanel.cpp

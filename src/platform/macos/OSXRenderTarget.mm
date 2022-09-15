@@ -271,6 +271,23 @@ namespace mc {
 		[str drawInRect:NSMakeRect(xPos, yPos, width, height) withAttributes:attribs];
     }
 
+    void OSXRenderTarget::drawBitmap(
+        int32_t x, int32_t y,
+        uint32_t width, uint32_t height,
+        Shared<Bitmap> bitmap,
+        uint32_t opacity
+    ) {
+        _adjustPositionAndSizeForDPIScaling(x, y, width, height);
+        _convertPositionToCartesianCoordinates(y, height);
+
+        NSImage* img = static_cast<NSImage*>(bitmap->getData());
+
+		NSRect rect = NSMakeRect(x, y, width, height);
+        float opacityFraction = static_cast<float>(opacity) / 255.0f;
+
+		[img drawInRect:rect fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:opacityFraction];
+    }
+
     std::pair<float, float> OSXRenderTarget::runtimeCalculateTextSize(
         uint64_t maxWidth,
         uint64_t maxHeight,

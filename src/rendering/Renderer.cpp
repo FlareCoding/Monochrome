@@ -167,6 +167,12 @@ namespace mc {
             break;
         }
         case VisualType::VisualTypeImage: {
+            drawImageVisual(
+                renderTarget,
+                std::static_pointer_cast<ImageVisual>(visual),
+                parentOffset,
+                visualSize
+            );
             break;
         }
         default: {
@@ -230,6 +236,27 @@ namespace mc {
             visual->fontStyle,
             visual->alignment,
             visual->wordWrapMode
+        );
+    }
+
+    void Renderer::drawImageVisual(
+        Shared<RenderTarget>& renderTarget,
+        Shared<ImageVisual> visual,
+        Position& parentOffset,
+        const Size& visualSize
+    ) {
+        // Make sure the image bitmap is present and valid
+        if (!visual->imageBitmap) {
+            return;
+        }
+
+        renderTarget->drawBitmap(
+            parentOffset.x + visual->position->x,
+            parentOffset.y + visual->position->y,
+            visualSize.width,
+            visualSize.height,
+            visual->imageBitmap,
+            visual->opacity
         );
     }
 } // namespace mc

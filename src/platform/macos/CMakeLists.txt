@@ -21,6 +21,7 @@ set(
     ${cwd}/OSXClipboard.mm
     ${cwd}/OSXCursor.mm
     ${cwd}/OSXFileDialog.mm
+    ${cwd}/OSXBitmap.mm
 
     PARENT_SCOPE
 )

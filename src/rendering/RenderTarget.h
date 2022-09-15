@@ -1,5 +1,6 @@
 #pragma once
 #include <widgets/Color.h>
+#include "Bitmap.h"
 
 namespace mc {
 class RenderTarget {
@@ -63,6 +64,13 @@ public:
         const std::string& fontStyle = "normal",
         const std::string& alignment = "center",
         const std::string& wrapMode = "none"
+    ) = 0;
+
+    virtual void drawBitmap(
+        int32_t x, int32_t y,
+        uint32_t width, uint32_t height,
+        Shared<Bitmap> bitmap,
+        uint32_t opacity = 255
     ) = 0;
 };
 } // namespace mc

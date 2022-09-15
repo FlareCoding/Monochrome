@@ -1,9 +1,15 @@
 #pragma once
 #include "Label.h"
+#include "Image.h"
 #include "visuals/RectVisual.h"
 #include "visuals/BorderVisual.h"
 
 namespace mc {
+enum ButtonImagePlacement {
+    Icon,
+    Cover
+};
+
 class Button : public BaseWidget {
 public:
     Button();
@@ -27,6 +33,10 @@ public:
 
     Shared<Label> label;
 
+    PropertyObserver<ButtonImagePlacement> imagePlacement;
+
+    void setImage(Shared<Image> image);
+
 protected:
     Size _measureSize() override;
     void _onSetComputedSize(const Size& size) override;
@@ -44,6 +54,8 @@ private:
     const uint32_t d_secondaryTextPadding = 5;
 
     PropertyObserver<Color> d_preservedBackgroundColor;
+
+    Shared<Image> d_image;
 
     void _onHoveredOn(Shared<Event> e);
     void _onHoveredOff(Shared<Event> e);

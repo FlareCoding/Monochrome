@@ -7,6 +7,7 @@
 #include "DropdownButton.h"
 #include "Combobox.h"
 #include "TreeView.h"
+#include "Image.h"
 #include "StackPanel.h"
 #include "ScrollPanel.h"
 #include "DockPanel.h"

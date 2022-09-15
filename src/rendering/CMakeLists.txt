@@ -6,6 +6,7 @@ set(
 
     ${cwd}/RenderTarget.h
     ${cwd}/Renderer.h
+    ${cwd}/Bitmap.h
 
     PARENT_SCOPE
 )
