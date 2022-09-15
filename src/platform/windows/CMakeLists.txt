@@ -23,6 +23,7 @@ set(
     ${cwd}/Win32Clipboard.cpp
     ${cwd}/Win32Cursor.cpp
     ${cwd}/Win32FileDialog.cpp
+    ${cwd}/Win32Bitmap.cpp
 
     PARENT_SCOPE
 )

@@ -3,6 +3,8 @@
 #include <utils/TextUtils.h>
 
 namespace mc {
+    ID2D1HwndRenderTarget* Win32RenderTarget::s_sharedRenderTarget;
+
     Win32RenderTarget::Win32RenderTarget(HWND windowHandle, float dpiScalingFactor) {
         d_width = 0;
         d_height = 0;
@@ -17,6 +19,10 @@ namespace mc {
         // Initialize render target
         d_nativeWindowRenderTarget =
             D2DGraphics::createWindowRenderTarget(d_windowHandle);
+
+        // Update the shared render target resource that's
+        // used for general purpose graphics operations.
+        s_sharedRenderTarget = d_nativeWindowRenderTarget.Get();
 
         // Set the application context runtime
         // function for calculating text metrics.
@@ -330,6 +336,28 @@ namespace mc {
 
         brush->Release();
         format->Release();
+    }
+
+    void Win32RenderTarget::drawBitmap(
+        int32_t x,
+        int32_t y,
+        uint32_t width,
+        uint32_t height,
+        Shared<Bitmap> bitmap,
+        uint32_t opacity
+    ) {
+        _adjustPositionAndSizeForDPIScaling(x, y, width, height);
+
+        D2D1_RECT_F srcRect = D2D1::RectF(0.0f, 0.0f, bitmap->getWidth(), bitmap->getHeight());
+        D2D1_RECT_F destRect = D2D1::RectF(x, y, x + width, y + height);
+
+        d_nativeWindowRenderTarget->DrawBitmap(
+            static_cast<ID2D1Bitmap*>(bitmap->getData()),
+            destRect,
+            static_cast<float>(opacity) / 255.0f,
+            D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+            srcRect
+        );
     }
 
     std::pair<float, float> Win32RenderTarget::runtimeCalculateTextSize(

@@ -36,7 +36,7 @@ public:
 
     static ComPtr<ID2D1Factory>& getD2DFactory() { return s_D2DFactory; }
     static ComPtr<IDWriteFactory>& getDWriteFactory() { return s_writeFactory; }
-    static ComPtr<IWICImagingFactory>& GetWICImagingFactory() { return s_wicImagingFactory; }
+    static ComPtr<IWICImagingFactory>& getWICImagingFactory() { return s_wicImagingFactory; }
 
 private:
     static ComPtr<ID2D1Factory>         s_D2DFactory;
