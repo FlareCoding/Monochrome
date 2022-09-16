@@ -29,6 +29,7 @@ namespace mc::utils {
 
     void FileWatcher::watchFile(const std::string& path) {
         stopWatching();
+        d_rootFolderPath = std::filesystem::path(path).parent_path().string();
 
         // Clear out any previously cached paths
         d_paths.clear();
