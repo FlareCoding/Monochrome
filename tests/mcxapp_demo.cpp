@@ -21,18 +21,13 @@ int main() {
     utils::FileWatcher watcher;
     watcher.watchFile(rootMcxFilepath);
     watcher.on("fileModified", [window](Shared<Event> e) {
-        auto rootPanel = MakeRef<DockPanel>();
-        rootPanel->backgroundColor = Color(18, 22, 28);
-
-        auto button = MakeRef<Button>();
-        rootPanel->addChild(button);
-
+        auto rootPanel = mcx::McxEngine::parseUserWidgetFileAsContainer(rootMcxFilepath);
         window->setRootWidget(rootPanel);
     });
 
-    auto progressBar = getWidgetById<ProgressBar>("mainProgressBar");
+    /*auto progressBar = getWidgetById<ProgressBar>("mainProgressBar");
     progressBar->progressColor = Color(240, 170, 0);
-    progressBar->value = 75;
+    progressBar->value = 75;*/
 
     AppManager::startApplicationLoop();
     return 0;

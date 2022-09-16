@@ -207,6 +207,8 @@ namespace mc {
     }
 
     void UIWindow::setRootWidget(Shared<BaseContainerWidget> root) {
+        d_eventProcessor->handlePotentialFocusChanged(nullptr);
+
         if (d_rootWidget) {
             d_rootWidget->off("propertyChanged");
             d_rootWidget->off("layoutChanged");
