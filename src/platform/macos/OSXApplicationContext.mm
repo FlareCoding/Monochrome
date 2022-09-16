@@ -59,6 +59,8 @@ namespace mc {
         [NSApp run];
 
         while (d_applicationRunning) {
+            _processUiThreadActions();
+
             NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny
                                                     untilDate:[NSDate distantFuture]
                                                     inMode:NSDefaultRunLoopMode

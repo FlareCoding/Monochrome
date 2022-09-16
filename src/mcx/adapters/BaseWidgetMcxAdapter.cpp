@@ -11,7 +11,7 @@ namespace mc::mcx {
         Shared<McxNode>& mcxNode
     ) {
         widget->zIndex =
-            mcxNode->getUIntAttribute("backgroundColor", widget->zIndex);
+            mcxNode->getUIntAttribute("zIndex", widget->zIndex);
 
         widget->visible =
             mcxNode->getBoolAttribute("visible", widget->visible);
