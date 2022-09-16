@@ -20,7 +20,7 @@ namespace mc {
     }
 
     ApplicationContext::ApplicationContext(const std::string& appId) : d_appId(appId) {}
-    
+
     void ApplicationContext::_processUiThreadActions() {
         // First check if there are any actions that need processing
         if (d_uiThreadActionQueue.empty()) {

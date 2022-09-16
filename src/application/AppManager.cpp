@@ -37,7 +37,7 @@ namespace mc {
 
         appContext->startApplicationLoop();
     }
-    
+
     void AppManager::executeOnUiThread(std::function<void()> fn) {
         const auto context = getApplicationContext();
         context->dispatchActionToUiThread(fn);
