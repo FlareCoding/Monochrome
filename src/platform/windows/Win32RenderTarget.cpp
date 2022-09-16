@@ -348,8 +348,19 @@ namespace mc {
     ) {
         _adjustPositionAndSizeForDPIScaling(x, y, width, height);
 
-        D2D1_RECT_F srcRect = D2D1::RectF(0.0f, 0.0f, bitmap->getWidth(), bitmap->getHeight());
-        D2D1_RECT_F destRect = D2D1::RectF(x, y, x + width, y + height);
+        D2D1_RECT_F srcRect = D2D1::RectF(
+            0.0f,
+            0.0f,
+            static_cast<float>(bitmap->getWidth()),
+            static_cast<float>(bitmap->getHeight())
+        );
+
+        D2D1_RECT_F destRect = D2D1::RectF(
+            static_cast<float>(x),
+            static_cast<float>(y),
+            static_cast<float>(x + width),
+            static_cast<float>(y + height)
+        );
 
         d_nativeWindowRenderTarget->DrawBitmap(
             static_cast<ID2D1Bitmap*>(bitmap->getData()),

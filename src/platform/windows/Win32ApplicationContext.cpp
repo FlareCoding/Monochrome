@@ -31,6 +31,8 @@ namespace mc {
                 TranslateMessage(&windowProcMessage);
                 DispatchMessage(&windowProcMessage);
             }
+
+            _processUiThreadActions();
         }
 
         // Destroy all windows

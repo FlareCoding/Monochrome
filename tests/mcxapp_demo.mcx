@@ -1,4 +1,4 @@
-<root type="window" width="860" height="640" title="Mcx Demo">
+<root type="widget">
     <DockPanel>
         <UserWidget path="../tests/mcxapp_custom_panel.mcx"/>
         <StackPanel backgroundColor="Color(20, 20, 20)" dockAnchor="right">

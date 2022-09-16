@@ -5,12 +5,30 @@
 #include <window/ClassicWindow.h>
 #include <widgets/AllWidgets.h>
 #include <mcx/McxEngine.h>
+#include <utils/FileWatcher.h>
 using namespace mc;
+
+const std::string rootMcxFilepath = "../tests/mcxapp_demo.mcx";
 
 int main() {
     AppManager::registerApplication("appId-mcxapp-demo");
 
-    auto window = mcx::McxEngine::parseWindowFile("../tests/mcxapp_demo.mcx");
+    auto window = MakeRef<ClassicWindow>(860, 640, "McxApp Demo");
+
+    auto root = mcx::McxEngine::parseUserWidgetFileAsContainer(rootMcxFilepath);
+    window->setRootWidget(root);
+
+    utils::FileWatcher watcher;
+    watcher.watchFile(rootMcxFilepath);
+    watcher.on("fileModified", [window](Shared<Event> e) {
+        auto rootPanel = MakeRef<DockPanel>();
+        rootPanel->backgroundColor = Color(18, 22, 28);
+
+        auto button = MakeRef<Button>();
+        rootPanel->addChild(button);
+
+        window->setRootWidget(rootPanel);
+    });
 
     auto progressBar = getWidgetById<ProgressBar>("mainProgressBar");
     progressBar->progressColor = Color(240, 170, 0);

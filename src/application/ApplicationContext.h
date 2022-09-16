@@ -2,6 +2,8 @@
 #include <core/Core.h>
 #include <string>
 #include <functional>
+#include <mutex>
+#include <vector>
 
 namespace mc {
 struct RuntimeUtilityFunctions {
@@ -30,10 +32,22 @@ public:
 
     virtual void startApplicationLoop() = 0;
 
+    void dispatchActionToUiThread(std::function<void()> fn);
+
 protected:
     explicit ApplicationContext(const std::string& appId);
 
     std::string d_appId;
     RuntimeUtilityFunctions d_runtimeUtilityFunctions;
+
+    // Runtime buffer for functions that should be
+    // dispatched and executed on the main UI thread.
+    std::vector<std::function<void()>> d_uiThreadActionQueue;
+
+    std::mutex d_uiThreadMutex;
+
+    // Processes and clears the queue with
+    // actions that depend on the main UI thread.
+    void _processUiThreadActions();
 };
 } // namespace mc

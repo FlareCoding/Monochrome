@@ -15,5 +15,30 @@ namespace mc {
 #endif
     }
 
+    void ApplicationContext::dispatchActionToUiThread(std::function<void()> fn) {
+        d_uiThreadActionQueue.push_back(fn);
+    }
+
     ApplicationContext::ApplicationContext(const std::string& appId) : d_appId(appId) {}
+    
+    void ApplicationContext::_processUiThreadActions() {
+        // First check if there are any actions that need processing
+        if (d_uiThreadActionQueue.empty()) {
+            return;
+        }
+
+        // Lock the thread mutex
+        d_uiThreadMutex.lock();
+
+        // Call all the callback functions from the UI thread
+        for (auto& fn : d_uiThreadActionQueue) {
+            fn();
+        }
+
+        // Clear the actions queue
+        d_uiThreadActionQueue.clear();
+
+        // Unlock the mutex
+        d_uiThreadMutex.unlock();
+    }
 } // namespace mc

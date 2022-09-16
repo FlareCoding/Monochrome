@@ -95,6 +95,25 @@ namespace mc::mcx {
         return parseUserWidgetSource(xmlFile.data());
     }
 
+    Shared<BaseContainerWidget> McxEngine::parseUserWidgetFileAsContainer(const std::string& path) {
+        bool fileExists = std::filesystem::is_regular_file(path);
+        if (!fileExists) {
+            printf("'%s' could not be found\n", path.c_str());
+            return nullptr;
+        }
+
+        rapidxml::file<> xmlFile(path.c_str());
+        auto widgetInstance = parseUserWidgetSource(xmlFile.data());
+
+        if (!widgetInstance->isContainer()) {
+            return nullptr;
+        }
+
+        return std::static_pointer_cast<BaseContainerWidget>(
+            widgetInstance
+        );
+    }
+
     Shared<BaseWidget> McxEngine::parseUserWidgetSource(char* source) {
         if (!s_mcxEngineInitialized) {
             _initializeMcxEngine();

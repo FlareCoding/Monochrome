@@ -11,6 +11,7 @@ target_link_libraries(TreeView_Demo PUBLIC Monochrome)
 
 add_executable(McxApp_Demo
     mcxapp_demo.cpp
+    mcxapp_demo_window.mcx
     mcxapp_demo.mcx
     mcxapp_custom_panel.mcx
 )
