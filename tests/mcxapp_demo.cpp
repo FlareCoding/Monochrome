@@ -21,8 +21,10 @@ int main() {
     utils::FileWatcher watcher;
     watcher.watchFile(rootMcxFilepath);
     watcher.on("fileModified", [window](Shared<Event> e) {
-        auto rootPanel = mcx::McxEngine::parseUserWidgetFileAsContainer(rootMcxFilepath);
-        window->setRootWidget(rootPanel);
+        AppManager::executeOnUiThread([window]() {
+            auto rootPanel = mcx::McxEngine::parseUserWidgetFileAsContainer(rootMcxFilepath);
+            window->setRootWidget(rootPanel);
+        });
     });
 
     /*auto progressBar = getWidgetById<ProgressBar>("mainProgressBar");
