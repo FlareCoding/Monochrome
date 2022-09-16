@@ -68,9 +68,11 @@ namespace mc {
 
             [NSApp sendEvent:event];
 
+            d_windowLoopMutex.lock();
             for (auto& nativeWindowHandle : d_osxNativeWindowHandles) {
                 nativeWindowHandle->updatePlatformWindow();
             }
+            d_windowLoopMutex.unlock();
         }
     }
 
@@ -80,5 +82,18 @@ namespace mc {
 
     void OSXApplicationContext::registerOSXNativeWindowHandle(OSXNativeWindow* handle) {
         d_osxNativeWindowHandles.push_back(handle);
+    }
+
+    void OSXApplicationContext::unregisterOSXNativeWindowHandle(OSXNativeWindow* handle) {
+        for (
+            auto it = d_osxNativeWindowHandles.begin();
+            it != d_osxNativeWindowHandles.end();
+            ++it
+        ) {
+            if (*it == handle) {
+                d_osxNativeWindowHandles.erase(it);
+                return;
+            }
+        }
     }
 } // namespace mc

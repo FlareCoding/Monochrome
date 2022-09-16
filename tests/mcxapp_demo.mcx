@@ -1,7 +1,7 @@
 <root type="widget">
     <DockPanel>
-        <!--<UserWidget path="../tests/mcxapp_custom_panel.mcx"/>-->
-        <StackPanel backgroundColor="Color(20, 20, 20)" dockAnchor="fill">
+        <UserWidget path="../tests/mcxapp_custom_panel.mcx"/>
+        <StackPanel backgroundColor="Color(20, 20, 20)" dockAnchor="right">
             <Button id="firstButton" text="Click Me" horizontalAlignment="center" marginTop="10"/>
             <Button text="Second Button" backgroundColor="Color(20, 120, 20)" horizontalAlignment="center" marginTop="20"/>
             <StackPanel orientation="horizontal" backgroundColor="Color(20, 20, 20)" horizontalAlignment="center" marginTop="20">
@@ -28,9 +28,9 @@
                     </MenuList>
                 </MenuList>
             </DropdownButton> -->
-            <!-- <Entry horizontalAlignment="center" marginTop="20" placeholder="placeholder..."/> -->
-            <!-- <ProgressBar id="mainProgressBar" horizontalAlignment="center" marginTop="20" value="30" fixedHeight="12"/> -->
-            <!-- <TreeView horizontalAlignment="center" marginTop="20" minWidth="300" backgroundColor="Color(40, 40, 40)">
+            <Entry horizontalAlignment="center" marginTop="20" placeholder="placeholder..."/>
+            <ProgressBar id="mainProgressBar" horizontalAlignment="center" marginTop="20" value="30" fixedHeight="12"/>
+            <TreeView horizontalAlignment="center" marginTop="20" minWidth="300" backgroundColor="Color(40, 40, 40)">
                 <TreeViewGroup name="Laptops">
                     <TreeViewGroup name="Apple">
                         <item value="Macbook Pro 13-inch"/>
@@ -42,7 +42,7 @@
                     <item value="HP"/>
                     <item value="Acer"/>
                 </TreeViewGroup>
-            </TreeView> -->
+            </TreeView>
         </StackPanel>
     </DockPanel>
 </root>

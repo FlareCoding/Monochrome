@@ -3,6 +3,7 @@
 #include <Cocoa/Cocoa.h>
 #include <atomic>
 #include <vector>
+#include <mutex>
 
 @interface OSXAppDelegate : NSObject
 @property (nonatomic, assign) void* appContextHandle;
@@ -18,9 +19,11 @@ public:
     void startApplicationLoop();
     void mainWindowRequestedClose();
     void registerOSXNativeWindowHandle(OSXNativeWindow* handle);
+    void unregisterOSXNativeWindowHandle(OSXNativeWindow* handle);
 
 private:
     std::vector<OSXNativeWindow*> d_osxNativeWindowHandles;
+    std::mutex d_windowLoopMutex;
 
     NSApplication*      d_application = nullptr;
     OSXAppDelegate*     d_appDelegate = nullptr;

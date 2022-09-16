@@ -27,6 +27,16 @@ int main() {
         });
     });
 
+    std::thread bgThread([]() {
+        std::this_thread::sleep_for(std::chrono::seconds(4));
+
+        AppManager::executeOnUiThread([]() {
+            auto secondWindow = MakeRef<ClassicWindow>(460, 240, "Second Window");
+            printf("Second window closing...\n");
+        });
+    });
+    bgThread.detach();
+
     /*auto progressBar = getWidgetById<ProgressBar>("mainProgressBar");
     progressBar->progressColor = Color(240, 170, 0);
     progressBar->value = 75;*/
