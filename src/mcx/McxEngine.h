@@ -20,6 +20,11 @@ public:
     /// @returns Shared pointer to the native widget instance from the mcx source
     static Shared<BaseWidget> parseUserWidgetFile(const std::string& path);
 
+    /// @brief Parses an xml-based .mcx file containing a custom widget as the root.
+    /// @param path Path to the .mcx file containing the source
+    /// @returns Shared pointer to the native container widget instance from the mcx source
+    static Shared<BaseContainerWidget> parseUserWidgetFileAsContainer(const std::string& path);
+
     /// @brief Parses the xml-based mcx source code string with custom widget as the root.
     /// @param source String containing mcx source code
     /// @returns Shared pointer to the native widget instance from the mcx source

@@ -1,4 +1,4 @@
-<root type="window" width="860" height="640" title="Mcx Demo">
+<root type="widget">
     <DockPanel>
         <UserWidget path="../tests/mcxapp_custom_panel.mcx"/>
         <StackPanel backgroundColor="Color(20, 20, 20)" dockAnchor="right">
@@ -8,14 +8,14 @@
                 <Label text="Sample checkbox" marginLeft="10" marginRight="20"/>
                 <Checkbox text="status" marginRight="10"/>
             </StackPanel>
-            <Combobox fixedWidth="140" fixedHeight="18" horizontalAlignment="center" marginTop="20" overlayBorderColor="Color(120, 200, 40)">
+            <!-- <Combobox fixedWidth="140" fixedHeight="18" horizontalAlignment="center" marginTop="20" overlayBorderColor="Color(120, 200, 40)">
                 <item value="Chicken"/>
                 <item value="Beef"/>
                 <item value="Tuna"/>
                 <item value="Salmon"/>
                 <item value="Protein Powder"/>
-            </Combobox>
-            <DropdownButton text="Dropdown" horizontalAlignment="center" marginTop="20">
+            </Combobox> -->
+            <!-- <DropdownButton text="Dropdown" horizontalAlignment="center" marginTop="20">
                 <MenuList>
                     <item value="Save"/>
                     <item value="Open"/>
@@ -27,7 +27,7 @@
                         <item value="50%"/>
                     </MenuList>
                 </MenuList>
-            </DropdownButton>
+            </DropdownButton> -->
             <Entry horizontalAlignment="center" marginTop="20" placeholder="placeholder..."/>
             <ProgressBar id="mainProgressBar" horizontalAlignment="center" marginTop="20" value="30" fixedHeight="12"/>
             <TreeView horizontalAlignment="center" marginTop="20" minWidth="300" backgroundColor="Color(40, 40, 40)">

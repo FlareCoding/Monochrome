@@ -10,6 +10,7 @@ set(
     ${cwd}/TextUtils.h
     ${cwd}/PlacementConstraintSystem.h
     ${cwd}/FileDialog.h
+    ${cwd}/FileWatcher.h
 
     PARENT_SCOPE
 )
@@ -21,6 +22,7 @@ set(
     ${cwd}/TextUtils.cpp
     ${cwd}/PlacementConstraintSystem.cpp
     ${cwd}/FileDialog.cpp
+    ${cwd}/FileWatcher.cpp
 
     PARENT_SCOPE
 )

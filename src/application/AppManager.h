@@ -9,6 +9,8 @@ public:
 
     static void startApplicationLoop();
 
+    static void executeOnUiThread(std::function<void()> fn);
+
 private:
     static std::string s_appId;
 };

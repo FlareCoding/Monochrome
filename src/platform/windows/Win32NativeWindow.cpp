@@ -94,6 +94,11 @@ namespace mc {
         registerNativeWindow(this);
     }
 
+    Win32NativeWindow::~Win32NativeWindow() {
+        unregisterNativeWindow(this);
+        DestroyWindow(d_windowHandle);
+    }
+
     void Win32NativeWindow::setWidth(uint32_t width) {
         d_width = width;
         _setWindowSize(d_width, d_height);
@@ -320,8 +325,6 @@ namespace mc {
         // Process the received message
         switch (uMsg) {
         case WM_CLOSE: {
-            unregisterNativeWindow(this);
-
             // Stop the application only if the
             // destroyed window was the root window.
             if (isRoot()) {

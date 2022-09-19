@@ -10,7 +10,7 @@ using namespace mc;
 int main() {
     AppManager::registerApplication("appId-image-demo");
 
-    auto window = MakeRef<ClassicWindow>(860, 640, "DockPanel Demo");
+    auto window = MakeRef<ClassicWindow>(860, 640, "Image Demo");
 
     auto rootPanel = MakeRef<StackPanel>();
     rootPanel->backgroundColor = Color(18, 22, 28);

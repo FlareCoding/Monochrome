@@ -25,6 +25,7 @@ namespace mc {
 class OSXNativeWindow : public NativeWindow {
 public:
     explicit OSXNativeWindow(uint64_t windowFlags);
+    ~OSXNativeWindow();
 
     uint32_t getWidth() const { return d_width; }
     uint32_t getHeight() const { return d_height; }

@@ -81,9 +81,6 @@ namespace mc {
     OSXWindowDelegate* delegate = ((OSXWindowDelegate*)sender.delegate);
     OSXNativeWindow* windowInstance = delegate.mcWindowHandle;
 
-    // Unregister the window instance
-    unregisterNativeWindow(windowInstance);
-
     // Stop the application only if the
     // destroyed window was the root window.
     if (windowInstance->isRoot()) {
@@ -575,6 +572,14 @@ namespace mc
                 return event;
             }];
         }
+    }
+
+    OSXNativeWindow::~OSXNativeWindow() {
+        close();
+        getApplicationContext()->unregisterOSXNativeWindowHandle(this);
+
+        // Unregister the window instance from the OSXWindow specific map
+        unregisterNativeWindow(this);
     }
 
     void OSXNativeWindow::show() {

@@ -8,6 +8,7 @@ namespace mc {
 class Win32NativeWindow : public NativeWindow {
 public:
     explicit Win32NativeWindow(uint64_t windowFlags);
+    ~Win32NativeWindow();
 
     uint32_t getWidth() const { return d_width; }
     uint32_t getHeight() const { return d_height; }

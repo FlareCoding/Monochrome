@@ -48,6 +48,7 @@ public:
 
 protected:
     NativeWindow();
+    virtual ~NativeWindow() = default;
 
     bool d_isRoot = false;
     Shared<ApplicationContext> d_applicationContext = nullptr;
