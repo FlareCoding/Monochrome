@@ -23,23 +23,17 @@ int main() {
     watcher.on("fileModified", [window](Shared<Event> e) {
         AppManager::executeOnUiThread([window]() {
             auto rootPanel = mcx::McxEngine::parseUserWidgetFileAsContainer(rootMcxFilepath);
+            
+            //static auto rootPanel = MakeRef<StackPanel>();
+            //rootPanel->backgroundColor = Color(0, 100, 0);
+
             window->setRootWidget(rootPanel);
         });
     });
 
-    std::thread bgThread([]() {
-        std::this_thread::sleep_for(std::chrono::seconds(4));
-
-        AppManager::executeOnUiThread([]() {
-            auto secondWindow = MakeRef<ClassicWindow>(460, 240, "Second Window");
-            printf("Second window closing...\n");
-        });
-    });
-    bgThread.detach();
-
-    /*auto progressBar = getWidgetById<ProgressBar>("mainProgressBar");
+    auto progressBar = getWidgetById<ProgressBar>("mainProgressBar");
     progressBar->progressColor = Color(240, 170, 0);
-    progressBar->value = 75;*/
+    progressBar->value = 75;
 
     AppManager::startApplicationLoop();
     return 0;
