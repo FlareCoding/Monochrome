@@ -4,6 +4,8 @@
     #include <platform/windows/Win32NativeWindow.h>
 #elif defined(MC_PLATFORM_MACOS)
     #include <platform/macos/OSXNativeWindow.h>
+#elif defined(MC_PLATFORM_LINUX)
+    #include <platform/linux/LinuxNativeWindow.h>
 #endif
 
 namespace mc {
@@ -32,6 +34,8 @@ namespace mc {
         instance = Shared<NativeWindow>(new Win32NativeWindow(windowFlags));
 #elif defined(MC_PLATFORM_MACOS)
         instance = Shared<NativeWindow>(new OSXNativeWindow(windowFlags));
+#elif defined(MC_PLATFORM_LINUX)
+        instance = Shared<NativeWindow>(new LinuxNativeWindow(windowFlags));
 #endif
 
         CORE_ASSERT(instance, "Failed to create native window, unknown platform");

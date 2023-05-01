@@ -2,6 +2,7 @@
 #include <events/EventEmitter.h>
 #include <filesystem>
 #include <thread>
+#include <atomic>
 
 namespace mc::utils {
 class FileWatcher : public EventEmitter {

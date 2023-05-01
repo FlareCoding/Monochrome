@@ -1,5 +1,6 @@
 ﻿#include "ScrollPanel.h"
 #include <events/MouseEvents.h>
+#include <limits>
 
 namespace mc {
     ScrollPanel::ScrollPanel() {

@@ -186,104 +186,104 @@ int main() {
 
     auto window = MakeRef<ClassicWindow>(1180, 860, "New Widget System Demo");
     window->setBackgroundColor(Color(18, 22, 28));
-    window->on("keyDown", [window](Shared<Event> e) {
-        auto pressedChar = std::static_pointer_cast<KeyDownEvent>(e)->getChar();
+    // window->on("keyDown", [window](Shared<Event> e) {
+    //     auto pressedChar = std::static_pointer_cast<KeyDownEvent>(e)->getChar();
 
-        if (pressedChar == 'x') {
-            Renderer::enableDebugBoundingBoxes = !Renderer::enableDebugBoundingBoxes;
-            window->setShouldRedraw();
-        }
-    });
+    //     if (pressedChar == 'x') {
+    //         Renderer::enableDebugBoundingBoxes = !Renderer::enableDebugBoundingBoxes;
+    //         window->setShouldRedraw();
+    //     }
+    // });
 
-    auto rootPanel = MakeRef<StackPanel>();
-    rootPanel->backgroundColor = Color(40, 40, 40);
-    rootPanel->orientation = Vertical;
-    window->setRootWidget(rootPanel);
+    // auto rootPanel = MakeRef<StackPanel>();
+    // rootPanel->backgroundColor = Color(40, 40, 40);
+    // rootPanel->orientation = Vertical;
+    // window->setRootWidget(rootPanel);
 
-    auto centerPanel = MakeRef<StackPanel>();
-    centerPanel->backgroundColor = Color(40, 40, 180);
-    centerPanel->orientation = Horizontal;
-    centerPanel->horizontalAlignment = HACenter;
-    centerPanel->marginTop = 80;
-    rootPanel->addChild(centerPanel);
+    // auto centerPanel = MakeRef<StackPanel>();
+    // centerPanel->backgroundColor = Color(40, 40, 180);
+    // centerPanel->orientation = Horizontal;
+    // centerPanel->horizontalAlignment = HACenter;
+    // centerPanel->marginTop = 80;
+    // rootPanel->addChild(centerPanel);
 
-    auto demoPanel = MakeRef<StackPanel>();
-    demoPanel->marginLeft = 60;
-    demoPanel->marginRight = 20;
-    demoPanel->marginTop = 20;
-    demoPanel->marginBottom = 20;
-    demoPanel->orientation = Vertical;
-    demoPanel->backgroundColor = Color(0, 60, 20);
-    demoPanel->minWidth = 300;
-    demoPanel->verticalAlignment = VAFill;
-    centerPanel->addChild(demoPanel);
+    // auto demoPanel = MakeRef<StackPanel>();
+    // demoPanel->marginLeft = 60;
+    // demoPanel->marginRight = 20;
+    // demoPanel->marginTop = 20;
+    // demoPanel->marginBottom = 20;
+    // demoPanel->orientation = Vertical;
+    // demoPanel->backgroundColor = Color(0, 60, 20);
+    // demoPanel->minWidth = 300;
+    // demoPanel->verticalAlignment = VAFill;
+    // centerPanel->addChild(demoPanel);
 
-    auto hintLabel = MakeRef<Label>();
-    hintLabel->text = "Press X to toggle debug boxes";
-    hintLabel->fontSize = 26;
-    hintLabel->marginTop = 10;
-    hintLabel->marginBottom = 10;
-    hintLabel->marginLeft = 10;
-    hintLabel->marginRight = 10;
-    demoPanel->addChild(hintLabel);
+    // auto hintLabel = MakeRef<Label>();
+    // hintLabel->text = "Press X to toggle debug boxes";
+    // hintLabel->fontSize = 26;
+    // hintLabel->marginTop = 10;
+    // hintLabel->marginBottom = 10;
+    // hintLabel->marginLeft = 10;
+    // hintLabel->marginRight = 10;
+    // demoPanel->addChild(hintLabel);
 
-    auto first = MakeRef<Button>();
-    first->label->text = "First Button";
-    first->label->fontSize = 18;
-    first->marginLeft = 6;
-    first->marginRight = 6;
-    first->marginTop = 6;
-    first->marginBottom = 6;
-    demoPanel->addChild(first);
+    // auto first = MakeRef<Button>();
+    // first->label->text = "First Button";
+    // first->label->fontSize = 18;
+    // first->marginLeft = 6;
+    // first->marginRight = 6;
+    // first->marginTop = 6;
+    // first->marginBottom = 6;
+    // demoPanel->addChild(first);
 
-    auto second = MakeRef<Button>();
-    second->label->text = "Second Button";
-    second->label->fontSize = 18;
-    second->marginLeft = 6;
-    second->marginRight = 6;
-    second->marginTop = 6;
-    second->marginBottom = 16;
-    demoPanel->addChild(second);
+    // auto second = MakeRef<Button>();
+    // second->label->text = "Second Button";
+    // second->label->fontSize = 18;
+    // second->marginLeft = 6;
+    // second->marginRight = 6;
+    // second->marginTop = 6;
+    // second->marginBottom = 16;
+    // demoPanel->addChild(second);
 
-    auto checkbox = MakeRef<Checkbox>();
-    checkbox->marginLeft = 6;
-    demoPanel->addChild(checkbox);
+    // auto checkbox = MakeRef<Checkbox>();
+    // checkbox->marginLeft = 6;
+    // demoPanel->addChild(checkbox);
 
-    auto progressBar = MakeRef<ProgressBar>();
-    progressBar->marginTop = 16;
-    progressBar->marginLeft = 6;
-    demoPanel->addChild(progressBar);
+    // auto progressBar = MakeRef<ProgressBar>();
+    // progressBar->marginTop = 16;
+    // progressBar->marginLeft = 6;
+    // demoPanel->addChild(progressBar);
 
-    auto entry = MakeRef<Entry>();
-    entry->marginTop = 16;
-    entry->marginLeft = 6;
-    demoPanel->addChild(entry);
+    // auto entry = MakeRef<Entry>();
+    // entry->marginTop = 16;
+    // entry->marginLeft = 6;
+    // demoPanel->addChild(entry);
 
-    auto dropdownButton = MakeRef<DropdownButton>();
-    dropdownButton->marginTop = 16;
-    dropdownButton->marginLeft = 6;
-    dropdownButton->label->text = "Open menu";
-    dropdownButton->setMenuList(createMenuList());
-    demoPanel->addChild(dropdownButton);
+    // auto dropdownButton = MakeRef<DropdownButton>();
+    // dropdownButton->marginTop = 16;
+    // dropdownButton->marginLeft = 6;
+    // dropdownButton->label->text = "Open menu";
+    // dropdownButton->setMenuList(createMenuList());
+    // demoPanel->addChild(dropdownButton);
 
-    auto combobox = MakeRef<Combobox>();
-    combobox->marginTop = 16;
-    combobox->marginLeft = 6;
-    combobox->fixedWidth = 200;
-    combobox->fixedHeight = 18;
-    combobox->label->color = Color::white;
-    combobox->backgroundColor = Color(60, 60, 82);
-    combobox->on("itemSelected", [](Shared<Event> e) {
-        auto item = e->get<std::string>("item");
-        printf("Combobox selected item: %s\n", item.c_str());
-    });
-    combobox->addItems({ "Chicken", "Beef", "Milk", "Bread", "Water", "Juice" });
-    demoPanel->addChild(combobox);
+    // auto combobox = MakeRef<Combobox>();
+    // combobox->marginTop = 16;
+    // combobox->marginLeft = 6;
+    // combobox->fixedWidth = 200;
+    // combobox->fixedHeight = 18;
+    // combobox->label->color = Color::white;
+    // combobox->backgroundColor = Color(60, 60, 82);
+    // combobox->on("itemSelected", [](Shared<Event> e) {
+    //     auto item = e->get<std::string>("item");
+    //     printf("Combobox selected item: %s\n", item.c_str());
+    // });
+    // combobox->addItems({ "Chicken", "Beef", "Milk", "Bread", "Water", "Juice" });
+    // demoPanel->addChild(combobox);
 
-    centerPanel->addChild(createLargePanel());
+    // centerPanel->addChild(createLargePanel());
 
-    rootPanel->addChild(createVerticalScrollPanel());
-    rootPanel->addChild(createHorizontalScrollPanel());
+    // rootPanel->addChild(createVerticalScrollPanel());
+    // rootPanel->addChild(createHorizontalScrollPanel());
 
     AppManager::startApplicationLoop();
     return 0;

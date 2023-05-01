@@ -4,6 +4,8 @@
     #include <platform/windows/Win32ApplicationContext.h>
 #elif defined(MC_PLATFORM_MACOS)
     #include <platform/macos/OSXApplicationContext.h>
+#elif defined(MC_PLATFORM_LINUX)
+    #include <platform/linux/LinuxApplicationContext.h>
 #endif
 
 namespace mc {
@@ -12,6 +14,8 @@ namespace mc {
         return Shared<Win32ApplicationContext>(new Win32ApplicationContext(appId));
 #elif defined(MC_PLATFORM_MACOS)
         return Shared<OSXApplicationContext>(new OSXApplicationContext(appId));
+#elif defined(MC_PLATFORM_LINUX)
+        return Shared<LinuxApplicationContext>(new LinuxApplicationContext(appId));
 #endif
     }
 
