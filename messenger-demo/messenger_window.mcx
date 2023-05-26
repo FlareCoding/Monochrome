@@ -21,7 +21,6 @@
         <StackPanel orientation="horizontal" horizontalAlignment="center" backgroundColor="Color(0, 0, 0, 0)">
             <Entry
                 id="serverIpEntry"
-                marginTop="20"
                 horizontalAlignment="center"
                 marginTop="20"
                 marginLeft="6"
