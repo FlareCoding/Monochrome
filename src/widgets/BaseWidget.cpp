@@ -37,6 +37,10 @@ namespace mc {
         visible = true;
         visible.forwardEmittedEvents(this);
 
+        visible.on("propertyChanged", [this](auto e) {
+            this->markLayoutDirty();
+        });
+
         focused = true;
         focused.forwardEmittedEvents(this);
 
