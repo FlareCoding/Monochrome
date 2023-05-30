@@ -223,7 +223,7 @@ namespace mc {
 
 		NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle alloc] init];
 		if (wrapMode == "none")
-			[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+			[paragraphStyle setLineBreakMode:NSLineBreakByClipping];
 		else if (wrapMode == "letter")
 			[paragraphStyle setLineBreakMode:NSLineBreakByCharWrapping];
 		else if (wrapMode == "word")
