@@ -16,11 +16,11 @@ namespace mc {
             auto visibleSize = Size(fixedWidth, fixedHeight);
 
             if (visibleSize.width == NOT_SET) {
-                visibleSize.width = contentSize.width;
+                visibleSize.width = std::min(contentSize.width, maxWidth.get());
             }
 
             if (visibleSize.height == NOT_SET) {
-                visibleSize.height = contentSize.height;
+                visibleSize.height = std::min(contentSize.height, maxHeight.get());
             }
 
             // Determine if there should be space for a vertical scrollbar
