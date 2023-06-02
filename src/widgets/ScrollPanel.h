@@ -24,6 +24,10 @@ public:
     // Color of the scrollbars
     PropertyObserver<Color>     scrollbarColor;
 
+    // Indicates whether or not the content should automatically
+    // be scrolled to the bottom on content change events.
+    PropertyObserver<bool>      autoscroll;
+
     void scrollContentVertically(int32_t amount);
     void scrollContentHorizontally(int32_t amount);
 

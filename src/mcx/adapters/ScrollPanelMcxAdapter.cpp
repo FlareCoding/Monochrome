@@ -27,5 +27,7 @@ namespace mc::mcx {
 
         scrollPanel->scrollbarColor =
             mcxNode->getColorAttribute("scrollbarColor", scrollPanel->scrollbarColor);
+
+        scrollPanel->autoscroll = mcxNode->getBoolAttribute("autoscroll");
     }
 } //namespace mc::mcx

@@ -135,6 +135,16 @@ namespace mc {
         auto horizontalScrollbarSize = d_horizontalScrollbar->getDesiredSize();
         horizontalScrollbarSize.width = _calculateHorizontalScrollbarSize();
         d_horizontalScrollbar->setComputedSize(horizontalScrollbarSize);
+
+        // If autoscroll is enabled, scroll the content all the way down
+        if (autoscroll.get() && content->getComputedSize().height > computedSize.height) {
+            // Calculate how much scrolling distance is required
+            int32_t scrollAmount = content->getComputedSize().height - computedSize.height;
+            scrollAmount += content->position->y - position->y;
+            scrollAmount *= -1;
+
+            scrollContentVertically(scrollAmount);
+        }
     }
 
     void ScrollPanel::_setupProperties() {
@@ -277,6 +287,9 @@ namespace mc {
         scrollbarColor.forwardAssignment(&d_verticalScrollbar->backgroundColor);
         scrollbarColor.forwardAssignment(&d_horizontalScrollbar->backgroundColor);
         scrollbarColor = Color::gray;
+
+        autoscroll = false;
+        autoscroll.forwardEmittedEvents(this);
 
         scrollbarTrackButtonBackground.forwardAssignment(
             &d_verticalTrackDownButton->backgroundColor);

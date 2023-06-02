@@ -43,7 +43,7 @@
                 borderColor="Color(0, 0, 0, 0)"/>
         </StackPanel>
         <StackPanel marginLeft="50" minWidth="500" backgroundColor="Color(0, 0, 0, 0)" horizontalAlignment="center">
-            <ScrollPanel fixedHeight="500" fixedWidth="500" trackColor="Color(22, 24, 30)">
+            <ScrollPanel fixedHeight="500" fixedWidth="500" trackColor="Color(22, 24, 30)" autoscroll="true">
                 <StackPanel id="chatPanel" backgroundColor="Color(22, 24, 30)"/>
             </ScrollPanel>
             <StackPanel orientation="horizontal" backgroundColor="Color(0, 0, 0, 0)">
