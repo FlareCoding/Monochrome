@@ -88,5 +88,6 @@ private:
 private:
     const uint64_t d_privateWidgets = 8; // Scroll track elements + scrollbars
     const uint32_t d_scrollbarTrackSize = 14;
+    const int32_t  d_scrollWheelSensitivity = 10;
 };
 } // namespace mc

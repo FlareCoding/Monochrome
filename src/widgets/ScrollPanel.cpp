@@ -310,6 +310,14 @@ namespace mc {
         scrollbarTrackButtonColor.forwardAssignment(&d_horizontalTrackLeftButton->label->color);
         scrollbarTrackButtonColor.forwardAssignment(&d_horizontalTrackRightButton->label->color);
         scrollbarTrackButtonColor = Color::white;
+
+        on("mouseScrolled", [this](Shared<Event> e) {
+            // Get the direction of the scroll event
+            auto scrollDelta = e->get<int32_t>("deltaY") * d_scrollWheelSensitivity;
+
+            // Scroll the content
+            scrollContentVertically(scrollDelta);
+        });
     }
 
     void ScrollPanel::_clampContentPosition() {
