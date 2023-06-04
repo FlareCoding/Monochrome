@@ -9,6 +9,7 @@
 void _printDebugStackTrace() {
     HANDLE process = GetCurrentProcess();
     SymInitialize(process, NULL, TRUE);
+    SymSetOptions(SYMOPT_LOAD_LINES);
 
     void* stack[64];
     uint16_t frames = CaptureStackBackTrace(0, 64, stack, NULL);
@@ -25,10 +26,22 @@ void _printDebugStackTrace() {
 
     std::cout << "Stacktrace:\n";
     for (int i = 0; i < frames; i++) {
+        // Get the filepath and line information
+        DWORD  dwDisplacement;
+        IMAGEHLP_LINE64 line;
+        SymGetLineFromAddr64(process, (DWORD64)stack[i], &dwDisplacement, &line);
+
+        // Extract only the filename
+        std::string filepath = line.FileName;
+        std::string filename = filepath.substr(filepath.find_last_of("/\\") + 1);
+
+        // Get the function name and address
         SymFromAddr(process, (DWORD64)(stack[i]), 0, symbol);
+
         std::cout << '\t' <<
             frames - i - 1 << ':' << symbol->Name <<
-            reinterpret_cast<void*>(symbol->Address) << "\n";
+            reinterpret_cast<void*>(symbol->Address) <<
+            " [" << filename << ':' << line.LineNumber << "]\n";
     }
 
     free(symbol);
