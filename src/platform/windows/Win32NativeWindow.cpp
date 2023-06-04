@@ -648,6 +648,39 @@ namespace mc {
             fireEvent("mouseUp", mouseUpEvent);
             break;
         }
+        case WM_MOUSEWHEEL: {
+            // Get the mouse wheel direction and amount
+            int32_t delta = static_cast<int32_t>(GET_WHEEL_DELTA_WPARAM(wParam));
+
+            // Normalize the delta
+            delta /= std::abs(delta);
+
+            POINT windowCursorPoint = POINT{
+                (LONG)GET_X_LPARAM(lParam),
+                (LONG)GET_Y_LPARAM(lParam)
+            };
+
+            Position screenCursorPoint = Position(
+                windowCursorPoint.x,
+                windowCursorPoint.y
+            );
+
+            ScreenToClient(hwnd, &windowCursorPoint);
+            Position cursorPoint = Position(
+                windowCursorPoint.x,
+                windowCursorPoint.y
+            );
+
+            auto mouseScrolledEvent = MakeRef<Event>(eventDataMap_t{
+                { "location", cursorPoint },
+                { "screenLocation", screenCursorPoint },
+                { "deltaX", 0 },
+                { "deltaY", delta }
+            });
+
+            fireEvent("mouseScrolled", mouseScrolledEvent);
+            break;
+        }
         case WM_MOUSEMOVE:
         {
             // Detecting mouse entering the window

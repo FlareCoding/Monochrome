@@ -11,6 +11,7 @@ public:
     void processMouseDownEvent(Shared<Event> event);
     void processMouseUpEvent(Shared<Event> event);
     void processMouseMovedEvent(Shared<Event> event);
+    void processMouseScrolledEvent(Shared<Event> event);
     void processKeyDownEvent(Shared<Event> event);
     void processKeyUpEvent(Shared<Event> event);
 
@@ -38,6 +39,12 @@ private:
 
     void _processMouseMovedEvent(
         Shared<MouseMovedEvent> event,
+        std::vector<Shared<BaseWidget>>& widgets,
+        Position& positionOffset
+    );
+
+    void _processMouseScrolledEvent(
+        Shared<MouseScrolledEvent> event,
         std::vector<Shared<BaseWidget>>& widgets,
         Position& positionOffset
     );

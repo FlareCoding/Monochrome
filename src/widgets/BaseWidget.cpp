@@ -15,6 +15,7 @@ namespace mc {
         appendAllowedEvent("mouseDown");
         appendAllowedEvent("mouseUp");
         appendAllowedEvent("mouseMoved");
+        appendAllowedEvent("mouseScrolled");
         appendAllowedEvent("clicked");
         appendAllowedEvent("hoveredOn");
         appendAllowedEvent("hoveredOff");

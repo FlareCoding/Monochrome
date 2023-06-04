@@ -71,7 +71,25 @@ namespace mc {
             positionOffset
         );
     }
+    
+    void EventProcessor::processMouseScrolledEvent(Shared<Event> event) {
+        if (!d_rootWidget) {
+            return;
+        }
 
+        auto mse = std::static_pointer_cast<MouseScrolledEvent>(event);
+
+        d_rootWidget->fireEvent("mouseScrolled", event, d_rootWidget.get());
+
+        Position positionOffset = Position(0, 0);
+
+        _processMouseScrolledEvent(
+            mse,
+            d_rootWidget->_getChildren(),
+            positionOffset
+        );
+    }
+    
     void EventProcessor::processKeyDownEvent(Shared<Event> event) {
         if (!d_rootWidget || !d_focusedWidget) {
             return;
@@ -308,6 +326,38 @@ namespace mc {
 
             // Process the event for all the children
             _processMouseMovedEvent(event, widget->_getChildren(), widgetPosition);
+        }
+    }
+    
+    void EventProcessor::_processMouseScrolledEvent(
+        Shared<MouseScrolledEvent> event,
+        std::vector<Shared<BaseWidget>>& widgets,
+        Position& positionOffset
+    ) {
+        for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
+            auto& widget = *it;
+            auto& widgetFlags = widget->getInternalFlags();
+
+            // Ignore invisible widgets
+            if (!widget->visible) {
+                continue;
+            }
+
+            // Calculate the widget's runtime absolute position and size
+            auto widgetPosition = widget->position + positionOffset;
+            auto widgetSize = widget->getComputedSize();
+
+            // First process the event for all children (bottom-up)
+            _processMouseScrolledEvent(event, widget->_getChildren(), widgetPosition);
+
+            // Get the bounding box around the widget
+            auto widgetFrame = Frame(widgetPosition, widgetSize);
+
+            bool isMouseInFrame = widgetFrame.containsPoint(event->getLocation());
+
+            if (isMouseInFrame) {
+                widget->fireEvent("mouseScrolled", event, widget.get());
+            }
         }
     }
 } // namespace mc
