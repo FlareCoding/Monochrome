@@ -406,6 +406,36 @@ namespace mc {
     windowInstance->fireEvent("mouseMoved", mouseMovedEvent);
 }
 
+- (void)scrollWheel:(NSEvent*) event
+{
+    NSWindow* window = [self window];
+    CGFloat contentHeight = [window contentRectForFrameRect: window.frame].size.height;
+
+    NSPoint cursorPoint = [ event locationInWindow ];
+    mc::Distance scrollDelta = mc::Distance((int32_t)[event scrollingDeltaX], (int32_t)[event scrollingDeltaY]);
+
+    scrollDelta.x /= std::abs(scrollDelta.x);
+    scrollDelta.y /= std::abs(scrollDelta.y);
+
+    NSPoint screenCursorPoint = [window convertPointToScreen:cursorPoint];
+    int32_t screenHeight = (int32_t)[[NSScreen mainScreen] visibleFrame].size.height;
+
+    mc::Position screenLocation = mc::Position(
+        (int32_t)screenCursorPoint.x,
+        (int32_t)(screenHeight - screenCursorPoint.y)
+    );
+
+    OSXNativeWindow* windowInstance = [self mcWindowHandle];
+    auto mouseScrolledEvent = MakeRef<Event>(eventDataMap_t{
+        { "location", mc::Position((uint32_t)cursorPoint.x, (uint32_t)(contentHeight - cursorPoint.y)) },
+        { "screenLocation", screenLocation },
+        { "deltaX", scrollDelta.x },
+        { "deltaY", scrollDelta.y }
+    });
+
+    windowInstance->fireEvent("mouseScrolled", mouseScrolledEvent);
+}
+
 -(void)keyDown:(NSEvent*) event
 {
     NSUInteger flags = [[NSApp currentEvent] modifierFlags];
