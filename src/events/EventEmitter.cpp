@@ -57,8 +57,7 @@ namespace mc {
         BaseWidget* target
     ) {
         auto event = MakeRef<Event>(data);
-        event->target = target;
-        fireEvent(eventName, event);
+        fireEvent(eventName, event, target);
     }
 
     void EventEmitter::forwardEmittedEvents(EventEmitter* emitter) {
