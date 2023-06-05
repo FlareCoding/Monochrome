@@ -356,7 +356,11 @@ namespace mc {
             bool isMouseInFrame = widgetFrame.containsPoint(event->getLocation());
 
             if (isMouseInFrame) {
+                // Tell the widget that the mouse has been scrolled
                 widget->fireEvent("mouseScrolled", event, widget.get());
+
+                // Tell the window to redraw
+                fireEvent("widgetTreeChanged", Event::empty);
             }
         }
     }
