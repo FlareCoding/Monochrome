@@ -59,6 +59,8 @@ private:
     uint32_t _calculateHorizontalScrollbarSize();
     void _calculateHorizontalScrollbarPosition();
 
+    void _onMouseScrolled(Shared<Event> e);
+
 private:
     bool        d_verticalScrollbarPressed = false;
     bool        d_horizontalScrollbarPressed = false;

@@ -314,20 +314,8 @@ namespace mc {
         scrollbarTrackButtonColor.forwardAssignment(&d_horizontalTrackRightButton->label->color);
         scrollbarTrackButtonColor = Color::white;
 
-        on("mouseScrolled", [this](Shared<Event> e) {
-            // Make sure the content is scrollable
-            auto& content = getChild(0);
-
-            if (content->getComputedSize().height <= getComputedSize().height) {
-                return;
-            }
-
-            // Get the direction of the scroll event
-            auto scrollDelta = e->get<int32_t>("deltaY") * scrollSensitivity;
-
-            // Scroll the content
-            scrollContentVertically(scrollDelta);
-        });
+        // Register the handler for mouse scrolling
+        on("mouseScrolled", &ScrollPanel::_onMouseScrolled, this);
     }
 
     void ScrollPanel::_clampContentPosition() {
@@ -420,6 +408,21 @@ namespace mc {
         d_horizontalScrollbar->position->x =
             d_scrollbarTrackSize + d_horizontalScrollbar->marginLeft +
             static_cast<int32_t>(scrollbarPos);
+    }
+
+    void ScrollPanel::_onMouseScrolled(Shared<Event> e) {
+        // Make sure the content is scrollable
+        auto& content = getChild(0);
+
+        if (content->getComputedSize().height <= getComputedSize().height) {
+            return;
+        }
+
+        // Get the direction of the scroll event
+        auto scrollDelta = e->get<int32_t>("deltaY") * scrollSensitivity;
+
+        // Scroll the content
+        scrollContentVertically(scrollDelta);
     }
 
     void ScrollPanel::_verticalScrollbarOnMouseDown(Shared<Event> e) {
