@@ -412,7 +412,7 @@ namespace mc {
 
     void ScrollPanel::_onMouseScrolled(Shared<Event> e) {
         // Make sure the content is scrollable
-        auto& content = getChild(0);
+        auto content = getChild(0);
 
         if (content->getComputedSize().height <= getComputedSize().height) {
             return;
