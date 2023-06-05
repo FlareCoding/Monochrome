@@ -71,7 +71,7 @@ namespace mc {
             positionOffset
         );
     }
-    
+
     void EventProcessor::processMouseScrolledEvent(Shared<Event> event) {
         if (!d_rootWidget) {
             return;
@@ -89,7 +89,7 @@ namespace mc {
             positionOffset
         );
     }
-    
+
     void EventProcessor::processKeyDownEvent(Shared<Event> event) {
         if (!d_rootWidget || !d_focusedWidget) {
             return;
@@ -328,7 +328,7 @@ namespace mc {
             _processMouseMovedEvent(event, widget->_getChildren(), widgetPosition);
         }
     }
-    
+
     void EventProcessor::_processMouseScrolledEvent(
         Shared<MouseScrolledEvent> event,
         std::vector<Shared<BaseWidget>>& widgets,
