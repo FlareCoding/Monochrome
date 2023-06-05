@@ -67,10 +67,10 @@ int main() {
 
 	auto chatEntry = std::static_pointer_cast<Entry>(getWidgetById("chatEntry"));
 	chatEntry->visible = false;
-	chatEntry->on("entered", [&chatEntry](Shared<Event> e) {
+	chatEntry->on("entered", [](Shared<Event> e) {
 		std::string msg = g_username + ":  " + e->get<std::string>("text");
 		g_connection->send_string(msg);
-		chatEntry->clear();
+		static_cast<Entry*>(e->target)->clear();
 	});
 
 	auto connectButton = getWidgetById("connectBtn");
