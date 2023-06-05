@@ -288,6 +288,9 @@ namespace mc {
         scrollbarColor.forwardAssignment(&d_horizontalScrollbar->backgroundColor);
         scrollbarColor = Color::gray;
 
+        scrollSensitivity = 20;
+        scrollSensitivity.forwardEmittedEvents(this);
+
         autoscroll = false;
         autoscroll.forwardEmittedEvents(this);
 
@@ -312,8 +315,15 @@ namespace mc {
         scrollbarTrackButtonColor = Color::white;
 
         on("mouseScrolled", [this](Shared<Event> e) {
+            // Make sure the content is scrollable
+            auto& content = getChild(0);
+
+            if (content->getComputedSize().height <= getComputedSize().height) {
+                return;
+            }
+
             // Get the direction of the scroll event
-            auto scrollDelta = e->get<int32_t>("deltaY") * d_scrollWheelSensitivity;
+            auto scrollDelta = e->get<int32_t>("deltaY") * scrollSensitivity;
 
             // Scroll the content
             scrollContentVertically(scrollDelta);

@@ -24,6 +24,9 @@ public:
     // Color of the scrollbars
     PropertyObserver<Color>     scrollbarColor;
 
+    // Multiplier on how fast the scroll wheel can scroll the content
+    PropertyObserver<int32_t>   scrollSensitivity;
+
     // Indicates whether or not the content should automatically
     // be scrolled to the bottom on content change events.
     PropertyObserver<bool>      autoscroll;
@@ -88,6 +91,5 @@ private:
 private:
     const uint64_t d_privateWidgets = 8; // Scroll track elements + scrollbars
     const uint32_t d_scrollbarTrackSize = 14;
-    const int32_t  d_scrollWheelSensitivity = 10;
 };
 } // namespace mc
