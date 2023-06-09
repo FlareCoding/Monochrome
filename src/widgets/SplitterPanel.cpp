@@ -27,8 +27,7 @@ namespace mc {
 
             if (orientation == Horizontal) {
                 contentSize.width += childSizeWithMargins.width;
-            }
-            else if (orientation == Vertical) {
+            } else if (orientation == Vertical) {
                 contentSize.height += childSizeWithMargins.height;
             }
         }
@@ -47,7 +46,7 @@ namespace mc {
 
         std::vector<uint32_t> weights;
         uint32_t weightTotal = 0;
-        
+
         if (sectionWeights.get().empty()) {
             for (const auto& child : getChildren()) {
                 weights.push_back(1);
@@ -68,7 +67,7 @@ namespace mc {
 
         for (size_t i = 0; i < childrenCount; ++i) {
             auto child = getChild(i);
-            
+
             if (orientation == Horizontal) {
                 double multiplier = static_cast<double>(weights.at(i)) / weightTotal;
                 auto sectionWidth = static_cast<uint32_t>(totalSize.width * multiplier);
@@ -113,8 +112,7 @@ namespace mc {
 
                         previousChild->setComputedSize(previousSize);
                         nextChildPos.x += sizeDiff;
-                    }
-                    else {
+                    } else {
                         totalSize.width -= child->maxWidth;
                         --weightTotal;
                     }
@@ -158,8 +156,7 @@ namespace mc {
 
                         previousChild->setComputedSize(previousSize);
                         nextChildPos.y -= sizeDiff;
-                    }
-                    else {
+                    } else {
                         totalSize.height -= sizeDiff;
                     }
 
@@ -182,8 +179,7 @@ namespace mc {
 
                         previousChild->setComputedSize(previousSize);
                         nextChildPos.y += sizeDiff;
-                    }
-                    else {
+                    } else {
                         totalSize.height -= child->maxHeight;
                         --weightTotal;
                     }
@@ -236,14 +232,14 @@ namespace mc {
         sectionWeights = "";
         sectionWeights.forwardEmittedEvents(this);
     }
-    
+
     void SplitterPanel::_createNecessaryDividerVisuals() {
         size_t childrenCount = getChildren().size();
         size_t dividerCount = d_dividers.size();
 
         if (dividerCount < (childrenCount - 1)) {
             size_t diff = (childrenCount - 1) - dividerCount;
-            
+
             for (size_t i = 0; i < diff; ++i) {
                 // The trick is to make rectangles
                 // thin enough to look like lines.
