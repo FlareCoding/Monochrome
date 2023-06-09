@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseWidget.h"
+#include "Button.h"
 
 namespace mc {
 class SplitterPanel : public BaseContainerWidget {
@@ -46,5 +47,6 @@ private:
 
 private:
     std::vector<Shared<VisualElement>> d_dividers;
+    std::vector<Shared<Button>> d_btns;
 };
 } // namespace mc
