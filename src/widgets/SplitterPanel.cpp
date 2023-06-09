@@ -44,7 +44,7 @@ namespace mc {
 
         Position childSlotPosition = Position(0, 0);
         auto totalSize = getComputedSize();
-        auto childrenCount = getChildren().size() - d_btns.size();
+        auto childrenCount = getChildren().size();
 
         std::vector<uint32_t> weights;
         uint32_t weightTotal = 0;
@@ -61,9 +61,9 @@ namespace mc {
             }
         }
 
-        /*CORE_ASSERT(weights.size() >= childrenCount,
+        CORE_ASSERT(weights.size() >= childrenCount,
             "Invalid number of section weights specified for 'sectionWeights', weights: " +
-            std::to_string(weights.size()) + " children: " + std::to_string(childrenCount));*/
+            std::to_string(weights.size()) + " children: " + std::to_string(childrenCount));
 
         Position nextChildPos = { 0, 0 };
 
@@ -82,19 +82,12 @@ namespace mc {
 
                 // Place a divider if necessary
                 if (i < childrenCount - 1) {
-                    /*auto& divider = d_dividers.at(i);
+                    auto& divider = d_dividers.at(i);
 
                     divider->position->x = nextChildPos.x - (dividerSize / 2);
                     divider->position->y = 0;
                     divider->customWidth = dividerSize;
-                    divider->customHeight = sectionHeight;*/
-                    auto& divider = d_btns.at(i);
-
-                    divider->position->x = nextChildPos.x - (dividerSize / 2);
-                    divider->position->y = 0;
-                   /* divider->fixedWidth = dividerSize;
-                    divider->fixedHeight = sectionHeight;*/
-                    divider->setComputedSize(Size(dividerSize, sectionHeight));
+                    divider->customHeight = sectionHeight;
                 }
 
             } else if (orientation == Vertical) {
@@ -138,7 +131,7 @@ namespace mc {
         movableDividers = false; // default value
         movableDividers.forwardEmittedEvents(this);
 
-        dividerSize = 6; // default value
+        dividerSize = 2; // default value
         dividerSize.forwardEmittedEvents(this);
 
         orientation = Horizontal; // default value
@@ -146,47 +139,33 @@ namespace mc {
 
         sectionWeights = "";
         sectionWeights.forwardEmittedEvents(this);
-
-        for (int i = 0; i < 2; i++) {
-            auto divider = MakeRef<Button>();
-            divider->label->text = "";
-            divider->backgroundColor = Color::red;
-            divider->zIndex = std::numeric_limits<uint32_t>::max();
-            divider->borderColor = Color::transparent;
-            divider->cursorType = CursorType::SizeWE;
-            divider->on("mouseDown", [](auto e) { printf("now\n"); });
-            //dividerColor.forwardAssignment(&divider->backgroundColor);
-
-            d_btns.push_back(divider);
-            addChild(divider);
-        }
     }
     
     void SplitterPanel::_createNecessaryDividerVisuals() {
-        //size_t childrenCount = getChildren().size();
-        //size_t dividerCount = d_dividers.size();
+        size_t childrenCount = getChildren().size();
+        size_t dividerCount = d_dividers.size();
 
-        //if (dividerCount < (childrenCount - 1)) {
-        //    size_t diff = (childrenCount - 1) - dividerCount;
-        //    
-        //    for (size_t i = 0; i < diff; ++i) {
-        //        // The trick is to make rectangles
-        //        // thin enough to look like lines.
-        //        auto divider = MakeRef<RectVisual>();
-        //        divider->color = dividerColor;
-        //        dividerColor.forwardAssignment(&divider->color);
-        //        addOverlayVisualElement(divider);
+        if (dividerCount < (childrenCount - 1)) {
+            size_t diff = (childrenCount - 1) - dividerCount;
+            
+            for (size_t i = 0; i < diff; ++i) {
+                // The trick is to make rectangles
+                // thin enough to look like lines.
+                auto divider = MakeRef<RectVisual>();
+                divider->color = dividerColor;
+                dividerColor.forwardAssignment(&divider->color);
+                addOverlayVisualElement(divider);
 
-        //        d_dividers.push_back(divider);
-        //    }
-        //}
+                d_dividers.push_back(divider);
+            }
+        }
     }
 
     void SplitterPanel::_resetDividers() {
-       /* for (auto& divider : d_dividers) {
+        for (auto& divider : d_dividers) {
             divider->customWidth = 0;
             divider->customHeight = 0;
             divider->color = dividerColor;
-        }*/
+        }
     }
 } // namespace mc

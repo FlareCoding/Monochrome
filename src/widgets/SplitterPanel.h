@@ -15,6 +15,7 @@ public:
 
     // @brief Indicates whether or not the
     // sections can be dragged and adjusted.
+    // *NOTE: NOT YET IMPLEMENTED
     PropertyObserver<bool> movableDividers;
 
     // @brief Thickness of dividing lines between sections.
@@ -47,6 +48,5 @@ private:
 
 private:
     std::vector<Shared<VisualElement>> d_dividers;
-    std::vector<Shared<Button>> d_btns;
 };
 } // namespace mc
