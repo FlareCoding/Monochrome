@@ -119,6 +119,31 @@ namespace mc {
                 auto sectionHeight = static_cast<uint32_t>(totalSize.height * multiplier);
                 auto sectionWidth = totalSize.width;
 
+                // If the child has minimum size constraints, they need to be respected
+                if (sectionHeight < child->minHeight) {
+                    auto sizeDiff = child->minHeight - sectionHeight;
+
+                    // If the child is the last one, the previous
+                    // one needs to be resized to be smaller.
+                    if (i == childrenCount - 1 && childrenCount > 1) {
+                        auto previousChild = getChild(i - 1);
+                        auto previousDivider = d_dividers.at(i - 1);
+
+                        auto previousSize = previousChild->getComputedSize();
+                        previousSize.height -= sizeDiff;
+                        previousDivider->position->y -= sizeDiff;
+
+                        previousChild->setComputedSize(previousSize);
+                        nextChildPos.y -= sizeDiff;
+
+                        sectionHeight = child->minHeight;
+                    }
+                    else {
+                        totalSize.height -= sizeDiff;
+                        sectionHeight = child->minHeight;
+                    }
+                }
+
                 child->position = nextChildPos;
                 child->setComputedSize(Size(sectionWidth, sectionHeight));
 
