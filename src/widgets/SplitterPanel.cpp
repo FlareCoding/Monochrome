@@ -42,7 +42,6 @@ namespace mc {
         _createNecessaryDividerVisuals();
         _resetDividers();
 
-        Position childSlotPosition = Position(0, 0);
         auto totalSize = getComputedSize();
         auto childrenCount = getChildren().size();
 
@@ -91,12 +90,36 @@ namespace mc {
 
                         previousChild->setComputedSize(previousSize);
                         nextChildPos.x -= sizeDiff;
-
-                        sectionWidth = child->minWidth;
                     } else {
                         totalSize.width -= sizeDiff;
-                        sectionWidth = child->minWidth;
                     }
+
+                    sectionWidth = child->minWidth;
+                }
+
+                // If the child has maximum size constraints, they need to be respected
+                if (sectionWidth > child->maxWidth) {
+                    auto sizeDiff = sectionWidth - child->maxWidth;
+
+                    // If the child is the last one, the previous
+                    // one needs to be resized to be larger.
+                    if (i == childrenCount - 1 && childrenCount > 1) {
+                        auto previousChild = getChild(i - 1);
+                        auto previousDivider = d_dividers.at(i - 1);
+
+                        auto previousSize = previousChild->getComputedSize();
+                        previousSize.width += sizeDiff;
+                        previousDivider->position->x += sizeDiff;
+
+                        previousChild->setComputedSize(previousSize);
+                        nextChildPos.x += sizeDiff;
+                    }
+                    else {
+                        totalSize.width -= child->maxWidth;
+                        --weightTotal;
+                    }
+
+                    sectionWidth = child->maxWidth;
                 }
 
                 child->position = nextChildPos;
@@ -135,13 +158,37 @@ namespace mc {
 
                         previousChild->setComputedSize(previousSize);
                         nextChildPos.y -= sizeDiff;
-
-                        sectionHeight = child->minHeight;
                     }
                     else {
                         totalSize.height -= sizeDiff;
-                        sectionHeight = child->minHeight;
                     }
+
+                    sectionHeight = child->minHeight;
+                }
+
+                // If the child has maximum size constraints, they need to be respected
+                if (sectionHeight > child->maxHeight) {
+                    auto sizeDiff = sectionHeight - child->maxHeight;
+
+                    // If the child is the last one, the previous
+                    // one needs to be resized to be larger.
+                    if (i == childrenCount - 1 && childrenCount > 1) {
+                        auto previousChild = getChild(i - 1);
+                        auto previousDivider = d_dividers.at(i - 1);
+
+                        auto previousSize = previousChild->getComputedSize();
+                        previousSize.height += sizeDiff;
+                        previousDivider->position->y += sizeDiff;
+
+                        previousChild->setComputedSize(previousSize);
+                        nextChildPos.y += sizeDiff;
+                    }
+                    else {
+                        totalSize.height -= child->maxHeight;
+                        --weightTotal;
+                    }
+
+                    sectionHeight = child->maxHeight;
                 }
 
                 child->position = nextChildPos;

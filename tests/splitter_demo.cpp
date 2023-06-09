@@ -10,7 +10,7 @@ using namespace mc;
 int main() {
     AppManager::registerApplication("appId-splitter-demo");
 
-    auto mainWindow = MakeRef<ClassicWindow>(880, 580, "SplitterPanel Demo");
+    auto mainWindow = MakeRef<ClassicWindow>(1280, 580, "SplitterPanel Demo");
 
     auto rootPanel = mcx::McxEngine::parseUserWidgetFileAsContainer("splitterpanel_example1.mcx");
     mainWindow->setRootWidget(rootPanel);
