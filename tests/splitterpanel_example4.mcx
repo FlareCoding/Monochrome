@@ -1,0 +1,18 @@
+<root type="widget">
+	<DockPanel backgroundColor="Color(60, 30, 30)">
+		<SplitterPanel dockAnchor="left" minWidth="300" orientation="vertical">
+			<StackPanel orientation="horizontal">
+				<Label text="Some sample text" fontSize="20"/>
+				<Button text="Test Button" fontSize="16"/>
+			</StackPanel>
+			<StackPanel orientation="vertical" backgroundColor="Color(0, 20, 0)">
+				<Label text="More text" fontSize="20"/>
+				<Label text="Small text" fontSize="10"/>
+				<Button text="Click Me!" horizontalAlignment="center" marginTop="10" imagePlacement="icon">
+					<Image url="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678077-computer-1024.png"/>
+				</Button>
+			</StackPanel>
+		</SplitterPanel>
+	</DockPanel>
+</root>
+
