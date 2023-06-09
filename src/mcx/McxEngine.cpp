@@ -9,6 +9,7 @@
 #include "adapters/StackPanelMcxAdapter.h"
 #include "adapters/DockPanelMcxAdapter.h"
 #include "adapters/ScrollPanelMcxAdapter.h"
+#include "adapters/SplitterPanelMcxAdapter.h"
 #include "adapters/LabelMcxAdapter.h"
 #include "adapters/ButtonMcxAdapter.h"
 #include "adapters/CheckboxMcxAdapter.h"
@@ -201,6 +202,7 @@ namespace mc::mcx {
         registerMcxAdapter("StackPanel", MakeRef<StackPanelMcxAdapter>());
         registerMcxAdapter("DockPanel", MakeRef<DockPanelMcxAdapter>());
         registerMcxAdapter("ScrollPanel", MakeRef<ScrollPanelMcxAdapter>());
+        registerMcxAdapter("SplitterPanel", MakeRef<SplitterPanelMcxAdapter>());
         registerMcxAdapter("Label", MakeRef<LabelMcxAdapter>());
         registerMcxAdapter("Button", MakeRef<ButtonMcxAdapter>());
         registerMcxAdapter("Checkbox", MakeRef<CheckboxMcxAdapter>());

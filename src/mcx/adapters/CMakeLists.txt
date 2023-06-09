@@ -9,6 +9,7 @@ set(
     ${cwd}/StackPanelMcxAdapter.h
     ${cwd}/DockPanelMcxAdapter.h
     ${cwd}/ScrollPanelMcxAdapter.h
+    ${cwd}/SplitterPanelMcxAdapter.h
     ${cwd}/LabelMcxAdapter.h
     ${cwd}/ButtonMcxAdapter.h
     ${cwd}/CheckboxMcxAdapter.h
@@ -32,6 +33,7 @@ set(
     ${cwd}/StackPanelMcxAdapter.cpp
     ${cwd}/DockPanelMcxAdapter.cpp
     ${cwd}/ScrollPanelMcxAdapter.cpp
+    ${cwd}/SplitterPanelMcxAdapter.cpp
     ${cwd}/LabelMcxAdapter.cpp
     ${cwd}/ButtonMcxAdapter.cpp
     ${cwd}/CheckboxMcxAdapter.cpp
