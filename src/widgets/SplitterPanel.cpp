@@ -230,6 +230,9 @@ namespace mc {
         orientation.forwardEmittedEvents(this);
 
         sectionWeights = "";
+        sectionWeights.on("propertyChanged", [this](auto e) {
+            fireEvent("layoutChanged", Event::empty);
+        });
         sectionWeights.forwardEmittedEvents(this);
     }
 
