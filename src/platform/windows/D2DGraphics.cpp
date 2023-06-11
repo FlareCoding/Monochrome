@@ -51,8 +51,16 @@ namespace mc {
         RECT rect;
         GetClientRect(hwnd, &rect);
 
+        auto renderTargetProps = D2D1::RenderTargetProperties();
+
+#ifdef MC_USE_GPU_ACCELERATION
+        renderTargetProps.type = D2D1_RENDER_TARGET_TYPE_HARDWARE;
+#else
+        renderTargetProps.type = D2D1_RENDER_TARGET_TYPE_SOFTWARE;
+#endif
+
         HRESULT result = s_D2DFactory->CreateHwndRenderTarget(
-            D2D1::RenderTargetProperties(),
+            renderTargetProps,
             D2D1::HwndRenderTargetProperties(
                 hwnd,
                 D2D1::SizeU(rect.right, rect.bottom),

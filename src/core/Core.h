@@ -11,6 +11,8 @@
     #else
         #define MC_PLATFORM_WINDOWS_X64_86
     #endif
+
+    #define MC_USE_GPU_ACCELERATION
 #elif __APPLE__
     #define MC_PLATFORM_MACOS
 #elif __linux__
