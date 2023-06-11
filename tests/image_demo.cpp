@@ -16,7 +16,7 @@ int main() {
     rootPanel->backgroundColor = Color(18, 22, 28);
     window->setRootWidget(rootPanel);
 
-    auto topImage = Image::loadFromWebUrl("https://images.unsplash.com/photo-1663106516321-2575f0dfd562?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3200&q=80");
+    auto topImage = Image::loadFromWebUrl("https://img.freepik.com/free-photo/breathtaking-shot-mountainous-landscape-with-ocean-captured-reine-norway_181624-49195.jpg?w=1060&t=st=1685803686~exp=1685804286~hmac=588175b0e40be03bc08d84a7f8c2c9158b545984d3cf0d60a7ec886c4988f7a3");
     topImage->horizontalAlignment = HACenter;
     topImage->fixedWidth = 500;
     topImage->fixedHeight = 400;

@@ -15,6 +15,7 @@ namespace mc {
         appendAllowedEvent("mouseDown");
         appendAllowedEvent("mouseUp");
         appendAllowedEvent("mouseMoved");
+        appendAllowedEvent("mouseScrolled");
         appendAllowedEvent("clicked");
         appendAllowedEvent("hoveredOn");
         appendAllowedEvent("hoveredOff");
@@ -36,6 +37,10 @@ namespace mc {
 
         visible = true;
         visible.forwardEmittedEvents(this);
+
+        visible.on("propertyChanged", [this](auto e) {
+            this->markLayoutDirty();
+        });
 
         focused = true;
         focused.forwardEmittedEvents(this);

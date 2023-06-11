@@ -11,3 +11,4 @@
 #include "StackPanel.h"
 #include "ScrollPanel.h"
 #include "DockPanel.h"
+#include "SplitterPanel.h"

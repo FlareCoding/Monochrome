@@ -37,6 +37,10 @@ public:
         const std::string& eventName
     ) { d_allowedEvents.push_back(eventName); }
 
+    inline const std::vector<std::string>& inspectAllowedEvents() const {
+        return d_allowedEvents;
+    }
+
 private:
     std::map<std::string, std::vector<eventEmiterCallback_t>> d_handlers;
     std::vector<std::string> d_allowedEvents;

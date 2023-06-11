@@ -13,6 +13,7 @@ namespace mc {
         this->appendAllowedEvent("sizeChanged");
         this->appendAllowedEvent("focusChanged");
         this->appendAllowedEvent("mouseMoved");
+        this->appendAllowedEvent("mouseScrolled");
         this->appendAllowedEvent("mouseDown");
         this->appendAllowedEvent("mouseUp");
         this->appendAllowedEvent("keyDown");

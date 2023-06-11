@@ -1,0 +1,67 @@
+<root type="window" width="860" height="640" title="Secret Messenger">
+    <StackPanel backgroundColor="Color(22, 27, 36)">
+        <StackPanel id="usernamePanel" marginTop="20" orientation="horizontal" horizontalAlignment="center" backgroundColor="Color(0, 0, 0, 0)">
+            <Label text="Username"/>
+            <Entry
+                id="usernameEntry"
+                horizontalAlignment="center"
+                marginLeft="6"
+                marginRight="6"
+                placeholder="type username here..."
+                fontSize="11"
+                fixedHeight="20"
+                fixedWidth="140"
+                focusedBorderColor="Color(0, 240, 216)"
+                borderColor="Color(0, 0, 0, 0)"
+                backgroundColor="Color(0, 0, 0, 0)"
+                cursorColor="Color(255, 255, 255)"
+                textColor="Color(255, 255, 255)"
+            />
+        </StackPanel>
+        <StackPanel orientation="horizontal" horizontalAlignment="center" backgroundColor="Color(0, 0, 0, 0)">
+            <Entry
+                id="serverIpEntry"
+                horizontalAlignment="center"
+                marginTop="20"
+                marginLeft="6"
+                marginRight="6"
+                text=""
+                fixedHeight="20"
+                fixedWidth="140"
+                focusedBorderColor="Color(0, 240, 216)"
+                borderColor="Color(0, 0, 0, 0)"
+                backgroundColor="Color(0, 0, 0, 0)"
+                cursorColor="Color(255, 255, 255)"
+                textColor="Color(255, 255, 255)"
+            />
+            <Button
+                id="connectBtn"
+                text="Connect"
+                horizontalAlignment="center"
+                marginTop="10"
+                fixedHeight="20"
+                borderColor="Color(0, 0, 0, 0)"/>
+        </StackPanel>
+        <StackPanel marginLeft="50" minWidth="500" backgroundColor="Color(0, 0, 0, 0)" horizontalAlignment="center">
+            <ScrollPanel fixedHeight="500" fixedWidth="500" trackColor="Color(22, 24, 30)" autoscroll="true">
+                <StackPanel id="chatPanel" backgroundColor="Color(22, 24, 30)"/>
+            </ScrollPanel>
+            <StackPanel orientation="horizontal" backgroundColor="Color(0, 0, 0, 0)">
+                <Entry
+                    id="chatEntry"
+                    horizontalAlignment="center"
+                    marginTop="20"
+                    marginLeft="6"
+                    placeholder="type your message here..."
+                    minWidth="486"
+                    fixedHeight="20"
+                    focusedBorderColor="Color(0, 240, 216)"
+                    borderColor="Color(0, 0, 0, 0)"
+                    backgroundColor="Color(0, 0, 0, 0)"
+                    cursorColor="Color(255, 255, 255)"
+                    textColor="Color(255, 255, 255)"
+                />
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</root>

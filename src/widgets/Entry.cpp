@@ -235,7 +235,7 @@ namespace mc {
         case KeyCode::KEY_ENTER: {
             fireEvent("entered", {
                 { "text", text.get() }
-            });
+            }, this);
             break;
         }
         default: {
@@ -619,7 +619,7 @@ namespace mc {
 
         fireEvent("changed", {
             { "text", text.get() }
-        });
+        }, this);
     }
 
     void Entry::_updateTextFrameSize() {

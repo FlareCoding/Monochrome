@@ -27,5 +27,10 @@ namespace mc::mcx {
 
         scrollPanel->scrollbarColor =
             mcxNode->getColorAttribute("scrollbarColor", scrollPanel->scrollbarColor);
+
+        scrollPanel->scrollSensitivity =
+            mcxNode->getIntAttribute("scrollSensitivity", scrollPanel->scrollSensitivity);
+
+        scrollPanel->autoscroll = mcxNode->getBoolAttribute("autoscroll");
     }
 } //namespace mc::mcx

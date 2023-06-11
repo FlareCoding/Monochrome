@@ -33,6 +33,7 @@ set(
     ${cwd}/StackPanel.h
     ${cwd}/ScrollPanel.h
     ${cwd}/DockPanel.h
+    ${cwd}/SplitterPanel.h
 
     PARENT_SCOPE
 )
@@ -59,6 +60,7 @@ set(
     ${cwd}/StackPanel.cpp
     ${cwd}/ScrollPanel.cpp
     ${cwd}/DockPanel.cpp
+    ${cwd}/SplitterPanel.cpp
 
     PARENT_SCOPE
 )

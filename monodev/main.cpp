@@ -273,10 +273,14 @@ Shared<StackPanel> createPropertyCell(
 
 std::string generateHeaderSource() {
     std::string baseClass = "BaseWidget";
+    if (s_widgetConfiguration.isContainer) {
+        baseClass = "BaseContainerWidget";
+    }
+
     std::string widgetName = s_widgetConfiguration.name;
 
     std::string source = "#pragma once\n";
-    source.append("#include \"" + baseClass + ".h\"\n\n");
+    source.append("#include \"BaseWidget.h\"\n\n");
     source.append("namespace mc {\n");
     source.append("class " + widgetName + " : public " + baseClass + " {\n");
     source.append("public:\n");

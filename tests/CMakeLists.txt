@@ -19,3 +19,12 @@ target_link_libraries(McxApp_Demo PUBLIC Monochrome)
 
 add_executable(Image_Demo image_demo.cpp)
 target_link_libraries(Image_Demo PUBLIC Monochrome)
+
+add_executable(Splitter_Demo
+    splitter_demo.cpp
+    splitterpanel_example1.mcx
+    splitterpanel_example2.mcx
+    splitterpanel_example3.mcx
+    splitterpanel_example4.mcx
+)
+target_link_libraries(Splitter_Demo PUBLIC Monochrome)

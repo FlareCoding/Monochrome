@@ -24,6 +24,13 @@ public:
     // Color of the scrollbars
     PropertyObserver<Color>     scrollbarColor;
 
+    // Multiplier on how fast the scroll wheel can scroll the content
+    PropertyObserver<int32_t>   scrollSensitivity;
+
+    // Indicates whether or not the content should automatically
+    // be scrolled to the bottom on content change events.
+    PropertyObserver<bool>      autoscroll;
+
     void scrollContentVertically(int32_t amount);
     void scrollContentHorizontally(int32_t amount);
 
@@ -51,6 +58,8 @@ private:
 
     uint32_t _calculateHorizontalScrollbarSize();
     void _calculateHorizontalScrollbarPosition();
+
+    void _onMouseScrolled(Shared<Event> e);
 
 private:
     bool        d_verticalScrollbarPressed = false;

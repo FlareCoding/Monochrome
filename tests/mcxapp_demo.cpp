@@ -18,14 +18,18 @@ int main() {
     auto root = mcx::McxEngine::parseUserWidgetFileAsContainer(rootMcxFilepath);
     window->setRootWidget(root);
 
-    // utils::FileWatcher watcher;
-    // watcher.watchFile(rootMcxFilepath);
-    // watcher.on("fileModified", [window](Shared<Event> e) {
-    //     AppManager::executeOnUiThread([window]() {
-    //         auto rootPanel = mcx::McxEngine::parseUserWidgetFileAsContainer(rootMcxFilepath);
-    //         window->setRootWidget(rootPanel);
-    //     });
-    // });
+    utils::FileWatcher watcher;
+    watcher.watchFile(rootMcxFilepath);
+    watcher.on("fileModified", [window](Shared<Event> e) {
+        AppManager::executeOnUiThread([window]() {
+            auto rootPanel = mcx::McxEngine::parseUserWidgetFileAsContainer(rootMcxFilepath);
+            
+            //static auto rootPanel = MakeRef<StackPanel>();
+            //rootPanel->backgroundColor = Color(0, 100, 0);
+
+            window->setRootWidget(rootPanel);
+        });
+    });
 
     auto progressBar = getWidgetById<ProgressBar>("mainProgressBar");
     progressBar->progressColor = Color(240, 170, 0);

@@ -67,11 +67,12 @@ namespace mc {
             setShouldRedraw();
         });
 
-        on("mouseDown",  &EventProcessor::processMouseDownEvent,  d_eventProcessor.get());
-        on("mouseUp",    &EventProcessor::processMouseUpEvent,    d_eventProcessor.get());
-        on("mouseMoved", &EventProcessor::processMouseMovedEvent, d_eventProcessor.get());
-        on("keyDown",    &EventProcessor::processKeyDownEvent,    d_eventProcessor.get());
-        on("keyUp",      &EventProcessor::processKeyUpEvent,      d_eventProcessor.get());
+        on("mouseDown",     &EventProcessor::processMouseDownEvent,         d_eventProcessor.get());
+        on("mouseUp",       &EventProcessor::processMouseUpEvent,           d_eventProcessor.get());
+        on("mouseMoved",    &EventProcessor::processMouseMovedEvent,        d_eventProcessor.get());
+        on("mouseScrolled", &EventProcessor::processMouseScrolledEvent,     d_eventProcessor.get());
+        on("keyDown",       &EventProcessor::processKeyDownEvent,           d_eventProcessor.get());
+        on("keyUp",         &EventProcessor::processKeyUpEvent,             d_eventProcessor.get());
 
         // Setup the background rendering thread
         d_renderingThread = std::thread(&UIWindow::_backgroundRenderingTask, this);
