@@ -7,29 +7,40 @@ class TabView : public BaseContainerWidget {
 public:
     TabView();
 
-    // @brief TO-DO
+    // Color of each tab button
     PropertyObserver<Color> tabColor;
 
-    // @brief TO-DO
+    // Color of the currently opened tab button
     PropertyObserver<Color> tabActiveColor;
 
-    // @brief TO-DO
+    // Color of the tab button's text
     PropertyObserver<Color> tabTextColor;
 
-    // @brief TO-DO
+    // Color of the border between tab buttons
     PropertyObserver<Color> tabBorderColor;
 
-    // @brief TO-DO
+    // Font of each tab button's text
     PropertyObserver<std::string> tabFont;
 
-    // @brief TO-DO
+    // Font size of each tab button's text
     PropertyObserver<uint32_t> tabFontSize;
 
+    // Creates a button in the tab bar that links to the given widget
+    // @param name Name of the tab
+    // @param tab Widget to be displayed in the tab
     void addTab(const std::string& name, Shared<BaseWidget> tab);
+
+    // Opens the specified tab
     void openTab(const std::string& name);
+
+    // Closes the specified tab
     void closeTab(const std::string& name);
+
+    // Returns true if the tab is in the tab bar
     bool isValidTab(const std::string& name);
 
+    // Returns the name of the currently
+    // opened tab, empty string otherwise.
     inline std::string getActiveTab() const { return d_activeTab; }
 
 protected:
