@@ -20,6 +20,7 @@ set(
     ${cwd}/ProgressBarMcxAdapter.h
     ${cwd}/TreeViewGroupMcxAdapter.h
     ${cwd}/TreeViewMcxAdapter.h
+    ${cwd}/TabViewMcxAdapter.h
     ${cwd}/ImageMcxAdapter.h
     ${cwd}/UserWidgetMcxAdapter.h
 
@@ -44,6 +45,7 @@ set(
     ${cwd}/ProgressBarMcxAdapter.cpp
     ${cwd}/TreeViewGroupMcxAdapter.cpp
     ${cwd}/TreeViewMcxAdapter.cpp
+    ${cwd}/TabViewMcxAdapter.cpp
     ${cwd}/ImageMcxAdapter.cpp
     ${cwd}/UserWidgetMcxAdapter.cpp
 
