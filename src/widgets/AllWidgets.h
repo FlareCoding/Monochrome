@@ -12,3 +12,4 @@
 #include "ScrollPanel.h"
 #include "DockPanel.h"
 #include "SplitterPanel.h"
+#include "TabView.h"
