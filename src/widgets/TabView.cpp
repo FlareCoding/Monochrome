@@ -3,6 +3,10 @@
 
 namespace mc {
     TabView::TabView() {
+        appendAllowedEvent("tabAdded");
+        appendAllowedEvent("tabOpened");
+        appendAllowedEvent("tabClosed");
+
         _setupProperties();
     }
 
@@ -103,6 +107,10 @@ namespace mc {
         if (d_activeTab.empty()) {
             openTab(name);
         }
+
+        fireEvent("tabAdded", {
+            { "name", name }
+        }, this);
     }
 
     void TabView::openTab(const std::string& name) {
@@ -143,6 +151,10 @@ namespace mc {
 
         // Set the new view
         addChild(newActiveView);
+
+        fireEvent("tabOpened", {
+            { "name", name }
+        }, this);
     }
 
     void TabView::closeTab(const std::string& name) {
@@ -198,6 +210,10 @@ namespace mc {
 
         // Remove the tab button elements
         removeChild(tabElems.tabContainer);
+
+        fireEvent("tabClosed", {
+            { "name", name }
+        }, this);
     }
 
     bool TabView::isValidTab(const std::string& name) {
