@@ -30,6 +30,8 @@ public:
     void closeTab(const std::string& name);
     bool isValidTab(const std::string& name);
 
+    inline std::string getActiveTab() const { return d_activeTab; }
+
 protected:
     Size _measureSize() override;
     void _onArrangeChildren() override;
