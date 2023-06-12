@@ -34,7 +34,7 @@ namespace mc {
 
         auto activeView = d_tabViews.at(d_activeTab);
         auto desiredActiveViewSize = activeView->getDesiredSizeWithMargins();
-        
+
         contentSize.width = std::max(contentSize.width, desiredActiveViewSize.width);
         contentSize.height += desiredActiveViewSize.height;
 
@@ -96,7 +96,9 @@ namespace mc {
     }
 
     void TabView::addTab(const std::string& name, Shared<BaseWidget> tab) {
-        CORE_ASSERT(d_tabViews.find(name) == d_tabViews.end(), "Tab with name '" + name + "' already exists");
+        CORE_ASSERT(d_tabViews.find(name) == d_tabViews.end(),
+            "Tab with name '" + name + "' already exists");
+
         d_tabViews.insert({ name, tab });
 
         TabElems tabElems = _createTabElements(name);
@@ -119,7 +121,8 @@ namespace mc {
             return;
         }
 
-        CORE_ASSERT(d_tabViews.find(name) != d_tabViews.end(), "Tab with name '" + name + "' doesn't exist");
+        CORE_ASSERT(d_tabViews.find(name) != d_tabViews.end(),
+            "Tab with name '" + name + "' doesn't exist");
 
         // If there is a currently opened tab
         if (!d_activeTab.empty()) {
@@ -143,7 +146,7 @@ namespace mc {
         // Get the new active tab button elements
         auto newTabElems = _findTabElemsByTabName(name);
 
-        // Update the active tab name 
+        // Update the active tab name
         d_activeTab = name;
 
         newTabElems.tabButton->backgroundColor = tabActiveColor;
@@ -158,7 +161,8 @@ namespace mc {
     }
 
     void TabView::closeTab(const std::string& name) {
-        CORE_ASSERT(d_tabViews.find(name) != d_tabViews.end(), "Tab with name '" + name + "' doesn't exist");
+        CORE_ASSERT(d_tabViews.find(name) != d_tabViews.end(),
+            "Tab with name '" + name + "' doesn't exist");
 
         // If the tab being closed is the currently opened one,
         // remove the active view and open a different tab if possible.
@@ -231,7 +235,7 @@ namespace mc {
             }
 
             tabElems.tabContainer->backgroundColor = tabBorderColor;
-            
+
             tabElems.tabButton->label->color = tabTextColor;
             tabElems.tabCloseButton->label->color = tabTextColor;
 
