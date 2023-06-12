@@ -28,3 +28,9 @@ add_executable(Splitter_Demo
     splitterpanel_example4.mcx
 )
 target_link_libraries(Splitter_Demo PUBLIC Monochrome)
+
+add_executable(TabView_Demo
+    tabview_demo.cpp
+    tabview_demo.mcx
+)
+target_link_libraries(TabView_Demo PUBLIC Monochrome)

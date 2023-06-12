@@ -34,6 +34,7 @@ set(
     ${cwd}/ScrollPanel.h
     ${cwd}/DockPanel.h
     ${cwd}/SplitterPanel.h
+    ${cwd}/TabView.h
 
     PARENT_SCOPE
 )
@@ -61,6 +62,7 @@ set(
     ${cwd}/ScrollPanel.cpp
     ${cwd}/DockPanel.cpp
     ${cwd}/SplitterPanel.cpp
+    ${cwd}/TabView.cpp
 
     PARENT_SCOPE
 )
