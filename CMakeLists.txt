@@ -85,4 +85,5 @@ endif()
 
 add_subdirectory(tests)
 add_subdirectory(monodev)
+add_subdirectory(mcstudio)
 add_subdirectory(messenger-demo)
