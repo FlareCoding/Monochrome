@@ -4,5 +4,15 @@ add_executable(
     mcstudio
 
     main.cpp
+
+    mcx/main.mcx
 )
 target_link_libraries(mcstudio PUBLIC Monochrome)
+
+add_custom_command(
+    TARGET mcstudio POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/mcstudio/mcx
+        $<TARGET_FILE_DIR:mcstudio>/mcx
+    COMMENT "Copying .mcx files"
+)
