@@ -2,18 +2,16 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif // !NDEBUG
 
-#include <window/ClassicWindow.h>
-#include <widgets/AllWidgets.h>
-#include <mcx/McxEngine.h>
-using namespace mc;
+#include "GlobalResgitrationSystem.h"
+#include "McxSourceManager.h"
 
 int main() {
-    AppManager::registerApplication("appId-mcstudio");
+    mc::AppManager::registerApplication(MCSTUDIO_APPLICATION_ID);
 
-    registerCustomColor("mcstudioBgColorPrimary", Color(34, 33, 38));
+    mc::mcstudio::GlobalRegistrationSystem::registerMcStudioColorNames();
 
-    auto window = mcx::McxEngine::parseWindowFile("mcx/main.mcx");
+    auto window = mc::mcstudio::McxSourceManager::loadMainWindow();
 
-    AppManager::startApplicationLoop();
+    mc::AppManager::startApplicationLoop();
     return 0;
 }
