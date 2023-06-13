@@ -4,6 +4,10 @@ add_executable(
     mcstudio
 
     main.cpp
+    GlobalResgitrationSystem.h
+    GlobalResgitrationSystem.cpp
+    McxSourceManager.h
+    McxSourceManager.cpp
 
     mcx/main.mcx
 )
