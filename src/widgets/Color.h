@@ -31,4 +31,10 @@ public:
     static Color lightGray;
     static Color darkGray;
 };
+
+// Allows to save specific color under a specified name
+void registerCustomColor(const std::string& name, const Color& color);
+
+// Allows to retrieve a saved specific color given its specified name
+Color getCustomColor(const std::string& name);
 } // namespace mc

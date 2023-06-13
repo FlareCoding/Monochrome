@@ -62,14 +62,22 @@ namespace mc::mcx {
             return defaultValue;
         }
 
+        auto& val = d_attribs.at(name);
+        if (val.find("Color(") == std::string::npos) {
+            auto customColor = getCustomColor(val);
+            if (customColor != Color::transparent) {
+                return customColor;
+            }
+        }
+
         try {
             uint8_t r = defaultValue.r;
             uint8_t g = defaultValue.g;
             uint8_t b = defaultValue.b;
             uint8_t a = defaultValue.a;
 
-            sscanf(
-                d_attribs.at(name).c_str(),
+            sscanf_s(
+                val.c_str(),
                 "Color(%" SCNu8 ", %" SCNu8 ", %" SCNu8 ", %" SCNu8 ")",
                 &r, &g, &b, &a
             );
