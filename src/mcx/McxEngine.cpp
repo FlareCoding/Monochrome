@@ -27,17 +27,29 @@
 namespace mc::mcx {
     bool McxEngine::s_mcxEngineInitialized = false;
     std::map<std::string, Shared<McxParsingAdapter>> McxEngine::s_mcxAdapters;
+    std::string McxEngine::s_mcxRootDirectory = "";
 
     static Shared<BaseWidgetMcxAdapter> s_baseWidgetMcxAdapter = MakeRef<BaseWidgetMcxAdapter>();
 
+    void McxEngine::setRootMcxDirectory(const std::string& path) {
+        CORE_ASSERT(std::filesystem::is_directory(path), "Invalid mcx root directory provided");
+        s_mcxRootDirectory = path;
+
+        if (s_mcxRootDirectory.at(s_mcxRootDirectory.size() - 1) != '/') {
+            s_mcxRootDirectory += '/';
+        }
+    }
+
     Shared<ClassicWindow> McxEngine::parseWindowFile(const std::string& path) {
-        bool fileExists = std::filesystem::is_regular_file(path);
+        auto fullPath = s_mcxRootDirectory + path;
+
+        bool fileExists = std::filesystem::is_regular_file(fullPath);
         if (!fileExists) {
-            printf("'%s' could not be found\n", path.c_str());
+            printf("'%s' could not be found\n", fullPath.c_str());
             return nullptr;
         }
 
-        rapidxml::file<> xmlFile(path.c_str());
+        rapidxml::file<> xmlFile(fullPath.c_str());
         return parseWindowSource(xmlFile.data());
     }
 
@@ -87,13 +99,15 @@ namespace mc::mcx {
     }
 
     Shared<BaseWidget> McxEngine::parseUserWidgetFile(const std::string& path) {
-        bool fileExists = std::filesystem::is_regular_file(path);
+        auto fullPath = s_mcxRootDirectory + path;
+
+        bool fileExists = std::filesystem::is_regular_file(fullPath);
         if (!fileExists) {
-            printf("'%s' could not be found\n", path.c_str());
+            printf("'%s' could not be found\n", fullPath.c_str());
             return nullptr;
         }
 
-        rapidxml::file<> xmlFile(path.c_str());
+        rapidxml::file<> xmlFile(fullPath.c_str());
         return parseUserWidgetSource(xmlFile.data());
     }
 

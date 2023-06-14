@@ -46,6 +46,9 @@ public:
     /// @returns Shared pointer to a native widget instance
     static Shared<BaseWidget> parseWidget(Shared<McxNode>& node);
 
+    /// @brief Sets the root directory for all mcx files that will be loaded
+    static void setRootMcxDirectory(const std::string& path);
+
 private:
     static bool s_mcxEngineInitialized;
 
@@ -54,5 +57,9 @@ private:
 
     // Used for parsing properties and applying them onto the widget instance
     static std::map<std::string, Shared<McxParsingAdapter>> s_mcxAdapters;
+
+    // Used for organizing collections of mcx files in a project and
+    // making it easier to reference them from within each other.
+    static std::string s_mcxRootDirectory;
 };
 } // namespace mc::mcx
