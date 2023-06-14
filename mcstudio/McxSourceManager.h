@@ -28,11 +28,14 @@ class McxSourceManager {
 public:
 	ADD_LOAD_WINDOW_FN(loadMainWindow, MCSTUDIO_MCXPATH_MAIN)
 
+	// Initializes Mcx paths and other resources
+	static void initialize();
+
 	// Loads an mcx window file within the mcstudio directory
-	static Shared<ClassicWindow> loadWindowFile(const std::string& name);
+	static Shared<ClassicWindow> loadWindowFile(const std::string& path);
 
 	// Loads an mcx user widget file within the mcstudio directory
-	static Shared<BaseWidget> loadUserWidgetFile(const std::string& name);
+	static Shared<BaseWidget> loadUserWidgetFile(const std::string& path);
 
 private:
 	// Constructs a proper filepath string
