@@ -44,7 +44,7 @@ namespace mc {
         backgroundColor = Color(); // default value
         backgroundColor.forwardEmittedEvents(this);
 
-        cursorType = CursorType::Hand;
+        cursorType = CursorType::Arrow;
     }
 
     void DockPanel::_finalizeChild(Shared<BaseWidget> child, Frame& availableSpace) {
