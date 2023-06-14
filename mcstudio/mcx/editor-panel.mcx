@@ -1,0 +1,21 @@
+<root type="widget">
+	<StackPanel id="mcEditorPanel" backgroundColor="transparent" orientation="vertical">
+		<StackPanel orientation="horizontal" marginLeft="20" marginTop="20" backgroundColor="transparent">
+			<Label text="Width" fontSize="16" fixedHeight="18" marginRight="4"/>
+			<Entry id="editorWindowWidthEntry" text="800" fixedHeight="18" fixedWidth="80" marginRight="20"/>
+
+			<Label text="Height" fontSize="16" fixedHeight="18" marginRight="4"/>
+			<Entry id="editorWindowHeightEntry" text="600" fixedHeight="18" fixedWidth="80" marginRight="20"/>
+
+			<Label text="Title" fontSize="16" fixedHeight="18" marginRight="4"/>
+			<Entry id="editorWindowTitleEntry" text="App 1" fixedHeight="18" fixedWidth="80" marginRight="20"/>
+		</StackPanel>
+		<DockPanel
+			id="widgetCanvasPanel"
+			marginLeft="20"
+			marginTop="20"
+			fixedWidth="800"
+			fixedHeight="600"
+			backgroundColor="Color(220, 220, 220)"/>
+	</StackPanel>
+</root>
