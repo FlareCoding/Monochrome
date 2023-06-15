@@ -20,6 +20,10 @@ namespace mc::mcx {
         return (d_attribs.find(name) != d_attribs.end());
     }
 
+    void McxNode::setAttribute(const std::string& name, const std::string& value) {
+        d_attribs[name] = value;
+    }
+
     std::string McxNode::getAttribute(
         const std::string& name,
         const std::string& defaultValue

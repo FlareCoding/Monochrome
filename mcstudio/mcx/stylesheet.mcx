@@ -1,0 +1,10 @@
+<root type="stylesheet">
+    <style name="widget-toolbox-button"
+		borderColor="transparent"
+		fixedWidth="200"
+		cornerRadius="0"
+		marginTop="2"
+		horizontalAlignment="center"
+		fontSize="14"
+		textColor="white"/>
+</root>

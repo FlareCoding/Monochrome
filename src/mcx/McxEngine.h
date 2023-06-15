@@ -30,6 +30,16 @@ public:
     /// @returns Shared pointer to the native widget instance from the mcx source
     static Shared<BaseWidget> parseUserWidgetSource(char* source);
 
+    /// @brief Parses an xml-based .mcx file containing properties of a custom style
+    /// that can be reused by other widgets as their property, similar to CSS classes.
+    /// @param path Path to the .mcx file containing the source
+    static void loadStylesheetFile(const std::string& path);
+
+    /// @brief Parses an xml-based mcx source code string containing properties of a custom
+    /// style that can be reused by other widgets as their property, similar to CSS classes.
+    /// @param source String containing mcx source code
+    static void loadStylesheetSource(char* source);
+
     /// @brief Associates the mcx parsing adapter with a given widget name.
     /// Each widget has to have a corresponding adapter registerd.
     /// @param name Name of the widget type (e.g. StackPanel, Button, Checkbox, etc.)
@@ -46,6 +56,11 @@ public:
     /// @returns Shared pointer to a native widget instance
     static Shared<BaseWidget> parseWidget(Shared<McxNode>& node);
 
+    /// @brief Injects the given style's attributes into a provided node
+    /// @param style String name of the style to be injected
+    /// @param node Target node into which to inject the style attributes
+    static void injectStyle(const std::string& style, Shared<McxNode>& node);
+
     /// @brief Sets the root directory for all mcx files that will be loaded
     static void setRootMcxDirectory(const std::string& path);
 
@@ -57,6 +72,9 @@ private:
 
     // Used for parsing properties and applying them onto the widget instance
     static std::map<std::string, Shared<McxParsingAdapter>> s_mcxAdapters;
+
+    // Map of all loaded styles
+    static std::map<std::string, Shared<McxNode>> s_loadedStyles;
 
     // Used for organizing collections of mcx files in a project and
     // making it easier to reference them from within each other.
