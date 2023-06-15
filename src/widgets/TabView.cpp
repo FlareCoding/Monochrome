@@ -95,13 +95,13 @@ namespace mc {
         d_activeTab = "";
     }
 
-    void TabView::addTab(const std::string& name, Shared<BaseWidget> tab) {
+    void TabView::addTab(const std::string& name, Shared<BaseWidget> tab, bool closable) {
         CORE_ASSERT(d_tabViews.find(name) == d_tabViews.end(),
             "Tab with name '" + name + "' already exists");
 
         d_tabViews.insert({ name, tab });
 
-        TabElems tabElems = _createTabElements(name);
+        TabElems tabElems = _createTabElements(name, closable);
         d_tabButtons.push_back({name, tabElems });
 
         addChild(tabElems.tabContainer);
@@ -134,7 +134,9 @@ namespace mc {
 
             // Remove the 'active' color from the current tab
             currentTabElems.tabButton->backgroundColor = tabColor;
-            currentTabElems.tabCloseButton->backgroundColor = tabColor;
+            if (currentTabElems.tabCloseButton) {
+                currentTabElems.tabCloseButton->backgroundColor = tabColor;
+            }
 
             // Remove the current view
             removeChild(currentActiveView);
@@ -150,7 +152,9 @@ namespace mc {
         d_activeTab = name;
 
         newTabElems.tabButton->backgroundColor = tabActiveColor;
-        newTabElems.tabCloseButton->backgroundColor = tabActiveColor;
+        if (newTabElems.tabCloseButton) {
+            newTabElems.tabCloseButton->backgroundColor = tabActiveColor;
+        }
 
         // Set the new view
         addChild(newActiveView);
@@ -205,8 +209,10 @@ namespace mc {
         // a memory corruption bug. In order to prevent it, each of the
         // tab widgets have to be unfocused before getting removed.
         tabElems.tabButton->unfocus();
-        tabElems.tabCloseButton->unfocus();
         tabElems.tabContainer->unfocus();
+        if (tabElems.tabCloseButton) {
+            tabElems.tabCloseButton->unfocus();
+        }
 
         // Remove all map references to the tab
         d_tabViews.erase(name);
@@ -228,22 +234,27 @@ namespace mc {
         for (auto& [tabName, tabElems] : d_tabButtons) {
             if (tabName == d_activeTab) {
                 tabElems.tabButton->backgroundColor = tabActiveColor;
-                tabElems.tabCloseButton->backgroundColor = tabActiveColor;
+                if (tabElems.tabCloseButton) {
+                    tabElems.tabCloseButton->backgroundColor = tabActiveColor;
+                }
             } else {
                 tabElems.tabButton->backgroundColor = tabColor;
-                tabElems.tabCloseButton->backgroundColor = tabColor;
+                if (tabElems.tabCloseButton) {
+                    tabElems.tabCloseButton->backgroundColor = tabColor;
+                }
             }
 
             tabElems.tabContainer->backgroundColor = tabBorderColor;
 
             tabElems.tabButton->label->color = tabTextColor;
-            tabElems.tabCloseButton->label->color = tabTextColor;
-
             tabElems.tabButton->label->font = tabFont;
-            tabElems.tabCloseButton->label->font = tabFont;
-
             tabElems.tabButton->label->fontSize = tabFontSize;
-            tabElems.tabCloseButton->label->fontSize = tabFontSize;
+
+            if (tabElems.tabCloseButton) {
+                tabElems.tabCloseButton->label->color = tabTextColor;
+                tabElems.tabCloseButton->label->font = tabFont;
+                tabElems.tabCloseButton->label->fontSize = tabFontSize;
+            }
         }
 
         if (layoutChange) {
@@ -253,7 +264,7 @@ namespace mc {
         }
     }
 
-    TabView::TabElems TabView::_createTabElements(const std::string& tabName) {
+    TabView::TabElems TabView::_createTabElements(const std::string& tabName, bool tabClosable) {
         auto tabContainerPanel = MakeRef<StackPanel>();
         tabContainerPanel->orientation = Horizontal;
         tabContainerPanel->marginRight = 1;
@@ -272,30 +283,33 @@ namespace mc {
             auto tabName = static_cast<Button*>(e->target)->label->text;
             openTab(tabName);
         });
-
-        auto tabCloseButton = MakeRef<Button>();
-        tabCloseButton->label->horizontalPadding = 12;
-        tabCloseButton->label->text = "x";
-        tabCloseButton->label->font = tabFont;
-        tabCloseButton->label->fontSize = tabFontSize;
-        tabCloseButton->backgroundColor = tabColor;
-        tabCloseButton->borderThickness = 1;
-        tabCloseButton->cornerRadius = 0;
-        tabCloseButton->borderColor = Color::transparent;
-        tabCloseButton->on("clicked", [this](Shared<Event> e) {
-            auto parentContainer = static_cast<BaseContainerWidget*>(e->target->getParent());
-            CORE_ASSERT(parentContainer != nullptr,
-                "TabView: fatal error retrieving the parent of a tab close button");
-
-            auto tabNameButton = std::static_pointer_cast<Button>(parentContainer->getChild(0));
-            auto tabName = tabNameButton->label->text;
-
-            // Close the tab
-            closeTab(tabName);
-        });
-
         tabContainerPanel->addChild(tabButton);
-        tabContainerPanel->addChild(tabCloseButton);
+
+
+        Shared<Button> tabCloseButton = nullptr;
+        if (tabClosable) {
+            tabCloseButton = MakeRef<Button>();
+            tabCloseButton->label->horizontalPadding = 12;
+            tabCloseButton->label->text = "x";
+            tabCloseButton->label->font = tabFont;
+            tabCloseButton->label->fontSize = tabFontSize;
+            tabCloseButton->backgroundColor = tabColor;
+            tabCloseButton->borderThickness = 1;
+            tabCloseButton->cornerRadius = 0;
+            tabCloseButton->borderColor = Color::transparent;
+            tabCloseButton->on("clicked", [this](Shared<Event> e) {
+                auto parentContainer = static_cast<BaseContainerWidget*>(e->target->getParent());
+                CORE_ASSERT(parentContainer != nullptr,
+                    "TabView: fatal error retrieving the parent of a tab close button");
+
+                auto tabNameButton = std::static_pointer_cast<Button>(parentContainer->getChild(0));
+                auto tabName = tabNameButton->label->text;
+
+                // Close the tab
+                closeTab(tabName);
+            });
+            tabContainerPanel->addChild(tabCloseButton);
+        }
 
         TabElems tab;
         tab.tabContainer = tabContainerPanel;
