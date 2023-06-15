@@ -250,7 +250,22 @@ namespace mc::mcx {
                 "Cannot parse children for a node that isn't a container widget");
         }
 
+        // If there are any locally-defined styles,
+        // they have to be removed after parsing the children.
+        std::vector<std::string> localStyles;
+
         for (auto& child : childNodes) {
+            // Check if a node is a local style
+            if (child->getType() == "style") {
+                auto styleName = child->getAttribute("name");
+                if (!styleName.empty()) {
+                    s_loadedStyles[styleName] = child;
+                    localStyles.push_back(styleName);
+                }
+
+                continue;
+            }
+
             auto childWidgetInstance = parseWidget(child);
 
             // Add the parsed child widget instance to this instance
@@ -258,12 +273,19 @@ namespace mc::mcx {
             container->addChild(childWidgetInstance);
         }
 
+        // Remove any locally-defined styles
+        for (auto& style : localStyles) {
+            removeStyle(style);
+        }
+
         return widgetInstance;
     }
 
     void McxEngine::injectStyle(const std::string& style, Shared<McxNode>& node) {
-        CORE_ASSERT(s_loadedStyles.find(style) != s_loadedStyles.end(),
-            "Unknown style specified: '" + style + "'");
+        if (s_loadedStyles.find(style) == s_loadedStyles.end()) {
+            printf("Unknown style specified: '%s'\n", style.c_str());
+            return;
+        }
 
         auto& styleNode = s_loadedStyles.at(style);
         for (auto& [name, value] : styleNode->getAttribs()) {
@@ -272,6 +294,12 @@ namespace mc::mcx {
             if (!node->hasAttribute(name)) {
                 node->setAttribute(name, value);
             }
+        }
+    }
+
+    void McxEngine::removeStyle(const std::string& style) {
+        if (s_loadedStyles.find(style) != s_loadedStyles.end()) {
+            s_loadedStyles.erase(style);
         }
     }
 

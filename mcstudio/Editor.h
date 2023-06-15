@@ -5,7 +5,6 @@ namespace mc::mcstudio {
 class Editor {
 public:
     Editor();
-    void getWidgetReferences();
 
     void ToolboxWidget_OnClick(Shared<Event> e);
 
