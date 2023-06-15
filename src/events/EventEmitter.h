@@ -45,4 +45,25 @@ private:
     std::map<std::string, std::vector<eventEmiterCallback_t>> d_handlers;
     std::vector<std::string> d_allowedEvents;
 };
+
+/// @brief Saves the provided callback fn 
+/// @param name Unique name for the event handler
+/// @param fn Callback function to be used in the event handler
+void registerNamedEventHandler(const std::string& name, eventEmiterCallback_t fn);
+
+/// @brief Saves the provided callback fn 
+/// @param name Unique name for the event handler
+/// @param fn Callback class member function to be used in the event handler
+/// @param obj Class instance for the member function
+template <typename T>
+void registerNamedEventHandler(const std::string& eventName, void (T::* fn)(Shared<Event>), T* obj) {
+    registerNamedEventHandler(eventName, [fn, obj](Shared<Event> e) {
+        (obj->*fn)(e);
+    });
+}
+
+/// @param name Unique name for the event handler
+/// @returns The event handler function associated with the
+/// given name, nullptr if no handler was not found.
+eventEmiterCallback_t getRegisteredNamedEventHandler(const std::string& name);
 } // namespace mc
