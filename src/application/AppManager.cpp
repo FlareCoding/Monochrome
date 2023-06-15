@@ -1,4 +1,5 @@
 #include "AppManager.h"
+#include "widgets/Color.h"
 
 namespace mc {
     static Shared<ApplicationContext> s_applicationContext = nullptr;
@@ -7,6 +8,9 @@ namespace mc {
 
     void AppManager::registerApplication(const std::string& appId) {
         s_appId = appId;
+        
+        // Initialize resources and perform necessary setup
+        registerMcxPrimitiveColorNames();
     }
 
     Shared<ApplicationContext> AppManager::getApplicationContext() {
