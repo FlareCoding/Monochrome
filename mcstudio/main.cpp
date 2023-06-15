@@ -4,6 +4,7 @@
 
 #include "GlobalResgitrationSystem.h"
 #include "McxSourceManager.h"
+#include "Editor.h"
 
 int main() {
     mc::AppManager::registerApplication(MCSTUDIO_APPLICATION_ID);
@@ -11,6 +12,8 @@ int main() {
     mc::mcstudio::GlobalRegistrationSystem::registerMcStudioColorNames();
     mc::mcstudio::McxSourceManager::initialize();
     mc::mcstudio::McxSourceManager::loadStylesheet();
+
+    auto editor = mc::MakeRef<mc::mcstudio::Editor>();
 
     auto window = mc::mcstudio::McxSourceManager::loadMainWindow();
 
