@@ -13,6 +13,8 @@ add_executable(
     mcx/editor-panel.mcx
     mcx/widget-toolbox.mcx
     mcx/widget-tree-view.mcx
+
+    mcx/stylesheet.mcx
 )
 target_link_libraries(mcstudio PUBLIC Monochrome)
 

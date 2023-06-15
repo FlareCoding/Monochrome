@@ -1,6 +1,8 @@
 #include "McxEngine.h"
 #include "McxNode.h"
 #include <filesystem>
+#include <sstream>
+#include <iterator>
 #include "rapidxml/rapidxml_utils.hpp"
 #include "rapidxml/rapidxml.hpp"
 
@@ -24,9 +26,13 @@
 #include "adapters/ImageMcxAdapter.h"
 #include "adapters/UserWidgetMcxAdapter.h"
 
+// Ignore rapidxml-related stack size warning
+#pragma warning(disable: 6262)
+
 namespace mc::mcx {
     bool McxEngine::s_mcxEngineInitialized = false;
     std::map<std::string, Shared<McxParsingAdapter>> McxEngine::s_mcxAdapters;
+    std::map<std::string, Shared<McxNode>> McxEngine::s_loadedStyles;
     std::string McxEngine::s_mcxRootDirectory = "";
 
     static Shared<BaseWidgetMcxAdapter> s_baseWidgetMcxAdapter = MakeRef<BaseWidgetMcxAdapter>();
@@ -112,13 +118,15 @@ namespace mc::mcx {
     }
 
     Shared<BaseContainerWidget> McxEngine::parseUserWidgetFileAsContainer(const std::string& path) {
-        bool fileExists = std::filesystem::is_regular_file(path);
+        auto fullPath = s_mcxRootDirectory + path;
+
+        bool fileExists = std::filesystem::is_regular_file(fullPath);
         if (!fileExists) {
-            printf("'%s' could not be found\n", path.c_str());
+            printf("'%s' could not be found\n", fullPath.c_str());
             return nullptr;
         }
 
-        rapidxml::file<> xmlFile(path.c_str());
+        rapidxml::file<> xmlFile(fullPath.c_str());
         auto widgetInstance = parseUserWidgetSource(xmlFile.data());
 
         if (!widgetInstance->isContainer()) {
@@ -160,6 +168,47 @@ namespace mc::mcx {
         return widgetInstance;
     }
 
+    void McxEngine::loadStylesheetFile(const std::string& path) {
+        auto fullPath = s_mcxRootDirectory + path;
+
+        bool fileExists = std::filesystem::is_regular_file(fullPath);
+        if (!fileExists) {
+            printf("'%s' could not be found\n", fullPath.c_str());
+            return;
+        }
+
+        rapidxml::file<> xmlFile(fullPath.c_str());
+        loadStylesheetSource(xmlFile.data());
+    }
+
+    void McxEngine::loadStylesheetSource(char* source) {
+        if (!s_mcxEngineInitialized) {
+            _initializeMcxEngine();
+        }
+
+        rapidxml::xml_document<> doc;
+        doc.parse<0>(source);
+
+        auto rootNode = MakeRef<McxNode>(doc.first_node());
+        const auto rootType = rootNode->getAttribute("type");
+
+        // Making sure that the type of the root node is a stylesheet
+        if (rootType != "stylesheet") {
+            printf("McxEngineError: root node is not a stylesheet, '%s' type found\n",
+                rootType.c_str());
+            
+            return;
+        }
+
+        // Load each specified style
+        for (auto& styleNode : rootNode->getChildren()) {
+            auto styleName = styleNode->getAttribute("name");
+            if (!styleName.empty()) {
+                s_loadedStyles[styleName] = styleNode;
+            }
+        }
+    }
+
     Shared<BaseWidget> McxEngine::parseWidget(Shared<McxNode>& node) {
         // Get the appropriate parsing adapter
         const auto mcxAdapter = getMcxAdapter(node->getType());
@@ -169,6 +218,20 @@ namespace mc::mcx {
 
         // Create the native widget instance
         auto widgetInstance = mcxAdapter->createWidgetInstance(node);
+
+        // Check if additional style properties needs to be injected
+        auto styleString = node->getAttribute("style");
+        if (!styleString.empty()) {
+            // Tokenize the styles to get each style
+            std::istringstream iss(styleString);
+            std::vector<std::string> styles(std::istream_iterator<std::string>{iss},
+                std::istream_iterator<std::string>());
+
+            // Iterate over each style and attempt to inject it
+            for (const auto& style : styles) {
+                injectStyle(style, node);
+            }
+        }
 
         // Apply basic widget properties
         s_baseWidgetMcxAdapter->applyProperties(widgetInstance, node);
@@ -196,6 +259,20 @@ namespace mc::mcx {
         }
 
         return widgetInstance;
+    }
+
+    void McxEngine::injectStyle(const std::string& style, Shared<McxNode>& node) {
+        CORE_ASSERT(s_loadedStyles.find(style) != s_loadedStyles.end(),
+            "Unknown style specified: '" + style + "'");
+
+        auto& styleNode = s_loadedStyles.at(style);
+        for (auto& [name, value] : styleNode->getAttribs()) {
+            // If the target node has this attribute already, keep it,
+            // essentially overwriting the style value with that value.
+            if (!node->hasAttribute(name)) {
+                node->setAttribute(name, value);
+            }
+        }
     }
 
     void McxEngine::registerMcxAdapter(
@@ -231,6 +308,8 @@ namespace mc::mcx {
         registerMcxAdapter("TabView", MakeRef<TabViewMcxAdapter>());
         registerMcxAdapter("Image", MakeRef<ImageMcxAdapter>());
         registerMcxAdapter("UserWidget", MakeRef<UserWidgetMcxAdapter>());
+
+        registerMcxPrimitiveColorNames();
 
         s_mcxEngineInitialized = true;
     }
