@@ -2,6 +2,9 @@
 #include <algorithm>
 
 namespace mc {
+    // Custom event handler map that allows saving event handlers with custom names
+    static std::map<std::string, eventEmiterCallback_t> s_registeredNamedHandlers;
+
     EventEmitter::EventEmitter(const std::initializer_list<std::string>& allowedEvents) {
         d_allowedEvents = allowedEvents;
     }
@@ -100,5 +103,17 @@ namespace mc {
         this->on(eventName, [eventName, emitter](Shared<Event> event) {
             emitter->fireEvent(eventName, event);
         });
+    }
+
+    void registerNamedEventHandler(const std::string& name, eventEmiterCallback_t fn) {
+        s_registeredNamedHandlers[name] = fn;
+    }
+
+    eventEmiterCallback_t getRegisteredNamedEventHandler(const std::string& name) {
+        if (s_registeredNamedHandlers.find(name) != s_registeredNamedHandlers.end()) {
+            return s_registeredNamedHandlers.at(name);
+        }
+
+        return nullptr;
     }
 } // namespace mc
