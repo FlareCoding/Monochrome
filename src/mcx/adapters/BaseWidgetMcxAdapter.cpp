@@ -88,16 +88,8 @@ namespace mc::mcx {
         }
 
         // Parsing event handlers
-        std::string handlerName;
-
-        handlerName = mcxNode->getAttribute("clicked");
-        if (!handlerName.empty()) {
-            auto callbackFn = getRegisteredNamedEventHandler(handlerName);
-            if (callbackFn) {
-                widget->on("clicked", callbackFn);
-            } else {
-                printf("Invalid event handler name '%s'\n", handlerName.c_str());
-            }
+        for (auto& eventName : widget->inspectAllowedEvents()) {
+            _checkAndApplyEventHandler(eventName, mcxNode, widget);
         }
     }
 } //namespace mc::mcx

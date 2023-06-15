@@ -30,6 +30,7 @@ set(
 set(
     MCX_ADAPTERS_SOURCES
 
+    ${cwd}/McxParsingAdapter.cpp
     ${cwd}/BaseWidgetMcxAdapter.cpp
     ${cwd}/StackPanelMcxAdapter.cpp
     ${cwd}/DockPanelMcxAdapter.cpp
