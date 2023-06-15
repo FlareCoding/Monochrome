@@ -43,4 +43,17 @@ namespace mc {
         printf("Failed to retrieve custom color: %s\n", name.c_str());
         return Color::transparent;
     }
+
+    void registerMcxPrimitiveColorNames() {
+        registerCustomColor("transparent",  Color::transparent);
+        registerCustomColor("white",        Color::white);
+        registerCustomColor("black",        Color::black);
+        registerCustomColor("red",          Color::red);
+        registerCustomColor("green",        Color::green);
+        registerCustomColor("blue",         Color::blue);
+        registerCustomColor("yellow",       Color::yellow);
+        registerCustomColor("gray",         Color::gray);
+        registerCustomColor("lightGray",    Color::lightGray);
+        registerCustomColor("darkGray",     Color::darkGray);
+    }
 } // namespace mc
