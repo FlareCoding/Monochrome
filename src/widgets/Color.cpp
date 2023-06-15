@@ -44,16 +44,18 @@ namespace mc {
         return Color::transparent;
     }
 
+namespace mcx {
     void registerMcxPrimitiveColorNames() {
-        registerCustomColor("transparent",  Color::transparent);
-        registerCustomColor("white",        Color::white);
-        registerCustomColor("black",        Color::black);
-        registerCustomColor("red",          Color::red);
-        registerCustomColor("green",        Color::green);
-        registerCustomColor("blue",         Color::blue);
-        registerCustomColor("yellow",       Color::yellow);
-        registerCustomColor("gray",         Color::gray);
-        registerCustomColor("lightGray",    Color::lightGray);
-        registerCustomColor("darkGray",     Color::darkGray);
+        registerCustomColor("transparent", Color::transparent);
+        registerCustomColor("white", Color::white);
+        registerCustomColor("black", Color::black);
+        registerCustomColor("red", Color::red);
+        registerCustomColor("green", Color::green);
+        registerCustomColor("blue", Color::blue);
+        registerCustomColor("yellow", Color::yellow);
+        registerCustomColor("gray", Color::gray);
+        registerCustomColor("lightGray", Color::lightGray);
+        registerCustomColor("darkGray", Color::darkGray);
     }
+}
 } // namespace mc

@@ -6,5 +6,6 @@
 		marginTop="2"
 		horizontalAlignment="center"
 		fontSize="14"
-		textColor="white"/>
+		textColor="white"
+		clicked="ToolboxWidget_OnClick"/>
 </root>
