@@ -8,7 +8,7 @@ namespace mc {
 
     void AppManager::registerApplication(const std::string& appId) {
         s_appId = appId;
-        
+
         // Initialize resources and perform necessary setup
         registerMcxPrimitiveColorNames();
     }
