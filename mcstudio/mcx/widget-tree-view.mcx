@@ -1,0 +1,5 @@
+<root type="widget">
+	<StackPanel backgroundColor="Color(10, 50, 70)">
+		<Label text="WIDGET TREE PLACEHOLDER" />
+	</StackPanel>
+</root>
