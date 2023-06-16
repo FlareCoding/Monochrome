@@ -36,13 +36,19 @@ namespace mc {
     }
 
     void SplitterPanel::_onArrangeChildren() {
+        auto totalSize = getComputedSize();
+        auto childrenCount = getChildren().size();
+
+        // If there are no children, no need to do the setup
+        // steps that involve creating/modifying divider visuals.
+        if (childrenCount == 0) {
+            return;
+        }
+        
         // First make sure that there are enough
         // dividers and reset their dimensions.
         _createNecessaryDividerVisuals();
         _resetDividers();
-
-        auto totalSize = getComputedSize();
-        auto childrenCount = getChildren().size();
 
         std::vector<uint32_t> weights;
         uint32_t weightTotal = 0;
