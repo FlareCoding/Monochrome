@@ -28,7 +28,7 @@ namespace mc::mcx {
             mcxNode->getColorAttribute("itemBackgroundColor", menuList->itemBackgroundColor);
 
         menuList->borderThickness =
-            mcxNode->getUIntAttribute("norderThickness", menuList->borderThickness);
+            mcxNode->getUIntAttribute("borderThickness", menuList->borderThickness);
 
         menuList->itemSize =
             mcxNode->getUIntAttribute("itemSize", menuList->itemSize);
@@ -73,5 +73,15 @@ namespace mc::mcx {
                 menuList->addSubMenu(submenu);
             }
         }
+    }
+    
+    std::vector<std::string> MenuListMcxAdapter::getAvailableProperties() {
+        static const std::vector<std::string> props = {
+            "name", "borderColor", "itemTextColor",
+            "itemBackgroundColor", "borderThickness",
+            "itemSize", "spawnDirection"
+        };
+
+        return props;
     }
 } //namespace mc::mcx

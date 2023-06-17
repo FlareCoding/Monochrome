@@ -93,4 +93,17 @@ namespace mc::mcx {
         auto imageInstance = std::static_pointer_cast<Image>(McxEngine::parseWidget(childNode));
         button->setImage(imageInstance);
     }
+
+    std::vector<std::string> ButtonMcxAdapter::getAvailableProperties() {
+        static const std::vector<std::string> props = {
+            "backgroundColor", "borderColor", "cornerRadius",
+            "borderThickness", "leftText", "rightText",
+            "hoverOnColor", "mousePressedColor",
+            "textColor", "text", "font", "fontSize", "fontStyle",
+            "textAlignment", "verticalPadding", "horizontalPadding",
+            "imagePlacement"
+        };
+
+        return props;
+    }
 } //namespace mc::mcx

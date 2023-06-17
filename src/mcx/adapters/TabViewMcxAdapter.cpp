@@ -32,7 +32,7 @@ namespace mc::mcx {
             mcxNode->getAttribute("tabFont", tabView->tabFont);
 
         tabView->tabFontSize =
-            mcxNode->getUIntAttribute("tabFont", tabView->tabFontSize);
+            mcxNode->getUIntAttribute("tabFontSize", tabView->tabFontSize);
 
         // Handle child nodes as items to be added
         for (auto& childNode : mcxNode->getChildren()) {
@@ -64,5 +64,14 @@ namespace mc::mcx {
 
             tabView->addTab(tabName, tabContent, isTabClosable);
         }
+    }
+
+    std::vector<std::string> TabViewMcxAdapter::getAvailableProperties() {
+        static const std::vector<std::string> props = {
+            "tabColor", "tabActiveColor", "tabBorderColor",
+            "tabTextColor", "tabFont", "tabFontSize"
+        };
+
+        return props;
     }
 } //namespace mc::mcx

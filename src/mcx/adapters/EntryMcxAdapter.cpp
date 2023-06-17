@@ -53,4 +53,17 @@ namespace mc::mcx {
         entry->readOnly =
             mcxNode->getBoolAttribute("readOnly", entry->readOnly);
     }
+
+    std::vector<std::string> EntryMcxAdapter::getAvailableProperties() {
+        static const std::vector<std::string> props = {
+            "textColor", "text", "placeholder",
+            "readOnly", "font", "fontSize", "fontStyle",
+            "cornerRadius", "borderThickness", 
+            "backgroundColor", "borderColor",
+            "focusedBorderColor", "cursorColor",
+            "highlightColor"
+        };
+
+        return props;
+    }
 } //namespace mc::mcx

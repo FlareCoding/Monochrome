@@ -49,4 +49,12 @@ namespace mc::mcx {
             }
         }
     }
+
+    std::vector<std::string> TreeViewGroupMcxAdapter::getAvailableProperties() {
+        static const std::vector<std::string> props = {
+            "name"
+        };
+
+        return props;
+    }
 } //namespace mc::mcx

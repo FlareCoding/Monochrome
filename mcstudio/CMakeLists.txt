@@ -15,6 +15,7 @@ add_executable(
     mcx/editor-panel.mcx
     mcx/widget-toolbox.mcx
     mcx/widget-tree-view.mcx
+    mcx/widget-properties-panel.mcx
 
     mcx/stylesheet.mcx
 )
