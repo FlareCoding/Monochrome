@@ -6,6 +6,29 @@ namespace mc::mcx {
         return MakeRef<Entry>();
     }
 
+    void EntryMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        auto entry = std::static_pointer_cast<Entry>(widget);
+
+        mcxNode->setAttribute("textColor", _toString(entry->textColor));
+        mcxNode->setAttribute("text", entry->text);
+        mcxNode->setAttribute("placeholder", entry->placeholder);
+        mcxNode->setAttribute("font", entry->font);
+        mcxNode->setAttribute("fontStyle", entry->fontStyle);
+        mcxNode->setAttribute("fontSize", _toString(entry->fontSize));
+        mcxNode->setAttribute("cornerRadius", _toString(entry->cornerRadius));
+        mcxNode->setAttribute("borderThickness", _toString(entry->borderThickness));
+        mcxNode->setAttribute("backgroundColor", _toString(entry->backgroundColor));
+        mcxNode->setAttribute("borderColor", _toString(entry->borderColor));
+        mcxNode->setAttribute("focusedBorderColor", _toString(entry->focusedBorderColor));
+        mcxNode->setAttribute("cursorColor", _toString(entry->cursorColor));
+        mcxNode->setAttribute("highlightColor", _toString(entry->selectionHighlightColor));
+        mcxNode->setAttribute("readOnly", _toString(entry->readOnly));
+
+    }
+
     void EntryMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

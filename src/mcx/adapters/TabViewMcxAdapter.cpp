@@ -7,6 +7,20 @@ namespace mc::mcx {
         return MakeRef<TabView>();
     }
 
+    void TabViewMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        auto tabView = std::static_pointer_cast<TabView>(widget);
+
+        mcxNode->setAttribute("tabColor", _toString(tabView->tabColor));
+        mcxNode->setAttribute("tabActiveColor", _toString(tabView->tabActiveColor));
+        mcxNode->setAttribute("tabBorderColor", _toString(tabView->tabBorderColor));
+        mcxNode->setAttribute("tabTextColor", _toString(tabView->tabTextColor));
+        mcxNode->setAttribute("tabFont", tabView->tabFont);
+        mcxNode->setAttribute("tabFontSize", _toString(tabView->tabFontSize));
+    }
+
     void TabViewMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

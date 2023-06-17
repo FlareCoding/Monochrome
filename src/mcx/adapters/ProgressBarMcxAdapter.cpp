@@ -6,6 +6,19 @@ namespace mc::mcx {
         return MakeRef<ProgressBar>();
     }
 
+    void ProgressBarMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        auto progressBar = std::static_pointer_cast<ProgressBar>(widget);
+
+        mcxNode->setAttribute("backgroundColor", _toString(progressBar->backgroundColor));
+        mcxNode->setAttribute("progressColor", _toString(progressBar->progressColor));
+        mcxNode->setAttribute("value", _toString(progressBar->value));
+        mcxNode->setAttribute("minValue", _toString(progressBar->minValue));
+        mcxNode->setAttribute("maxValue", _toString(progressBar->maxValue));
+    }
+
     void ProgressBarMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

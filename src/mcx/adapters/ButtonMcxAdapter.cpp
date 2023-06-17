@@ -7,6 +7,32 @@ namespace mc::mcx {
         return MakeRef<Button>();
     }
 
+    void ButtonMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        auto button = std::static_pointer_cast<Button>(widget);
+
+        mcxNode->setAttribute("backgroundColor", _toString(button->backgroundColor));
+        mcxNode->setAttribute("borderColor", _toString(button->borderColor));
+        mcxNode->setAttribute("cornerRadius", _toString(button->cornerRadius));
+        mcxNode->setAttribute("borderThickness", _toString(button->borderThickness));
+        mcxNode->setAttribute("leftText", button->secondaryLeftText);
+        mcxNode->setAttribute("rightText", button->secondaryRightText);
+        mcxNode->setAttribute("hoverOnColor", _toString(button->hoverOnColor));
+        mcxNode->setAttribute("mousePressedColor", _toString(button->mousePressedColor));
+        mcxNode->setAttribute("text", button->label->text);
+        mcxNode->setAttribute("font", button->label->font);
+        mcxNode->setAttribute("fontSize", _toString(button->label->fontSize));
+        mcxNode->setAttribute("fontStyle", button->label->fontStyle);
+        mcxNode->setAttribute("textAlignment", button->label->alignment);
+        mcxNode->setAttribute("verticalPadding", _toString(button->label->verticalPadding));
+        mcxNode->setAttribute("horizontalPadding", _toString(button->label->horizontalPadding));
+        mcxNode->setAttribute("textColor", _toString(button->label->color));
+        mcxNode->setAttribute("imagePlacement",
+                (button->imagePlacement == ButtonImagePlacement::Cover) ? "cover" : "icon");
+    }
+
     void ButtonMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

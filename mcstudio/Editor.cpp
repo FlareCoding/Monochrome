@@ -1,9 +1,10 @@
 #include "Editor.h"
-#include "mcx/McxEngine.h"
 #include "mcx/adapters/BaseWidgetMcxAdapter.h"
 
 namespace mc::mcstudio {
     Editor::Editor() {
+        d_limboNode = MakeRef<mcx::McxNode>();
+
         registerNamedEventHandler("ToolboxWidget_OnClick", &Editor::ToolboxWidget_OnClick, this);
         registerNamedEventHandler("RootContainerSelection_OnClick",
                 &Editor::RootContainerSelection_OnClick, this);
@@ -19,8 +20,8 @@ namespace mc::mcstudio {
         auto widgetName = target->label->text.get();
         auto mcxAdapter = mcx::McxEngine::getMcxAdapter(widgetName);
 
-        Shared<mcx::McxNode> limboNode = nullptr;
-        auto widgetInstance = mcxAdapter->createWidgetInstance(limboNode);
+        auto widgetInstance = mcxAdapter->createWidgetInstance(d_limboNode);
+        mcxAdapter->extractProperties(widgetInstance, d_limboNode);
 
         rootContainer->addChild(widgetInstance);
 
@@ -28,11 +29,26 @@ namespace mc::mcstudio {
         propertiesListPanel->removeAllChildren();
 
         auto baseAdapter = MakeRef<mcx::BaseWidgetMcxAdapter>();
+        baseAdapter->extractProperties(widgetInstance, d_limboNode);
 
         for (auto& prop : baseAdapter->getAvailableProperties()) {
+            auto container = MakeRef<StackPanel>();
+            container->orientation = Horizontal;
+            container->backgroundColor = Color::transparent;
+
             auto lbl = MakeRef<Label>();
             lbl->text = prop;
-            propertiesListPanel->addChild(lbl);
+            lbl->fixedWidth = 110;
+            lbl->marginLeft = 10;
+            lbl->alignment = "left";
+            container->addChild(lbl);
+
+            auto entry = MakeRef<Entry>();
+            entry->text = d_limboNode->getAttribute(prop);
+            entry->fixedWidth = 150;
+            container->addChild(entry);
+
+            propertiesListPanel->addChild(container);
         }
 
         auto lbl = MakeRef<Label>();
@@ -40,9 +56,27 @@ namespace mc::mcstudio {
         propertiesListPanel->addChild(lbl);
 
         for (auto& prop : mcxAdapter->getAvailableProperties()) {
+            auto container = MakeRef<StackPanel>();
+            container->orientation = Horizontal;
+            container->backgroundColor = Color::transparent;
+
             auto lbl = MakeRef<Label>();
             lbl->text = prop;
-            propertiesListPanel->addChild(lbl);
+            lbl->fixedWidth = 110;
+            lbl->marginLeft = 10;
+            lbl->alignment = "left";
+            container->addChild(lbl);
+
+            auto entry = MakeRef<Entry>();
+            entry->text = d_limboNode->getAttribute(prop);;
+            entry->fixedWidth = 150;
+            entry->on("entered", [](Shared<Event> e) {
+                auto target = static_cast<Entry*>(e->target);
+                printf("%s\n", target->text.get().c_str());
+            });
+            container->addChild(entry);
+
+            propertiesListPanel->addChild(container);
         }
     }
 
