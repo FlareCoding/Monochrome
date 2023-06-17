@@ -24,4 +24,12 @@ namespace mc::mcx {
         image->opacity =
             mcxNode->getUIntAttribute("opacity", image->opacity);
     }
+
+    std::vector<std::string> ImageMcxAdapter::getAvailableProperties() {
+        static const std::vector<std::string> props = {
+            "opacity"
+        };
+
+        return props;
+    }
 } //namespace mc::mcx
