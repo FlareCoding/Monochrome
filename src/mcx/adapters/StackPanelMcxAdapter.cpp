@@ -24,4 +24,12 @@ namespace mc::mcx {
             stackPanel->orientation = Vertical;
         }
     }
+
+    std::vector<std::string> StackPanelMcxAdapter::getAvailableProperties() {
+        static const std::vector<std::string> props = {
+            "backgroundColor", "cornerRadius", "orientation"
+        };
+
+        return props;
+    }
 } //namespace mc::mcx
