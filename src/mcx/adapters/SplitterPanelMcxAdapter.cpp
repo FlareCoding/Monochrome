@@ -6,6 +6,20 @@ namespace mc::mcx {
         return MakeRef<SplitterPanel>();
     }
 
+    void SplitterPanelMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        auto splitterPanel = std::static_pointer_cast<SplitterPanel>(widget);
+
+        mcxNode->setAttribute("backgroundColor", _toString(splitterPanel->backgroundColor));
+        mcxNode->setAttribute("dividerColor", _toString(splitterPanel->dividerColor));
+        mcxNode->setAttribute("movableDividers", _toString(splitterPanel->movableDividers));
+        mcxNode->setAttribute("dividerSize", _toString(splitterPanel->dividerSize));
+        mcxNode->setAttribute("orientation", _toString(splitterPanel->orientation));
+        mcxNode->setAttribute("sectionWeights", splitterPanel->sectionWeights);
+    }
+
     void SplitterPanelMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

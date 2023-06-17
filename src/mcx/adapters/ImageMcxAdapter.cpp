@@ -16,6 +16,15 @@ namespace mc::mcx {
         return MakeRef<Image>(nullptr);
     }
 
+    void ImageMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        auto image = std::static_pointer_cast<Image>(widget);
+
+        mcxNode->setAttribute("opacity", _toString(image->opacity));
+    }
+
     void ImageMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode
