@@ -47,4 +47,8 @@ namespace mc::mcx {
         auto menuList = std::static_pointer_cast<MenuList>(McxEngine::parseWidget(childNode));
         dropdownButton->setMenuList(menuList);
     }
+
+    std::vector<std::string> DropdownButtonMcxAdapter::getAvailableProperties() {
+        return d_buttonAdapter->getAvailableProperties();
+    }
 } //namespace mc::mcx

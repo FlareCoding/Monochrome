@@ -30,8 +30,6 @@
 				</tab>
 			</TabView>
 		</DockPanel>
-		<StackPanel backgroundColor="mcstudioBgColorPrimary">
-			
-		</StackPanel>
+		<UserWidget path="widget-properties-panel.mcx"/>
 	</SplitterPanel>
 </root>
