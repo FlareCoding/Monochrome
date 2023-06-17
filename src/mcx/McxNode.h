@@ -7,6 +7,8 @@
 namespace mc::mcx {
 class McxNode {
 public:
+    McxNode() = default;
+
     /// @brief Used to abstract away the process of
     /// reading and processing xml node elements in mcx.
     /// @param node Pointer to the xml node object

@@ -6,6 +6,23 @@ namespace mc::mcx {
         return MakeRef<ScrollPanel>();
     }
 
+    void ScrollPanelMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        auto scrollPanel = std::static_pointer_cast<ScrollPanel>(widget);
+
+        mcxNode->setAttribute("cornerRadius", _toString(scrollPanel->cornerRadius));
+        mcxNode->setAttribute("trackColor", _toString(scrollPanel->scrollbarTracksColor));
+        mcxNode->setAttribute("trackButtonBackground",
+            _toString(scrollPanel->scrollbarTrackButtonBackground));
+        mcxNode->setAttribute("trackButtonColor",
+            _toString(scrollPanel->scrollbarTrackButtonColor));
+        mcxNode->setAttribute("scrollbarColor", _toString(scrollPanel->scrollbarColor));
+        mcxNode->setAttribute("scrollSensitivity", _toString(scrollPanel->scrollSensitivity));
+        mcxNode->setAttribute("autoscroll", _toString(scrollPanel->autoscroll));
+    }
+
     void ScrollPanelMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

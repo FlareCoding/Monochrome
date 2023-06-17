@@ -6,6 +6,17 @@ namespace mc::mcx {
         return MakeRef<StackPanel>();
     }
 
+    void StackPanelMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        auto stackPanel = std::static_pointer_cast<StackPanel>(widget);
+
+        mcxNode->setAttribute("backgroundColor", _toString(stackPanel->backgroundColor));
+        mcxNode->setAttribute("cornerRadius", _toString(stackPanel->cornerRadius));
+        mcxNode->setAttribute("orientation", _toString(stackPanel->orientation));
+    }
+
     void StackPanelMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

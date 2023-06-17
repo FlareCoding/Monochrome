@@ -7,6 +7,15 @@ namespace mc::mcx {
         return MakeRef<TreeViewGroup>();
     }
 
+    void TreeViewGroupMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        auto treeViewGroup = std::static_pointer_cast<TreeViewGroup>(widget);
+
+        mcxNode->setAttribute("name", treeViewGroup->name);
+    }
+
     void TreeViewGroupMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

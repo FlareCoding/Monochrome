@@ -11,6 +11,13 @@ namespace mc::mcx {
         return MakeRef<DropdownButton>();
     }
 
+    void DropdownButtonMcxAdapter::extractProperties(
+        Shared<BaseWidget>& widget,
+        Shared<McxNode>& mcxNode
+    ) {
+        d_buttonAdapter->extractProperties(widget, mcxNode);
+    }
+
     void DropdownButtonMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode
