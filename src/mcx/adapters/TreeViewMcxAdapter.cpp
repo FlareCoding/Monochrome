@@ -46,4 +46,13 @@ namespace mc::mcx {
             treeView->addGroup(group);
         }
     }
+
+    std::vector<std::string> TreeViewMcxAdapter::getAvailableProperties() {
+        static const std::vector<std::string> props = {
+            "cornerRadius", "itemSize", "backgroundColor",
+            "itemTextColor", "itemBackground"
+        };
+
+        return props;
+    }
 } //namespace mc::mcx

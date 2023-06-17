@@ -50,4 +50,15 @@ namespace mc::mcx {
         checkbox->label->horizontalPadding =
             mcxNode->getUIntAttribute("horizontalPadding", checkbox->label->horizontalPadding);
     }
+
+    std::vector<std::string> CheckboxMcxAdapter::getAvailableProperties() {
+        static const std::vector<std::string> props = {
+            "checked", "backgroundColor", "borderColor",
+            "cornerRadius", "borderThickness", "textColor",
+            "text", "font", "fontSize", "fontStyle",
+            "textAlignment", "verticalPadding", "horizontalPadding"
+        };
+
+        return props;
+    }
 } //namespace mc::mcx
