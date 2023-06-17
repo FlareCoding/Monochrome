@@ -202,7 +202,7 @@ namespace mc {
     }
 
     void Entry::_lostFocus(Shared<Event> e) {
-        d_borderVisual->color = backgroundColor;
+        d_borderVisual->color = borderColor;
         d_cursorVisual->visible = false;
 
         fireEvent("propertyChanged", Event::empty);
