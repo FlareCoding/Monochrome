@@ -10,20 +10,12 @@
 			<Label text="Title" fontSize="16" fixedHeight="18" marginRight="4"/>
 			<Entry id="editorWindowTitleEntry" text="App 1" fixedHeight="18" fixedWidth="80" marginRight="20"/>
 		</StackPanel>
-		<Label id="initialRootContainerPromptLabel" marginTop="60" text="Please select root container" fontSize="20" horizontalAlignment="center"/>
-		<StackPanel id="initialRootContainerPromptPanel" backgroundColor="transparent" horizontalAlignment="center">
-			<StackPanel marginTop="30" orientation="horizontal" backgroundColor="transparent">
-				<style name="selectionButton"
-					marginLeft="20" borderColor="transparent"
-					fontSize="14" textColor="white"
-					cornerRadius="10"
-					clicked="RootContainerSelection_OnClick"/>
-				
-				<Button text="StackPanel" style="selectionButton"/>
-				<Button text="DockPanel" style="selectionButton"/>
-				<Button text="ScrollPanel" style="selectionButton"/>
-				<Button text="SplitterPanel" style="selectionButton"/>
-			</StackPanel>
-		</StackPanel>
+		<DockPanel
+			id="widgetCanvasPanel"
+			marginLeft="20"
+			marginTop="20"
+			fixedWidth="800"
+			fixedHeight="600"
+			backgroundColor="Color(220, 220, 220)"/>
 	</StackPanel>
 </root>

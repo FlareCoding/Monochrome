@@ -33,13 +33,4 @@ namespace mc::mcx {
         splitterPanel->sectionWeights =
             mcxNode->getAttribute("sectionWeights");
     }
-    
-    std::vector<std::string> SplitterPanelMcxAdapter::getAvailableProperties() {
-        static const std::vector<std::string> props = {
-            "backgroundColor", "dividerColor", "movableDividers",
-            "dividerSize", "orientation", "sectionWeights"
-        };
-
-        return props;
-    }
 } //namespace mc::mcx

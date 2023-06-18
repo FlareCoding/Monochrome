@@ -68,14 +68,4 @@ namespace mc::mcx {
             combobox->addItem(itemValue);
         }
     }
-
-    std::vector<std::string> ComboboxMcxAdapter::getAvailableProperties() {
-        static const std::vector<std::string> props = {
-            "overlayBorderColor", "itemColor",
-            "itemBackgroundColor", "overlayBorderThickness",
-            "itemSize", "overlaySpawnDirection"
-        };
-
-        return props;
-    }
 } //namespace mc::mcx

@@ -17,12 +17,4 @@ namespace mc::mcx {
         dockPanel->cornerRadius =
             mcxNode->getUIntAttribute("cornerRadius", dockPanel->cornerRadius);
     }
-
-    std::vector<std::string> DockPanelMcxAdapter::getAvailableProperties() {
-        static const std::vector<std::string> props = {
-            "backgroundColor", "cornerRadius"
-        };
-
-        return props;
-    }
 } //namespace mc::mcx

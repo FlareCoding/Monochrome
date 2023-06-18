@@ -57,7 +57,7 @@ namespace mc::mcx {
             widget->horizontalAlignment = HAFill;
         }
 
-        auto verticalAlignment = mcxNode->getAttribute("verticalAlignment", "top");
+        auto verticalAlignment = mcxNode->getAttribute("horizontalAlignment", "top");
         if (verticalAlignment == "top") {
             widget->verticalAlignment = VATop;
         } else if (verticalAlignment == "bottom") {
@@ -91,16 +91,5 @@ namespace mc::mcx {
         for (auto& eventName : widget->inspectAllowedEvents()) {
             _checkAndApplyEventHandler(eventName, mcxNode, widget);
         }
-    }
-
-    std::vector<std::string> BaseWidgetMcxAdapter::getAvailableProperties() {
-        static const std::vector<std::string> props = {
-            "id", "zIndex", "visible", "fixedWidth", "fixedHeight",
-            "minWidth", "minHeight", "maxWidth", "maxHeight",
-            "marginTop", "marginBottom", "marginLeft", "marginRight",
-            "horizontalAlignment", "verticalAlignment", "dockAnchor",
-        };
-
-        return props;
     }
 } //namespace mc::mcx

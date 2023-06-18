@@ -19,9 +19,6 @@ public:
     /// @param mcxNode Mcx node from which to read the properties and apply them to the widget
     virtual void applyProperties(Shared<BaseWidget>& widget, Shared<McxNode>& mcxNode) = 0;
 
-    /// @brief Returns a list of available properties for the current widget class
-    virtual std::vector<std::string> getAvailableProperties() = 0;
-
 protected:
     /// @brief Checks if there is an attribute specifying an event handler name
     /// and if so, attemps to retrieve it and add it to the widget instance.

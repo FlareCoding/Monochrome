@@ -12,8 +12,5 @@ public:
     /// @param widget Widget instance onto which the parsed attributes should be applied
     /// @param mcxNode Mcx node from which to read the properties and apply them to the widget
     void applyProperties(Shared<BaseWidget>& widget, Shared<McxNode>& mcxNode) override;
-
-    /// @brief Returns a list of available properties for the current widget class
-    virtual std::vector<std::string> getAvailableProperties() override;
 };
 } //namespace mc::mcx

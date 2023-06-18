@@ -35,14 +35,4 @@ namespace mc::mcx {
         label->horizontalPadding =
             mcxNode->getUIntAttribute("horizontalPadding", label->horizontalPadding);
     }
-
-    std::vector<std::string> LabelMcxAdapter::getAvailableProperties() {
-        static const std::vector<std::string> props = {
-            "color", "text", "font", "fontSize",
-            "textAlignment", "fontStyle",
-            "verticalPadding", "horizontalPadding"
-        };
-
-        return props;
-    }
 } //namespace mc::mcx

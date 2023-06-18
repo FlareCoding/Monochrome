@@ -6,15 +6,8 @@
 			<Button text="Button" style="widget-toolbox-button"/>
 			<Button text="Entry" style="widget-toolbox-button"/>
 			<Button text="Checkbox" style="widget-toolbox-button"/>
-			<Button text="ProgressBar" style="widget-toolbox-button"/>
-			<Button text="Combobox" style="widget-toolbox-button"/>
-			<Button text="DropdownButton" style="widget-toolbox-button"/>
 			<Button text="StackPanel" style="widget-toolbox-button"/>
 			<Button text="DockPanel" style="widget-toolbox-button"/>
-			<Button text="ScrollPanel" style="widget-toolbox-button"/>
-			<Button text="SplitterPanel" style="widget-toolbox-button"/>
-			<Button text="TabView" style="widget-toolbox-button"/>
-			<Button text="TreeView" style="widget-toolbox-button"/>
 		</StackPanel>
 	</DockPanel>
 </root>

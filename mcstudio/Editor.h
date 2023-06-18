@@ -7,6 +7,8 @@ public:
     Editor();
 
     void ToolboxWidget_OnClick(Shared<Event> e);
-    void RootContainerSelection_OnClick(Shared<Event> e);
+
+private:
+    Shared<DockPanel> d_widgetCanvasPanel;
 };
 } // namespace mc::mcstudio

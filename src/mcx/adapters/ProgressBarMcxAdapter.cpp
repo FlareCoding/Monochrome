@@ -26,13 +26,4 @@ namespace mc::mcx {
         progressBar->maxValue =
             mcxNode->getIntAttribute("maxValue", progressBar->maxValue);
     }
-
-    std::vector<std::string> ProgressBarMcxAdapter::getAvailableProperties() {
-        static const std::vector<std::string> props = {
-            "backgroundColor", "progressColor", "value",
-            "minValue", "maxValue"
-        };
-
-        return props;
-    }
 } //namespace mc::mcx

@@ -33,14 +33,4 @@ namespace mc::mcx {
 
         scrollPanel->autoscroll = mcxNode->getBoolAttribute("autoscroll");
     }
-
-    std::vector<std::string> ScrollPanelMcxAdapter::getAvailableProperties() {
-        static const std::vector<std::string> props = {
-            "cornerRadius", "trackColor", "trackButtonBackground",
-            "trackButtonColor", "scrollbarColor", "scrollSensitivity",
-            "autoscroll"
-        };
-
-        return props;
-    }
 } //namespace mc::mcx

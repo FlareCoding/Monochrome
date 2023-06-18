@@ -8,6 +8,4 @@
 		fontSize="14"
 		textColor="white"
 		clicked="ToolboxWidget_OnClick"/>
-	
-	<style name="mcstudio-entry" />
 </root>
