@@ -196,7 +196,7 @@ namespace mc::mcx {
         if (rootType != "stylesheet") {
             printf("McxEngineError: root node is not a stylesheet, '%s' type found\n",
                 rootType.c_str());
-
+            
             return;
         }
 
