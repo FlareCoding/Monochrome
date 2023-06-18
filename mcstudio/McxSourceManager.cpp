@@ -1,10 +1,6 @@
 #include "McxSourceManager.h"
 
 namespace mc::mcstudio {
-	void McxSourceManager::initialize() {
-		mcx::McxEngine::setRootMcxDirectory("mcx");
-	}
-
 	Shared<ClassicWindow> McxSourceManager::loadWindowFile(const std::string& name) {
 		auto path = _constructMcxPath(name);
 
@@ -18,6 +14,6 @@ namespace mc::mcstudio {
 	}
 
 	std::string McxSourceManager::_constructMcxPath(const std::string& name) {
-		return name + ".mcx";
+		return "mcx/" + name + ".mcx";
 	}
 } // namespace mc::mcstudio

@@ -10,7 +10,6 @@ add_executable(
     McxSourceManager.cpp
 
     mcx/main.mcx
-    mcx/editor-panel.mcx
 )
 target_link_libraries(mcstudio PUBLIC Monochrome)
 

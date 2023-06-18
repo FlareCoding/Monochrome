@@ -4,8 +4,7 @@
 #define MCSTUDIO_APPLICATION_ID "appId-mcstudio"
 
 // Custom color names
-#define MCSTUDIO_COLOR_TRANSPARENT  "transparent"
-#define MCSTUDIO_BG_COLOR_PRIMARY   "mcstudioBgColorPrimary"
+#define MCSTUDIO_BG_COLOR_PRIMARY "mcstudioBgColorPrimary"
 
 // Event names
 // ...

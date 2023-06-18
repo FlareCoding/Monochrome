@@ -9,7 +9,6 @@ int main() {
     mc::AppManager::registerApplication(MCSTUDIO_APPLICATION_ID);
 
     mc::mcstudio::GlobalRegistrationSystem::registerMcStudioColorNames();
-    mc::mcstudio::McxSourceManager::initialize();
 
     auto window = mc::mcstudio::McxSourceManager::loadMainWindow();
 

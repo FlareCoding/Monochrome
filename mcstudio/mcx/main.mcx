@@ -3,23 +3,9 @@
 		<StackPanel backgroundColor="mcstudioBgColorPrimary">
 			
 		</StackPanel>
-		<DockPanel backgroundColor="mcstudioBgColorPrimary">
-			<TabView dockAnchor="fill">
-				<tab name="Editor">
-					<UserWidget path="editor-panel.mcx"/>
-				</tab>
-				<tab name="Project">
-					<StackPanel backgroundColor="Color(100, 50, 0)">
-						<Label text="PLACEHOLDER"/>
-					</StackPanel>
-				</tab>
-				<tab name="Settings">
-					<StackPanel backgroundColor="Color(0, 50, 100)">
-						<Label text="PLACEHOLDER"/>
-					</StackPanel>
-				</tab>
-			</TabView>
-		</DockPanel>
+		<StackPanel backgroundColor="mcstudioBgColorPrimary">
+			
+		</StackPanel>
 		<StackPanel backgroundColor="mcstudioBgColorPrimary">
 			
 		</StackPanel>
