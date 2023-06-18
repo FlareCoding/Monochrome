@@ -89,7 +89,7 @@ namespace mc::mcx {
             }
         }
     }
-    
+
     std::vector<std::string> MenuListMcxAdapter::getAvailableProperties() {
         static const std::vector<std::string> props = {
             "name", "borderColor", "itemTextColor",
