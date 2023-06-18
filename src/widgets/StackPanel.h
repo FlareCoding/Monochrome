@@ -6,6 +6,8 @@ class StackPanel : public BaseContainerWidget {
 public:
     StackPanel();
 
+    std::string getWidgetName() const override { return "StackPanel"; }
+
     // Radius of the panel's corners
     PropertyObserver<uint32_t>      cornerRadius;
 

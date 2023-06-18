@@ -7,6 +7,8 @@ class SplitterPanel : public BaseContainerWidget {
 public:
     SplitterPanel();
 
+    std::string getWidgetName() const override { return "SplitterPanel"; }
+
     // Color of the panel's body
     PropertyObserver<Color> backgroundColor;
 
