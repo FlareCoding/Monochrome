@@ -65,10 +65,7 @@ namespace mc::mcx {
         auto& val = d_attribs.at(name);
         if (val.find("Color(") == std::string::npos) {
             auto customColor = getCustomColor(val);
-
             if (customColor != Color::transparent) {
-                return customColor;
-            } else if (val == "transparent") {
                 return customColor;
             }
         }
