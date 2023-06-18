@@ -1,10 +1,11 @@
 #include "Editor.h"
-#include <mcx/adapters/BaseWidgetMcxAdapter.h>
-#include <core/InternalFlags.h>
 
 namespace mc::mcstudio {
     Editor::Editor() {
-        d_limboNode = MakeRef<mcx::McxNode>();
+        d_baseWidgetAdapter     = MakeRef<mcx::BaseWidgetMcxAdapter>();
+        d_selectedWidgetNode    = MakeRef<mcx::McxNode>();
+        d_selectedWidget        = nullptr;
+        d_appRootContainer      = nullptr;
 
         registerNamedEventHandler("ToolboxWidget_OnClick", &Editor::ToolboxWidget_OnClick, this);
         registerNamedEventHandler("RootContainerSelection_OnClick",
@@ -17,14 +18,27 @@ namespace mc::mcstudio {
             return;
         }
 
+        // Get the widget name from the event's target
         auto target = static_cast<Button*>(e->target);
         auto widgetName = target->label->text.get();
-        auto mcxAdapter = mcx::McxEngine::getMcxAdapter(widgetName);
-
-        auto widgetInstance = mcxAdapter->createWidgetInstance(d_limboNode);
-        rootContainer->addChild(widgetInstance);
         
-        _setSelectedWidget(widgetInstance);
+        // Create the new widget instance
+        auto widget = _spawnWidget(widgetName);
+
+        // If the currently selected widget is a,
+        // container add the new widget to it, otherwise
+        // add it to the application's root container.
+        if (d_selectedWidget && d_selectedWidget->isContainer()) {
+            auto selectedContainer =
+                std::static_pointer_cast<BaseContainerWidget>(d_selectedWidget);
+
+            selectedContainer->addChild(widget);
+        } else {
+            d_appRootContainer->addChild(widget);
+            
+            // Set the newly added widget as the selected one
+            _setSelectedWidget(widget);
+        }
     }
 
     void Editor::RootContainerSelection_OnClick(Shared<Event> e) {
@@ -78,22 +92,29 @@ namespace mc::mcstudio {
         });
     }
     
+    Shared<BaseWidget> Editor::_spawnWidget(const std::string& widgetName) {
+        auto mcxAdapter = mcx::McxEngine::getMcxAdapter(widgetName);
+        auto tempNode = MakeRef<mcx::McxNode>();
+
+        return mcxAdapter->createWidgetInstance(tempNode);
+    }
+
     void Editor::_setSelectedWidget(Shared<BaseWidget> widget) {
         if (d_selectedWidget) {
             d_selectedWidget->unfocus();
         }
 
         d_selectedWidget = widget;
-        d_limboNode->removeAllAttributes();
+        d_selectedWidgetNode->removeAllAttributes();
 
         auto mcxAdapter = mcx::McxEngine::getMcxAdapter(d_selectedWidget->getWidgetName());
-        mcxAdapter->extractProperties(d_selectedWidget, d_limboNode);
+        mcxAdapter->extractProperties(d_selectedWidget, d_selectedWidgetNode);
 
         auto propertiesListPanel = getWidgetById<StackPanel>("propertiesListPanel");
         propertiesListPanel->removeAllChildren();
 
         auto baseAdapter = MakeRef<mcx::BaseWidgetMcxAdapter>();
-        baseAdapter->extractProperties(d_selectedWidget, d_limboNode);
+        baseAdapter->extractProperties(d_selectedWidget, d_selectedWidgetNode);
 
         for (auto& prop : baseAdapter->getAvailableProperties()) {
             auto container = MakeRef<StackPanel>();
@@ -108,7 +129,7 @@ namespace mc::mcstudio {
             container->addChild(lbl);
 
             auto entry = MakeRef<Entry>();
-            entry->text = d_limboNode->getAttribute(prop);
+            entry->text = d_selectedWidgetNode->getAttribute(prop);
             entry->fixedWidth = 150;
             entry->on("entered", [this, mcxAdapter, baseAdapter](Shared<Event> e) {
                 auto target = static_cast<Entry*>(e->target);
@@ -117,8 +138,8 @@ namespace mc::mcstudio {
 
                 auto propName = label->text.get();
                 auto propValue = target->text.get();
-                d_limboNode->setAttribute(propName, propValue);
-                baseAdapter->applyProperties(d_selectedWidget, d_limboNode);
+                d_selectedWidgetNode->setAttribute(propName, propValue);
+                baseAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
             });
             container->addChild(entry);
 
@@ -142,7 +163,7 @@ namespace mc::mcstudio {
             container->addChild(lbl);
 
             auto entry = MakeRef<Entry>();
-            entry->text = d_limboNode->getAttribute(prop);;
+            entry->text = d_selectedWidgetNode->getAttribute(prop);;
             entry->fixedWidth = 150;
             entry->on("entered", [this, mcxAdapter](Shared<Event> e) {
                 auto target = static_cast<Entry*>(e->target);
@@ -151,8 +172,8 @@ namespace mc::mcstudio {
 
                 auto propName = label->text.get();
                 auto propValue = target->text.get();
-                d_limboNode->setAttribute(propName, propValue);
-                mcxAdapter->applyProperties(d_selectedWidget, d_limboNode);
+                d_selectedWidgetNode->setAttribute(propName, propValue);
+                mcxAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
             });
             container->addChild(entry);
 
