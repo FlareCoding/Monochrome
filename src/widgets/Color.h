@@ -37,7 +37,4 @@ void registerCustomColor(const std::string& name, const Color& color);
 
 // Allows to retrieve a saved specific color given its specified name
 Color getCustomColor(const std::string& name);
-
-// Registers basic pre-defined color names
-void registerMcxPrimitiveColorNames();
 } // namespace mc
