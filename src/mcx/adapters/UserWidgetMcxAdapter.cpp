@@ -16,7 +16,7 @@ namespace mc::mcx {
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode
     ) {}
-    
+
     std::vector<std::string> UserWidgetMcxAdapter::getAvailableProperties() {
         static const std::vector<std::string> props = {};
         return props;
