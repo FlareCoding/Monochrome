@@ -12,6 +12,8 @@ public:
     TreeViewGroup();
     explicit TreeViewGroup(const std::string& name);
 
+    std::string getWidgetName() const override { return "TreeViewGroup"; }
+
     PropertyObserver<std::string> name;
 
     void addSubGroup(Shared<TreeViewGroup> subGroup);

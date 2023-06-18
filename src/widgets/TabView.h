@@ -7,6 +7,8 @@ class TabView : public BaseContainerWidget {
 public:
     TabView();
 
+    std::string getWidgetName() const override { return "TabView"; }
+
     // Color of each tab button
     PropertyObserver<Color> tabColor;
 
