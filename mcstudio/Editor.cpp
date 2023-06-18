@@ -8,12 +8,12 @@ namespace mc::mcstudio {
         d_selectedWidget        = nullptr;
         d_appRootContainer      = nullptr;
 
-        registerNamedEventHandler("ToolboxWidget_OnClick", &Editor::ToolboxWidget_OnClick, this);
-        registerNamedEventHandler("RootContainerSelection_OnClick",
-                &Editor::RootContainerSelection_OnClick, this);
+        registerNamedEventHandler("toolboxWidget_OnClick", &Editor::toolboxWidget_OnClick, this);
+        registerNamedEventHandler("rootContainerSelection_OnClick",
+                &Editor::rootContainerSelection_OnClick, this);
     }
 
-    void Editor::ToolboxWidget_OnClick(Shared<Event> e) {
+    void Editor::toolboxWidget_OnClick(Shared<Event> e) {
         auto rootContainer = getWidgetById<BaseContainerWidget>("appRootContainer");
         if (!rootContainer) {
             return;
@@ -42,7 +42,7 @@ namespace mc::mcstudio {
         }
     }
 
-    void Editor::RootContainerSelection_OnClick(Shared<Event> e) {
+    void Editor::rootContainerSelection_OnClick(Shared<Event> e) {
         getWidgetById("initialRootContainerPromptLabel")->hide();
         getWidgetById("initialRootContainerPromptPanel")->hide();
 
@@ -74,25 +74,29 @@ namespace mc::mcstudio {
                 return;
             }
 
-            auto& children = d_appRootContainer->getChildren();
-            if (children.empty()) {
-                return;
-            }
-
-            auto mbe = std::static_pointer_cast<MouseButtonEvent>(e);
-            auto mousePos = mbe->getLocation();
-
-            for (auto& child : children) {
-                auto childPos = child->getPositionInWindow();
-                auto frame = Frame(childPos, child->getComputedSizeWithMargins());
-                if (frame.containsPoint(mousePos)) {
-                    setSelectedWidget(child);
-                    break;
-                }
-            }
+            _appRootContainer_OnClick(e);
         });
     }
     
+    void Editor::_appRootContainer_OnClick(Shared<Event> e) {
+        auto& children = d_appRootContainer->getChildren();
+        if (children.empty()) {
+            return;
+        }
+
+        auto mbe = std::static_pointer_cast<MouseButtonEvent>(e);
+        auto mousePos = mbe->getLocation();
+
+        for (auto& child : children) {
+            auto childPos = child->getPositionInWindow();
+            auto frame = Frame(childPos, child->getComputedSizeWithMargins());
+            if (frame.containsPoint(mousePos)) {
+                setSelectedWidget(child);
+                break;
+            }
+        }
+    }
+
     void Editor::setSelectedWidget(Shared<BaseWidget> widget) {
         // To prevent memory corruption issues with the selected widget
         // memory getting freed up but its focus has not yet been lost,

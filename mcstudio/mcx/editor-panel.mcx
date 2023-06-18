@@ -17,7 +17,7 @@
 					marginLeft="20" borderColor="transparent"
 					fontSize="14" textColor="white"
 					cornerRadius="10"
-					clicked="RootContainerSelection_OnClick"/>
+					clicked="rootContainerSelection_OnClick"/>
 				
 				<Button text="StackPanel" style="selectionButton"/>
 				<Button text="DockPanel" style="selectionButton"/>
