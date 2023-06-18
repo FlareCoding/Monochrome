@@ -6,8 +6,6 @@ class TreeView : public BaseWidget {
 public:
     TreeView();
 
-    std::string getWidgetName() const override { return "TreeView"; }
-
     // @brief Radius of the panel's corners
     PropertyObserver<uint32_t> cornerRadius;
 

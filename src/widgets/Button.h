@@ -14,8 +14,6 @@ class Button : public BaseWidget {
 public:
     Button();
 
-    std::string getWidgetName() const override { return "Button"; }
-
     PropertyObserver<uint32_t>  cornerRadius;
     PropertyObserver<uint32_t>  borderThickness;
     PropertyObserver<Color>     backgroundColor;

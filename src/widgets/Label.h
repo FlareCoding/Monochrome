@@ -7,8 +7,6 @@ class Label : public BaseWidget {
 public:
     Label();
 
-    std::string getWidgetName() const override { return "Label"; }
-
     // Horizontal adding between the frame of the label and the text
     PropertyObserver<uint32_t>      horizontalPadding;
 

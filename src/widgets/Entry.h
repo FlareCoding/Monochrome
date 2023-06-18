@@ -13,8 +13,6 @@ class Entry : public BaseWidget {
 public:
     Entry();
 
-    std::string getWidgetName() const override { return "Entry"; }
-
     PropertyObserver<uint32_t>  cornerRadius;
     PropertyObserver<uint32_t>  borderThickness;
     PropertyObserver<Color>     backgroundColor;

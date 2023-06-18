@@ -6,8 +6,6 @@ class DockPanel : public BaseContainerWidget {
 public:
     DockPanel();
 
-    std::string getWidgetName() const override { return "DockPanel"; }
-
     // @brief Radius of the panel's corners
     PropertyObserver<uint32_t> cornerRadius;
 

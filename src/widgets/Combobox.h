@@ -7,8 +7,6 @@ class Combobox : public Button {
 public:
     Combobox();
 
-    std::string getWidgetName() const override { return "Combobox"; }
-
     // Specifies the preferred orientation for spawning
     // the overlay window around the combobox widget.
     PropertyObserver<OverflowDirection> overlaySpawnDirection;

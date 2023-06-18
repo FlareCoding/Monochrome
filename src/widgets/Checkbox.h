@@ -7,8 +7,6 @@ class Checkbox : public BaseWidget {
 public:
     Checkbox();
 
-    std::string getWidgetName() const override { return "Checkbox"; }
-
     Shared<Button> button;
     Shared<Label> label;
 

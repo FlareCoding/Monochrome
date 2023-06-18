@@ -29,8 +29,6 @@ public:
     BaseWidget();
     virtual ~BaseWidget() = default;
 
-    virtual std::string getWidgetName() const = 0;
-
     virtual bool isContainer() const { return false; }
 
     Position getPositionInWindow() const;

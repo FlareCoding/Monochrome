@@ -8,8 +8,6 @@ class ProgressBar : public BaseWidget {
 public:
     ProgressBar();
 
-    std::string getWidgetName() const override { return "ProgressBar"; }
-
     PropertyObserver<Color>       backgroundColor;
     PropertyObserver<Color>       progressColor;
     PropertyObserver<int32_t>     value;
