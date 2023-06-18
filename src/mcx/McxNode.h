@@ -7,7 +7,8 @@
 namespace mc::mcx {
 class McxNode {
 public:
-    McxNode() = default;
+    /// @brief Default empty constructor that doesn't parse an xml node
+    McxNode() : d_node(nullptr) {}
 
     /// @brief Used to abstract away the process of
     /// reading and processing xml node elements in mcx.

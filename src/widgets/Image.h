@@ -10,6 +10,8 @@ public:
 
     explicit Image(Shared<Bitmap> bitmap);
 
+    std::string getWidgetName() const override { return "Image"; }
+
     // 0-255 value determining the transparency level of the image
     PropertyObserver<uint32_t> opacity;
 

@@ -11,6 +11,10 @@ public:
     void RootContainerSelection_OnClick(Shared<Event> e);
 
 private:
+    void _setSelectedWidget(Shared<BaseWidget> widget);
+
     Shared<mcx::McxNode> d_limboNode;
+    Shared<BaseContainerWidget> d_appRootContainer;
+    Shared<BaseWidget> d_selectedWidget;
 };
 } // namespace mc::mcstudio
