@@ -51,11 +51,7 @@ namespace mc {
         }
 
         auto bmpSize = bmp->GetSize();
-        auto bitmap = MakeRef<Bitmap>(
-            static_cast<uint32_t>(bmpSize.width),
-            static_cast<uint32_t>(bmpSize.height),
-            static_cast<void*>(bmp)
-        );
+        auto bitmap = MakeRef<Bitmap>(bmpSize.width, bmpSize.height, static_cast<void*>(bmp));
 
         wicConverter->Release();
         wicFrame->Release();
