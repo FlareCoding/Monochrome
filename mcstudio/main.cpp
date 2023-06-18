@@ -10,9 +10,7 @@ using namespace mc;
 int main() {
     AppManager::registerApplication("appId-mcstudio");
 
-    registerCustomColor("mcstudioBgColorPrimary", Color(34, 33, 38));
-
-    auto window = mcx::McxEngine::parseWindowFile("mcx/main.mcx");
+    auto window = MakeRef<ClassicWindow>(1460, 920, "Monochrome Studio");
 
     AppManager::startApplicationLoop();
     return 0;
