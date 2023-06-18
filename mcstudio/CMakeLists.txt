@@ -8,8 +8,6 @@ add_executable(
     GlobalResgitrationSystem.cpp
     McxSourceManager.h
     McxSourceManager.cpp
-    Editor.h
-    Editor.cpp
 
     mcx/main.mcx
     mcx/editor-panel.mcx
