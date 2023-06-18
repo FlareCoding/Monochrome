@@ -26,7 +26,6 @@ namespace mc::mcx {
         mcxNode->setAttribute("cursorColor", _toString(entry->cursorColor));
         mcxNode->setAttribute("highlightColor", _toString(entry->selectionHighlightColor));
         mcxNode->setAttribute("readOnly", _toString(entry->readOnly));
-
     }
 
     void EntryMcxAdapter::applyProperties(
@@ -81,7 +80,7 @@ namespace mc::mcx {
         static const std::vector<std::string> props = {
             "textColor", "text", "placeholder",
             "readOnly", "font", "fontSize", "fontStyle",
-            "cornerRadius", "borderThickness", 
+            "cornerRadius", "borderThickness",
             "backgroundColor", "borderColor",
             "focusedBorderColor", "cursorColor",
             "highlightColor"

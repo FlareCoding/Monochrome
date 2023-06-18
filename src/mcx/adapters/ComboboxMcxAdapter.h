@@ -13,7 +13,7 @@ public:
     /// assigns them as attributes to a provided mcx node instance.
     /// @param widget Widget instance from which to read the properties
     /// @param mcxNode Mcx node into which to read the properties as attributes
-    virtual void extractProperties(Shared<BaseWidget>& widget, Shared<McxNode>& mcxNode) override;
+    void extractProperties(Shared<BaseWidget>& widget, Shared<McxNode>& mcxNode) override;
 
     /// @brief Parses the mcx node and applies the provided
     /// mcx attributes to the appropriate widget instance members.
@@ -22,7 +22,7 @@ public:
     void applyProperties(Shared<BaseWidget>& widget, Shared<McxNode>& mcxNode) override;
 
     /// @brief Returns a list of available properties for the current widget class
-    virtual std::vector<std::string> getAvailableProperties() override;
+    std::vector<std::string> getAvailableProperties() override;
 
 private:
     Shared<ButtonMcxAdapter> d_buttonAdapter;
