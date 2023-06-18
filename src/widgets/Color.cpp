@@ -1,10 +1,6 @@
 #include "Color.h"
 #include <random>
-#include <map>
-
 namespace mc {
-    std::map<std::string, Color> s_customColorMap;
-
     Color Color::randomColor() {
         static std::random_device rd;
         static std::mt19937 colorEngine(rd());
@@ -27,20 +23,4 @@ namespace mc {
     Color Color::gray           = Color(100, 100, 100);
     Color Color::lightGray      = Color(160, 160, 160);
     Color Color::darkGray       = Color(60, 60, 60);
-
-    void registerCustomColor(const std::string& name, const Color& color) {
-        CORE_ASSERT(s_customColorMap.find(name) == s_customColorMap.end(),
-            "Custom color with name '" + name + "' already exists");
-
-        s_customColorMap.insert({ name, color });
-    }
-
-    Color getCustomColor(const std::string& name) {
-        if (s_customColorMap.find(name) != s_customColorMap.end()) {
-            return s_customColorMap.at(name);
-        }
-
-        printf("Failed to retrieve custom color: %s\n", name.c_str());
-        return Color::transparent;
-    }
 } // namespace mc
