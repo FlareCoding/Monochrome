@@ -8,6 +8,8 @@ class ScrollPanel : public BaseContainerWidget {
 public:
     ScrollPanel();
 
+    std::string getWidgetName() const override { return "ScrollPanel"; }
+
     // Corner radius of the panel
     PropertyObserver<uint32_t>  cornerRadius;
 
