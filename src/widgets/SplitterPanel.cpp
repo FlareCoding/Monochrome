@@ -44,7 +44,7 @@ namespace mc {
         if (childrenCount == 0) {
             return;
         }
-        
+
         // First make sure that there are enough
         // dividers and reset their dimensions.
         _createNecessaryDividerVisuals();
