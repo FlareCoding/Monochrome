@@ -4,6 +4,7 @@ namespace mc::mcstudio {
     Editor::Editor() {
         d_baseWidgetAdapter     = MakeRef<mcx::BaseWidgetMcxAdapter>();
         d_selectedWidgetNode    = MakeRef<mcx::McxNode>();
+        d_selectedWidgetAdapter = nullptr;
         d_selectedWidget        = nullptr;
         d_appRootContainer      = nullptr;
 
@@ -37,7 +38,7 @@ namespace mc::mcstudio {
             d_appRootContainer->addChild(widget);
             
             // Set the newly added widget as the selected one
-            _setSelectedWidget(widget);
+            setSelectedWidget(widget);
         }
     }
 
@@ -85,99 +86,110 @@ namespace mc::mcstudio {
                 auto childPos = child->getPositionInWindow();
                 auto frame = Frame(childPos, child->getComputedSizeWithMargins());
                 if (frame.containsPoint(mousePos)) {
-                    _setSelectedWidget(child);
+                    setSelectedWidget(child);
                     break;
                 }
             }
         });
     }
     
+    void Editor::setSelectedWidget(Shared<BaseWidget> widget) {
+        // To prevent memory corruption issues with the selected widget
+        // memory getting freed up but its focus has not yet been lost,
+        // we need to manually unfocus it before doing anything further.
+        if (d_selectedWidget) {
+            d_selectedWidget->unfocus();
+        }
+
+        // Clear the attributes of previously known selected widget
+        d_selectedWidgetNode->removeAllAttributes();
+
+        // Set the new selected widget
+        d_selectedWidget = widget;
+
+        // Nothing further is needed to be done if no real widget is selected
+        if (!d_selectedWidget) {
+            return;
+        }
+
+        // Find the selected widget's mcx adapter
+        d_selectedWidgetAdapter =
+            mcx::McxEngine::getMcxAdapter(d_selectedWidget->getWidgetName());
+
+        // Fill the selected widget's mcx node with the widget's properties
+        d_baseWidgetAdapter->extractProperties(d_selectedWidget, d_selectedWidgetNode);
+        d_selectedWidgetAdapter->extractProperties(d_selectedWidget, d_selectedWidgetNode);
+
+        // Display properties for the current selected widget
+        _fillPropertiesPanel();
+    }
+
+    void Editor::_fillPropertiesPanel() {
+        // Get the reference to the widget properties
+        // panel and clear it from all previous entries.
+        auto propertiesListPanel = getWidgetById<StackPanel>("propertiesListPanel");
+        propertiesListPanel->removeAllChildren();
+
+        // Add records of all basic properties
+        for (auto& prop : d_baseWidgetAdapter->getAvailableProperties()) {
+            auto propertyEntry = _createPropertyEntry(prop, true);
+            propertiesListPanel->addChild(propertyEntry);
+        }
+
+        // Empty space acting as a divider
+        auto dividingSpace = MakeRef<Label>();
+        dividingSpace->text = " ";
+        propertiesListPanel->addChild(dividingSpace);
+
+        // Add records of all custom widget properties
+        for (auto& prop : d_selectedWidgetAdapter->getAvailableProperties()) {
+            auto propertyEntry = _createPropertyEntry(prop, false);
+            propertiesListPanel->addChild(propertyEntry);
+        }
+    }
+
+    Shared<BaseWidget> Editor::_createPropertyEntry(
+        const std::string& name,
+        bool isBasicProperty
+    ) {
+        auto container = MakeRef<StackPanel>();
+        container->orientation = Horizontal;
+        container->backgroundColor = Color::transparent;
+
+        auto propertyNameLabel = MakeRef<Label>();
+        propertyNameLabel->text = name;
+        propertyNameLabel->fixedWidth = 110;
+        propertyNameLabel->marginLeft = 10;
+        propertyNameLabel->alignment = "left";
+        container->addChild(propertyNameLabel);
+
+        auto entry = MakeRef<Entry>();
+        entry->text = d_selectedWidgetNode->getAttribute(name);
+        entry->fixedWidth = 150;
+        entry->on("entered", [this, isBasicProperty](Shared<Event> e) {
+            auto target = static_cast<Entry*>(e->target);
+            auto parentContainer = static_cast<StackPanel*>(target->getParent());
+            auto propertyNameLabel = std::static_pointer_cast<Label>(parentContainer->getChild(0));
+
+            auto propName = propertyNameLabel->text.get();
+            auto propValue = target->text.get();
+            d_selectedWidgetNode->setAttribute(propName, propValue);
+            
+            if (isBasicProperty) {
+                d_baseWidgetAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
+            } else {
+                d_selectedWidgetAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
+            }
+        });
+        container->addChild(entry);
+
+        return container;
+    }
+
     Shared<BaseWidget> Editor::_spawnWidget(const std::string& widgetName) {
         auto mcxAdapter = mcx::McxEngine::getMcxAdapter(widgetName);
         auto tempNode = MakeRef<mcx::McxNode>();
 
         return mcxAdapter->createWidgetInstance(tempNode);
-    }
-
-    void Editor::_setSelectedWidget(Shared<BaseWidget> widget) {
-        if (d_selectedWidget) {
-            d_selectedWidget->unfocus();
-        }
-
-        d_selectedWidget = widget;
-        d_selectedWidgetNode->removeAllAttributes();
-
-        auto mcxAdapter = mcx::McxEngine::getMcxAdapter(d_selectedWidget->getWidgetName());
-        mcxAdapter->extractProperties(d_selectedWidget, d_selectedWidgetNode);
-
-        auto propertiesListPanel = getWidgetById<StackPanel>("propertiesListPanel");
-        propertiesListPanel->removeAllChildren();
-
-        auto baseAdapter = MakeRef<mcx::BaseWidgetMcxAdapter>();
-        baseAdapter->extractProperties(d_selectedWidget, d_selectedWidgetNode);
-
-        for (auto& prop : baseAdapter->getAvailableProperties()) {
-            auto container = MakeRef<StackPanel>();
-            container->orientation = Horizontal;
-            container->backgroundColor = Color::transparent;
-
-            auto lbl = MakeRef<Label>();
-            lbl->text = prop;
-            lbl->fixedWidth = 110;
-            lbl->marginLeft = 10;
-            lbl->alignment = "left";
-            container->addChild(lbl);
-
-            auto entry = MakeRef<Entry>();
-            entry->text = d_selectedWidgetNode->getAttribute(prop);
-            entry->fixedWidth = 150;
-            entry->on("entered", [this, mcxAdapter, baseAdapter](Shared<Event> e) {
-                auto target = static_cast<Entry*>(e->target);
-                auto parentContainer = static_cast<StackPanel*>(target->getParent());
-                auto label = std::static_pointer_cast<Label>(parentContainer->getChild(0));
-
-                auto propName = label->text.get();
-                auto propValue = target->text.get();
-                d_selectedWidgetNode->setAttribute(propName, propValue);
-                baseAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
-            });
-            container->addChild(entry);
-
-            propertiesListPanel->addChild(container);
-        }
-
-        auto lbl = MakeRef<Label>();
-        lbl->text = " ";
-        propertiesListPanel->addChild(lbl);
-
-        for (auto& prop : mcxAdapter->getAvailableProperties()) {
-            auto container = MakeRef<StackPanel>();
-            container->orientation = Horizontal;
-            container->backgroundColor = Color::transparent;
-
-            auto lbl = MakeRef<Label>();
-            lbl->text = prop;
-            lbl->fixedWidth = 110;
-            lbl->marginLeft = 10;
-            lbl->alignment = "left";
-            container->addChild(lbl);
-
-            auto entry = MakeRef<Entry>();
-            entry->text = d_selectedWidgetNode->getAttribute(prop);;
-            entry->fixedWidth = 150;
-            entry->on("entered", [this, mcxAdapter](Shared<Event> e) {
-                auto target = static_cast<Entry*>(e->target);
-                auto parentContainer = static_cast<StackPanel*>(target->getParent());
-                auto label = std::static_pointer_cast<Label>(parentContainer->getChild(0));
-
-                auto propName = label->text.get();
-                auto propValue = target->text.get();
-                d_selectedWidgetNode->setAttribute(propName, propValue);
-                mcxAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
-            });
-            container->addChild(entry);
-
-            propertiesListPanel->addChild(container);
-        }
     }
 } // namespace mc::mcstudio
