@@ -11,11 +11,24 @@ public:
     void ToolboxWidget_OnClick(Shared<Event> e);
     void RootContainerSelection_OnClick(Shared<Event> e);
 
+    // Marks a widget as the currently selected one, showing its
+    // properties and giving the user the ability to customize it.
+    void setSelectedWidget(Shared<BaseWidget> widget);
+
 private:
     // Creates and returns new widget from a given widget name
     Shared<BaseWidget> _spawnWidget(const std::string& widgetName);
 
-    void _setSelectedWidget(Shared<BaseWidget> widget);
+    // Fills the properties panel with current widget's properties
+    void _fillPropertiesPanel();
+
+    // Creates a widget container consisting of a label and an entry
+    // which upon modification will modify the selected widget's property.
+    Shared<BaseWidget> _createPropertyEntry(const std::string& name, bool isBasicProperty);
+
+private:
+    // App's root container widget
+    Shared<BaseContainerWidget> d_appRootContainer;
 
     // Node responsible for holding current selected widget's mcx information
     Shared<mcx::McxNode> d_selectedWidgetNode;
@@ -23,8 +36,8 @@ private:
     // Adapter for basic widget properties
     Shared<mcx::BaseWidgetMcxAdapter> d_baseWidgetAdapter;
 
-    // App's root container widget
-    Shared<BaseContainerWidget> d_appRootContainer;
+    // Adapter for the current selected widget
+    Shared<mcx::McxParsingAdapter> d_selectedWidgetAdapter;
 
     // Currently selected widget (either newly added or clicked on with a mouse)
     Shared<BaseWidget> d_selectedWidget;
