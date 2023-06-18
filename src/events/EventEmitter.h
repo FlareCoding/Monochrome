@@ -46,21 +46,17 @@ private:
     std::vector<std::string> d_allowedEvents;
 };
 
-/// @brief Saves the provided callback fn
+/// @brief Saves the provided callback fn 
 /// @param name Unique name for the event handler
 /// @param fn Callback function to be used in the event handler
 void registerNamedEventHandler(const std::string& name, eventEmiterCallback_t fn);
 
-/// @brief Saves the provided callback fn
+/// @brief Saves the provided callback fn 
 /// @param name Unique name for the event handler
 /// @param fn Callback class member function to be used in the event handler
 /// @param obj Class instance for the member function
 template <typename T>
-void registerNamedEventHandler(
-    const std::string& eventName,
-    void (T::* fn)(Shared<Event>),
-    T* obj
-) {
+void registerNamedEventHandler(const std::string& eventName, void (T::* fn)(Shared<Event>), T* obj) {
     registerNamedEventHandler(eventName, [fn, obj](Shared<Event> e) {
         (obj->*fn)(e);
     });

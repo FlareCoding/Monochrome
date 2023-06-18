@@ -57,5 +57,5 @@ namespace mcx {
         registerCustomColor("lightGray", Color::lightGray);
         registerCustomColor("darkGray", Color::darkGray);
     }
-} // namespace mcx
+}
 } // namespace mc
