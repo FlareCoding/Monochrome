@@ -76,19 +76,11 @@ namespace mc::mcx {
             uint8_t b = defaultValue.b;
             uint8_t a = defaultValue.a;
 
-#ifdef MC_PLATFORM_WINDOWS
             sscanf_s(
                 val.c_str(),
                 "Color(%" SCNu8 ", %" SCNu8 ", %" SCNu8 ", %" SCNu8 ")",
                 &r, &g, &b, &a
             );
-#else
-            sscanf(
-                val.c_str(),
-                "Color(%" SCNu8 ", %" SCNu8 ", %" SCNu8 ", %" SCNu8 ")",
-                &r, &g, &b, &a
-            );
-#endif
 
             return Color(r, g, b, a);
         } catch (...) {
