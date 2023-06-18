@@ -30,7 +30,7 @@ namespace mc::mcx {
     }
 
     std::string McxParsingAdapter::_toString(const Color& value) {
-        std::string result =
+        std::string result = 
                 "Color(" + _toString(value.r) + ", " + _toString(value.g) +
                 ", " + _toString(value.b);
 
@@ -41,7 +41,7 @@ namespace mc::mcx {
         result += ")";
         return result;
     }
-
+    
     std::string McxParsingAdapter::_toString(HorizontalAlignment value) {
         switch (value) {
         case HALeft: return "left";
@@ -72,7 +72,7 @@ namespace mc::mcx {
         default: return "";
         }
     }
-
+    
     std::string McxParsingAdapter::_toString(OverflowDirection value) {
         switch (value) {
         case OverflowDirection::Up: return "up";
