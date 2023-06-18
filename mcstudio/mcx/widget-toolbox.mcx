@@ -2,12 +2,12 @@
 	<DockPanel backgroundColor="transparent">
 		<Label dockAnchor="top" text="Widget Toolbox" fontSize="18" color="white" marginTop="20"/>
 		<StackPanel dockAnchor="fill" backgroundColor="transparent" marginTop="20" marginLeft="10" marginRight="10">
-			<Button text="Label" style="widget-toolbox-button"/>
-			<Button text="Button" style="widget-toolbox-button"/>
-			<Button text="Entry" style="widget-toolbox-button"/>
-			<Button text="Checkbox" style="widget-toolbox-button"/>
-			<Button text="StackPanel" style="widget-toolbox-button"/>
-			<Button text="DockPanel" style="widget-toolbox-button"/>
+			<Button text="Label" borderColor="transparent" fixedWidth="200" cornerRadius="0" marginTop="2" horizontalAlignment="center" fontSize="14" textColor="white"/>
+			<Button text="Button" borderColor="transparent" fixedWidth="200" cornerRadius="0" marginTop="2" horizontalAlignment="center"  fontSize="14" textColor="white"/>
+			<Button text="Entry" borderColor="transparent" fixedWidth="200" cornerRadius="0" marginTop="2" horizontalAlignment="center"  fontSize="14" textColor="white"/>
+			<Button text="Checkbox" borderColor="transparent" fixedWidth="200" cornerRadius="0" marginTop="2" horizontalAlignment="center"  fontSize="14" textColor="white"/>
+			<Button text="StackPanel" borderColor="transparent" fixedWidth="200" cornerRadius="0" marginTop="2" horizontalAlignment="center"  fontSize="14" textColor="white"/>
+			<Button text="DockPanel" borderColor="transparent" fixedWidth="200" cornerRadius="0" marginTop="2" horizontalAlignment="center"  fontSize="14" textColor="white"/>
 		</StackPanel>
 	</DockPanel>
 </root>

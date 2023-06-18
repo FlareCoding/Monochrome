@@ -19,10 +19,6 @@ public:
     /// @returns Whether or not an attribute exists on the mcx node
     bool hasAttribute(const std::string& name);
 
-    /// @param name The name of the attribute
-    /// @param value The new value of the attribute
-    void setAttribute(const std::string& name, const std::string& value);
-
     /// @returns Name of the current xml node name/type
     inline std::string& getType() { return d_nodeName; }
 

@@ -10,7 +10,6 @@ int main() {
 
     mc::mcstudio::GlobalRegistrationSystem::registerMcStudioColorNames();
     mc::mcstudio::McxSourceManager::initialize();
-    mc::mcstudio::McxSourceManager::loadStylesheet();
 
     auto window = mc::mcstudio::McxSourceManager::loadMainWindow();
 

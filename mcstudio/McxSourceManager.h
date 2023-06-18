@@ -20,32 +20,22 @@
 			loadWindowFile(path)); \
 	}
 
-#define ADD_LOAD_STYLESHEET_FN(fnName, path) \
-	static void fnName() { \
-		loadStylesheet(path); \
-	}
-
 // Mcx file names
-#define MCSTUDIO_MCXPATH_MAIN			"main"
-#define MCSTUDIO_MCXPATH_STYLESHEET		"stylesheet"
+#define MCSTUDIO_MCXPATH_MAIN "main"
 
 namespace mc::mcstudio {
 class McxSourceManager {
 public:
 	ADD_LOAD_WINDOW_FN(loadMainWindow, MCSTUDIO_MCXPATH_MAIN)
-	ADD_LOAD_STYLESHEET_FN(loadStylesheet, MCSTUDIO_MCXPATH_STYLESHEET)
 
 	// Initializes Mcx paths and other resources
 	static void initialize();
 
 	// Loads an mcx window file within the mcstudio directory
-	static Shared<ClassicWindow> loadWindowFile(const std::string& name);
+	static Shared<ClassicWindow> loadWindowFile(const std::string& path);
 
 	// Loads an mcx user widget file within the mcstudio directory
-	static Shared<BaseWidget> loadUserWidgetFile(const std::string& name);
-	
-	// Loads an mcx stylesheet file within the mcstudio directory
-	static void loadStylesheet(const std::string& name);
+	static Shared<BaseWidget> loadUserWidgetFile(const std::string& path);
 
 private:
 	// Constructs a proper filepath string
