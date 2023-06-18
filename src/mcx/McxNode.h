@@ -80,9 +80,6 @@ public:
     /// @returns The list of all child xml nodes
     inline std::vector<Shared<McxNode>>& getChildren() { return d_children; }
 
-    /// @brief Removes all attributes
-    inline void removeAllAttributes() { d_attribs.clear(); }
-
 private:
     const void* d_node;
     std::string d_nodeName;
