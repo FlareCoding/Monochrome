@@ -8,14 +8,17 @@ class Editor {
 public:
     Editor();
 
-    void ToolboxWidget_OnClick(Shared<Event> e);
-    void RootContainerSelection_OnClick(Shared<Event> e);
+    void toolboxWidget_OnClick(Shared<Event> e);
+    void rootContainerSelection_OnClick(Shared<Event> e);
 
     // Marks a widget as the currently selected one, showing its
     // properties and giving the user the ability to customize it.
     void setSelectedWidget(Shared<BaseWidget> widget);
 
 private:
+    // Logic pertaining to whenever the app's root container is pressed on
+    void _appRootContainer_OnClick(Shared<Event> e);
+
     // Creates and returns new widget from a given widget name
     Shared<BaseWidget> _spawnWidget(const std::string& widgetName);
 
