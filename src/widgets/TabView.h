@@ -28,8 +28,7 @@ public:
     // Creates a button in the tab bar that links to the given widget
     // @param name Name of the tab
     // @param tab Widget to be displayed in the tab
-    // @param closable Specifies whether or not you can close the tab via a close button
-    void addTab(const std::string& name, Shared<BaseWidget> tab, bool closable = false);
+    void addTab(const std::string& name, Shared<BaseWidget> tab);
 
     // Opens the specified tab
     void openTab(const std::string& name);
@@ -68,7 +67,7 @@ private:
 private:
     void _resetTabElementsProps(bool layoutChange);
 
-    TabElems _createTabElements(const std::string& tabName, bool tabClosable);
+    TabElems _createTabElements(const std::string& tabName);
     TabElems _findTabElemsByTabName(const std::string& name);
     void _removeTabElemsByTabName(const std::string& name);
 };

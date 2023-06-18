@@ -49,9 +49,6 @@ namespace mc::mcx {
                 continue;
             }
 
-            // Check if the tab is marked as closable
-            auto isTabClosable = childNode->getBoolAttribute("closable", false);
-
             // Make sure that there is a widget to be parsed inside the tab
             auto tabChildren = childNode->getChildren();
             if (tabChildren.size() != 1) {
@@ -62,7 +59,7 @@ namespace mc::mcx {
             auto tabContentNode = tabChildren.at(0);
             auto tabContent = McxEngine::parseWidget(tabContentNode);
 
-            tabView->addTab(tabName, tabContent, isTabClosable);
+            tabView->addTab(tabName, tabContent);
         }
     }
 } //namespace mc::mcx
