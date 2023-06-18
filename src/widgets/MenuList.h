@@ -12,6 +12,8 @@ public:
     MenuList();
     explicit MenuList(const std::string& name);
 
+    std::string getWidgetName() const override { return "MenuList"; }
+
     // Force shows the menu list overlay
     // window if no activator widget is set.
     void spawn(const Point& anchor = Point(50, 50));
