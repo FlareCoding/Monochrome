@@ -61,10 +61,6 @@ public:
     /// @param node Target node into which to inject the style attributes
     static void injectStyle(const std::string& style, Shared<McxNode>& node);
 
-    /// @brief Removes the injected style from the current widget environment
-    /// @param style String name of the style to be removed
-    static void removeStyle(const std::string& style);
-
     /// @brief Sets the root directory for all mcx files that will be loaded
     static void setRootMcxDirectory(const std::string& path);
 
