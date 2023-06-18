@@ -288,11 +288,6 @@ std::string generateHeaderSource() {
     // Constructor
     source.append("\t" + widgetName + "();\n\n");
 
-    // 'getWidgetName' function
-    source.append(
-        "\tstd::string getWidgetName() const override { return \"" + widgetName + "\"; }\n\n"
-    );
-
     // Public members
     for (auto& [type, name] : s_widgetConfiguration.publicProperties) {
         source.append("\t// @brief TO-DO\n");
