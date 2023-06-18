@@ -7,21 +7,6 @@ namespace mc::mcx {
         return MakeRef<MenuList>();
     }
 
-    void MenuListMcxAdapter::extractProperties(
-        Shared<BaseWidget>& widget,
-        Shared<McxNode>& mcxNode
-    ) {
-        auto menuList = std::static_pointer_cast<MenuList>(widget);
-
-        mcxNode->setAttribute("name", menuList->name);
-        mcxNode->setAttribute("borderColor", _toString(menuList->borderColor));
-        mcxNode->setAttribute("itemTextColor", _toString(menuList->itemTextColor));
-        mcxNode->setAttribute("itemBackgroundColor", _toString(menuList->itemBackgroundColor));
-        mcxNode->setAttribute("borderThickness", _toString(menuList->borderThickness));
-        mcxNode->setAttribute("itemSize", _toString(menuList->itemSize));
-        mcxNode->setAttribute("spawnDirection", _toString(menuList->spawnDirection));
-    }
-
     void MenuListMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

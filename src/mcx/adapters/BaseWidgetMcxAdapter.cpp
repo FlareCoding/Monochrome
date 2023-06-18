@@ -6,27 +6,6 @@ namespace mc::mcx {
         return nullptr;
     }
 
-    void BaseWidgetMcxAdapter::extractProperties(
-        Shared<BaseWidget>& widget,
-        Shared<McxNode>& mcxNode
-    ) {
-        mcxNode->setAttribute("zIndex", _toString(widget->zIndex));
-        mcxNode->setAttribute("visible", _toString(widget->visible));
-        mcxNode->setAttribute("fixedWidth", _toString(widget->fixedWidth));
-        mcxNode->setAttribute("fixedHeight", _toString(widget->fixedHeight));
-        mcxNode->setAttribute("minWidth", _toString(widget->minWidth));
-        mcxNode->setAttribute("minHeight", _toString(widget->minHeight));
-        mcxNode->setAttribute("maxWidth", _toString(widget->maxWidth));
-        mcxNode->setAttribute("maxHeight", _toString(widget->maxHeight));
-        mcxNode->setAttribute("marginTop", _toString(widget->marginTop));
-        mcxNode->setAttribute("marginBottom", _toString(widget->marginBottom));
-        mcxNode->setAttribute("marginLeft", _toString(widget->marginLeft));
-        mcxNode->setAttribute("marginRight", _toString(widget->marginRight));
-        mcxNode->setAttribute("horizontalAlignment", _toString(widget->horizontalAlignment));
-        mcxNode->setAttribute("verticalAlignment", _toString(widget->verticalAlignment));
-        mcxNode->setAttribute("dockAnchor", _toString(widget->dockAnchor));
-    }
-
     void BaseWidgetMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

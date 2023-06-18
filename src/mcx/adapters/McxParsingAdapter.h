@@ -13,12 +13,6 @@ public:
     /// @brief Creates and returns a native widget instance.
     virtual Shared<BaseWidget> createWidgetInstance(Shared<McxNode>& mcxNode) = 0;
 
-    /// @brief Reads the properties of a given widget instance and
-    /// assigns them as attributes to a provided mcx node instance.
-    /// @param widget Widget instance from which to read the properties
-    /// @param mcxNode Mcx node into which to read the properties as attributes
-    virtual void extractProperties(Shared<BaseWidget>& widget, Shared<McxNode>& mcxNode) = 0;
-
     /// @brief Parses the mcx node and applies the provided
     /// mcx attributes to the appropriate widget instance members.
     /// @param widget Widget instance onto which the parsed attributes should be applied
@@ -39,14 +33,5 @@ protected:
         Shared<McxNode>& mcxNode,
         Shared<BaseWidget>& widget
     );
-
-    std::string _toString(uint32_t value);
-    std::string _toString(int32_t value);
-    std::string _toString(bool value);
-    std::string _toString(const Color& value);
-    std::string _toString(HorizontalAlignment value);
-    std::string _toString(VerticalAlignment value);
-    std::string _toString(DockAnchor value);
-    std::string _toString(OverflowDirection value);
 };
 } // namespace mc::mcx

@@ -10,24 +10,6 @@ namespace mc::mcx {
         return MakeRef<Combobox>();
     }
 
-    void ComboboxMcxAdapter::extractProperties(
-        Shared<BaseWidget>& widget,
-        Shared<McxNode>& mcxNode
-    ) {
-        d_buttonAdapter->extractProperties(widget, mcxNode);
-
-        auto combobox = std::static_pointer_cast<Combobox>(widget);
-
-        mcxNode->setAttribute("overlayBorderColor", _toString(combobox->overlayBorderColor));
-        mcxNode->setAttribute("itemColor", _toString(combobox->itemColor));
-        mcxNode->setAttribute("itemBackgroundColor", _toString(combobox->itemBackgroundColor));
-        mcxNode->setAttribute("itemSize", _toString(combobox->itemSize));
-        mcxNode->setAttribute("overlayBorderThickness",
-            _toString(combobox->overlayBorderThickness));
-        mcxNode->setAttribute("overlaySpawnDirection",
-            _toString(combobox->overlaySpawnDirection));
-    }
-
     void ComboboxMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode
@@ -88,15 +70,11 @@ namespace mc::mcx {
     }
 
     std::vector<std::string> ComboboxMcxAdapter::getAvailableProperties() {
-        std::vector<std::string> props = {
+        static const std::vector<std::string> props = {
             "overlayBorderColor", "itemColor",
             "itemBackgroundColor", "overlayBorderThickness",
             "itemSize", "overlaySpawnDirection"
         };
-
-        for (auto& prop : d_buttonAdapter->getAvailableProperties()) {
-            props.push_back(prop);
-        }
 
         return props;
     }

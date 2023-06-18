@@ -6,22 +6,6 @@ namespace mc::mcx {
         return MakeRef<Label>();
     }
 
-    void LabelMcxAdapter::extractProperties(
-        Shared<BaseWidget>& widget,
-        Shared<McxNode>& mcxNode
-    ) {
-        auto label = std::static_pointer_cast<Label>(widget);
-
-        mcxNode->setAttribute("color", _toString(label->color));
-        mcxNode->setAttribute("text", label->text);
-        mcxNode->setAttribute("font", label->font);
-        mcxNode->setAttribute("fontSize", _toString(label->fontSize));
-        mcxNode->setAttribute("fontStyle", label->fontStyle);
-        mcxNode->setAttribute("textAlignment", label->alignment);
-        mcxNode->setAttribute("verticalPadding", _toString(label->verticalPadding));
-        mcxNode->setAttribute("horizontalPadding", _toString(label->horizontalPadding));
-    }
-
     void LabelMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

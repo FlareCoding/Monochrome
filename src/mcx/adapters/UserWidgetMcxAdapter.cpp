@@ -7,11 +7,6 @@ namespace mc::mcx {
         return McxEngine::parseUserWidgetFile(userWidgetFilepath);
     }
 
-    void UserWidgetMcxAdapter::extractProperties(
-        Shared<BaseWidget>& widget,
-        Shared<McxNode>& mcxNode
-    ) {}
-
     void UserWidgetMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

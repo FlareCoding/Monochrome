@@ -6,16 +6,6 @@ namespace mc::mcx {
         return MakeRef<DockPanel>();
     }
 
-    void DockPanelMcxAdapter::extractProperties(
-        Shared<BaseWidget>& widget,
-        Shared<McxNode>& mcxNode
-    ) {
-        auto dockPanel = std::static_pointer_cast<DockPanel>(widget);
-
-        mcxNode->setAttribute("backgroundColor", _toString(dockPanel->backgroundColor));
-        mcxNode->setAttribute("cornerRadius", _toString(dockPanel->cornerRadius));
-    }
-
     void DockPanelMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

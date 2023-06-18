@@ -7,19 +7,6 @@ namespace mc::mcx {
         return MakeRef<TreeView>();
     }
 
-    void TreeViewMcxAdapter::extractProperties(
-        Shared<BaseWidget>& widget,
-        Shared<McxNode>& mcxNode
-    ) {
-        auto treeView = std::static_pointer_cast<TreeView>(widget);
-
-        mcxNode->setAttribute("cornerRadius", _toString(treeView->cornerRadius));
-        mcxNode->setAttribute("itemSize", _toString(treeView->itemSize));
-        mcxNode->setAttribute("backgroundColor", _toString(treeView->backgroundColor));
-        mcxNode->setAttribute("itemTextColor", _toString(treeView->itemTextColor));
-        mcxNode->setAttribute("itemBackground", _toString(treeView->itemBackgroundColor));
-    }
-
     void TreeViewMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode

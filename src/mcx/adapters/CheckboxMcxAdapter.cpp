@@ -6,27 +6,6 @@ namespace mc::mcx {
         return MakeRef<Checkbox>();
     }
 
-    void CheckboxMcxAdapter::extractProperties(
-        Shared<BaseWidget>& widget,
-        Shared<McxNode>& mcxNode
-    ) {
-        auto checkbox = std::static_pointer_cast<Checkbox>(widget);
-
-        mcxNode->setAttribute("checked", _toString(checkbox->checked));
-        mcxNode->setAttribute("backgroundColor", _toString(checkbox->button->backgroundColor));
-        mcxNode->setAttribute("borderColor", _toString(checkbox->button->borderColor));
-        mcxNode->setAttribute("cornerRadius", _toString(checkbox->button->cornerRadius));
-        mcxNode->setAttribute("borderThickness", _toString(checkbox->button->borderThickness));
-        mcxNode->setAttribute("text", checkbox->label->text);
-        mcxNode->setAttribute("font", checkbox->label->font);
-        mcxNode->setAttribute("fontSize", _toString(checkbox->label->fontSize));
-        mcxNode->setAttribute("fontStyle", checkbox->label->fontStyle);
-        mcxNode->setAttribute("textAlignment", checkbox->label->alignment);
-        mcxNode->setAttribute("verticalPadding", _toString(checkbox->label->verticalPadding));
-        mcxNode->setAttribute("horizontalPadding", _toString(checkbox->label->horizontalPadding));
-        mcxNode->setAttribute("textColor", _toString(checkbox->label->color));
-    }
-
     void CheckboxMcxAdapter::applyProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode
