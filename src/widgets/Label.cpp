@@ -49,7 +49,7 @@ namespace mc {
             // amount of space, the layout needs to be recalculated.
             fireEvent("layoutChanged", Event::empty);
         });
-        
+
         fontStyle.on("propertyChanged", [this](Shared<Event> e) {
             // Since the text will be taking up a potentially different
             // amount of space, the layout needs to be recalculated.
