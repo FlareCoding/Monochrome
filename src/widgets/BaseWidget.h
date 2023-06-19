@@ -171,6 +171,11 @@ public:
     // @param child Child element to be added
     void addChild(Shared<BaseWidget> child);
 
+    // Adds a child to the list of widgets without causing
+    // expensive events such as "layoutChanged" event firing.
+    // @param child Child element to be added
+    void addChildOffline(Shared<BaseWidget> child);
+
     // Removes a child from the list of children
     // @param child Child element to be removed
     // @returns Status of whether a child has been removed successfully
@@ -180,6 +185,18 @@ public:
     // @param uuid ID of the child to remove
     // @returns Status of whether a child has been removed successfully
     bool removeChild(uuid_t uuid);
+
+    // Removes a child from the list of children without causing
+    // expensive events such as "layoutChanged" event firing.
+    // @param child Child element to be removed
+    // @returns Status of whether a child has been removed successfully
+    bool removeChildOffline(Shared<BaseWidget> child);
+
+    // Removes a child from the list of children without causing
+    // expensive events such as "layoutChanged" event firing.
+    // @param uuid ID of the child to remove
+    // @returns Status of whether a child has been removed successfully
+    bool removeChildOffline(uuid_t uuid);
 
     // Removes all children
     void removeAllChildren();
@@ -196,6 +213,9 @@ public:
 
     // @returns A list of all direct children widgets
     std::vector<Shared<BaseWidget>>& getChildren();
+
+    // Fires a layout changed event
+    void signalLayoutChanged();
 };
 
 /// @brief Adds an entry into a special widget

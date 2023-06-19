@@ -20,6 +20,19 @@ protected:
     // Adds a child to the list of widgets
     // @param child Child element to be added
     void _addChild(Shared<T> child) {
+        _addChildOffline(child);
+
+        fireEvent("childAdded", {
+            { "child", child.get() }
+        });
+
+        fireEvent("layoutChanged", Event::empty);
+    }
+
+    // Adds a child to the list of widgets without causing
+    // expensive events such as "layoutChanged" event firing.
+    // @param child Child element to be added
+    void _addChildOffline(Shared<T> child) {
         CORE_ASSERT((child.get() != this), "Cannot add widget as its own child");
         CORE_ASSERT(!child->getParent(), "Cannot add child, child widget already has a parent");
         CORE_ASSERT(
@@ -41,12 +54,6 @@ protected:
         child->on("zIndexChanged", [this](auto e) {
             _orderChildrenByZIndex();
         });
-
-        fireEvent("childAdded", {
-            { "child", child.get() }
-        });
-
-        fireEvent("layoutChanged", Event::empty);
     }
 
     // Removes a child from the list of children
@@ -86,12 +93,47 @@ protected:
         return false;
     }
 
+    // Removes a child from the list of children without causing
+    // expensive events such as "layoutChanged" event firing.
+    // @param child Child element to be removed
+    // @returns Status of whether a child has been removed successfully
+    bool _removeChildOffline(Shared<T> child) {
+        return _removeChildOffline(child->getID());
+    }
+
+    // Removes a child from the list of children without causing
+    // expensive events such as "layoutChanged" event firing.
+    // @param uuid ID of the child to remove
+    // @returns Status of whether a child has been removed successfully
+    bool _removeChildOffline(uuid_t uuid) {
+        for (auto it = d_children.begin(); it != d_children.end(); ++it) {
+            if (it->get()->getID() == uuid) {
+                T* child = it->get();
+
+                // Reset the child's parent
+                child->setParent(nullptr);
+
+                // Remove the zIndexChanged event listenr
+                child->off("zIndexChanged");
+
+                // Erase the child from the list
+                d_children.erase(it);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // Removes all children
     void _removeAllChildren() {
         while (d_children.size()) {
             auto firstChild = _getChild(0);
-            _removeChild(firstChild);
+            _removeChildOffline(firstChild->getID());
         }
+
+        _signalLayoutChanged();
     }
 
     // Attemts to find a child given its ID
@@ -116,6 +158,11 @@ protected:
 
     // @returns A list of all direct children widgets
     inline std::vector<Shared<T>>& _getChildren() { return d_children; }
+
+    // Fires a layout changed event
+    inline void _signalLayoutChanged() {
+        fireEvent("layoutChanged", Event::empty);
+    }
 
 private:
     std::vector<Shared<T>> d_children;
