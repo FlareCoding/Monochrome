@@ -139,19 +139,23 @@ namespace mc::mcstudio {
         // Add records of all basic properties
         for (auto& prop : d_baseWidgetAdapter->getAvailableProperties()) {
             auto propertyEntry = _createPropertyEntry(prop, true);
-            propertiesListPanel->addChild(propertyEntry);
+            propertiesListPanel->addChildOffline(propertyEntry);
         }
 
         // Empty space acting as a divider
         auto dividingSpace = MakeRef<Label>();
         dividingSpace->text = " ";
-        propertiesListPanel->addChild(dividingSpace);
+        propertiesListPanel->addChildOffline(dividingSpace);
 
         // Add records of all custom widget properties
         for (auto& prop : d_selectedWidgetAdapter->getAvailableProperties()) {
             auto propertyEntry = _createPropertyEntry(prop, false);
-            propertiesListPanel->addChild(propertyEntry);
+            propertiesListPanel->addChildOffline(propertyEntry);
         }
+
+        // Since all the children have been added in the offline mode, a.k.a no
+        // layout change events firing, the layout needs to be re-calculated.
+        propertiesListPanel->signalLayoutChanged();
     }
 
     Shared<BaseWidget> Editor::_createPropertyEntry(
