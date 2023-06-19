@@ -22,12 +22,21 @@ private:
     // Creates and returns new widget from a given widget name
     Shared<BaseWidget> _spawnWidget(const std::string& widgetName);
 
+    // Removes all property entries from the widget properties panel
+    void _clearPropertiesPanel();
+
     // Fills the properties panel with current widget's properties
     void _fillPropertiesPanel();
 
     // Creates a widget container consisting of a label and an entry
     // which upon modification will modify the selected widget's property.
     Shared<BaseWidget> _createPropertyEntry(const std::string& name, bool isBasicProperty);
+
+    // Returns the inner-most widget in the app's widget tree that a given point intersects
+    Shared<BaseWidget> _hitTestInnermostWidget(
+        Shared<BaseContainerWidget> root,
+        const Point& point
+    );
 
 private:
     // App's root container widget

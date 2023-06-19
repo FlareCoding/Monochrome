@@ -87,14 +87,8 @@ namespace mc::mcstudio {
         auto mbe = std::static_pointer_cast<MouseButtonEvent>(e);
         auto mousePos = mbe->getLocation();
 
-        for (auto& child : children) {
-            auto childPos = child->getPositionInWindow();
-            auto frame = Frame(childPos, child->getComputedSizeWithMargins());
-            if (frame.containsPoint(mousePos)) {
-                setSelectedWidget(child);
-                break;
-            }
-        }
+        auto clickedWidget = _hitTestInnermostWidget(d_appRootContainer, mousePos);
+        setSelectedWidget(clickedWidget);
     }
 
     void Editor::setSelectedWidget(Shared<BaseWidget> widget) {
@@ -113,6 +107,7 @@ namespace mc::mcstudio {
 
         // Nothing further is needed to be done if no real widget is selected
         if (!d_selectedWidget) {
+            _clearPropertiesPanel();
             return;
         }
 
@@ -126,6 +121,13 @@ namespace mc::mcstudio {
 
         // Display properties for the current selected widget
         _fillPropertiesPanel();
+    }
+
+    void Editor::_clearPropertiesPanel() {
+        // Get the reference to the widget properties
+        // panel and clear it from all previous entries.
+        auto propertiesListPanel = getWidgetById<StackPanel>("propertiesListPanel");
+        propertiesListPanel->removeAllChildren();
     }
 
     void Editor::_fillPropertiesPanel() {
@@ -195,5 +197,48 @@ namespace mc::mcstudio {
         auto tempNode = MakeRef<mcx::McxNode>();
 
         return mcxAdapter->createWidgetInstance(tempNode);
+    }
+
+    Shared<BaseWidget> Editor::_hitTestInnermostWidget(
+        Shared<BaseContainerWidget> root,
+        const Point& point
+    ) {
+        auto& children = root->getChildren();
+        
+        for (auto& child : children) {
+            // Get window-relative position of the child widget
+            auto childPos = child->getPositionInWindow();
+            
+            // Construct the frame object
+            auto frame = Frame(childPos, child->getComputedSizeWithMargins());
+
+            // Make sure the widget frame contains the given point,
+            // and skip it if it doesn't contain it.
+            if (!frame.containsPoint(point)) {
+                continue;
+            }
+
+            // If the widget is not a container, and at this point it is established
+            // that it is under the point's intersection, return this widget.
+            if (!child->isContainer()) {
+                return child;
+            }
+
+            // Now, if the widget under the intersection is a container, we
+            // have to check if there is an inner widget that also intersects the point.
+            // If there is such a widget, return it, otherwise return the current widget.
+            auto innerWidget = _hitTestInnermostWidget(
+                std::static_pointer_cast<BaseContainerWidget>(child),
+                point
+            );
+
+            if (innerWidget) {
+                return innerWidget;
+            } else {
+                return child;
+            }
+        }
+
+        return nullptr;
     }
 } // namespace mc::mcstudio
