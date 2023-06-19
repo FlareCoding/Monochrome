@@ -280,12 +280,24 @@ namespace mc {
         _addChild(child);
     }
 
+    void BaseContainerWidget::addChildOffline(Shared<BaseWidget> child) {
+        _addChildOffline(child);
+    }
+
     bool BaseContainerWidget::removeChild(Shared<BaseWidget> child) {
         return _removeChild(child);
     }
 
     bool BaseContainerWidget::removeChild(uuid_t uuid) {
         return _removeChild(uuid);
+    }
+
+    bool BaseContainerWidget::removeChildOffline(Shared<BaseWidget> child) {
+        return _removeChildOffline(child);
+    }
+
+    bool BaseContainerWidget::removeChildOffline(uuid_t uuid) {
+        return _removeChildOffline(uuid);
     }
 
     void BaseContainerWidget::removeAllChildren() {
@@ -302,6 +314,10 @@ namespace mc {
 
     std::vector<Shared<BaseWidget>>& BaseContainerWidget::getChildren() {
         return _getChildren();
+    }
+
+    void BaseContainerWidget::signalLayoutChanged() {
+        fireEvent("layoutChanged", Event::empty);
     }
 
     void registerWidgetWithUserId(const std::string& id, Shared<BaseWidget> widget) {
