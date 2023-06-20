@@ -21,10 +21,26 @@ project(Monochrome)
 set(TARGET_NAME Monochrome)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-if (APPLE OR LINUX)
-	set(ENTRY_POINT_FILE main_unix.cpp)
-else()
-	set(ENTRY_POINT_FILE main_windows.cpp)
+if (MSVC)
+    # Enable extremely aggressive optimization for Win32 Release builds:
+	# - Runtime library: Multi-threaded (/MT) as opposed to default 'Multi-threaded DLL' - static runtime library allows better LTCG inlining opportunities.
+	# - Optimization: Full Optimization (/Ox)
+	# - Inline Function Expansion: Any Suitable (/Ob2)
+	# - Enable Intrinsic Functions: Yes (/Oi)
+	# - Omit Frame Pointers: Yes (/Oy)
+	# - Favor Size Or Speed: Favor fast code (/Ot)
+	# - Enable Fiber-Safe Optimizations: Yes (/GT)
+	# - Enable String Pooling: Yes (/GF)
+	# - Buffer Security Check: No (/GS-)
+    # - Whole Program Optimization: Yes (/GL)
+	# - Build with Multiple Processes (/MP)
+	set(OPTFLAGS "/O2 /Ob2 /Oi /Oy /Ot /GT /GF /GS- /GL /MT /MP")
+
+    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${OPTFLAGS}")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${OPTFLAGS}")
+
+    SET(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELEASE} /LTCG")
+    SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG")
 endif()
 
 include_directories(
