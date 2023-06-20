@@ -200,6 +200,11 @@ namespace mc::mcstudio {
         container->addChild(propertyNameLabel);
 
         auto entry = MakeRef<Entry>();
+        entry->backgroundColor = Color::transparent;
+        entry->borderColor = Color::transparent;
+        entry->textColor = Color::white;
+        entry->cursorColor = Color::white;
+        entry->focusedBorderColor = Color(0, 240, 216);
         entry->text = d_selectedWidgetNode->getAttribute(name);
         entry->fixedWidth = 150;
         entry->on("entered", [this, isBasicProperty](Shared<Event> e) {
