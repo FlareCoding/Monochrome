@@ -1,6 +1,6 @@
 <root type="window" width="860" height="640" title="Mcx Demo">
     <DockPanel>
-        <UserWidget path="../tests/mcxapp_custom_panel.mcx"/>
+        <UserWidget path="mcxapp_custom_panel.mcx"/>
         <StackPanel backgroundColor="Color(20, 20, 20)" dockAnchor="right">
             <Button id="firstButton" text="Click Me" horizontalAlignment="center" marginTop="10"/>
             <Button text="Second Button" backgroundColor="Color(20, 120, 20)" horizontalAlignment="center" marginTop="20"/>
