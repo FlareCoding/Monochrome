@@ -9,5 +9,10 @@
 		textColor="white"
 		clicked="toolboxWidget_OnClick"/>
 	
-	<style name="mcstudio-entry" />
+	<style name="mcstudio-entry"
+		backgroundColor="transparent"
+		borderColor="transparent"
+		textColor="white"
+		cursorColor="white"
+		focusedBorderColor="Color(0, 240, 216)"/>
 </root>
