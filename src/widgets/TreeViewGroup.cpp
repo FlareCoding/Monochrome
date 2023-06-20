@@ -46,6 +46,7 @@ namespace mc {
     }
 
     void TreeViewGroup::_setupProperties() {
+        this->treeViewId = "";
         this->backgroundColor = Color::transparent;
 
         d_expandGroupButton = MakeRef<Button>();

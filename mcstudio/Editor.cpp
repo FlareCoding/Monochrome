@@ -19,10 +19,13 @@ namespace mc::mcstudio {
             return;
         }
 
+        // Get the reference for the widget tree view
+        auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
+
         // Get the widget name from the event's target
         auto target = static_cast<Button*>(e->target);
         auto widgetName = target->label->text.get();
-        
+
         // Create the new widget instance
         auto widget = _spawnWidget(widgetName);
 
@@ -34,11 +37,23 @@ namespace mc::mcstudio {
                 std::static_pointer_cast<BaseContainerWidget>(d_selectedWidget);
 
             selectedContainer->addChild(widget);
+
+            // Add the item to the appropriate sub-group in the widget tree view
+            auto subGroup =
+                widgetTreeView->getGroupById(std::to_string(selectedContainer->getID()));
+
+            subGroup->addItem(widgetName);
         } else {
             d_appRootContainer->addChild(widget);
-            
+
             // Set the newly added widget as the selected one
             setSelectedWidget(widget);
+
+            // Add the item to the root group in the widget tree view
+            auto rootGroup =
+                widgetTreeView->getGroupById(std::to_string(d_appRootContainer->getID()));
+
+            rootGroup->addItem(widgetName);
         }
     }
 
@@ -46,6 +61,7 @@ namespace mc::mcstudio {
         getWidgetById("initialRootContainerPromptLabel")->hide();
         getWidgetById("initialRootContainerPromptPanel")->hide();
 
+        // Create the root container with the appropriate type
         auto target = static_cast<Button*>(e->target);
         auto widgetName = target->label->text.get();
         auto mcxAdapter = mcx::McxEngine::getMcxAdapter(widgetName);
@@ -58,9 +74,11 @@ namespace mc::mcstudio {
         d_appRootContainer->fixedHeight = 800;
         d_appRootContainer->marginLeft = 20;
 
+        // Add the root container to the editor panel
         auto editorPanel = getWidgetById<StackPanel>("mcEditorPanel");
         editorPanel->addChild(d_appRootContainer);
 
+        // Register the root container ID
         registerWidgetWithUserId("appRootContainer", d_appRootContainer);
 
         d_appRootContainer->on("mouseUp", [](Shared<Event> e) {
@@ -76,8 +94,16 @@ namespace mc::mcstudio {
 
             _appRootContainer_OnClick(e);
         });
+
+        // Add the root container to the widget tree view
+        auto rootTreeGroup = MakeRef<TreeViewGroup>();
+        rootTreeGroup->name = widgetName;
+        rootTreeGroup->treeViewId = std::to_string(d_appRootContainer->getID());
+
+        auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
+        widgetTreeView->addGroup(rootTreeGroup);
     }
-    
+
     void Editor::_appRootContainer_OnClick(Shared<Event> e) {
         auto& children = d_appRootContainer->getChildren();
         if (children.empty()) {
@@ -184,7 +210,7 @@ namespace mc::mcstudio {
             auto propName = propertyNameLabel->text.get();
             auto propValue = target->text.get();
             d_selectedWidgetNode->setAttribute(propName, propValue);
-            
+
             if (isBasicProperty) {
                 d_baseWidgetAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
             } else {
@@ -208,11 +234,11 @@ namespace mc::mcstudio {
         const Point& point
     ) {
         auto& children = root->getChildren();
-        
+
         for (auto& child : children) {
             // Get window-relative position of the child widget
             auto childPos = child->getPositionInWindow();
-            
+
             // Construct the frame object
             auto frame = Frame(childPos, child->getComputedSizeWithMargins());
 
