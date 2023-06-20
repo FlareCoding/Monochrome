@@ -14,19 +14,24 @@ public:
     // @brief Background color of the empty space in the panel
     PropertyObserver<Color> backgroundColor;
 
-    // @brief TO-DO
+    // @brief Text color of each tree item or item group
     PropertyObserver<Color> itemTextColor;
 
-    // @brief TO-DO
+    // @brief Background color of each tree item or item group
     PropertyObserver<Color> itemBackgroundColor;
 
-    // @brief TO-DO
+    // @brief Size of each tree item or item group
     PropertyObserver<uint32_t> itemSize;
 
     void addGroup(Shared<TreeViewGroup> group);
+
     void removeGroup(const std::string& name);
     void removeGroup(Shared<TreeViewGroup> group);
+    
+    void removeGroupById(const std::string& id);
+    
     Shared<TreeViewGroup> getGroup(const std::string& name);
+    Shared<TreeViewGroup> getGroupById(const std::string& id);
 
 protected:
     Size _measureSize() override;

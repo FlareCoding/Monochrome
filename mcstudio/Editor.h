@@ -1,6 +1,5 @@
 #pragma once
-#include <widgets/AllWidgets.h>
-#include <mcx/McxEngine.h>
+#include "WidgetTreeView.h"
 #include <mcx/adapters/BaseWidgetMcxAdapter.h>
 
 namespace mc::mcstudio {
