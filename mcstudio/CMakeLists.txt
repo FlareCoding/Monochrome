@@ -10,6 +10,8 @@ add_executable(
     McxSourceManager.cpp
     Editor.h
     Editor.cpp
+    WidgetTreeView.h
+    WidgetTreeView.cpp
 
     mcx/main.mcx
     mcx/editor-panel.mcx

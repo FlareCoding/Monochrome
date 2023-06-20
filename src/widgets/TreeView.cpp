@@ -89,6 +89,18 @@ namespace mc {
         removeGroup(group->name);
     }
 
+    void TreeView::removeGroupById(const std::string& id) {
+        for (auto it = d_groups.begin(); it != d_groups.end(); ++it) {
+            auto group = *it;
+
+            if (group->treeViewId == id) {
+                d_groups.erase(it);
+                _removeChild(group);
+                break;
+            }
+        }
+    }
+
     Shared<TreeViewGroup> TreeView::getGroup(const std::string& name) {
         for (auto it = d_groups.begin(); it != d_groups.end(); ++it) {
             auto group = *it;
@@ -96,6 +108,23 @@ namespace mc {
             if (group->name.get() == name) {
                 return group;
             }
+        }
+
+        return nullptr;
+    }
+
+    Shared<TreeViewGroup> TreeView::getGroupById(const std::string& id) {
+        for (auto it = d_groups.begin(); it != d_groups.end(); ++it) {
+            auto group = *it;
+
+            if (group->treeViewId == id) {
+                return group;
+            }
+
+            /*auto innerGroupFound = group->getGroupById(id);
+            if (innerGroupFound) {
+                return innerGroupFound;
+            }*/
         }
 
         return nullptr;

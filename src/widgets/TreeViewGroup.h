@@ -14,7 +14,11 @@ public:
 
     std::string getWidgetName() const override { return "TreeViewGroup"; }
 
+    // Text that gets displayed in the tree view
     PropertyObserver<std::string> name;
+
+    // Unique ID specific to the tree view
+    std::string treeViewId;
 
     void addSubGroup(Shared<TreeViewGroup> subGroup);
     void addItem(const TreeViewItem& item);
