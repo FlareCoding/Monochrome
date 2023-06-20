@@ -13,9 +13,6 @@ typedef BOOL(__stdcall* SetProcessDpiAwarenessContextFn)(DPI_AWARENESS_CONTEXT);
 LRESULT CALLBACK setupWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK msgRedirectWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-static HHOOK s_hMouseHook = NULL;
-LRESULT CALLBACK win32LowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam);
-
 #define GET_X_LPARAM(lp)    static_cast<int>((int16_t)LOWORD(lp))
 #define GET_Y_LPARAM(lp)    static_cast<int>((int16_t)HIWORD(lp))
 
@@ -77,16 +74,6 @@ namespace mc {
             utils::PlacementConstraintSystem::registerContainer(
                 MAIN_SCREEN_CONTAINER_NAME,
                 Size(screenWidth, screenHeight)
-            );
-        }
-
-        // Create the global low-level mouse hook
-        if (!s_hMouseHook) {
-            s_hMouseHook = SetWindowsHookEx(
-                WH_MOUSE_LL,
-                win32LowLevelMouseProc,
-                GetModuleHandle(NULL),
-                0
             );
         }
 
@@ -484,6 +471,31 @@ namespace mc {
             });
 
             fireEvent("focusChanged", focusChangedEvent);
+
+            // When a window loses/gains focus, it is important to recognize
+            // the event when a mouse is clicked outside of the active window.
+            // In that case, a global mouse down event should be sent out.
+            if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+                POINT windowCursorPoint = POINT{
+                    (LONG)GET_X_LPARAM(lParam),
+                    (LONG)GET_Y_LPARAM(lParam)
+                };
+                ClientToScreen(hwnd, &windowCursorPoint);
+
+                Position screenCursorPoint = Position(
+                    windowCursorPoint.x,
+                    windowCursorPoint.y
+                );
+
+                // Go through each registered window intance
+                // and fire the global mouse clicked event.
+                for (auto window : mc::s_registeredWindows) {
+                    window->fireEvent("globalMouseDown", mc::MakeRef<mc::Event>(mc::eventDataMap_t{
+                        { "location", screenCursorPoint },
+                        { "button", mc::MouseButton::Left }
+                    }));
+                }
+            }
             break;
         }
         case WM_LBUTTONDOWN:
@@ -511,6 +523,15 @@ namespace mc {
             });
 
             fireEvent("mouseDown", mouseDownEvent);
+
+            // Go through each registered window intance
+            // and fire the global mouse clicked event.
+            for (auto window : mc::s_registeredWindows) {
+                window->fireEvent("globalMouseDown", mc::MakeRef<mc::Event>(mc::eventDataMap_t{
+                    { "location", screenCursorPoint },
+                    { "button", MouseButton::Left }
+                }));
+            }
             break;
         }
         case WM_RBUTTONDOWN:
@@ -538,6 +559,15 @@ namespace mc {
             });
 
             fireEvent("mouseDown", mouseDownEvent);
+
+            // Go through each registered window intance
+            // and fire the global mouse clicked event.
+            for (auto window : mc::s_registeredWindows) {
+                window->fireEvent("globalMouseDown", mc::MakeRef<mc::Event>(mc::eventDataMap_t{
+                    { "location", screenCursorPoint },
+                    { "button", MouseButton::Right }
+                }));
+            }
             break;
         }
         case WM_MBUTTONDOWN:
@@ -565,6 +595,15 @@ namespace mc {
             });
 
             fireEvent("mouseDown", mouseDownEvent);
+
+            // Go through each registered window intance
+            // and fire the global mouse clicked event.
+            for (auto window : mc::s_registeredWindows) {
+                window->fireEvent("globalMouseDown", mc::MakeRef<mc::Event>(mc::eventDataMap_t{
+                    { "location", screenCursorPoint },
+                    { "button", MouseButton::Middle }
+                }));
+            }
             break;
         }
         case WM_LBUTTONUP:
@@ -817,33 +856,4 @@ LRESULT msgRedirectWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
         reinterpret_cast<mc::Win32NativeWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
     return pWindow->win32WindowProcCallback(hwnd, uMsg, wParam, lParam);
-}
-
-LRESULT CALLBACK win32LowLevelMouseProc(
-    int    nCode,
-    WPARAM wParam,
-    LPARAM lParam
-) {
-    MOUSEHOOKSTRUCT* pMouseStruct = reinterpret_cast<MOUSEHOOKSTRUCT*>(lParam);
-    if (pMouseStruct != NULL) {
-        if (wParam == WM_LBUTTONDOWN) {
-            // Convert the mouse position to
-            // a monochrome Position struct.
-            mc::Position cursorPosition = {
-                (int32_t)pMouseStruct->pt.x,
-                (int32_t)pMouseStruct->pt.y
-            };
-
-            // Go through each registered window intance
-            // and fire the global mouse clicked event.
-            for (auto window : mc::s_registeredWindows) {
-                window->fireEvent("globalMouseDown", mc::MakeRef<mc::Event>(mc::eventDataMap_t{
-                    { "location", cursorPosition },
-                    { "button", mc::MouseButton::Left }
-                }));
-            }
-        }
-    }
-
-    return CallNextHookEx(s_hMouseHook, nCode, wParam, lParam);
 }
