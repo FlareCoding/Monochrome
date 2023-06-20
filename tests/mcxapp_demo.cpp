@@ -8,7 +8,7 @@
 #include <utils/FileWatcher.h>
 using namespace mc;
 
-const std::string rootMcxFilepath = "../tests/mcxapp_demo.mcx";
+const std::string rootMcxFilepath = "./mcxapp_demo.mcx";
 
 int main() {
     AppManager::registerApplication("appId-mcxapp-demo");
