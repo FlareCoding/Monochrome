@@ -3,7 +3,25 @@
 #include "Button.h"
 
 namespace mc {
-using TreeViewItem = std::string;
+struct TreeViewItem {
+    std::string name;
+    std::string key;
+
+    TreeViewItem() = default;
+
+    TreeViewItem(
+        const std::string& name,
+        const std::string& key
+    ) : name(name), key(key) {}
+
+    bool operator==(const TreeViewItem& item) {
+        return (this->key == item.key);
+    }
+
+    bool operator<(const TreeViewItem& item) const {
+        return (this->key.c_str() < item.key.c_str());
+    }
+};
 
 class TreeViewGroup : public StackPanel {
 friend class TreeView;
@@ -18,18 +36,22 @@ public:
     PropertyObserver<std::string> name;
 
     // Unique ID specific to the tree view
-    std::string treeViewId;
+    std::string key;
 
     void addSubGroup(Shared<TreeViewGroup> subGroup);
     void addItem(const TreeViewItem& item);
+    void addItem(const std::string& name, const std::string& key = "");
 
-    // Removes an item or a sub-group that matches the given name.
-    // @returns true if the item or sub-group was
-    // successfully found and removed, false otherwise.
-    bool remove(const std::string& name);
+    // Removes a node that matches the given key.
+    // @returns true if the node was successfully
+    // found and removed, false otherwise.
+    bool removeNodeByKey(const std::string& key);
 
-    // @returns Shared pointer to the TreeViewGroup associated with the given name
-    Shared<TreeViewGroup> getGroup(const std::string& name);
+    // @returns Shared pointer to the TreeViewGroup associated with the given key
+    Shared<TreeViewGroup> findGroupByKey(const std::string& key);
+
+    // @returns Shared pointer to the TreeViewGroup associated with the given key
+    TreeViewItem findItemByKey(const std::string& key);
 
 private:
     void _setupProperties();
@@ -42,8 +64,11 @@ private:
     bool d_groupOpened = true;
     Shared<Button> d_expandGroupButton;
 
-    std::map<std::string, Shared<Button>> d_items;
-    std::map<std::string, Shared<TreeViewGroup>> d_subGroups;
+    // { name, key } -> button associated with the item
+    std::map<TreeViewItem, Shared<Button>> d_items;
+
+    // { name, key } -> treeview group
+    std::map<TreeViewItem, Shared<TreeViewGroup>> d_subGroups;
 
 private:
     const char downArrowUtf8Prefix[6] = {

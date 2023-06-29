@@ -25,13 +25,11 @@ public:
 
     void addGroup(Shared<TreeViewGroup> group);
 
-    void removeGroup(const std::string& name);
     void removeGroup(Shared<TreeViewGroup> group);
-    
-    void removeGroupById(const std::string& id);
-    
-    Shared<TreeViewGroup> getGroup(const std::string& name);
-    Shared<TreeViewGroup> getGroupById(const std::string& id);
+    bool removeNodeByKey(const std::string& key);
+
+    Shared<TreeViewGroup> findGroupByKey(const std::string& key);
+    TreeViewItem findItemByKey(const std::string& key);
 
 protected:
     Size _measureSize() override;
