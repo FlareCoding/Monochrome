@@ -73,60 +73,57 @@ namespace mc {
         _addChild(group);
     }
 
-    void TreeView::removeGroup(const std::string& name) {
-        for (auto it = d_groups.begin(); it != d_groups.end(); ++it) {
-            auto group = *it;
-
-            if (group->name.get() == name) {
-                d_groups.erase(it);
-                _removeChild(group);
-                break;
-            }
-        }
-    }
-
     void TreeView::removeGroup(Shared<TreeViewGroup> group) {
-        removeGroup(group->name);
+        removeNodeByKey(group->key);
     }
 
-    void TreeView::removeGroupById(const std::string& id) {
+    bool TreeView::removeNodeByKey(const std::string& key) {
         for (auto it = d_groups.begin(); it != d_groups.end(); ++it) {
             auto group = *it;
 
-            if (group->treeViewId == id) {
+            if (group->key == key) {
                 d_groups.erase(it);
                 _removeChild(group);
                 break;
+            } else {
+                // Check if any of the inner nodes have the given key
+                if (group->removeNodeByKey(key)) {
+                    return true;
+                }
             }
         }
+
+        return false;
     }
 
-    Shared<TreeViewGroup> TreeView::getGroup(const std::string& name) {
+    Shared<TreeViewGroup> TreeView::findGroupByKey(const std::string& key) {
         for (auto it = d_groups.begin(); it != d_groups.end(); ++it) {
             auto group = *it;
 
-            if (group->name.get() == name) {
+            if (group->key == key) {
                 return group;
+            } else {
+                // Check if any of the inner groups have the given key
+                auto innerGroup = group->findGroupByKey(key);
+                if (innerGroup) {
+                    return innerGroup;
+                }
             }
         }
 
         return nullptr;
     }
 
-    Shared<TreeViewGroup> TreeView::getGroupById(const std::string& id) {
+    TreeViewItem TreeView::findItemByKey(const std::string& key) {
         for (auto it = d_groups.begin(); it != d_groups.end(); ++it) {
             auto group = *it;
 
-            if (group->treeViewId == id) {
-                return group;
+            auto item = group->findItemByKey(key);
+            if (!item.name.empty()) {
+                return item;
             }
-
-            /*auto innerGroupFound = group->getGroupById(id);
-            if (innerGroupFound) {
-                return innerGroupFound;
-            }*/
         }
 
-        return nullptr;
+        return TreeViewItem();
     }
 } // namespace mc
