@@ -48,6 +48,7 @@ namespace mc::mcstudio {
                 auto newGroup = MakeRef<TreeViewGroup>();
                 newGroup->name = widgetName;
                 newGroup->key = std::to_string(widget->getID());
+                newGroup->persistentSelection = true;
 
                 subGroup->addSubGroup(newGroup);
             } else {
@@ -69,6 +70,7 @@ namespace mc::mcstudio {
                 auto newGroup = MakeRef<TreeViewGroup>();
                 newGroup->name = widgetName;
                 newGroup->key = std::to_string(widget->getID());
+                newGroup->persistentSelection = true;
 
                 rootGroup->addSubGroup(newGroup);
             } else {
@@ -119,6 +121,7 @@ namespace mc::mcstudio {
         auto rootTreeGroup = MakeRef<TreeViewGroup>();
         rootTreeGroup->name = widgetName;
         rootTreeGroup->key = std::to_string(d_appRootContainer->getID());
+        rootTreeGroup->persistentSelection = true;
 
         auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
         widgetTreeView->addGroup(rootTreeGroup);
