@@ -320,6 +320,28 @@ namespace mc {
         fireEvent("layoutChanged", Event::empty);
     }
 
+    Shared<BaseWidget> BaseContainerWidget::deepSearchWidgetByUuid(uuid_t id) {
+        for (auto& child : _getChildren()) {
+            if (child->getID() == id) {
+                return child;
+            }
+
+            // Check if the child is a container, and if so,
+            // see if the child's subtree contains the target.
+            if (child->isContainer()) {
+                auto container = std::static_pointer_cast<BaseContainerWidget>(child);
+                auto subtreeChildWidget = container->deepSearchWidgetByUuid(id);
+
+                // If the subtreeChildWidget is a valid widget, return it
+                if (subtreeChildWidget) {
+                    return subtreeChildWidget;
+                }
+            }
+        }
+
+        return nullptr;
+    }
+
     void registerWidgetWithUserId(const std::string& id, Shared<BaseWidget> widget) {
         s_widgetUserIdRegistry[id] = widget;
     }
