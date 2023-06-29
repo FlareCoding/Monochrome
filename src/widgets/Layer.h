@@ -96,7 +96,7 @@ enum class OverflowDirection {
     Right
 };
 
-enum Orientaion {
+enum Orientation {
     Horizontal,
     Vertical
 };

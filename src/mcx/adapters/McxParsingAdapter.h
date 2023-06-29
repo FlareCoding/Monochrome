@@ -46,6 +46,7 @@ protected:
     std::string _toString(const Color& value);
     std::string _toString(HorizontalAlignment value);
     std::string _toString(VerticalAlignment value);
+    std::string _toString(Orientation value);
     std::string _toString(DockAnchor value);
     std::string _toString(OverflowDirection value);
 };
