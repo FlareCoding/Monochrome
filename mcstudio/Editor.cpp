@@ -122,6 +122,13 @@ namespace mc::mcstudio {
 
         auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
         widgetTreeView->addGroup(rootTreeGroup);
+        widgetTreeView->on("itemSelected", [this](Shared<Event> e) {
+            const auto key = e->get<std::string>("key");
+            const uuid_t id = static_cast<uuid_t>(std::stoull(key));
+
+            auto widget = d_appRootContainer->deepSearchWidgetByUuid(id);
+            setSelectedWidget(widget);
+        });
     }
 
     void Editor::_appRootContainer_OnClick(Shared<Event> e) {

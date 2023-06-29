@@ -216,6 +216,13 @@ public:
 
     // Fires a layout changed event
     void signalLayoutChanged();
+
+    // Recurses down the widget sub-tree in
+    // attempt to find a widget with the given ID.
+    // @param id UUID of the widget to find
+    // @returns A widget in a sub-tree with the given ID,
+    //          nullptr if such widget could not be found.
+    Shared<BaseWidget> deepSearchWidgetByUuid(uuid_t id);
 };
 
 /// @brief Adds an entry into a special widget

@@ -104,12 +104,21 @@ namespace mc {
 
     void TreeViewGroup::_onItemClicked(Shared<Event> e) {
         auto button = static_cast<Button*>(e->target);
-
         button->backgroundColor = Color(160, 160, 160, 80);
         button->borderColor = Color::white;
 
+        // Find the key for the current item
+        std::string key = "";
+        for (auto& [item, itemBtn] : d_items) {
+            if (button->getID() == itemBtn->getID()) {
+                key = item.key;
+                break;
+            }
+        }
+
         fireEvent("itemSelected", {
-            { "item", button->label->text.get() }
+            { "item", button->label->text.get() },
+            { "key", key}
         }, this);
     }
 
