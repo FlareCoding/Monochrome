@@ -60,12 +60,15 @@ public:
 private:
     void _setupProperties();
 
+    void _onItemSelected(Shared<Event> e);
     void _onGroupNameChanged(Shared<Event> e);
     void _expandButtonOnClick(Shared<Event> e);
     void _onItemClicked(Shared<Event> e);
     void _onItemLostFocus(Shared<Event> e);
 
     void _removeAllHighlights();
+    void _highlightItemButton(Button* btn);
+    void _removeHighlightFromItemButton(Button* btn);
 
     bool d_groupOpened = true;
     Shared<Button> d_expandGroupButton;
