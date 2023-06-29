@@ -71,6 +71,23 @@ namespace mc {
         name.forwardEmittedEvents(this);
 
         cursorType = CursorType::Hand;
+
+        on("itemSelected", &TreeViewGroup::_onItemSelected, this);
+    }
+
+    void TreeViewGroup::_onItemSelected(Shared<Event> e) {
+        auto selectedKey = e->get<std::string>("key");
+
+        // Remove highlights from unselected item buttons
+        for (auto& [item, btn] : d_items) {
+            if (selectedKey != item.key) {
+                _removeHighlightFromItemButton(btn.get());
+            }
+        }
+
+        if (selectedKey != key) {
+            _removeHighlightFromItemButton(d_expandGroupButton.get());
+        }
     }
 
     void TreeViewGroup::_onGroupNameChanged(Shared<Event> e) {
@@ -83,10 +100,6 @@ namespace mc {
     }
 
     void TreeViewGroup::_expandButtonOnClick(Shared<Event> e) {
-        /*auto button = static_cast<Button*>(e->target);
-        button->backgroundColor = Color(160, 160, 160, 80);
-        button->borderColor = Color::white;*/
-
         if (d_groupOpened) {
             _removeAllHighlights();
 
@@ -106,6 +119,14 @@ namespace mc {
             d_expandGroupButton->label->text = downArrowUtf8Prefix + name.get();
             d_groupOpened = true;
         }
+
+        // Highlight the group button
+        _highlightItemButton(d_expandGroupButton.get());
+
+        fireEvent("itemSelected", {
+            { "item", name },
+            { "key", key}
+        }, this);
     }
 
     void TreeViewGroup::_onItemClicked(Shared<Event> e) {
@@ -114,8 +135,7 @@ namespace mc {
 
         // Highlight the current selected item
         auto button = static_cast<Button*>(e->target);
-        button->backgroundColor = Color(160, 160, 160, 80);
-        button->borderColor = Color::white;
+        _highlightItemButton(button);
 
         // Find the key for the current item
         std::string key = "";
@@ -138,16 +158,32 @@ namespace mc {
         }
 
         auto button = static_cast<Button*>(e->target);
-
-        button->backgroundColor = Color::transparent;
-        button->borderColor = Color::transparent;
+        _removeHighlightFromItemButton(button);
     }
 
     void TreeViewGroup::_removeAllHighlights() {
-        for (auto& [item, btn] : d_items) {
-            btn->backgroundColor = Color::transparent;
-            btn->borderColor = Color::transparent;
+        // Remove highlights from nested sub-groups
+        for (auto& [item, subGroup] : d_subGroups) {
+            subGroup->_removeAllHighlights();
         }
+
+        // Remove highlights from item buttons
+        for (auto& [item, btn] : d_items) {
+            _removeHighlightFromItemButton(btn.get());
+        }
+
+        // Remove hightlight from the group expansiom button
+        _removeHighlightFromItemButton(d_expandGroupButton.get());
+    }
+
+    void TreeViewGroup::_highlightItemButton(Button* btn) {
+        btn->backgroundColor = Color(160, 160, 160, 80);
+        btn->borderColor = Color::white;
+    }
+
+    void TreeViewGroup::_removeHighlightFromItemButton(Button* btn) {
+        btn->backgroundColor = Color::transparent;
+        btn->borderColor = Color::transparent;
     }
 
     bool TreeViewGroup::removeNodeByKey(const std::string& key) {
