@@ -62,6 +62,14 @@ namespace mc::mcx {
         }
     }
 
+    std::string McxParsingAdapter::_toString(Orientation value) {
+        switch (value) {
+        case Horizontal: return "horizontal";
+        case Vertical: return "vertical";
+        default: return "";
+        }
+    }
+
     std::string McxParsingAdapter::_toString(DockAnchor value) {
         switch (value) {
         case DockAnchor::Top: return "top";

@@ -14,7 +14,7 @@ namespace mc {
         for (auto& child : _getChildren()) {
             auto childSizeWithMargins = child->getDesiredSizeWithMargins();
 
-            if (orientation == Orientaion::Vertical) {
+            if (orientation == Vertical) {
                 availablePos.y += childSizeWithMargins.height;
 
                 // Keeping track of content size
@@ -49,7 +49,7 @@ namespace mc {
             // Advance the available insertion position
             auto childSizeWithMargins = child->getComputedSizeWithMargins();
 
-            if (orientation == Orientaion::Vertical) {
+            if (orientation == Vertical) {
                 childSlotPosition.y += childSizeWithMargins.height;
             } else {
                 childSlotPosition.x += childSizeWithMargins.width;
@@ -65,7 +65,7 @@ namespace mc {
         auto finalSize = child->getDesiredSize();
         auto finalPosition = Position(0, 0);
 
-        if (orientation == Orientaion::Vertical) {
+        if (orientation == Vertical) {
             finalPosition.y = static_cast<int32_t>(child->marginTop) + childSlotPosition.y;
 
             switch (child->horizontalAlignment) {
@@ -140,7 +140,7 @@ namespace mc {
         cornerRadius = 2;
         cornerRadius.forwardEmittedEvents(this);
 
-        orientation = Orientaion::Vertical;
+        orientation = Vertical;
         orientation.forwardEmittedEvents(this);
     }
 } // namespace mc

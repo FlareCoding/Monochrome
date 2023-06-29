@@ -25,7 +25,7 @@ public:
 
     // Direction in which the content
     // will be layed out inside the panel.
-    PropertyObserver<Orientaion> orientation;
+    PropertyObserver<Orientation> orientation;
 
     //
     // Specifies how big each section should
