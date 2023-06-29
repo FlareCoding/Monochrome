@@ -83,7 +83,13 @@ namespace mc {
     }
 
     void TreeViewGroup::_expandButtonOnClick(Shared<Event> e) {
+        /*auto button = static_cast<Button*>(e->target);
+        button->backgroundColor = Color(160, 160, 160, 80);
+        button->borderColor = Color::white;*/
+
         if (d_groupOpened) {
+            _removeAllHighlights();
+
             auto& children = _getChildren();
             for (uint64_t i = 1; i < children.size(); ++i) {
                 children.at(i)->hide();
@@ -103,6 +109,10 @@ namespace mc {
     }
 
     void TreeViewGroup::_onItemClicked(Shared<Event> e) {
+        // Dehighlight all items first
+        _removeAllHighlights();
+
+        // Highlight the current selected item
         auto button = static_cast<Button*>(e->target);
         button->backgroundColor = Color(160, 160, 160, 80);
         button->borderColor = Color::white;
@@ -123,10 +133,21 @@ namespace mc {
     }
 
     void TreeViewGroup::_onItemLostFocus(Shared<Event> e) {
+        if (persistentSelection) {
+            return;
+        }
+
         auto button = static_cast<Button*>(e->target);
 
         button->backgroundColor = Color::transparent;
         button->borderColor = Color::transparent;
+    }
+
+    void TreeViewGroup::_removeAllHighlights() {
+        for (auto& [item, btn] : d_items) {
+            btn->backgroundColor = Color::transparent;
+            btn->borderColor = Color::transparent;
+        }
     }
 
     bool TreeViewGroup::removeNodeByKey(const std::string& key) {

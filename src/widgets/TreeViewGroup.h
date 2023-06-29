@@ -38,6 +38,10 @@ public:
     // Unique ID specific to the tree view
     std::string key;
 
+    // @brief Determines whether items stay
+    // selected or not when they lose focus.
+    bool persistentSelection = false;
+
     void addSubGroup(Shared<TreeViewGroup> subGroup);
     void addItem(const TreeViewItem& item);
     void addItem(const std::string& name, const std::string& key = "");
@@ -60,6 +64,8 @@ private:
     void _expandButtonOnClick(Shared<Event> e);
     void _onItemClicked(Shared<Event> e);
     void _onItemLostFocus(Shared<Event> e);
+
+    void _removeAllHighlights();
 
     bool d_groupOpened = true;
     Shared<Button> d_expandGroupButton;
