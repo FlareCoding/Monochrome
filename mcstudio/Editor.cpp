@@ -40,9 +40,19 @@ namespace mc::mcstudio {
 
             // Add the item to the appropriate sub-group in the widget tree view
             auto subGroup =
-                widgetTreeView->getGroupById(std::to_string(selectedContainer->getID()));
+                widgetTreeView->findGroupByKey(std::to_string(selectedContainer->getID()));
 
-            subGroup->addItem(widgetName);
+            // Determine whether to add another tree group or just an item
+            // depending on if the new widget is a container or not.
+            if (widget->isContainer()) {
+                auto newGroup = MakeRef<TreeViewGroup>();
+                newGroup->name = widgetName;
+                newGroup->key = std::to_string(widget->getID());
+
+                subGroup->addSubGroup(newGroup);
+            } else {
+                subGroup->addItem(widgetName, std::to_string(widget->getID()));
+            }
         } else {
             d_appRootContainer->addChild(widget);
 
@@ -51,9 +61,19 @@ namespace mc::mcstudio {
 
             // Add the item to the root group in the widget tree view
             auto rootGroup =
-                widgetTreeView->getGroupById(std::to_string(d_appRootContainer->getID()));
+                widgetTreeView->findGroupByKey(std::to_string(d_appRootContainer->getID()));
 
-            rootGroup->addItem(widgetName);
+            // Determine whether to add another tree group or just an item
+            // depending on if the new widget is a container or not.
+            if (widget->isContainer()) {
+                auto newGroup = MakeRef<TreeViewGroup>();
+                newGroup->name = widgetName;
+                newGroup->key = std::to_string(widget->getID());
+
+                rootGroup->addSubGroup(newGroup);
+            } else {
+                rootGroup->addItem(widgetName, std::to_string(widget->getID()));
+            }
         }
     }
 
@@ -98,7 +118,7 @@ namespace mc::mcstudio {
         // Add the root container to the widget tree view
         auto rootTreeGroup = MakeRef<TreeViewGroup>();
         rootTreeGroup->name = widgetName;
-        rootTreeGroup->treeViewId = std::to_string(d_appRootContainer->getID());
+        rootTreeGroup->key = std::to_string(d_appRootContainer->getID());
 
         auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
         widgetTreeView->addGroup(rootTreeGroup);

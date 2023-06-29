@@ -22,7 +22,7 @@ namespace mc {
         subGroup->forwardEmittedEvent(this, "itemSelected");
         addChild(subGroup);
 
-        d_subGroups.insert({ subGroup->name.get(), subGroup });
+        d_subGroups.insert({ TreeViewItem(subGroup->name.get(), subGroup->key), subGroup });
     }
 
     void TreeViewGroup::addItem(const TreeViewItem& item) {
@@ -35,18 +35,23 @@ namespace mc {
         itemButton->mousePressedColor = Color(160, 160, 160, 80);
         itemButton->label->alignment = "left";
         itemButton->label->verticalPadding = 4;
-        itemButton->label->text = item;
+        itemButton->label->text = item.name;
         itemButton->marginLeft = TREE_INDENT_MARGIN;
         itemButton->zIndex = 1;
         itemButton->on("clicked", &TreeViewGroup::_onItemClicked, this);
         itemButton->on("lostFocus", &TreeViewGroup::_onItemLostFocus, this);
         addChild(itemButton);
 
-        d_items.insert({ item, itemButton });
+        d_items.insert({ TreeViewItem(item.name, item.key), itemButton });
+    }
+
+    void TreeViewGroup::addItem(const std::string& name, const std::string& key) {
+        auto item = TreeViewItem(name, key);
+        addItem(item);
     }
 
     void TreeViewGroup::_setupProperties() {
-        this->treeViewId = "";
+        this->key = "";
         this->backgroundColor = Color::transparent;
 
         d_expandGroupButton = MakeRef<Button>();
@@ -115,33 +120,62 @@ namespace mc {
         button->borderColor = Color::transparent;
     }
 
-    bool TreeViewGroup::remove(const std::string& name) {
+    bool TreeViewGroup::removeNodeByKey(const std::string& key) {
         // Check if the name is from the item
-        if (d_items.find(name) != d_items.end()) {
-            auto itemButton = d_items.at(name);
-            removeChild(itemButton);
-
-            d_items.erase(name);
-            return true;
+        for (auto& it : d_items) {
+            auto& treeItem = it.first;
+            if (treeItem.key == key) {
+                d_items.erase(it.first);
+                return true;
+            }
         }
 
         // Check if the name is from the subgroup
-        if (d_subGroups.find(name) != d_subGroups.end()) {
-            auto subGroup = d_subGroups.at(name);
-            removeChild(subGroup);
+        for (auto& it : d_subGroups) {
+            auto& treeItem = it.first;
+            auto& subGroup = it.second;
 
-            d_subGroups.erase(name);
-            return true;
+            if (treeItem.key == key) {
+                d_items.erase(it.first);
+                return true;
+            } else {
+                // Check if an inner group has a child with the given key
+                if (subGroup->removeNodeByKey(key)) {
+                    return true;
+                }
+            }
         }
 
         return false;
     }
 
-    Shared<TreeViewGroup> TreeViewGroup::getGroup(const std::string& name) {
-        if (d_subGroups.find(name) == d_subGroups.end()) {
-            return nullptr;
+    Shared<TreeViewGroup> TreeViewGroup::findGroupByKey(const std::string& key) {
+        for (auto& it : d_subGroups) {
+            auto& treeItem = it.first;
+            auto& subGroup = it.second;
+
+            if (treeItem.key == key) {
+                return subGroup;
+            } else {
+                // Check if an inner group node has a child with the given key
+                auto innerGroup = subGroup->findGroupByKey(key);
+                if (innerGroup) {
+                    return innerGroup;
+                }
+            }
         }
 
-        return d_subGroups.at(name);
+        return nullptr;
+    }
+
+    TreeViewItem TreeViewGroup::findItemByKey(const std::string& key) {
+        for (auto& it : d_items) {
+            auto& treeItem = it.first;
+            if (treeItem.key == key) {
+                return treeItem;
+            }
+        }
+
+        return TreeViewItem();
     }
 } // namespace mc
