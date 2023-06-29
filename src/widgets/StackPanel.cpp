@@ -142,5 +142,8 @@ namespace mc {
 
         orientation = Vertical;
         orientation.forwardEmittedEvents(this);
+        orientation.on("propertyChanged", [this](Shared<Event> e) {
+            signalLayoutChanged();
+        });
     }
 } // namespace mc
