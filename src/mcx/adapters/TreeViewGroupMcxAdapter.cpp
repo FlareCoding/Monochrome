@@ -14,6 +14,8 @@ namespace mc::mcx {
         auto treeViewGroup = std::static_pointer_cast<TreeViewGroup>(widget);
 
         mcxNode->setAttribute("name", treeViewGroup->name);
+        mcxNode->setAttribute("persistentSelection",
+            _toString(treeViewGroup->persistentSelection));
     }
 
     void TreeViewGroupMcxAdapter::applyProperties(
@@ -64,7 +66,7 @@ namespace mc::mcx {
 
     std::vector<std::string> TreeViewGroupMcxAdapter::getAvailableProperties() {
         static const std::vector<std::string> props = {
-            "name"
+            "name", "persistentSelection"
         };
 
         return props;
