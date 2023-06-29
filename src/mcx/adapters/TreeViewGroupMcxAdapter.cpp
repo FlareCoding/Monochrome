@@ -27,6 +27,9 @@ namespace mc::mcx {
         treeViewGroup->name =
             mcxNode->getAttribute("name", treeViewGroup->name);
 
+        treeViewGroup->persistentSelection =
+            mcxNode->getBoolAttribute("persistentSelection", treeViewGroup->persistentSelection);
+
         // Handle child nodes as items to be added
         for (auto& childNode : mcxNode->getChildren()) {
             auto nodeType = childNode->getType();
