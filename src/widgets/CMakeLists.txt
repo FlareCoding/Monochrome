@@ -29,6 +29,7 @@ set(
     ${cwd}/Combobox.h
     ${cwd}/TreeViewGroup.h
     ${cwd}/TreeView.h
+    ${cwd}/TreeView2.h
     ${cwd}/Image.h
     ${cwd}/StackPanel.h
     ${cwd}/ScrollPanel.h
@@ -57,6 +58,7 @@ set(
     ${cwd}/Combobox.cpp
     ${cwd}/TreeViewGroup.cpp
     ${cwd}/TreeView.cpp
+    ${cwd}/TreeView2.cpp
     ${cwd}/Image.cpp
     ${cwd}/StackPanel.cpp
     ${cwd}/ScrollPanel.cpp
