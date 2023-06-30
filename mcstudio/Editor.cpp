@@ -132,6 +132,10 @@ namespace mc::mcstudio {
             auto widget = d_appRootContainer->deepSearchWidgetByUuid(id);
             setSelectedWidget(widget);
         });
+
+        // ========== TETS ========== //
+        auto treeViewTest = MakeRef<TreeView2>();
+        d_appRootContainer->addChild(treeViewTest);
     }
 
     void Editor::_appRootContainer_OnClick(Shared<Event> e) {
