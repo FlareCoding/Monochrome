@@ -2,8 +2,14 @@
 #include "Button.h"
 
 namespace mc {
-class TreeViewNode {
+class TreeViewNode : public EventEmitter {
 public:
+    TreeViewNode();
+    TreeViewNode(
+        const std::string& itemText,
+        const std::string& key = ""
+    );
+
     std::string itemText;
     std::string key;
 
@@ -14,17 +20,30 @@ public:
 
     void addChild(Shared<TreeViewNode> node);
     void addChild(const std::string& itemText, const std::string& key = "");
-    void insertChild(Shared<TreeViewNode> node, Shared<TreeViewNode> beforeChild);
+
+    void insertChildBefore(Shared<TreeViewNode> node, Shared<TreeViewNode> beforeChild);
+    void insertChildAfter(Shared<TreeViewNode> node, Shared<TreeViewNode> afterChild);
 
     void removeChild(Shared<TreeViewNode> node);
     void removeChild(const std::string& key);
 
     bool hasChildWithKey(const std::string& key);
+    Shared<TreeViewNode> getChildWithKey(const std::string& key);
+    Shared<TreeViewNode> findChildByKey(const std::string& key);
 
-    inline std::vector<Shared<TreeViewNode>>& getChildren() { return d_children; }
+    Shared<TreeViewNode> firstChild();
+    Shared<TreeViewNode> lastChild();
+
+    inline std::vector<Shared<TreeViewNode>>& getChildren() {
+        return d_children;
+    }
 
 private:
+    void _appendAllowedEvents();
+    void _invalidateKeyIndexMap();
+
     std::vector<Shared<TreeViewNode>> d_children;
+    std::map<std::string, size_t> d_nodeKeyIndexMap;
 };
 
 class TreeView2 : public BaseWidget {
@@ -36,6 +55,8 @@ public:
     // @brief Background color of the empty space in the panel
     PropertyObserver<Color> backgroundColor;
 
+    void setRootNode(Shared<TreeViewNode> node);
+
 protected:
     Size _measureSize() override;
     void _onArrangeChildren() override;
@@ -43,5 +64,19 @@ protected:
 private:
     void _createVisuals();
     void _setupProperties();
+
+    void _onTreeChanged(Shared<Event> e);
+
+    void _traverseTreeNodes(
+        Shared<TreeViewNode> root,
+        int level,
+        std::function<void(TreeViewNode*, int)> callback
+    );
+
+private:
+    Shared<TreeViewNode> d_rootNode;
+    const int d_rootNodeLevel = 0;
+
+    std::map<TreeViewNode*, std::pair<Shared<Button>, int>> d_nodeButtons;
 };
 } // namespace mc

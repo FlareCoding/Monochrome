@@ -136,6 +136,23 @@ namespace mc::mcstudio {
         // ========== TETS ========== //
         auto treeViewTest = MakeRef<TreeView2>();
         d_appRootContainer->addChild(treeViewTest);
+
+        auto group1Node = MakeRef<TreeViewNode>("Group 1", "group1");
+        
+        auto item1Node = MakeRef<TreeViewNode>("Item 1", "item1");
+        group1Node->addChild(item1Node);
+
+        auto item2Node = MakeRef<TreeViewNode>("Item 2", "item2");
+        auto item3Node = MakeRef<TreeViewNode>("Item 3", "item3");
+
+        auto rootNode = MakeRef<TreeViewNode>();
+        rootNode->addChild(group1Node);
+        
+        treeViewTest->setRootNode(rootNode);
+        std::static_pointer_cast<StackPanel>(d_appRootContainer)->backgroundColor = Color(20, 26, 30);
+
+        rootNode->addChild(item2Node);
+        rootNode->addChild(item3Node);
     }
 
     void Editor::_appRootContainer_OnClick(Shared<Event> e) {
