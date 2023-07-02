@@ -39,6 +39,8 @@ public:
         return d_children;
     }
 
+    inline bool hasChildren() const { return !d_children.empty(); }
+
 private:
     void _appendAllowedEvents();
     void _setupProperties();
@@ -68,6 +70,9 @@ private:
     void _createVisuals();
     void _setupProperties();
 
+    Size _measureNodeButton(Shared<TreeViewNode> root);
+    void _arrangeNodeButton(Shared<TreeViewNode> root, Position& availablePos);
+
     void _onTreeChanged(Shared<Event> e);
 
     void _traverseTreeNodes(
@@ -76,11 +81,14 @@ private:
         std::function<void(TreeViewNode*, int)> callback
     );
 
+    void _nodeButtonOnClick(Shared<Event> e);
+
 private:
     Shared<TreeViewNode> d_rootNode;
     const int d_rootNodeLevel = 0;
 
     std::map<TreeViewNode*, std::pair<Shared<Button>, int>> d_nodeButtons;
+    std::map<Button*, TreeViewNode*> d_buttonToNodeMap;
 
 private:
     const int32_t d_nodeDepthLevelOffset = 30;
