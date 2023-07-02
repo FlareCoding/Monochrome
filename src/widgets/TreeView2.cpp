@@ -127,7 +127,7 @@ namespace mc {
         Size contentSize = Size(0, 0);
 
         _traverseTreeNodes(d_rootNode, d_rootNodeLevel, [this, &contentSize](TreeViewNode* node, int level) {
-            auto& [btn, depthLevel] = d_nodeButtons[node];
+            auto& [btn, depthLevel] = d_nodeButtons.at(node);
             auto desiredSize = btn->getDesiredSizeWithMargins();
 
             const int32_t offset = 30;
@@ -148,7 +148,7 @@ namespace mc {
         Position pos = Position(0, 0);
 
         _traverseTreeNodes(d_rootNode, d_rootNodeLevel, [this, &pos](TreeViewNode* node, int level) {
-            auto& [btn, depthLevel] = d_nodeButtons[node];
+            auto& [btn, depthLevel] = d_nodeButtons.at(node);
             auto size = btn->getDesiredSizeWithMargins();
             btn->setComputedSize(size);
 
@@ -187,12 +187,10 @@ namespace mc {
 
     void TreeView2::_onTreeChanged(Shared<Event> e) {
         // Remove all children
-        _removeAllChildren();
         d_nodeButtons.clear();
+        _removeAllChildren();
 
         _traverseTreeNodes(d_rootNode, d_rootNodeLevel, [this](TreeViewNode* node, int level) {
-            printf("level: %i  item: %s\n", level, node->itemText.c_str());
-
             auto btn = MakeRef<Button>();
             btn->cornerRadius = 0;
             btn->horizontalAlignment = HAFill;
@@ -202,14 +200,19 @@ namespace mc {
             btn->mousePressedColor = Color(160, 160, 160, 80);
             btn->label->alignment = "left";
             btn->label->verticalPadding = 4;
-            btn->label->text = node->itemText;
             btn->zIndex = 1;
+
+            if (!node->getChildren().empty()) {
+                btn->label->text = d_downArrowUtf8Prefix + node->itemText;
+            } else {
+                btn->label->text = node->itemText;
+            }
+
             d_nodeButtons[node] = { btn, level };
             _addChildOffline(btn);
         });
 
         _signalLayoutChanged();
-        printf("\n");
     }
 
     void TreeView2::_traverseTreeNodes(

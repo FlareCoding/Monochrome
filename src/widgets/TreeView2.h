@@ -78,5 +78,24 @@ private:
     const int d_rootNodeLevel = 0;
 
     std::map<TreeViewNode*, std::pair<Shared<Button>, int>> d_nodeButtons;
+
+private:
+    const char d_downArrowUtf8Prefix[6] = {
+        static_cast<char>(0x20),
+        static_cast<char>(0xe2),
+        static_cast<char>(0x96),
+        static_cast<char>(0xbc),
+        static_cast<char>(0x20),
+        0
+    };
+
+    const char d_rightArrowUtf8Prefix[6] = {
+        static_cast<char>(0x20),
+        static_cast<char>(0xe2),
+        static_cast<char>(0x96),
+        static_cast<char>(0xba),
+        static_cast<char>(0x20),
+        0
+    };
 };
 } // namespace mc
