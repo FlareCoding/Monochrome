@@ -308,10 +308,17 @@ namespace mc {
         e->target->unfocus();
 
         auto node = d_buttonToNodeMap.at(static_cast<Button*>(e->target));
+        std::string groupAction = "none";
 
         // Expand/collapse the node
         if (node->hasChildren()) {
             node->expanded = !node->expanded.get();
+
+            if (node->expanded.get()) {
+                groupAction = "expanded";
+            } else {
+                groupAction = "collapsed";
+            }
         }
 
         // Fire the event to indicate that an item has been selected
@@ -319,7 +326,8 @@ namespace mc {
             { "item", node->itemText.get() },
             { "key", node->key.get() },
             { "expanded", node->expanded.get() },
-            { "isLeaf", !node->hasChildren() }
+            { "isLeaf", !node->hasChildren() },
+            { "groupAction", groupAction }
         });
     }
 } // namespace mc
