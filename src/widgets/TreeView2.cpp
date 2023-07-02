@@ -114,6 +114,18 @@ namespace mc {
         key.forwardEmittedEvents(this);
 
         expanded = false;
+        expanded.on("propertyChanged", [this](Shared<Event> e) {
+            if (!hasChildren()) {
+                e->stopPropagation();
+                return;
+            }
+
+            if (expanded.get()) {
+                fireEvent("nodeExpanded", Event::empty);
+            } else {
+                fireEvent("nodeCollapsed", Event::empty);
+            }
+        });
         expanded.forwardEmittedEvents(this);
     }
 
@@ -137,23 +149,7 @@ namespace mc {
             return Size(0, 0);
         }
 
-        Size contentSize = Size(0, 0);
-
-        _traverseTreeNodes(d_rootNode, d_rootNodeLevel,
-            [this, &contentSize](TreeViewNode* node, int level) {
-            auto& [btn, depthLevel] = d_nodeButtons.at(node);
-            auto desiredSize = btn->getDesiredSizeWithMargins();
-
-            uint32_t offsetX = static_cast<uint32_t>(d_nodeDepthLevelOffset * (level - 1));
-            
-            if (contentSize.width < offsetX + desiredSize.width) {
-                contentSize.width = offsetX + desiredSize.width;
-            } 
-
-            contentSize.height += desiredSize.height;
-        });
-
-        return contentSize;
+        return _measureNodeButton(d_rootNode);
     }
 
     void TreeView2::_onArrangeChildren() {
@@ -161,18 +157,66 @@ namespace mc {
             return;
         }
 
-        Position pos = Position(0, 0);
+        auto initialPosition = Position(0, 0);
+        _arrangeNodeButton(d_rootNode, initialPosition);
+    }
 
-        _traverseTreeNodes(d_rootNode, d_rootNodeLevel,
-            [this, &pos](TreeViewNode* node, int level) {
-            auto& [btn, depthLevel] = d_nodeButtons.at(node);
-            auto size = btn->getDesiredSizeWithMargins();
-            btn->setComputedSize(size);
+    Size TreeView2::_measureNodeButton(Shared<TreeViewNode> root) {
+        Size nodeSize = Size(0, 0);
 
-            btn->position->x = d_nodeDepthLevelOffset * (level - 1);
-            btn->position->y = pos.y;
-            pos.y += size.height;
-        });
+        // The root node is a symbolic node that holds actual main nodes under one parent
+        if (root.get() != d_rootNode.get()) {
+            auto& [nodeButton, depthLevel] = d_nodeButtons.at(root.get());
+            auto nodeButtonDesiredSize = nodeButton->getDesiredSizeWithMargins();
+
+            uint32_t offsetX = static_cast<uint32_t>(d_nodeDepthLevelOffset * (depthLevel - 1));
+            
+            if (nodeSize.width < offsetX + nodeButtonDesiredSize.width) {
+                nodeSize.width = offsetX + nodeButtonDesiredSize.width;
+            }
+
+            nodeSize.height += nodeButtonDesiredSize.height;
+        }
+
+        // Measure children
+        if (root->hasChildren() && root->expanded.get()) {
+            for (auto& child : root->getChildren()) {
+                Size childSize = _measureNodeButton(child);
+                nodeSize.height += childSize.height;
+
+                if (nodeSize.width < childSize.width) {
+                    nodeSize.width = childSize.width;
+                }
+            }
+        }
+
+        return nodeSize;
+    }
+
+    void TreeView2::_arrangeNodeButton(
+        Shared<TreeViewNode> root,
+        Position& availablePos
+    ) {
+        // The root node is a symbolic node that holds actual main nodes under one parent
+        if (root.get() != d_rootNode.get()) {
+            auto contentSize = getComputedSize();
+            auto& [nodeButton, depthLevel] = d_nodeButtons.at(root.get());
+
+            auto nodeButtonDesiredSize = nodeButton->getDesiredSizeWithMargins();
+            nodeButtonDesiredSize.width = contentSize.width;
+            nodeButton->setComputedSize(nodeButtonDesiredSize);
+
+            nodeButton->position->x = d_nodeDepthLevelOffset * (depthLevel - 1);
+            nodeButton->position->y = availablePos.y;
+            availablePos.y += nodeButtonDesiredSize.height;
+        }
+
+        // Arrange children
+        if (root->hasChildren() && root->expanded.get()) {
+            for (auto& child : root->getChildren()) {
+                _arrangeNodeButton(child, availablePos);
+            }
+        }
     }
 
     void TreeView2::_createVisuals() {
@@ -195,15 +239,20 @@ namespace mc {
             _removeAllChildren();
         }
 
+        node->expanded = true;
         d_rootNode = node;
+
         d_rootNode->on("nodeAdded", &TreeView2::_onTreeChanged, this);
         d_rootNode->on("nodeRemoved", &TreeView2::_onTreeChanged, this);
+        d_rootNode->on("nodeExpanded", &TreeView2::_onTreeChanged, this);
+        d_rootNode->on("nodeCollapsed", &TreeView2::_onTreeChanged, this);
         d_rootNode->fireEvent("nodeAdded", Event::empty);
     }
 
     void TreeView2::_onTreeChanged(Shared<Event> e) {
         // Remove all children
         d_nodeButtons.clear();
+        d_buttonToNodeMap.clear();
         _removeAllChildren();
 
         _traverseTreeNodes(d_rootNode, d_rootNodeLevel, [this](TreeViewNode* node, int level) {
@@ -217,18 +266,26 @@ namespace mc {
             btn->label->alignment = "left";
             btn->label->verticalPadding = 4;
             btn->zIndex = 1;
+            btn->on("clicked", &TreeView2::_nodeButtonOnClick, this);
 
-            if (!node->getChildren().empty()) {
-                btn->label->text = d_downArrowUtf8Prefix + node->itemText.get();
+            if (node->hasChildren()) {
+                if (node->expanded.get()) {
+                    btn->label->text = d_downArrowUtf8Prefix + node->itemText.get();
+                } else {
+                    btn->label->text = d_rightArrowUtf8Prefix + node->itemText.get();
+                }
             } else {
                 btn->label->text = node->itemText;
             }
 
             d_nodeButtons[node] = { btn, level };
             _addChildOffline(btn);
+
+            d_buttonToNodeMap[btn.get()] = node;
         });
 
         _signalLayoutChanged();
+        fireEvent("propertyChanged", Event::empty);
     }
 
     void TreeView2::_traverseTreeNodes(
@@ -243,5 +300,26 @@ namespace mc {
         for (auto& child : root->getChildren()) {
             _traverseTreeNodes(child, level + 1, callback);
         }
+    }
+
+    void TreeView2::_nodeButtonOnClick(Shared<Event> e) {
+        // Prevent memory corruption bugs related
+        // to widget focus when the tree changes.
+        e->target->unfocus();
+
+        auto node = d_buttonToNodeMap.at(static_cast<Button*>(e->target));
+
+        // Expand/collapse the node
+        if (node->hasChildren()) {
+            node->expanded = !node->expanded.get();
+        }
+
+        // Fire the event to indicate that an item has been selected
+        fireEvent("itemSelected", {
+            { "item", node->itemText.get() },
+            { "key", node->key.get() },
+            { "expanded", node->expanded.get() },
+            { "isLeaf", !node->hasChildren() }
+        });
     }
 } // namespace mc

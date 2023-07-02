@@ -33,9 +33,9 @@ int main() {
     auto treeView = MakeRef<TreeView2>();
     treeView->backgroundColor = Color(31, 39, 46);
     treeView->minWidth = 280;
-    // treeView->on("itemSelected", [](Shared<Event> e) {
-    //     printf("TreeView item selected: %s\n", e->get<std::string>("item").c_str());
-    // });
+    treeView->on("itemSelected", [](Shared<Event> e) {
+        printf("TreeView item selected: %s\n", e->get<std::string>("item").c_str());
+    });
     scrollView->addChild(treeView);
 
     auto miscGroup = MakeRef<TreeViewNode>("Misc.", "misc");
