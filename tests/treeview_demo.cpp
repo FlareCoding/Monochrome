@@ -34,7 +34,12 @@ int main() {
     treeView->backgroundColor = Color(31, 39, 46);
     treeView->minWidth = 280;
     treeView->on("itemSelected", [](Shared<Event> e) {
-        printf("TreeView item selected: %s\n", e->get<std::string>("item").c_str());
+        auto groupAction = e->get<std::string>("groupAction");
+        if (groupAction == "none") {
+            printf("TreeView item selected: %s\n", e->get<std::string>("item").c_str());
+        } else {
+            printf("TreeView group %s: %s\n", groupAction.c_str(), e->get<std::string>("item").c_str());
+        }
     });
     scrollView->addChild(treeView);
 
