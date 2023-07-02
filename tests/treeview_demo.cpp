@@ -30,39 +30,43 @@ int main() {
     scrollView->fixedWidth = 280;
     rootPanel->addChild(scrollView);
 
-    auto treeView = MakeRef<TreeView>();
+    auto treeView = MakeRef<TreeView2>();
     treeView->backgroundColor = Color(31, 39, 46);
     treeView->minWidth = 280;
-    treeView->on("itemSelected", [](Shared<Event> e) {
-        printf("TreeView item selected: %s\n", e->get<std::string>("item").c_str());
-    });
+    // treeView->on("itemSelected", [](Shared<Event> e) {
+    //     printf("TreeView item selected: %s\n", e->get<std::string>("item").c_str());
+    // });
     scrollView->addChild(treeView);
 
-    auto miscGroup = MakeRef<TreeViewGroup>("Misc.");
-    miscGroup->addItem("New Gen AirPods Max + iPad Pro (Dual Camera) + Apple Pencil");
-    miscGroup->addItem("iPad Mini (Vintage)");
-    miscGroup->addItem("iPhone 5SE (Discountinued)");
+    auto miscGroup = MakeRef<TreeViewNode>("Misc.", "misc");
+    miscGroup->addChild("New Gen AirPods Max + iPad Pro (Dual Camera) + Apple Pencil", "ngamip");
+    miscGroup->addChild("iPad Mini (Vintage)", "ipmv");
+    miscGroup->addChild("iPhone 5SE (Discountinued)", "ip5se");
 
-    auto appleLaptopsGroup = MakeRef<TreeViewGroup>("Apple");
-    appleLaptopsGroup->addItem("Macbook Pro 13-inch");
-    appleLaptopsGroup->addItem("Macbook Pro 15-inch");
-    appleLaptopsGroup->addItem("Macbook Air");
-    appleLaptopsGroup->addSubGroup(miscGroup);
+    auto appleLaptopsGroup = MakeRef<TreeViewNode>("Apple", "apple");
+    appleLaptopsGroup->addChild("Macbook Pro 13-inch", "mcbp13");
+    appleLaptopsGroup->addChild("Macbook Pro 15-inch", "mcbp15");
+    appleLaptopsGroup->addChild("Macbook Air", "mcbpair");
+    appleLaptopsGroup->addChild(miscGroup);
 
-    auto laptopsGroup = MakeRef<TreeViewGroup>("Laptops");
-    laptopsGroup->addItem("Dell");
-    laptopsGroup->addSubGroup(appleLaptopsGroup);
-    laptopsGroup->addItem("HP");
-    laptopsGroup->addItem("Acer");
-    treeView->addGroup(laptopsGroup);
+    auto laptopsGroup = MakeRef<TreeViewNode>("Laptops", "laptops");
+    laptopsGroup->addChild("Dell", "dell");
+    laptopsGroup->addChild(appleLaptopsGroup);
+    laptopsGroup->addChild("HP", "hp");
+    laptopsGroup->addChild("Acer", "acer");
 
-    auto phonesGroup = MakeRef<TreeViewGroup>("Phones");
-    phonesGroup->addItem("iPhone 12");
-    phonesGroup->addItem("iPhone 13");
-    phonesGroup->addItem("iPhone 13 Pro");
-    phonesGroup->addItem("Samsung Galaxy s22");
-    phonesGroup->addItem("Nokia flip-phone");
-    treeView->addGroup(phonesGroup);
+    auto phonesGroup = MakeRef<TreeViewNode>("Phones", "phones");
+    phonesGroup->addChild("iPhone 12", "ip12");
+    phonesGroup->addChild("iPhone 13", "ip13");
+    phonesGroup->addChild("iPhone 13 Pro", "ip13p");
+    phonesGroup->addChild("Samsung Galaxy s22", "sgs22");
+    phonesGroup->addChild("Nokia flip-phone", "nfp");
+
+    auto rootNode = MakeRef<TreeViewNode>("", "root");
+    rootNode->addChild(laptopsGroup);
+    rootNode->addChild(phonesGroup);
+
+    treeView->setRootNode(rootNode);
 
     AppManager::startApplicationLoop();
     return 0;
