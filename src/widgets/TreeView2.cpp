@@ -4,6 +4,7 @@
 namespace mc {
     TreeViewNode::TreeViewNode() {
         _appendAllowedEvents();
+        _setupProperties();
     }
 
     TreeViewNode::TreeViewNode(
@@ -14,6 +15,7 @@ namespace mc {
         this->key = key;
 
         _appendAllowedEvents();
+        _setupProperties();
     }
 
     void TreeViewNode::addChild(Shared<TreeViewNode> node) {
@@ -101,7 +103,18 @@ namespace mc {
 
     void TreeViewNode::_appendAllowedEvents() {
         appendAllowedEvent("nodeAdded");
-        appendAllowedEvent("nodeRemoved");        
+        appendAllowedEvent("nodeRemoved");
+        appendAllowedEvent("nodeChanged");
+        appendAllowedEvent("nodeExpanded");
+        appendAllowedEvent("nodeCollapsed");
+    }
+
+    void TreeViewNode::_setupProperties() {
+        itemText.forwardEmittedEvents(this);
+        key.forwardEmittedEvents(this);
+
+        expanded = false;
+        expanded.forwardEmittedEvents(this);
     }
 
     void TreeViewNode::_invalidateKeyIndexMap() {
@@ -126,14 +139,17 @@ namespace mc {
 
         Size contentSize = Size(0, 0);
 
-        _traverseTreeNodes(d_rootNode, d_rootNodeLevel, [this, &contentSize](TreeViewNode* node, int level) {
+        _traverseTreeNodes(d_rootNode, d_rootNodeLevel,
+            [this, &contentSize](TreeViewNode* node, int level) {
             auto& [btn, depthLevel] = d_nodeButtons.at(node);
             auto desiredSize = btn->getDesiredSizeWithMargins();
 
-            const int32_t offset = 30;
-            uint32_t offsetX = static_cast<uint32_t>(offset * (depthLevel - 1));
+            uint32_t offsetX = static_cast<uint32_t>(d_nodeDepthLevelOffset * (level - 1));
             
-            contentSize.width += offsetX + desiredSize.width;
+            if (contentSize.width < offsetX + desiredSize.width) {
+                contentSize.width = offsetX + desiredSize.width;
+            } 
+
             contentSize.height += desiredSize.height;
         });
 
@@ -147,13 +163,13 @@ namespace mc {
 
         Position pos = Position(0, 0);
 
-        _traverseTreeNodes(d_rootNode, d_rootNodeLevel, [this, &pos](TreeViewNode* node, int level) {
+        _traverseTreeNodes(d_rootNode, d_rootNodeLevel,
+            [this, &pos](TreeViewNode* node, int level) {
             auto& [btn, depthLevel] = d_nodeButtons.at(node);
             auto size = btn->getDesiredSizeWithMargins();
             btn->setComputedSize(size);
 
-            const int32_t offset = 30;
-            btn->position->x = offset * (depthLevel - 1);
+            btn->position->x = d_nodeDepthLevelOffset * (level - 1);
             btn->position->y = pos.y;
             pos.y += size.height;
         });
@@ -203,7 +219,7 @@ namespace mc {
             btn->zIndex = 1;
 
             if (!node->getChildren().empty()) {
-                btn->label->text = d_downArrowUtf8Prefix + node->itemText;
+                btn->label->text = d_downArrowUtf8Prefix + node->itemText.get();
             } else {
                 btn->label->text = node->itemText;
             }

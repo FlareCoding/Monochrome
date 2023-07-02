@@ -10,8 +10,9 @@ public:
         const std::string& key = ""
     );
 
-    std::string itemText;
-    std::string key;
+    PropertyObserver<std::string>   itemText;
+    PropertyObserver<std::string>   key;
+    PropertyObserver<bool>          expanded;
 
     //
     // TO-DO: explain in docs that the below functions apply
@@ -40,6 +41,8 @@ public:
 
 private:
     void _appendAllowedEvents();
+    void _setupProperties();
+
     void _invalidateKeyIndexMap();
 
     std::vector<Shared<TreeViewNode>> d_children;
@@ -80,6 +83,8 @@ private:
     std::map<TreeViewNode*, std::pair<Shared<Button>, int>> d_nodeButtons;
 
 private:
+    const int32_t d_nodeDepthLevelOffset = 30;
+
     const char d_downArrowUtf8Prefix[6] = {
         static_cast<char>(0x20),
         static_cast<char>(0xe2),
