@@ -223,7 +223,7 @@ private:
 
     /// @brief Node --> { node's button, depth level }
     std::map<TreeViewNode*, std::pair<Shared<Button>, int>> d_nodeButtons;
-    
+
     /// @brief Node's button --> associated node
     std::map<Button*, TreeViewNode*> d_buttonToNodeMap;
 
