@@ -17,8 +17,12 @@ namespace mc::mcx {
         mcxNode->setAttribute("itemTextColor", _toString(treeView->itemTextColor));
         mcxNode->setAttribute("itemFont", treeView->itemFont);
         mcxNode->setAttribute("itemFontSize", _toString(treeView->itemFontSize));
-        mcxNode->setAttribute("itemHighlightedBorderColor", _toString(treeView->itemHighlightedBorderColor));
-        mcxNode->setAttribute("allowParentNodeSelection", _toString(treeView->allowParentNodeSelection));
+
+        mcxNode->setAttribute("itemHighlightedBorderColor",
+            _toString(treeView->itemHighlightedBorderColor));
+
+        mcxNode->setAttribute("allowParentNodeSelection",
+            _toString(treeView->allowParentNodeSelection));
     }
 
     void TreeViewMcxAdapter::applyProperties(
