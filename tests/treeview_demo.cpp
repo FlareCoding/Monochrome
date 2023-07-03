@@ -32,6 +32,8 @@ int main() {
 
     auto treeView = MakeRef<TreeView2>();
     treeView->backgroundColor = Color(31, 39, 46);
+    treeView->itemTextColor = Color(0, 200, 200);
+    treeView->itemHighlightedBorderColor = Color::green;
     treeView->minWidth = 280;
     treeView->on("itemSelected", [](Shared<Event> e) {
         auto groupAction = e->get<std::string>("groupAction");
