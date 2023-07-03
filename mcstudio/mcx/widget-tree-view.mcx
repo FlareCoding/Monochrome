@@ -1,3 +1,3 @@
 <root type="widget">
-	<TreeView id="widgetTreeView" persistentSelection="true" backgroundColor="mcstudioBgColorPrimary"/>
+	<TreeView id="widgetTreeView" allowParentNodeSelection="true"/>
 </root>

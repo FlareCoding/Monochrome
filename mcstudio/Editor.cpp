@@ -40,20 +40,9 @@ namespace mc::mcstudio {
 
             // Add the item to the appropriate sub-group in the widget tree view
             auto subGroup =
-                widgetTreeView->findGroupByKey(std::to_string(selectedContainer->getID()));
+                widgetTreeView->findNodeWithKey(std::to_string(selectedContainer->getID()));
 
-            // Determine whether to add another tree group or just an item
-            // depending on if the new widget is a container or not.
-            if (widget->isContainer()) {
-                auto newGroup = MakeRef<TreeViewGroup>();
-                newGroup->name = widgetName;
-                newGroup->key = std::to_string(widget->getID());
-                newGroup->persistentSelection = true;
-
-                subGroup->addSubGroup(newGroup);
-            } else {
-                subGroup->addItem(widgetName, std::to_string(widget->getID()));
-            }
+            subGroup->addChild(widgetName, std::to_string(widget->getID()));
         } else {
             d_appRootContainer->addChild(widget);
 
@@ -62,20 +51,9 @@ namespace mc::mcstudio {
 
             // Add the item to the root group in the widget tree view
             auto rootGroup =
-                widgetTreeView->findGroupByKey(std::to_string(d_appRootContainer->getID()));
+                widgetTreeView->findNodeWithKey(std::to_string(d_appRootContainer->getID()));
 
-            // Determine whether to add another tree group or just an item
-            // depending on if the new widget is a container or not.
-            if (widget->isContainer()) {
-                auto newGroup = MakeRef<TreeViewGroup>();
-                newGroup->name = widgetName;
-                newGroup->key = std::to_string(widget->getID());
-                newGroup->persistentSelection = true;
-
-                rootGroup->addSubGroup(newGroup);
-            } else {
-                rootGroup->addItem(widgetName, std::to_string(widget->getID()));
-            }
+            rootGroup->addChild(widgetName, std::to_string(widget->getID()));
         }
     }
 
@@ -118,13 +96,15 @@ namespace mc::mcstudio {
         });
 
         // Add the root container to the widget tree view
-        auto rootTreeGroup = MakeRef<TreeViewGroup>();
-        rootTreeGroup->name = widgetName;
-        rootTreeGroup->key = std::to_string(d_appRootContainer->getID());
-        rootTreeGroup->persistentSelection = true;
+        auto rootContainerTreeItem = MakeRef<TreeViewNode>(
+            widgetName,
+            std::to_string(d_appRootContainer->getID())
+        );
 
         auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
-        widgetTreeView->addGroup(rootTreeGroup);
+        auto treeViewRoot = widgetTreeView->getRootNode();
+        treeViewRoot->addChild(rootContainerTreeItem);
+        
         widgetTreeView->on("itemSelected", [this](Shared<Event> e) {
             const auto key = e->get<std::string>("key");
             const uuid_t id = static_cast<uuid_t>(std::stoull(key));
@@ -132,27 +112,6 @@ namespace mc::mcstudio {
             auto widget = d_appRootContainer->deepSearchWidgetByUuid(id);
             setSelectedWidget(widget);
         });
-
-        // ========== TETS ========== //
-        auto treeViewTest = MakeRef<TreeView2>();
-        d_appRootContainer->addChild(treeViewTest);
-
-        auto group1Node = MakeRef<TreeViewNode>("Group 1", "group1");
-        
-        auto item1Node = MakeRef<TreeViewNode>("Item 1", "item1");
-        group1Node->addChild(item1Node);
-
-        auto item2Node = MakeRef<TreeViewNode>("Item 2", "item2");
-        auto item3Node = MakeRef<TreeViewNode>("Item 3", "item3");
-
-        auto rootNode = MakeRef<TreeViewNode>();
-        rootNode->addChild(group1Node);
-        
-        treeViewTest->setRootNode(rootNode);
-        std::static_pointer_cast<StackPanel>(d_appRootContainer)->backgroundColor = Color(20, 26, 30);
-
-        rootNode->addChild(item2Node);
-        rootNode->addChild(item3Node);
     }
 
     void Editor::_appRootContainer_OnClick(Shared<Event> e) {
