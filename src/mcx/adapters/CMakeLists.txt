@@ -18,7 +18,6 @@ set(
     ${cwd}/MenuListMcxAdapter.h
     ${cwd}/EntryMcxAdapter.h
     ${cwd}/ProgressBarMcxAdapter.h
-    ${cwd}/TreeViewGroupMcxAdapter.h
     ${cwd}/TreeViewMcxAdapter.h
     ${cwd}/TabViewMcxAdapter.h
     ${cwd}/ImageMcxAdapter.h
@@ -44,7 +43,6 @@ set(
     ${cwd}/MenuListMcxAdapter.cpp
     ${cwd}/EntryMcxAdapter.cpp
     ${cwd}/ProgressBarMcxAdapter.cpp
-    ${cwd}/TreeViewGroupMcxAdapter.cpp
     ${cwd}/TreeViewMcxAdapter.cpp
     ${cwd}/TabViewMcxAdapter.cpp
     ${cwd}/ImageMcxAdapter.cpp
