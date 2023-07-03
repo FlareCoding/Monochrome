@@ -157,6 +157,10 @@ namespace mc::mcstudio {
 
         // Display properties for the current selected widget
         _fillPropertiesPanel();
+
+        // Highlight the selected widget in the widget tree
+        auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
+        widgetTreeView->selectNodeByKey(std::to_string(d_selectedWidget->getID()));
     }
 
     void Editor::_clearPropertiesPanel() {
