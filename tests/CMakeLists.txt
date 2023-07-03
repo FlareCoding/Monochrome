@@ -11,7 +11,6 @@ target_link_libraries(TreeView_Demo PUBLIC Monochrome)
 
 add_executable(McxApp_Demo
     mcxapp_demo.cpp
-    mcxapp_demo_window.mcx
     mcxapp_demo.mcx
     mcxapp_custom_panel.mcx
 )
@@ -20,7 +19,6 @@ target_link_libraries(McxApp_Demo PUBLIC Monochrome)
 add_custom_command(
     TARGET McxApp_Demo POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/tests/mcxapp_demo_window.mcx
         ${CMAKE_SOURCE_DIR}/tests/mcxapp_demo.mcx
         ${CMAKE_SOURCE_DIR}/tests/mcxapp_custom_panel.mcx
 
