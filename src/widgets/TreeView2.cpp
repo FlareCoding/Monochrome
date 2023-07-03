@@ -23,15 +23,15 @@ namespace mc {
     }
 
     void TreeViewNode::addChild(const std::string& itemText, const std::string& key) {
-        addChild(MakeRef<TreeViewNode>(itemText, key));    
+        addChild(MakeRef<TreeViewNode>(itemText, key));
     }
-    
+
     void TreeViewNode::insertChildBefore(
         Shared<TreeViewNode> node,
         Shared<TreeViewNode> beforeChild
     ) {
         size_t referenceChildIdx = beforeChild ? d_nodeKeyIndexMap[beforeChild->key] : 0;
-        
+
         d_children.insert(d_children.begin() + referenceChildIdx, node);
         _invalidateKeyIndexMap();
 
@@ -44,7 +44,7 @@ namespace mc {
         Shared<TreeViewNode> afterChild
     ) {
         size_t referenceChildIdx = (afterChild ? d_nodeKeyIndexMap[afterChild->key] + 1 : 0);
-        
+
         d_children.insert(d_children.begin() + referenceChildIdx, node);
         _invalidateKeyIndexMap();
 
@@ -176,7 +176,7 @@ namespace mc {
             auto nodeButtonDesiredSize = nodeButton->getDesiredSizeWithMargins();
 
             uint32_t offsetX = static_cast<uint32_t>(d_nodeDepthLevelOffset * (depthLevel - 1));
-            
+
             if (nodeSize.width < offsetX + nodeButtonDesiredSize.width) {
                 nodeSize.width = offsetX + nodeButtonDesiredSize.width;
             }
@@ -486,7 +486,7 @@ namespace mc {
             return false;
         }
 
-        // Walk through every child and check if it fits the criteria 
+        // Walk through every child and check if it fits the criteria
         for (auto& child : root->getChildren()) {
             if (_hasNodeWithKey(child, key)) {
                 return true;
