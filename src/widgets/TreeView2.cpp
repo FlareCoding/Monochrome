@@ -52,11 +52,15 @@ namespace mc {
         fireEvent("nodeRemoved", Event::empty);
     }
 
-    void TreeViewNode::removeChild(Shared<TreeViewNode> node) {
-        removeChild(node->key);
+    bool TreeViewNode::removeChild(Shared<TreeViewNode> node) {
+        return removeChild(node->key);
     }
 
-    void TreeViewNode::removeChild(const std::string& key) {
+    bool TreeViewNode::removeChild(const std::string& key) {
+        if (!hasChildWithKey(key)) {
+            return false;
+        }
+
         size_t childIdx = d_nodeKeyIndexMap[key];
         auto& node = d_children[childIdx];
 
@@ -66,6 +70,8 @@ namespace mc {
         node->off("nodeAdded");
         node->off("nodeRemoved");
         fireEvent("nodeRemoved", Event::empty);
+
+        return true;
     }
 
     bool TreeViewNode::hasChildWithKey(const std::string& key) {
@@ -249,6 +255,66 @@ namespace mc {
         d_rootNode->fireEvent("nodeAdded", Event::empty);
     }
 
+    void TreeView2::selectNode(Shared<TreeViewNode> node) {
+        _selectNode(node.get());
+    }
+
+    void TreeView2::selectNodeByKey(const std::string& key) {
+        auto targetNode = findNodeWithKey(key);
+        _selectNode(targetNode.get());
+    }
+
+    bool TreeView2::hasNodeWithKey(const std::string& key) {
+        return _hasNodeWithKey(d_rootNode, key);
+    }
+
+    Shared<TreeViewNode> TreeView2::findNodeWithKey(const std::string& key) {
+        return _findNodeWithKey(d_rootNode, key);
+    }
+
+    bool TreeView2::removeNodeWithKey(const std::string& key) {
+        return _removeNodeWithKey(d_rootNode, key);
+    }
+
+    void TreeView2::expandNode(Shared<TreeViewNode> node) {
+        if (!node || !node->hasChildren() || node->expanded.get()) {
+            return;
+        }
+
+        node->expanded = true;
+    }
+
+    void TreeView2::expandNodeByKey(const std::string& key) {
+        auto targetNode = findNodeWithKey(key);
+        expandNode(targetNode);
+    }
+
+    void TreeView2::collapseNode(Shared<TreeViewNode> node) {
+        if (!node || !node->hasChildren() || !node->expanded.get()) {
+            return;
+        }
+
+        node->expanded = false;
+    }
+
+    void TreeView2::collapseNodeByKey(const std::string& key) {
+        auto targetNode = findNodeWithKey(key);
+        collapseNode(targetNode);
+    }
+
+    void TreeView2::toggleExpandNode(Shared<TreeViewNode> node) {
+        if (!node || !node->hasChildren()) {
+            return;
+        }
+
+        node->expanded = !node->expanded.get();
+    }
+
+    void TreeView2::toggleExpandNodeByKey(const std::string& key) {
+        auto targetNode = findNodeWithKey(key);
+        toggleExpandNode(targetNode);
+    }
+
     void TreeView2::_onTreeChanged(Shared<Event> e) {
         // Remove all children
         d_nodeButtons.clear();
@@ -267,6 +333,11 @@ namespace mc {
             btn->label->verticalPadding = 4;
             btn->zIndex = 1;
             btn->on("clicked", &TreeView2::_nodeButtonOnClick, this);
+
+            if (node == d_selectedNode) {
+                btn->backgroundColor = Color(160, 160, 160, 80);
+                btn->borderColor = Color::white;
+            }
 
             if (node->hasChildren()) {
                 if (node->expanded.get()) {
@@ -307,7 +378,15 @@ namespace mc {
         // to widget focus when the tree changes.
         e->target->unfocus();
 
-        auto node = d_buttonToNodeMap.at(static_cast<Button*>(e->target));
+        auto selectedNodeButton = static_cast<Button*>(e->target);
+        auto node = d_buttonToNodeMap.at(selectedNodeButton);
+
+        if (!node->hasChildren() || allowParentNodeSelection) {
+            _selectNode(node);
+        } else {
+            _selectNode(nullptr);
+        }
+
         std::string groupAction = "none";
 
         // Expand/collapse the node
@@ -325,9 +404,136 @@ namespace mc {
         fireEvent("itemSelected", {
             { "item", node->itemText.get() },
             { "key", node->key.get() },
-            { "expanded", node->expanded.get() },
+            { "expanded", (node->hasChildren() && node->expanded.get()) },
             { "isLeaf", !node->hasChildren() },
             { "groupAction", groupAction }
         });
+
+        // Force a redraw
+        fireEvent("propertyChanged", Event::empty);
+    }
+
+    void TreeView2::_selectNode(TreeViewNode* node) {
+        // The node is already selected
+        if (node == d_selectedNode) {
+            return;
+        }
+
+        // Remove highlight from the previously selected node's button
+        if (d_selectedNode) {
+            auto previouslySelectedNodeButton = d_nodeButtons.at(d_selectedNode).first;
+            previouslySelectedNodeButton->backgroundColor = Color::transparent;
+            previouslySelectedNodeButton->borderColor = Color::transparent;
+        }
+
+        // Check if there is no newly provided node to highlight
+        if (!node) {
+            d_selectedNode = nullptr;
+            return;
+        }
+
+        // Get the button associated with the new node
+        CORE_ASSERT(d_nodeButtons.find(node) != d_nodeButtons.end(),
+            "The current TreeView doesn't have the provided node as its child: 0x" +
+            std::to_string(reinterpret_cast<uint64_t>(node)));
+
+        // Set the highlight on the newly selected node's button
+        auto newSelectedNodeButton = d_nodeButtons.at(node).first;
+        newSelectedNodeButton->backgroundColor = Color(160, 160, 160, 80);
+        newSelectedNodeButton->borderColor = Color::white;
+
+        // Update the reference to the selected node
+        d_selectedNode = node;
+    }
+
+    bool TreeView2::_hasNodeWithKey(
+        Shared<TreeViewNode> root,
+        const std::string& key
+    ) {
+        if (!root) {
+            return false;
+        }
+
+        // If the current node has the given key, return true
+        if (root->key.get() == key) {
+            return true;
+        }
+
+        // If the current node doesn't have the given key,
+        // then one of it's children has to have it.
+        // If there are no children, return false.
+        if (!root->hasChildren()) {
+            return false;
+        }
+
+        // Walk through every child and check if it fits the criteria 
+        for (auto& child : root->getChildren()) {
+            if (_hasNodeWithKey(child, key)) {
+                return true;
+            }
+        }
+
+        // No child with key was found
+        return false;
+    }
+
+    Shared<TreeViewNode> TreeView2::_findNodeWithKey(
+        Shared<TreeViewNode> root,
+        const std::string& key
+    ) {
+        if (!root) {
+            return nullptr;
+        }
+
+        // Check if the current node has the given key
+        if (root->key.get() == key) {
+            return root;
+        }
+
+        // If the current node doesn't match,
+        // check if it has children.
+        if (!root->hasChildren()) {
+            return nullptr;
+        }
+
+        // Walk through every child and check if any fit the criteria
+        for (auto& child : root->getChildren()) {
+            auto targetNode = _findNodeWithKey(child, key);
+            if (targetNode) {
+                return targetNode;
+            }
+        }
+
+        // No child with key was found
+        return nullptr;
+    }
+
+    bool TreeView2::_removeNodeWithKey(
+        Shared<TreeViewNode> root,
+        const std::string& key
+    ) {
+        if (!root) {
+            return false;
+        }
+
+        // If current node doesn't have children, return false
+        if (!root->hasChildren()) {
+            return false;
+        }
+
+        // If the current node has the given key, return true
+        if (root->removeChild(key)) {
+            return true;
+        }
+
+        // Walk through every child and check if any fit the criteria
+        for (auto& child : root->getChildren()) {
+            if (_removeNodeWithKey(child, key)) {
+                return true;
+            }
+        }
+
+        // No child with key was found
+        return false;
     }
 } // namespace mc

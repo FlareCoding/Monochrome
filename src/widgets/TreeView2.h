@@ -25,8 +25,8 @@ public:
     void insertChildBefore(Shared<TreeViewNode> node, Shared<TreeViewNode> beforeChild);
     void insertChildAfter(Shared<TreeViewNode> node, Shared<TreeViewNode> afterChild);
 
-    void removeChild(Shared<TreeViewNode> node);
-    void removeChild(const std::string& key);
+    bool removeChild(Shared<TreeViewNode> node);
+    bool removeChild(const std::string& key);
 
     bool hasChildWithKey(const std::string& key);
     Shared<TreeViewNode> getChildWithKey(const std::string& key);
@@ -60,7 +60,25 @@ public:
     // @brief Background color of the empty space in the panel
     PropertyObserver<Color> backgroundColor;
 
+    bool allowParentNodeSelection = false;
+
     void setRootNode(Shared<TreeViewNode> node);
+
+    void selectNode(Shared<TreeViewNode> node);
+    void selectNodeByKey(const std::string& key);
+
+    void expandNode(Shared<TreeViewNode> node);
+    void expandNodeByKey(const std::string& key);
+
+    void collapseNode(Shared<TreeViewNode> node);
+    void collapseNodeByKey(const std::string& key);
+
+    void toggleExpandNode(Shared<TreeViewNode> node);
+    void toggleExpandNodeByKey(const std::string& key);
+
+    bool hasNodeWithKey(const std::string& key);
+    Shared<TreeViewNode> findNodeWithKey(const std::string& key);
+    bool removeNodeWithKey(const std::string& key);
 
 protected:
     Size _measureSize() override;
@@ -83,12 +101,19 @@ private:
 
     void _nodeButtonOnClick(Shared<Event> e);
 
+    void _selectNode(TreeViewNode* node);
+    bool _hasNodeWithKey(Shared<TreeViewNode> root, const std::string& key);
+    Shared<TreeViewNode> _findNodeWithKey(Shared<TreeViewNode> root, const std::string& key);
+    bool _removeNodeWithKey(Shared<TreeViewNode> root, const std::string& key);
+
 private:
     Shared<TreeViewNode> d_rootNode;
     const int d_rootNodeLevel = 0;
 
     std::map<TreeViewNode*, std::pair<Shared<Button>, int>> d_nodeButtons;
     std::map<Button*, TreeViewNode*> d_buttonToNodeMap;
+
+    TreeViewNode* d_selectedNode = nullptr;
 
 private:
     const int32_t d_nodeDepthLevelOffset = 30;

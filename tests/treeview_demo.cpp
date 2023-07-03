@@ -44,34 +44,35 @@ int main() {
     scrollView->addChild(treeView);
 
     auto miscGroup = MakeRef<TreeViewNode>("Misc.", "misc");
-    miscGroup->addChild("New Gen AirPods Max + iPad Pro (Dual Camera) + Apple Pencil", "ngamip");
+    miscGroup->addChild("New Gen AirPods Max + iPad Pro (Dual Camera) + Apple Pencil");
     miscGroup->addChild("iPad Mini (Vintage)", "ipmv");
     miscGroup->addChild("iPhone 5SE (Discountinued)", "ip5se");
 
-    auto appleLaptopsGroup = MakeRef<TreeViewNode>("Apple", "apple");
-    appleLaptopsGroup->addChild("Macbook Pro 13-inch", "mcbp13");
-    appleLaptopsGroup->addChild("Macbook Pro 15-inch", "mcbp15");
+    auto appleLaptopsGroup = MakeRef<TreeViewNode>("Apple");
+    appleLaptopsGroup->addChild("Macbook Pro 13-inch");
+    appleLaptopsGroup->addChild("Macbook Pro 15-inch");
     appleLaptopsGroup->addChild("Macbook Air", "mcbpair");
     appleLaptopsGroup->addChild(miscGroup);
 
     auto laptopsGroup = MakeRef<TreeViewNode>("Laptops", "laptops");
-    laptopsGroup->addChild("Dell", "dell");
+    laptopsGroup->addChild("Dell");
     laptopsGroup->addChild(appleLaptopsGroup);
-    laptopsGroup->addChild("HP", "hp");
-    laptopsGroup->addChild("Acer", "acer");
+    laptopsGroup->addChild("HP");
+    laptopsGroup->addChild("Acer");
 
-    auto phonesGroup = MakeRef<TreeViewNode>("Phones", "phones");
-    phonesGroup->addChild("iPhone 12", "ip12");
-    phonesGroup->addChild("iPhone 13", "ip13");
-    phonesGroup->addChild("iPhone 13 Pro", "ip13p");
-    phonesGroup->addChild("Samsung Galaxy s22", "sgs22");
-    phonesGroup->addChild("Nokia flip-phone", "nfp");
+    auto phonesGroup = MakeRef<TreeViewNode>("Phones");
+    phonesGroup->addChild("iPhone 12");
+    phonesGroup->addChild("iPhone 13");
+    phonesGroup->addChild("iPhone 13 Pro");
+    phonesGroup->addChild("Samsung Galaxy s22");
+    phonesGroup->addChild("Nokia flip-phone");
 
     auto rootNode = MakeRef<TreeViewNode>("", "root");
     rootNode->addChild(laptopsGroup);
     rootNode->addChild(phonesGroup);
 
     treeView->setRootNode(rootNode);
+    treeView->expandNodeByKey("laptops");
 
     AppManager::startApplicationLoop();
     return 0;
