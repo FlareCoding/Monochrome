@@ -1,6 +1,10 @@
 #pragma once
 #include "McxParsingAdapter.h"
 
+namespace mc {
+class TreeViewNode;
+} // namespace mc
+
 namespace mc::mcx {
 class TreeViewMcxAdapter : public McxParsingAdapter {
 public:
@@ -21,5 +25,10 @@ public:
 
     /// @brief Returns a list of available properties for the current widget class
     std::vector<std::string> getAvailableProperties() override;
+
+private:
+    /// @brief Parses the mcx node holding information about a tree item or group
+    /// @returns Reference to the newly created TreeViewNode instance
+    Shared<TreeViewNode> _parseTreeViewNodeMcxNode(Shared<McxNode>& mcxNode);
 };
-} //namespace mc::mcx
+} // namespace mc::mcx

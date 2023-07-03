@@ -27,8 +27,6 @@ set(
     ${cwd}/MenuList.h
     ${cwd}/DropdownButton.h
     ${cwd}/Combobox.h
-    ${cwd}/TreeViewGroup.h
-    ${cwd}/TreeView.h
     ${cwd}/TreeView2.h
     ${cwd}/Image.h
     ${cwd}/StackPanel.h
@@ -56,8 +54,6 @@ set(
     ${cwd}/MenuList.cpp
     ${cwd}/DropdownButton.cpp
     ${cwd}/Combobox.cpp
-    ${cwd}/TreeViewGroup.cpp
-    ${cwd}/TreeView.cpp
     ${cwd}/TreeView2.cpp
     ${cwd}/Image.cpp
     ${cwd}/StackPanel.cpp

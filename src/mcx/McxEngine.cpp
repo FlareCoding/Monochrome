@@ -20,7 +20,6 @@
 #include "adapters/MenuListMcxAdapter.h"
 #include "adapters/EntryMcxAdapter.h"
 #include "adapters/ProgressBarMcxAdapter.h"
-#include "adapters/TreeViewGroupMcxAdapter.h"
 #include "adapters/TreeViewMcxAdapter.h"
 #include "adapters/TabViewMcxAdapter.h"
 #include "adapters/ImageMcxAdapter.h"
@@ -331,7 +330,6 @@ namespace mc::mcx {
         registerMcxAdapter("MenuList", MakeRef<MenuListMcxAdapter>());
         registerMcxAdapter("Entry", MakeRef<EntryMcxAdapter>());
         registerMcxAdapter("ProgressBar", MakeRef<ProgressBarMcxAdapter>());
-        registerMcxAdapter("TreeViewGroup", MakeRef<TreeViewGroupMcxAdapter>());
         registerMcxAdapter("TreeView", MakeRef<TreeViewMcxAdapter>());
         registerMcxAdapter("TabView", MakeRef<TabViewMcxAdapter>());
         registerMcxAdapter("Image", MakeRef<ImageMcxAdapter>());

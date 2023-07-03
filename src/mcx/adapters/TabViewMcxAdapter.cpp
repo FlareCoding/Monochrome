@@ -28,7 +28,7 @@ namespace mc::mcx {
         // Handle child mcx nodes manually as groups to add
         mcxNode->childrenHandled = true;
 
-        // Apply TreeView specific properties
+        // Apply TabView specific properties
         auto tabView = std::static_pointer_cast<TabView>(widget);
         tabView->tabColor =
             mcxNode->getColorAttribute("tabColor", tabView->tabColor);

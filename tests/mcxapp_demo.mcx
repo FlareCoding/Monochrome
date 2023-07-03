@@ -31,17 +31,24 @@
             <Entry horizontalAlignment="center" marginTop="20" placeholder="placeholder..."/>
             <ProgressBar id="mainProgressBar" horizontalAlignment="center" marginTop="20" value="30" fixedHeight="12"/>
             <TreeView horizontalAlignment="center" marginTop="20" minWidth="300" backgroundColor="Color(40, 40, 40)">
-                <TreeViewGroup name="Laptops">
-                    <TreeViewGroup name="Apple">
-                        <item value="Macbook Pro 13-inch"/>
-                        <item value="Macbook Pro 15-inch"/>
-                        <item value="Macbook Air"/>
-                        <item value="Macbook Pro (2014 edition)"/>
-                    </TreeViewGroup>
-                    <item value="Dell"/>
-                    <item value="HP"/>
-                    <item value="Acer"/>
-                </TreeViewGroup>
+                <item name="Laptops" key="laptops">
+                    <item name="Apple" key="apple">
+                        <item name="Macbook Pro 13-inch"/>
+                        <item name="Macbook Pro 15-inch"/>
+                        <item name="Macbook Air"/>
+                        <item name="Macbook Pro (2014 edition)"/>
+                    </group>
+                    <item name="Dell" key="dell"/>
+                    <item name="HP"/>
+                    <item name="Acer"/>
+                </item>
+                <item name="Phones">
+                    <item name="iPhone 5"/>
+                    <item name="iPhone 6"/>
+                    <item name="iPhone 14"/>
+                    <item name="Samsung Galaxy S7"/>
+                    <item name="Nokia Flip Phone"/>
+                </item>
             </TreeView>
         </StackPanel>
     </DockPanel>
