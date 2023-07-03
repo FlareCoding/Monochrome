@@ -237,7 +237,19 @@ namespace mc {
         backgroundColor = Color::transparent;
         backgroundColor.forwardEmittedEvents(this);
 
-        cursorType = CursorType::Arrow;
+        itemHighlightedBorderColor = Color::white;
+        itemHighlightedBorderColor.forwardEmittedEvents(this);
+
+        itemTextColor = Color::white;
+        itemTextColor.on("propertyChanged", &TreeView2::_onTreeChanged, this);
+
+        itemFont = "Arial";
+        itemFont.on("propertyChanged", &TreeView2::_onTreeChanged, this);
+
+        itemFontSize = 12;
+        itemFontSize.on("propertyChanged", &TreeView2::_onTreeChanged, this);
+
+        cursorType = CursorType::Hand;
     }
 
     void TreeView2::setRootNode(Shared<TreeViewNode> node) {
@@ -331,12 +343,15 @@ namespace mc {
             btn->mousePressedColor = Color(160, 160, 160, 80);
             btn->label->alignment = "left";
             btn->label->verticalPadding = 4;
+            btn->label->color = itemTextColor;
+            btn->label->font = itemFont;
+            btn->label->fontSize = itemFontSize;
             btn->zIndex = 1;
             btn->on("clicked", &TreeView2::_nodeButtonOnClick, this);
 
             if (node == d_selectedNode) {
                 btn->backgroundColor = Color(160, 160, 160, 80);
-                btn->borderColor = Color::white;
+                btn->borderColor = itemHighlightedBorderColor;
             }
 
             if (node->hasChildren()) {
@@ -366,6 +381,11 @@ namespace mc {
     ) {
         if (root.get() != d_rootNode.get()) {
             callback(root.get(), level);
+        }
+
+        // Don't iterate over an invalid root
+        if (!root) {
+            return;
         }
 
         for (auto& child : root->getChildren()) {
@@ -440,7 +460,7 @@ namespace mc {
         // Set the highlight on the newly selected node's button
         auto newSelectedNodeButton = d_nodeButtons.at(node).first;
         newSelectedNodeButton->backgroundColor = Color(160, 160, 160, 80);
-        newSelectedNodeButton->borderColor = Color::white;
+        newSelectedNodeButton->borderColor = itemHighlightedBorderColor;
 
         // Update the reference to the selected node
         d_selectedNode = node;

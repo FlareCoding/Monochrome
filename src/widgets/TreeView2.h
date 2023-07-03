@@ -58,7 +58,15 @@ public:
     std::string getWidgetName() const override { return "TreeView2"; }
 
     // @brief Background color of the empty space in the panel
-    PropertyObserver<Color> backgroundColor;
+    PropertyObserver<Color>         backgroundColor;
+
+    PropertyObserver<Color>         itemHighlightedBorderColor;
+
+    PropertyObserver<Color>         itemTextColor;
+
+    PropertyObserver<std::string>   itemFont;
+
+    PropertyObserver<uint32_t>      itemFontSize;
 
     bool allowParentNodeSelection = false;
 
