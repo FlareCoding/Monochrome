@@ -1,4 +1,4 @@
-#include "TreeView2.h"
+#include "TreeView.h"
 #include "visuals/RectVisual.h"
 
 namespace mc {
@@ -143,14 +143,14 @@ namespace mc {
         }
     }
 
-    TreeView2::TreeView2() {
+    TreeView::TreeView() {
         appendAllowedEvent("itemSelected");
 
         _createVisuals();
         _setupProperties();
     }
 
-    Size TreeView2::_measureSize() {
+    Size TreeView::_measureSize() {
         if (!d_rootNode || d_nodeButtons.empty()) {
             return Size(0, 0);
         }
@@ -158,7 +158,7 @@ namespace mc {
         return _measureNodeButton(d_rootNode);
     }
 
-    void TreeView2::_onArrangeChildren() {
+    void TreeView::_onArrangeChildren() {
         if (!d_rootNode || d_nodeButtons.empty()) {
             return;
         }
@@ -167,7 +167,7 @@ namespace mc {
         _arrangeNodeButton(d_rootNode, initialPosition);
     }
 
-    Size TreeView2::_measureNodeButton(Shared<TreeViewNode> root) {
+    Size TreeView::_measureNodeButton(Shared<TreeViewNode> root) {
         Size nodeSize = Size(0, 0);
 
         // The root node is a symbolic node that holds actual main nodes under one parent
@@ -199,7 +199,7 @@ namespace mc {
         return nodeSize;
     }
 
-    void TreeView2::_arrangeNodeButton(
+    void TreeView::_arrangeNodeButton(
         Shared<TreeViewNode> root,
         Position& availablePos
     ) {
@@ -225,7 +225,7 @@ namespace mc {
         }
     }
 
-    void TreeView2::_createVisuals() {
+    void TreeView::_createVisuals() {
         // Setup the panel's body rectangle
         auto bodyRect = MakeRef<RectVisual>();
 
@@ -233,7 +233,7 @@ namespace mc {
         addCoreVisualElement(bodyRect);
     }
 
-    void TreeView2::_setupProperties() {
+    void TreeView::_setupProperties() {
         backgroundColor = Color::transparent;
         backgroundColor.forwardEmittedEvents(this);
 
@@ -241,18 +241,18 @@ namespace mc {
         itemHighlightedBorderColor.forwardEmittedEvents(this);
 
         itemTextColor = Color::white;
-        itemTextColor.on("propertyChanged", &TreeView2::_onTreeChanged, this);
+        itemTextColor.on("propertyChanged", &TreeView::_onTreeChanged, this);
 
         itemFont = "Arial";
-        itemFont.on("propertyChanged", &TreeView2::_onTreeChanged, this);
+        itemFont.on("propertyChanged", &TreeView::_onTreeChanged, this);
 
         itemFontSize = 12;
-        itemFontSize.on("propertyChanged", &TreeView2::_onTreeChanged, this);
+        itemFontSize.on("propertyChanged", &TreeView::_onTreeChanged, this);
 
         cursorType = CursorType::Hand;
     }
 
-    void TreeView2::setRootNode(Shared<TreeViewNode> node) {
+    void TreeView::setRootNode(Shared<TreeViewNode> node) {
         if (d_rootNode) {
             _removeAllChildren();
         }
@@ -260,35 +260,35 @@ namespace mc {
         node->expanded = true;
         d_rootNode = node;
 
-        d_rootNode->on("nodeAdded", &TreeView2::_onTreeChanged, this);
-        d_rootNode->on("nodeRemoved", &TreeView2::_onTreeChanged, this);
-        d_rootNode->on("nodeExpanded", &TreeView2::_onTreeChanged, this);
-        d_rootNode->on("nodeCollapsed", &TreeView2::_onTreeChanged, this);
+        d_rootNode->on("nodeAdded", &TreeView::_onTreeChanged, this);
+        d_rootNode->on("nodeRemoved", &TreeView::_onTreeChanged, this);
+        d_rootNode->on("nodeExpanded", &TreeView::_onTreeChanged, this);
+        d_rootNode->on("nodeCollapsed", &TreeView::_onTreeChanged, this);
         d_rootNode->fireEvent("nodeAdded", Event::empty);
     }
 
-    void TreeView2::selectNode(Shared<TreeViewNode> node) {
+    void TreeView::selectNode(Shared<TreeViewNode> node) {
         _selectNode(node.get());
     }
 
-    void TreeView2::selectNodeByKey(const std::string& key) {
+    void TreeView::selectNodeByKey(const std::string& key) {
         auto targetNode = findNodeWithKey(key);
         _selectNode(targetNode.get());
     }
 
-    bool TreeView2::hasNodeWithKey(const std::string& key) {
+    bool TreeView::hasNodeWithKey(const std::string& key) {
         return _hasNodeWithKey(d_rootNode, key);
     }
 
-    Shared<TreeViewNode> TreeView2::findNodeWithKey(const std::string& key) {
+    Shared<TreeViewNode> TreeView::findNodeWithKey(const std::string& key) {
         return _findNodeWithKey(d_rootNode, key);
     }
 
-    bool TreeView2::removeNodeWithKey(const std::string& key) {
+    bool TreeView::removeNodeWithKey(const std::string& key) {
         return _removeNodeWithKey(d_rootNode, key);
     }
 
-    void TreeView2::expandNode(Shared<TreeViewNode> node) {
+    void TreeView::expandNode(Shared<TreeViewNode> node) {
         if (!node || !node->hasChildren() || node->expanded.get()) {
             return;
         }
@@ -296,12 +296,12 @@ namespace mc {
         node->expanded = true;
     }
 
-    void TreeView2::expandNodeByKey(const std::string& key) {
+    void TreeView::expandNodeByKey(const std::string& key) {
         auto targetNode = findNodeWithKey(key);
         expandNode(targetNode);
     }
 
-    void TreeView2::collapseNode(Shared<TreeViewNode> node) {
+    void TreeView::collapseNode(Shared<TreeViewNode> node) {
         if (!node || !node->hasChildren() || !node->expanded.get()) {
             return;
         }
@@ -309,12 +309,12 @@ namespace mc {
         node->expanded = false;
     }
 
-    void TreeView2::collapseNodeByKey(const std::string& key) {
+    void TreeView::collapseNodeByKey(const std::string& key) {
         auto targetNode = findNodeWithKey(key);
         collapseNode(targetNode);
     }
 
-    void TreeView2::toggleExpandNode(Shared<TreeViewNode> node) {
+    void TreeView::toggleExpandNode(Shared<TreeViewNode> node) {
         if (!node || !node->hasChildren()) {
             return;
         }
@@ -322,12 +322,12 @@ namespace mc {
         node->expanded = !node->expanded.get();
     }
 
-    void TreeView2::toggleExpandNodeByKey(const std::string& key) {
+    void TreeView::toggleExpandNodeByKey(const std::string& key) {
         auto targetNode = findNodeWithKey(key);
         toggleExpandNode(targetNode);
     }
 
-    void TreeView2::_onTreeChanged(Shared<Event> e) {
+    void TreeView::_onTreeChanged(Shared<Event> e) {
         // Remove all children
         d_nodeButtons.clear();
         d_buttonToNodeMap.clear();
@@ -347,7 +347,7 @@ namespace mc {
             btn->label->font = itemFont;
             btn->label->fontSize = itemFontSize;
             btn->zIndex = 1;
-            btn->on("clicked", &TreeView2::_nodeButtonOnClick, this);
+            btn->on("clicked", &TreeView::_nodeButtonOnClick, this);
 
             if (node == d_selectedNode) {
                 btn->backgroundColor = Color(160, 160, 160, 80);
@@ -374,7 +374,7 @@ namespace mc {
         fireEvent("propertyChanged", Event::empty);
     }
 
-    void TreeView2::_traverseTreeNodes(
+    void TreeView::_traverseTreeNodes(
         Shared<TreeViewNode> root,
         int level,
         std::function<void(TreeViewNode*, int)> callback
@@ -393,7 +393,7 @@ namespace mc {
         }
     }
 
-    void TreeView2::_nodeButtonOnClick(Shared<Event> e) {
+    void TreeView::_nodeButtonOnClick(Shared<Event> e) {
         // Prevent memory corruption bugs related
         // to widget focus when the tree changes.
         e->target->unfocus();
@@ -433,7 +433,7 @@ namespace mc {
         fireEvent("propertyChanged", Event::empty);
     }
 
-    void TreeView2::_selectNode(TreeViewNode* node) {
+    void TreeView::_selectNode(TreeViewNode* node) {
         // The node is already selected
         if (node == d_selectedNode) {
             return;
@@ -466,7 +466,7 @@ namespace mc {
         d_selectedNode = node;
     }
 
-    bool TreeView2::_hasNodeWithKey(
+    bool TreeView::_hasNodeWithKey(
         Shared<TreeViewNode> root,
         const std::string& key
     ) {
@@ -497,7 +497,7 @@ namespace mc {
         return false;
     }
 
-    Shared<TreeViewNode> TreeView2::_findNodeWithKey(
+    Shared<TreeViewNode> TreeView::_findNodeWithKey(
         Shared<TreeViewNode> root,
         const std::string& key
     ) {
@@ -528,7 +528,7 @@ namespace mc {
         return nullptr;
     }
 
-    bool TreeView2::_removeNodeWithKey(
+    bool TreeView::_removeNodeWithKey(
         Shared<TreeViewNode> root,
         const std::string& key
     ) {

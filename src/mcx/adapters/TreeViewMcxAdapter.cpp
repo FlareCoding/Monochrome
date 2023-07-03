@@ -1,17 +1,17 @@
 #include "TreeViewMcxAdapter.h"
-#include <widgets/TreeView2.h>
+#include <widgets/TreeView.h>
 #include <mcx/McxEngine.h>
 
 namespace mc::mcx {
     Shared<BaseWidget> TreeViewMcxAdapter::createWidgetInstance(Shared<McxNode>& mcxNode) {
-        return MakeRef<TreeView2>();
+        return MakeRef<TreeView>();
     }
 
     void TreeViewMcxAdapter::extractProperties(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& mcxNode
     ) {
-        auto treeView = std::static_pointer_cast<TreeView2>(widget);
+        auto treeView = std::static_pointer_cast<TreeView>(widget);
 
         mcxNode->setAttribute("backgroundColor", _toString(treeView->backgroundColor));
         mcxNode->setAttribute("itemTextColor", _toString(treeView->itemTextColor));
@@ -33,7 +33,7 @@ namespace mc::mcx {
         mcxNode->childrenHandled = true;
 
         // Apply TreeView specific properties
-        auto treeView = std::static_pointer_cast<TreeView2>(widget);
+        auto treeView = std::static_pointer_cast<TreeView>(widget);
 
         treeView->backgroundColor =
             mcxNode->getColorAttribute("backgroundColor", treeView->backgroundColor);

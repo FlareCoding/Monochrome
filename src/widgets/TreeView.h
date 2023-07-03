@@ -95,11 +95,11 @@ private:
     std::map<std::string, size_t> d_nodeKeyIndexMap;
 };
 
-class TreeView2 : public BaseWidget {
+class TreeView : public BaseWidget {
 public:
-    TreeView2();
+    TreeView();
 
-    std::string getWidgetName() const override { return "TreeView2"; }
+    std::string getWidgetName() const override { return "TreeView"; }
 
     /// @brief Background color of the empty space in the panel
     PropertyObserver<Color>         backgroundColor;
@@ -126,6 +126,9 @@ public:
     /// are the ones that will get rendered.
     /// @param node Reference to the node that will be used as the tree's root
     void setRootNode(Shared<TreeViewNode> node);
+
+    /// @returns Currently set root node
+    inline Shared<TreeViewNode> getRootNode() { return d_rootNode; }
 
     /// @brief Selects and highlights a given node
     /// @param node Node to be selected

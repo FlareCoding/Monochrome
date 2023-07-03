@@ -30,7 +30,7 @@ int main() {
     scrollView->fixedWidth = 280;
     rootPanel->addChild(scrollView);
 
-    auto treeView = MakeRef<TreeView2>();
+    auto treeView = MakeRef<TreeView>();
     treeView->backgroundColor = Color(31, 39, 46);
     treeView->itemTextColor = Color(0, 200, 200);
     treeView->itemHighlightedBorderColor = Color::green;
