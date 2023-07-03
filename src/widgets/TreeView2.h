@@ -17,7 +17,8 @@ public:
     PropertyObserver<std::string>   key;
 
     /// @brief Determined whether or not the node is expanded and children
-    /// are shown in the TreeView. *Note* only works when the note has children.
+    /// are shown in the TreeView.
+    /// @note Only has an effect when the node has children
     PropertyObserver<bool>          expanded;
 
     /// @brief Adds a node to the list of child nodes
@@ -100,35 +101,82 @@ public:
 
     std::string getWidgetName() const override { return "TreeView2"; }
 
-    // @brief Background color of the empty space in the panel
+    /// @brief Background color of the empty space in the panel
     PropertyObserver<Color>         backgroundColor;
 
+    /// @brief Color of the border of the selected node's button
     PropertyObserver<Color>         itemHighlightedBorderColor;
 
+    /// @brief Color of node buttons' text
     PropertyObserver<Color>         itemTextColor;
 
+    /// @brief Node button's font
     PropertyObserver<std::string>   itemFont;
 
+    /// @brief Node button's font size
     PropertyObserver<uint32_t>      itemFontSize;
 
+    /// @brief Determines whether or not nodes that have children
+    /// and can be expanded/collapsed can be selected themselves.
     bool allowParentNodeSelection = false;
 
+    /// @brief Sets the root node of the tree.
+    /// @note The top-most level root node has to be symbolic
+    /// and contain actual main nodes as children because they
+    /// are the ones that will get rendered.
+    /// @param node Reference to the node that will be used as the tree's root
     void setRootNode(Shared<TreeViewNode> node);
 
+    /// @brief Selects and highlights a given node
+    /// @param node Node to be selected
     void selectNode(Shared<TreeViewNode> node);
+
+    /// @brief Selects and highlights a node with the given key
+    /// @param key Key of the node to select
     void selectNodeByKey(const std::string& key);
 
+    /// @brief Expands a parent node if possible
+    /// @param node Node to be expanded
     void expandNode(Shared<TreeViewNode> node);
+
+    /// @brief Expands a parent node with a given key if possible
+    /// @param node Key to the node to be expanded
     void expandNodeByKey(const std::string& key);
 
+    /// @brief Collapses a parent node if possible
+    /// @param node Node to be collapsed
     void collapseNode(Shared<TreeViewNode> node);
+
+    /// @brief Collapses a parent node with a given key if possible
+    /// @param node Key to the node to be collapsed
     void collapseNodeByKey(const std::string& key);
 
+    /// @brief Expands or collapses a parent node
+    /// if possible depending on its current state.
+    /// @param node Node to be expanded or collapsed
     void toggleExpandNode(Shared<TreeViewNode> node);
+
+    /// @brief Expands or collapses a parent node with a
+    /// given key if possible depending on its current state.
+    /// @param node Key of the node to be expanded or collapsed
     void toggleExpandNodeByKey(const std::string& key);
 
+    /// @brief Recursively checks if a node with a given key exists in the tree
+    /// @param key Key of the target node
+    /// @returns true if there is a child node in
+    /// the tree with the given key, false otherwise.
     bool hasNodeWithKey(const std::string& key);
+
+    /// @brief Attempts to recursively find a
+    /// node with the given key in the tree.
+    /// @param key Key of the target node
+    /// @returns Reference to the target node with the
+    /// given key, nullptr if such node could not be found.
     Shared<TreeViewNode> findNodeWithKey(const std::string& key);
+
+    /// @brief Attempts to remove a node with the given key from the tree
+    /// @param key Key of the node to remove
+    /// @returns true if the node was successfully removed, false otherwise
     bool removeNodeWithKey(const std::string& key);
 
 protected:
@@ -142,8 +190,13 @@ private:
     Size _measureNodeButton(Shared<TreeViewNode> root);
     void _arrangeNodeButton(Shared<TreeViewNode> root, Position& availablePos);
 
+    /// @brief Reconstructs visual elements of the tree
     void _onTreeChanged(Shared<Event> e);
 
+    /// @brief Recursively walks through the tree level by level
+    /// @param root Current depth level's root node
+    /// @param level Current depth level
+    /// @param callback Callback function to be executed on each node
     void _traverseTreeNodes(
         Shared<TreeViewNode> root,
         int level,
@@ -152,18 +205,29 @@ private:
 
     void _nodeButtonOnClick(Shared<Event> e);
 
+    /// @brief Internal implementation of selectNode
     void _selectNode(TreeViewNode* node);
+
+    /// @brief Internal recursive implementation of hasNodeWithKey
     bool _hasNodeWithKey(Shared<TreeViewNode> root, const std::string& key);
+
+    /// @brief Internal recursive implementation of findNodeWithKey
     Shared<TreeViewNode> _findNodeWithKey(Shared<TreeViewNode> root, const std::string& key);
+
+    /// @brief Internal recursive implementation of removeNodeWithKey
     bool _removeNodeWithKey(Shared<TreeViewNode> root, const std::string& key);
 
 private:
     Shared<TreeViewNode> d_rootNode;
     const int d_rootNodeLevel = 0;
 
+    /// @brief Node --> { node's button, depth level }
     std::map<TreeViewNode*, std::pair<Shared<Button>, int>> d_nodeButtons;
+    
+    /// @brief Node's button --> associated node
     std::map<Button*, TreeViewNode*> d_buttonToNodeMap;
 
+    /// @brief Currently selected node (nullptr if no node is selected)
     TreeViewNode* d_selectedNode = nullptr;
 
 private:
