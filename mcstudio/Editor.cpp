@@ -128,6 +128,8 @@ namespace mc::mcstudio {
     }
 
     void Editor::setSelectedWidget(Shared<BaseWidget> widget) {
+        auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
+        
         // To prevent memory corruption issues with the selected widget
         // memory getting freed up but its focus has not yet been lost,
         // we need to manually unfocus it before doing anything further.
@@ -144,6 +146,7 @@ namespace mc::mcstudio {
         // Nothing further is needed to be done if no real widget is selected
         if (!d_selectedWidget) {
             _clearPropertiesPanel();
+            widgetTreeView->selectNode(nullptr);
             return;
         }
 
@@ -159,7 +162,6 @@ namespace mc::mcstudio {
         _fillPropertiesPanel();
 
         // Highlight the selected widget in the widget tree
-        auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
         widgetTreeView->selectNodeByKey(std::to_string(d_selectedWidget->getID()));
     }
 
