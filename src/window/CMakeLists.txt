@@ -10,6 +10,7 @@ set(
     ${cwd}/ModernWindow.h
     ${cwd}/Overlay.h
     ${cwd}/EventProcessor.h
+    ${cwd}/Canvas2D.h
 
     PARENT_SCOPE
 )
@@ -23,6 +24,7 @@ set(
     ${cwd}/ModernWindow.cpp
     ${cwd}/Overlay.cpp
     ${cwd}/EventProcessor.cpp
+    ${cwd}/Canvas2D.cpp
 
     PARENT_SCOPE
 )
