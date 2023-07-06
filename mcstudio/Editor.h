@@ -1,5 +1,5 @@
 #pragma once
-#include "WidgetTreeView.h"
+#include "WidgetTreeController.h"
 #include <mcx/adapters/BaseWidgetMcxAdapter.h>
 
 namespace mc::mcstudio {
@@ -38,6 +38,9 @@ private:
     );
 
 private:
+    // Controller responsible for the widget tree panel
+    Shared<WidgetTreeController> d_widgetTreeController;
+
     // App's root container widget
     Shared<BaseContainerWidget> d_appRootContainer;
 
