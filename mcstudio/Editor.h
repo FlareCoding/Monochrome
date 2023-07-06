@@ -18,6 +18,9 @@ private:
     // Logic pertaining to whenever the app's root container is pressed on
     void _appRootContainer_OnClick(Shared<Event> e);
 
+    // Logic pertaining to whenever a key is pressed in the editor
+    void _appRootContainer_OnKeyDown(Shared<Event> e);
+
     // Creates and returns new widget from a given widget name
     Shared<BaseWidget> _spawnWidget(const std::string& widgetName);
 

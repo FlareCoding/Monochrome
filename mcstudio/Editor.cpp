@@ -86,6 +86,8 @@ namespace mc::mcstudio {
             _appRootContainer_OnClick(e);
         });
 
+        d_appRootContainer->on("keyDown", &Editor::_appRootContainer_OnKeyDown, this);
+
         // Add the root container to the widget tree view
         d_widgetTreeController->setRootWidget(d_appRootContainer);
 
@@ -108,6 +110,24 @@ namespace mc::mcstudio {
 
         auto clickedWidget = _hitTestInnermostWidget(d_appRootContainer, mousePos);
         setSelectedWidget(clickedWidget);
+    }
+
+    void Editor::_appRootContainer_OnKeyDown(Shared<Event> e) {
+        auto kde = std::static_pointer_cast<KeyDownEvent>(e);
+        
+        // Deleting the selected widget
+        if (kde->getKeyCode() == KeyCode::KEY_BACKSPACE) {
+            if (!d_selectedWidget) {
+                return;
+            }
+
+            // Remove the selected widget from its parent
+            const auto parent = static_cast<BaseContainerWidget*>(d_selectedWidget->getParent());
+            parent->removeChild(d_selectedWidget);
+
+            // Remove the selected widget from the widget tree
+            d_widgetTreeController->removeWidgetNode(d_selectedWidget);
+        }
     }
 
     void Editor::setSelectedWidget(Shared<BaseWidget> widget) {
