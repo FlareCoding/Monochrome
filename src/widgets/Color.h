@@ -30,6 +30,22 @@ public:
     static Color gray;
     static Color lightGray;
     static Color darkGray;
+    static Color orange;
+    static Color cyan;
+    static Color purple;
+    static Color magenta;
+    static Color pink;
+    static Color salmon;
+    static Color brown;
+    static Color teal;
+    static Color maroon;
+    static Color lime;
+    static Color violet;
+    static Color olive;
+    static Color coral;
+    static Color chocolate;
+    static Color indigo;
+    static Color navy;
 };
 
 // Allows to save specific color under a specified name
