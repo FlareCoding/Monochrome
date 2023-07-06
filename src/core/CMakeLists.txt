@@ -7,6 +7,7 @@ set(
     ${cwd}/Core.h
     ${cwd}/InternalFlags.h
     ${cwd}/StackTracer.h
+    ${cwd}/FunctionProfiler.h
 
     PARENT_SCOPE
 )
@@ -17,6 +18,7 @@ set(
     ${cwd}/Core.cpp
     ${cwd}/InternalFlags.cpp
     ${cwd}/StackTracer.cpp
+    ${cwd}/FunctionProfiler.cpp
 
     PARENT_SCOPE
 )
