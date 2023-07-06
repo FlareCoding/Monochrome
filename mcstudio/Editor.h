@@ -1,5 +1,6 @@
 #pragma once
 #include "WidgetTreeController.h"
+#include "EditorCanvasController.h"
 #include <mcx/adapters/BaseWidgetMcxAdapter.h>
 
 namespace mc::mcstudio {
@@ -7,7 +8,7 @@ class Editor {
 public:
     Editor();
     inline void setWindowCanvasReference(Shared<Canvas2D> canvas) {
-        d_overlayCanvas = canvas;
+        d_overlayCanvasReference = canvas;
     }
 
     void toolboxWidget_OnClick(Shared<Event> e);
@@ -23,6 +24,9 @@ private:
 
     // Logic pertaining to whenever a key is pressed in the editor
     void _appRootContainer_OnKeyDown(Shared<Event> e);
+
+    // Removes the widget from the app view, the widget tree, and all other necessary places
+    void _removeWidget(Shared<BaseWidget> widget);
 
     // Creates and returns new widget from a given widget name
     Shared<BaseWidget> _spawnWidget(const std::string& widgetName);
@@ -47,8 +51,11 @@ private:
     // Controller responsible for the widget tree panel
     Shared<WidgetTreeController> d_widgetTreeController;
 
+    // Controller responsible for drawing widget overlay frames
+    Shared<EditorCanvasController> d_editorCanvasController;
+
     // Overlay canvas
-    Shared<Canvas2D> d_overlayCanvas;
+    Shared<Canvas2D> d_overlayCanvasReference;
 
     // App's root container widget
     Shared<BaseContainerWidget> d_appRootContainer;

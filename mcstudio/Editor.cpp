@@ -48,6 +48,7 @@ namespace mc::mcstudio {
     void Editor::rootContainerSelection_OnClick(Shared<Event> e) {
         // Initialize controllers
         d_widgetTreeController = MakeRef<WidgetTreeController>();
+        d_editorCanvasController = MakeRef<EditorCanvasController>(d_overlayCanvasReference);
 
         getWidgetById("initialRootContainerPromptLabel")->hide();
         getWidgetById("initialRootContainerPromptPanel")->hide();
@@ -79,11 +80,21 @@ namespace mc::mcstudio {
         d_appRootContainer->on("mouseDown", [this](Shared<Event> e) {
             e->stopPropagation();
 
-            if (!d_appRootContainer) {
-                return;
-            }
-
             _appRootContainer_OnClick(e);
+        });
+
+        d_appRootContainer->on("mouseMoved", [this](Shared<Event> e) {
+            auto mme = std::static_pointer_cast<MouseMovedEvent>(e);
+
+            auto hoveredWidget = _hitTestInnermostWidget(d_appRootContainer, mme->getLocation());
+            if (hoveredWidget) {
+                d_editorCanvasController->clearCanvas();
+                d_editorCanvasController->drawWidgetEditFrame(hoveredWidget);
+                
+                if (d_selectedWidget) {
+                    d_editorCanvasController->drawWidgetEditFrame(d_selectedWidget);
+                }
+            }
         });
 
         d_appRootContainer->on("keyDown", &Editor::_appRootContainer_OnKeyDown, this);
@@ -121,13 +132,20 @@ namespace mc::mcstudio {
                 return;
             }
 
-            // Remove the selected widget from its parent
-            const auto parent = static_cast<BaseContainerWidget*>(d_selectedWidget->getParent());
-            parent->removeChild(d_selectedWidget);
-
-            // Remove the selected widget from the widget tree
-            d_widgetTreeController->removeWidgetNode(d_selectedWidget);
+            _removeWidget(d_selectedWidget);
         }
+    }
+
+    void Editor::_removeWidget(Shared<BaseWidget> widget) {
+        // Remove the selected widget from its parent
+        const auto parent = static_cast<BaseContainerWidget*>(widget->getParent());
+        parent->removeChild(widget);
+
+        // Remove the selected widget from the widget tree
+        d_widgetTreeController->removeWidgetNode(widget);
+
+        // Clear the canvas
+        d_editorCanvasController->clearCanvas();
     }
 
     void Editor::setSelectedWidget(Shared<BaseWidget> widget) {
@@ -145,7 +163,7 @@ namespace mc::mcstudio {
         d_selectedWidget = widget;
 
         // Clear the overlay to be prevent drawing a frame around the previously selected widget
-        d_overlayCanvas->clear();
+        d_editorCanvasController->clearCanvas();
 
         // Nothing further is needed to be done if no real widget is selected
         if (!d_selectedWidget) {
@@ -168,13 +186,8 @@ namespace mc::mcstudio {
         // Highlight the selected widget in the widget tree
         d_widgetTreeController->selectWidget(d_selectedWidget);
 
-        auto pos = d_selectedWidget->getPositionInWindow();
-        auto size = d_selectedWidget->getComputedSizeWithMargins();
-        d_overlayCanvas->strokeRectangle(pos, size, Color::red);
-
-        pos.y -= 16;
-        size.height = 16;
-        d_overlayCanvas->fillText(pos, size, Color::red, d_selectedWidget->getWidgetName(), "Verdana", 14, "normal", "left");
+        // Draw an "editor frame" around the selected widget
+        d_editorCanvasController->drawWidgetEditFrame(d_selectedWidget);
     }
 
     void Editor::_clearPropertiesPanel() {
@@ -249,6 +262,10 @@ namespace mc::mcstudio {
             } else {
                 d_selectedWidgetAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
             }
+
+            // In case the size of the widget changed, the edit frame needs to be redrawn
+            d_editorCanvasController->clearCanvas();
+            d_editorCanvasController->drawWidgetEditFrame(d_selectedWidget);
         });
         container->addChild(entry);
 
