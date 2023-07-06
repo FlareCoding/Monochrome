@@ -62,7 +62,7 @@ namespace mc {
         }
 
         size_t childIdx = d_nodeKeyIndexMap[key];
-        auto& node = d_children[childIdx];
+        auto node = d_children[childIdx];
 
         d_children.erase(d_children.begin() + childIdx);
         _invalidateKeyIndexMap();
@@ -285,7 +285,15 @@ namespace mc {
     }
 
     bool TreeView::removeNodeWithKey(const std::string& key) {
-        return _removeNodeWithKey(d_rootNode, key);
+        bool result = _removeNodeWithKey(d_rootNode, key);
+
+        // Make sure to de-select the selected
+        // node if it's the one being removed.
+        if (result && d_selectedNode) {
+            d_selectedNode = nullptr;
+        }
+
+        return result;
     }
 
     void TreeView::expandNode(Shared<TreeViewNode> node) {
