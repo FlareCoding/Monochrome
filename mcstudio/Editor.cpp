@@ -19,9 +19,6 @@ namespace mc::mcstudio {
             return;
         }
 
-        // Get the reference for the widget tree view
-        auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
-
         // Get the widget name from the event's target
         auto target = static_cast<Button*>(e->target);
         auto widgetName = target->label->text.get();
@@ -37,27 +34,21 @@ namespace mc::mcstudio {
                 std::static_pointer_cast<BaseContainerWidget>(d_selectedWidget);
 
             selectedContainer->addChild(widget);
-
-            // Add the item to the appropriate sub-group in the widget tree view
-            auto subGroup =
-                widgetTreeView->findNodeWithKey(std::to_string(selectedContainer->getID()));
-
-            subGroup->addChild(widgetName, std::to_string(widget->getID()));
         } else {
             d_appRootContainer->addChild(widget);
 
             // Set the newly added widget as the selected one
             setSelectedWidget(widget);
-
-            // Add the item to the root group in the widget tree view
-            auto rootGroup =
-                widgetTreeView->findNodeWithKey(std::to_string(d_appRootContainer->getID()));
-
-            rootGroup->addChild(widgetName, std::to_string(widget->getID()));
         }
+
+        // Create a node in the widget tree
+        d_widgetTreeController->insertWidgetNode(widget);
     }
 
     void Editor::rootContainerSelection_OnClick(Shared<Event> e) {
+        // Initialize controllers
+        d_widgetTreeController = MakeRef<WidgetTreeController>();
+
         getWidgetById("initialRootContainerPromptLabel")->hide();
         getWidgetById("initialRootContainerPromptPanel")->hide();
 
@@ -96,20 +87,12 @@ namespace mc::mcstudio {
         });
 
         // Add the root container to the widget tree view
-        auto rootContainerTreeItem = MakeRef<TreeViewNode>(
-            widgetName,
-            std::to_string(d_appRootContainer->getID())
-        );
+        d_widgetTreeController->setRootWidget(d_appRootContainer);
 
-        auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
-        auto treeViewRoot = widgetTreeView->getRootNode();
-        treeViewRoot->addChild(rootContainerTreeItem);
-        
-        widgetTreeView->on("itemSelected", [this](Shared<Event> e) {
-            const auto key = e->get<std::string>("key");
-            const uuid_t id = static_cast<uuid_t>(std::stoull(key));
-
-            auto widget = d_appRootContainer->deepSearchWidgetByUuid(id);
+        // Set the callback so that every time a node is selected
+        // in the widget tree, the cooresponding widget is selected.
+        d_widgetTreeController->setNodeSelectedCallback([this](uuid_t selectedWidgetId) {
+            auto widget = d_appRootContainer->deepSearchWidgetByUuid(selectedWidgetId);
             setSelectedWidget(widget);
         });
     }
@@ -128,8 +111,6 @@ namespace mc::mcstudio {
     }
 
     void Editor::setSelectedWidget(Shared<BaseWidget> widget) {
-        auto widgetTreeView = getWidgetById<TreeView>("widgetTreeView");
-        
         // To prevent memory corruption issues with the selected widget
         // memory getting freed up but its focus has not yet been lost,
         // we need to manually unfocus it before doing anything further.
@@ -146,7 +127,7 @@ namespace mc::mcstudio {
         // Nothing further is needed to be done if no real widget is selected
         if (!d_selectedWidget) {
             _clearPropertiesPanel();
-            widgetTreeView->selectNode(nullptr);
+            d_widgetTreeController->selectWidget(nullptr);
             return;
         }
 
@@ -162,7 +143,7 @@ namespace mc::mcstudio {
         _fillPropertiesPanel();
 
         // Highlight the selected widget in the widget tree
-        widgetTreeView->selectNodeByKey(std::to_string(d_selectedWidget->getID()));
+        d_widgetTreeController->selectWidget(d_selectedWidget);
     }
 
     void Editor::_clearPropertiesPanel() {
