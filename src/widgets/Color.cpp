@@ -27,6 +27,22 @@ namespace mc {
     Color Color::gray           = Color(100, 100, 100);
     Color Color::lightGray      = Color(160, 160, 160);
     Color Color::darkGray       = Color(60, 60, 60);
+    Color Color::orange         = Color();
+    Color Color::cyan           = Color();
+    Color Color::purple         = Color();
+    Color Color::magenta        = Color();
+    Color Color::pink           = Color();
+    Color Color::salmon         = Color();
+    Color Color::brown          = Color();
+    Color Color::teal           = Color();
+    Color Color::maroon         = Color();
+    Color Color::lime           = Color();
+    Color Color::violet         = Color();
+    Color Color::olive          = Color();
+    Color Color::coral          = Color();
+    Color Color::chocolate      = Color();
+    Color Color::indigo         = Color();
+    Color Color::navy           = Color();
 
     void registerCustomColor(const std::string& name, const Color& color) {
         CORE_ASSERT(s_customColorMap.find(name) == s_customColorMap.end(),
@@ -56,6 +72,22 @@ namespace mcx {
         registerCustomColor("gray", Color::gray);
         registerCustomColor("lightGray", Color::lightGray);
         registerCustomColor("darkGray", Color::darkGray);
+        registerCustomColor("orange", Color::orange);
+        registerCustomColor("cyan", Color::cyan);
+        registerCustomColor("purple", Color::purple);
+        registerCustomColor("magenta", Color::magenta);
+        registerCustomColor("pink", Color::pink);
+        registerCustomColor("salmon", Color::salmon);
+        registerCustomColor("brown", Color::brown);
+        registerCustomColor("teal", Color::teal);
+        registerCustomColor("maroon", Color::maroon);
+        registerCustomColor("lime", Color::lime);
+        registerCustomColor("violet", Color::violet);
+        registerCustomColor("olive", Color::olive);
+        registerCustomColor("coral", Color::coral);
+        registerCustomColor("chocolate", Color::chocolate);
+        registerCustomColor("indigo", Color::indigo);
+        registerCustomColor("navy", Color::navy);
     }
 } // namespace mcx
 } // namespace mc
