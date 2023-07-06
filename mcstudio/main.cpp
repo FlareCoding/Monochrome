@@ -16,6 +16,9 @@ int main() {
     auto editor = mc::MakeRef<mc::mcstudio::Editor>();
 
     auto window = mc::mcstudio::McxSourceManager::loadMainWindow();
+    
+    auto canvas = window->createOverlayCanvas();
+    editor->setWindowCanvasReference(canvas);
 
     mc::AppManager::startApplicationLoop();
     return 0;

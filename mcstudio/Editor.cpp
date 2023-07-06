@@ -144,6 +144,9 @@ namespace mc::mcstudio {
         // Set the new selected widget
         d_selectedWidget = widget;
 
+        // Clear the overlay to be prevent drawing a frame around the previously selected widget
+        d_overlayCanvas->clear();
+
         // Nothing further is needed to be done if no real widget is selected
         if (!d_selectedWidget) {
             _clearPropertiesPanel();
@@ -164,6 +167,14 @@ namespace mc::mcstudio {
 
         // Highlight the selected widget in the widget tree
         d_widgetTreeController->selectWidget(d_selectedWidget);
+
+        auto pos = d_selectedWidget->getPositionInWindow();
+        auto size = d_selectedWidget->getComputedSizeWithMargins();
+        d_overlayCanvas->strokeRectangle(pos, size, Color::red);
+
+        pos.y -= 16;
+        size.height = 16;
+        d_overlayCanvas->fillText(pos, size, Color::red, d_selectedWidget->getWidgetName(), "Verdana", 14, "normal", "left");
     }
 
     void Editor::_clearPropertiesPanel() {

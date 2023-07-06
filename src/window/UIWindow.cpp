@@ -255,6 +255,15 @@ namespace mc {
         d_rootWidget->fireEvent("layoutChanged", Event::empty);
     }
 
+    Shared<Canvas2D> UIWindow::createOverlayCanvas() {
+        d_overlayCanvas = MakeRef<Canvas2D>();
+
+        auto renderTarget = d_nativeWindow->getRenderTarget();
+        d_overlayCanvas->setRenderTarget(renderTarget);
+
+        return d_overlayCanvas;
+    }
+
     void UIWindow::_backgroundRenderingTask() {
         while (!d_isDestroyed) {
             // To prevent screen from flickering, the background
@@ -293,5 +302,9 @@ namespace mc {
 
     void UIWindow::_renderScene(Shared<RenderTarget>& renderTarget) {
         Renderer::renderScene(d_backgroundColor, d_rootWidget, renderTarget);
+
+        if (d_overlayCanvas) {
+            d_overlayCanvas->__render();
+        }
     }
 } // namespace mc
