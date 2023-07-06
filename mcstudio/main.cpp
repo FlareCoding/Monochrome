@@ -6,6 +6,8 @@
 #include "McxSourceManager.h"
 #include "Editor.h"
 
+#include <core/FunctionProfiler.h>
+
 int main() {
     mc::AppManager::registerApplication(MCSTUDIO_APPLICATION_ID);
 
@@ -19,6 +21,18 @@ int main() {
     
     auto canvas = window->createOverlayCanvas();
     editor->setWindowCanvasReference(canvas);
+
+    {
+        PROFILE_FUNCTION("main");
+
+        volatile int i = 0;
+        for (int i = 0; i < 100000; i++) {
+            volatile double x = sqrt(64);
+        }
+    }
+
+    auto& record = mc::debug::GlobalFunctionProfilerRegistry::get().getProfilerSessionRecord("main");
+    printf("%s:\n  %llu us\n\n", record.functionName.c_str(), record.durationInMicroseconds);
 
     mc::AppManager::startApplicationLoop();
     return 0;
