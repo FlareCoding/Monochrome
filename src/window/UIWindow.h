@@ -4,6 +4,7 @@
 #include <thread>
 #include <atomic>
 #include "EventProcessor.h"
+#include "Canvas2D.h"
 
 namespace mc {
 class BaseContainerWidget;
@@ -54,10 +55,16 @@ public:
     inline Shared<BaseContainerWidget> getRootWidget() const { return d_rootWidget; }
     void setRootWidget(Shared<BaseContainerWidget> root);
 
+    Shared<Canvas2D> createOverlayCanvas();
+    inline Shared<Canvas2D> getOverlayCanvas() { return d_overlayCanvas; }
+
 private:
     Shared<NativeWindow> d_nativeWindow = nullptr;
     Shared<BaseContainerWidget> d_rootWidget;
     Shared<EventProcessor> d_eventProcessor;
+
+    // Can be created optionally by the user
+    Shared<Canvas2D> d_overlayCanvas = nullptr;
 
     uuid_t d_uuid = 0;
     std::atomic_bool d_isDestroyed = false;

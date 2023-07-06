@@ -6,6 +6,9 @@ namespace mc::mcstudio {
 class Editor {
 public:
     Editor();
+    inline void setWindowCanvasReference(Shared<Canvas2D> canvas) {
+        d_overlayCanvas = canvas;
+    }
 
     void toolboxWidget_OnClick(Shared<Event> e);
     void rootContainerSelection_OnClick(Shared<Event> e);
@@ -43,6 +46,9 @@ private:
 private:
     // Controller responsible for the widget tree panel
     Shared<WidgetTreeController> d_widgetTreeController;
+
+    // Overlay canvas
+    Shared<Canvas2D> d_overlayCanvas;
 
     // App's root container widget
     Shared<BaseContainerWidget> d_appRootContainer;
