@@ -1,7 +1,7 @@
 #include "EventProcessor.h"
 #include <core/InternalFlags.h>
 
-#ifdef MC_DEBUG
+#ifdef MC_ENABLE_PERF_PROFILING
 #include <core/FunctionProfiler.h>
 #endif
 
@@ -17,7 +17,7 @@ namespace mc {
     }
 
     void EventProcessor::processMouseDownEvent(Shared<Event> event) {
-#ifdef MC_DEBUG
+#ifdef MC_ENABLE_PERF_PROFILING
         PROFILE_FUNCTION("processMouseDownEvent");
 #endif
 
@@ -45,7 +45,7 @@ namespace mc {
     }
 
     void EventProcessor::processMouseUpEvent(Shared<Event> event) {
-#ifdef MC_DEBUG
+#ifdef MC_ENABLE_PERF_PROFILING
         PROFILE_FUNCTION("processMouseUpEvent");
 #endif
 
@@ -65,7 +65,7 @@ namespace mc {
     }
 
     void EventProcessor::processMouseMovedEvent(Shared<Event> event) {
-#ifdef MC_DEBUG
+#ifdef MC_ENABLE_PERF_PROFILING
         PROFILE_FUNCTION("processMouseMovedEvent");
 #endif
 

@@ -81,5 +81,15 @@ private:
     inline void _requestOnDemandBufferSwap() { d_onDemandBufferSwapRequested = true; }
     inline void _completeOnDemandBufferSwap() { d_onDemandBufferSwapRequested = false; }
     bool _shouldSwapBuffersOnDemand() const { return d_onDemandBufferSwapRequested; }
+
+#ifdef MC_ENABLE_PERF_PROFILING_OVERLAY
+    void _displayProfilingOverlay(Shared<RenderTarget>& renderTarget);
+    void _drawFunctionPerfProfileRecord(
+        Shared<RenderTarget>& renderTarget,
+        const std::string& fnName,
+        int32_t xPos,
+        int32_t yPos
+    );
+#endif
 };
 } // namespace mc

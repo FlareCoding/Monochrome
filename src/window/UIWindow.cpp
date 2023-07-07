@@ -8,7 +8,7 @@
 #include <platform/macos/OSXNativeWindow.h>
 #endif
 
-#ifdef MC_DEBUG
+#ifdef MC_ENABLE_PERF_PROFILING
 #include <core/FunctionProfiler.h>
 #endif
 
@@ -305,7 +305,7 @@ namespace mc {
     }
 
     void UIWindow::_renderScene(Shared<RenderTarget>& renderTarget) {
-#ifdef MC_DEBUG
+#ifdef MC_ENABLE_PERF_PROFILING
         PROFILE_FUNCTION("renderScene");
 #endif
 
@@ -315,28 +315,50 @@ namespace mc {
             d_overlayCanvas->__render();
         }
 
-#ifdef MC_DEBUG
-        renderTarget->drawRectangle(0, 0, 400, 140, Color(20, 20, 20, 140), 0, true, 0);
-
-        auto& record = mc::debug::GlobalFunctionProfilerRegistry::get().getProfilerSessionRecord("renderScene");
-        double seconds = static_cast<double>(record.durationInMicroseconds) / 1000 / 1000;
-        std::string renderingDuration = std::to_string(seconds);
-        renderTarget->drawText(20, 20, 400, 20, Color(255, 255, 0), "renderScene: " + renderingDuration + "s", "Arial", 16, "normal", "left");
-
-        record = mc::debug::GlobalFunctionProfilerRegistry::get().getProfilerSessionRecord("processMouseDownEvent");
-        seconds = static_cast<double>(record.durationInMicroseconds) / 1000 / 1000;
-        renderingDuration = std::to_string(seconds);
-        renderTarget->drawText(20, 40, 400, 20, Color(255, 255, 0), "processMouseDownEvent: " + renderingDuration + "s", "Arial", 16, "normal", "left");
-
-        record = mc::debug::GlobalFunctionProfilerRegistry::get().getProfilerSessionRecord("processMouseUpEvent");
-        seconds = static_cast<double>(record.durationInMicroseconds) / 1000 / 1000;
-        renderingDuration = std::to_string(seconds);
-        renderTarget->drawText(20, 60, 400, 20, Color(255, 255, 0), "processMouseUpEvent: " + renderingDuration + "s", "Arial", 16, "normal", "left");
-
-        record = mc::debug::GlobalFunctionProfilerRegistry::get().getProfilerSessionRecord("processMouseMovedEvent");
-        seconds = static_cast<double>(record.durationInMicroseconds) / 1000 / 1000;
-        renderingDuration = std::to_string(seconds);
-        renderTarget->drawText(20, 80, 400, 20, Color(255, 255, 0), "processMouseMovedEvent: " + renderingDuration + "s", "Arial", 16, "normal", "left");
+#ifdef MC_ENABLE_PERF_PROFILING_OVERLAY
+        profiler_309.endProfiling();
+        
+        _displayProfilingOverlay(renderTarget);
 #endif
     }
+    
+#ifdef MC_ENABLE_PERF_PROFILING_OVERLAY
+    void UIWindow::_displayProfilingOverlay(Shared<RenderTarget>& renderTarget) {
+        // Create a semi-transparent overlay region
+        renderTarget->drawRectangle(0, 0, 400, 140, Color(20, 20, 20, 140), 0, true, 0);
+
+        _drawFunctionPerfProfileRecord(renderTarget, "renderScene", 20, 20);
+        _drawFunctionPerfProfileRecord(renderTarget, "processMouseDownEvent", 20, 40);
+        _drawFunctionPerfProfileRecord(renderTarget, "processMouseUpEvent", 20, 60);
+        _drawFunctionPerfProfileRecord(renderTarget, "processMouseMovedEvent", 20, 80);
+    }
+
+    void UIWindow::_drawFunctionPerfProfileRecord(
+        Shared<RenderTarget>& renderTarget,
+        const std::string& fnName,
+        int32_t xPos,
+        int32_t yPos
+    ) {
+        // Get the function profiler record
+        auto& perfProfileRegistry = mc::debug::GlobalFunctionProfilerRegistry::get();
+        auto& record = perfProfileRegistry.getProfilerSessionRecord(fnName);
+
+        // Convert the time from microseconds to seconds
+        double timeInSeconds =
+            static_cast<double>(record.durationInMicroseconds) / 1000 / 1000;
+
+        std::string renderingDurationStr = std::to_string(timeInSeconds);
+
+        // Render the text
+        std::string perfStr = fnName + ": " + renderingDurationStr + "s";
+
+        renderTarget->drawText(
+            xPos, yPos,
+            400, 20,
+            Color(255, 255, 0),
+            perfStr,
+            "Arial", 16, "normal", "left"
+        );
+    }
+#endif
 } // namespace mc
