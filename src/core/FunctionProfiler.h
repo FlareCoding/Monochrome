@@ -7,39 +7,39 @@
 namespace mc::debug {
 class FunctionProfiler {
 public:
-	FunctionProfiler(const char* fnName);
-	~FunctionProfiler();
+    explicit FunctionProfiler(const char* fnName);
+    ~FunctionProfiler();
 
-	void endProfiling();
+    void endProfiling();
 
 private:
-	const char* d_fnName;
-	std::chrono::time_point<std::chrono::high_resolution_clock> d_startTimestamp;
-	bool d_running;
+    const char* d_fnName;
+    std::chrono::time_point<std::chrono::high_resolution_clock> d_startTimestamp;
+    bool d_running;
 };
 
 struct ProfilerRecord {
-	ProfilerRecord() = default;
-	ProfilerRecord(
-		const std::string& fnName,
-		uint64_t duration,
-		uint64_t threadId
-	) : functionName(fnName), durationInMicroseconds(duration), threadId(threadId) {}
+    ProfilerRecord() = default;
+    ProfilerRecord(
+        const std::string& fnName,
+        uint64_t duration,
+        uint64_t threadId
+    ) : functionName(fnName), durationInMicroseconds(duration), threadId(threadId) {}
 
-	std::string functionName;
-	uint64_t durationInMicroseconds;
-	uint64_t threadId;
+    std::string functionName;
+    uint64_t durationInMicroseconds;
+    uint64_t threadId;
 };
 
 class GlobalFunctionProfilerRegistry {
 public:
-	static GlobalFunctionProfilerRegistry& get();
+    static GlobalFunctionProfilerRegistry& get();
 
-	void recordProfilerSession(ProfilerRecord& record);
-	ProfilerRecord& getProfilerSessionRecord(const std::string& fnName);
+    void recordProfilerSession(ProfilerRecord& record);
+    ProfilerRecord& getProfilerSessionRecord(const std::string& fnName);
 
 private:
-	std::map<std::string, ProfilerRecord> d_profilerRecords;
+    std::map<std::string, ProfilerRecord> d_profilerRecords;
 };
 
 #define __PROFILER_NAME_CAT(a, b) a ## b
