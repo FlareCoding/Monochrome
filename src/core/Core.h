@@ -41,7 +41,7 @@
 // Uncomment this line if you want performance profiling
 // overlay to be enabled for render operations and event processing.
 //
-#define MC_ENABLE_PERF_PROFILING
+//#define MC_ENABLE_PERF_PROFILING
 
 #ifdef MC_ENABLE_PERF_PROFILING
     //
