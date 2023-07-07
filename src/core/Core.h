@@ -25,6 +25,10 @@
     #error "Unknown compiler"
 #endif
 
+#if defined(DEBUG) || defined(_DEBUG)
+    #define MC_DEBUG
+#endif
+
 #include "StackTracer.h"
 
 //

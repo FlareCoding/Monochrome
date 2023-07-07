@@ -1,6 +1,10 @@
 #include "EventProcessor.h"
 #include <core/InternalFlags.h>
 
+#ifdef MC_DEBUG
+#include <core/FunctionProfiler.h>
+#endif
+
 namespace mc {
     using WidgetList_t = std::vector<Shared<BaseWidget>>;
     static WidgetList_t cloneWidgetList(WidgetList_t& original) {
@@ -13,6 +17,10 @@ namespace mc {
     }
 
     void EventProcessor::processMouseDownEvent(Shared<Event> event) {
+#ifdef MC_DEBUG
+        PROFILE_FUNCTION("processMouseDownEvent");
+#endif
+
         if (!d_rootWidget) {
             return;
         }
@@ -37,6 +45,10 @@ namespace mc {
     }
 
     void EventProcessor::processMouseUpEvent(Shared<Event> event) {
+#ifdef MC_DEBUG
+        PROFILE_FUNCTION("processMouseUpEvent");
+#endif
+
         if (!d_rootWidget) {
             return;
         }
@@ -53,6 +65,10 @@ namespace mc {
     }
 
     void EventProcessor::processMouseMovedEvent(Shared<Event> event) {
+#ifdef MC_DEBUG
+        PROFILE_FUNCTION("processMouseMovedEvent");
+#endif
+
         if (!d_rootWidget) {
             return;
         }
