@@ -317,11 +317,11 @@ namespace mc {
 
 #ifdef MC_ENABLE_PERF_PROFILING_OVERLAY
         profiler_309.endProfiling();
-        
+
         _displayProfilingOverlay(renderTarget);
 #endif
     }
-    
+
 #ifdef MC_ENABLE_PERF_PROFILING_OVERLAY
     void UIWindow::_displayProfilingOverlay(Shared<RenderTarget>& renderTarget) {
         // Create a semi-transparent overlay region
