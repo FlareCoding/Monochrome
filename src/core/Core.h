@@ -37,6 +37,20 @@
 //
 #define MC_DEBUG_ENABLE_STACKTRACE
 
+//
+// Uncomment this line if you want performance profiling
+// overlay to be enabled for render operations and event processing.
+//
+#define MC_ENABLE_PERF_PROFILING
+
+#ifdef MC_ENABLE_PERF_PROFILING
+    //
+    // Use this as a flag to toggle whether or not an
+    // overlay appears displaying performance profiling data.
+    //
+    #define MC_ENABLE_PERF_PROFILING_OVERLAY
+#endif
+
 #ifdef MC_DEBUG_ENABLE_STACKTRACE
     #define PrintStackTrace() _printDebugStackTrace();
 #else
