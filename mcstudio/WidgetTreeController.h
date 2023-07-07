@@ -4,7 +4,7 @@
 
 namespace mc::mcstudio {
 using widgetTreeNodeSelectedCallback_t = std::function<void(uuid_t)>;
-    
+
 class WidgetTreeController {
 public:
     WidgetTreeController();
