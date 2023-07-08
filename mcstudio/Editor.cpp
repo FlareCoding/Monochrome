@@ -49,6 +49,7 @@ namespace mc::mcstudio {
         // Initialize controllers
         d_widgetTreeController = MakeRef<WidgetTreeController>();
         d_editorCanvasController = MakeRef<EditorCanvasController>(d_overlayCanvasReference);
+        d_widgetPropertiesPanelController = MakeRef<WidgetPropertiesPanelController>();
 
         getWidgetById("initialRootContainerPromptLabel")->hide();
         getWidgetById("initialRootContainerPromptPanel")->hide();
