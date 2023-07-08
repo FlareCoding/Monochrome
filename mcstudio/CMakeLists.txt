@@ -10,10 +10,11 @@ add_executable(
     McxSourceManager.cpp
     Editor.h
     Editor.cpp
-    WidgetTreeController.h
-    WidgetTreeController.cpp
-    EditorCanvasController.h
-    EditorCanvasController.cpp
+
+    controllers/WidgetTreeController.h
+    controllers/WidgetTreeController.cpp
+    controllers/EditorCanvasController.h
+    controllers/EditorCanvasController.cpp
 
     mcx/main.mcx
     mcx/editor-panel.mcx
