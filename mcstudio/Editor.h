@@ -1,6 +1,7 @@
 #pragma once
 #include "controllers/WidgetTreeController.h"
 #include "controllers/EditorCanvasController.h"
+#include "controllers/WidgetPropertiesPanelController.h"
 #include <mcx/adapters/BaseWidgetMcxAdapter.h>
 
 namespace mc::mcstudio {
@@ -53,6 +54,9 @@ private:
 
     // Controller responsible for drawing widget overlay frames
     Shared<EditorCanvasController> d_editorCanvasController;
+
+    // Controller responsible for the widget properties panel
+    Shared<WidgetPropertiesPanelController> d_widgetPropertiesPanelController;
 
     // Overlay canvas
     Shared<Canvas2D> d_overlayCanvasReference;

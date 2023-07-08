@@ -15,6 +15,8 @@ add_executable(
     controllers/WidgetTreeController.cpp
     controllers/EditorCanvasController.h
     controllers/EditorCanvasController.cpp
+    controllers/WidgetPropertiesPanelController.h
+    controllers/WidgetPropertiesPanelController.cpp
 
     mcx/main.mcx
     mcx/editor-panel.mcx
