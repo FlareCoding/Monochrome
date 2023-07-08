@@ -5,7 +5,7 @@
 namespace mc::mcstudio {
 class EditorCanvasController {
 public:
-    EditorCanvasController(Shared<Canvas2D> overlayCanvas);
+    explicit EditorCanvasController(Shared<Canvas2D> overlayCanvas);
 
     void clearCanvas();
 

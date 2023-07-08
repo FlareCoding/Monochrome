@@ -1,6 +1,6 @@
 #pragma once
-#include "WidgetTreeController.h"
-#include "EditorCanvasController.h"
+#include "controllers/WidgetTreeController.h"
+#include "controllers/EditorCanvasController.h"
 #include <mcx/adapters/BaseWidgetMcxAdapter.h>
 
 namespace mc::mcstudio {
