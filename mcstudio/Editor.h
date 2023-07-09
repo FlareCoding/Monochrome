@@ -2,7 +2,6 @@
 #include "controllers/WidgetTreeController.h"
 #include "controllers/EditorCanvasController.h"
 #include "controllers/WidgetPropertiesPanelController.h"
-#include <mcx/adapters/BaseWidgetMcxAdapter.h>
 
 namespace mc::mcstudio {
 class Editor {
@@ -26,21 +25,15 @@ private:
     // Logic pertaining to whenever a key is pressed in the editor
     void _appRootContainer_OnKeyDown(Shared<Event> e);
 
+    // Event handler for whenever a widget's property
+    // gets modified through the properties list panel.
+    void _onWidgetPropertyModified(Shared<Event> e);
+
     // Removes the widget from the app view, the widget tree, and all other necessary places
     void _removeWidget(Shared<BaseWidget> widget);
 
     // Creates and returns new widget from a given widget name
     Shared<BaseWidget> _spawnWidget(const std::string& widgetName);
-
-    // Removes all property entries from the widget properties panel
-    void _clearPropertiesPanel();
-
-    // Fills the properties panel with current widget's properties
-    void _fillPropertiesPanel();
-
-    // Creates a widget container consisting of a label and an entry
-    // which upon modification will modify the selected widget's property.
-    Shared<BaseWidget> _createPropertyEntry(const std::string& name, bool isBasicProperty);
 
     // Returns the inner-most widget in the app's widget tree that a given point intersects
     Shared<BaseWidget> _hitTestInnermostWidget(
