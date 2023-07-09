@@ -42,5 +42,12 @@ private:
         const std::string& propValue,
         bool isBasicProperty
     );
+
+    // Creates a widget container containing a boolean switch
+    Shared<BaseWidget> _createBooleanPropertyField(
+        const std::string& propName,
+        const std::string& propValue,
+        bool isBasicProperty
+    );
 };
 } // namespace mc::mcstudio
