@@ -3,15 +3,15 @@
 
 namespace mc {
     static void dimColor(PropertyObserver<Color>& color) {
-        color->r -= 8;
-        color->g -= 8;
-        color->b -= 8;
+        if (color->r > 16) color->r -= 8;
+        if (color->g > 16) color->g -= 8;
+        if (color->b > 16) color->b -= 8;
     }
 
     static void undimColor(PropertyObserver<Color>& color) {
-        color->r += 8;
-        color->g += 8;
-        color->b += 8;
+        if (color->r >= 8) color->r += 8;
+        if (color->r >= 8) color->g += 8;
+        if (color->r >= 8) color->b += 8;
     }
 
     Button::Button() {
