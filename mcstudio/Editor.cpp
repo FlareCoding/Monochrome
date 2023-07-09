@@ -49,7 +49,14 @@ namespace mc::mcstudio {
         // Initialize controllers
         d_widgetTreeController = MakeRef<WidgetTreeController>();
         d_editorCanvasController = MakeRef<EditorCanvasController>(d_overlayCanvasReference);
-        d_widgetPropertiesPanelController = MakeRef<WidgetPropertiesPanelController>();
+        d_widgetPropertiesPanelController =
+            MakeRef<WidgetPropertiesPanelController>(d_baseWidgetAdapter);
+
+        d_widgetPropertiesPanelController->on(
+            "widgetPropertyModified",
+            &Editor::_onWidgetPropertyModified,
+            this
+        );
 
         getWidgetById("initialRootContainerPromptLabel")->hide();
         getWidgetById("initialRootContainerPromptPanel")->hide();
@@ -137,6 +144,23 @@ namespace mc::mcstudio {
         }
     }
 
+    void Editor::_onWidgetPropertyModified(Shared<Event> e) {
+        auto event = std::static_pointer_cast<WidgetPropertyModifiedEvent>(e);
+
+        // Update the property in the mcx node
+        d_selectedWidgetNode->setAttribute(event->getPropName(), event->getPropValue());
+
+        if (event->isBasicProperty()) {
+            d_baseWidgetAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
+        } else {
+            d_selectedWidgetAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
+        }
+
+        // In case the size of the widget changed, the edit frame needs to be redrawn
+        d_editorCanvasController->clearCanvas();
+        d_editorCanvasController->drawWidgetEditFrame(d_selectedWidget);
+    }
+
     void Editor::_removeWidget(Shared<BaseWidget> widget) {
         // Remove the selected widget from its parent
         const auto parent = static_cast<BaseContainerWidget*>(widget->getParent());
@@ -168,7 +192,7 @@ namespace mc::mcstudio {
 
         // Nothing further is needed to be done if no real widget is selected
         if (!d_selectedWidget) {
-            _clearPropertiesPanel();
+            d_widgetPropertiesPanelController->clear();
             d_widgetTreeController->selectWidget(nullptr);
             return;
         }
@@ -182,95 +206,16 @@ namespace mc::mcstudio {
         d_selectedWidgetAdapter->extractProperties(d_selectedWidget, d_selectedWidgetNode);
 
         // Display properties for the current selected widget
-        _fillPropertiesPanel();
+        d_widgetPropertiesPanelController->displayWidgetProperties(
+            d_selectedWidgetNode,
+            d_selectedWidgetAdapter
+        );
 
         // Highlight the selected widget in the widget tree
         d_widgetTreeController->selectWidget(d_selectedWidget);
 
         // Draw an "editor frame" around the selected widget
         d_editorCanvasController->drawWidgetEditFrame(d_selectedWidget);
-    }
-
-    void Editor::_clearPropertiesPanel() {
-        // Get the reference to the widget properties
-        // panel and clear it from all previous entries.
-        auto propertiesListPanel = getWidgetById<StackPanel>("propertiesListPanel");
-        propertiesListPanel->removeAllChildren();
-    }
-
-    void Editor::_fillPropertiesPanel() {
-        // Get the reference to the widget properties
-        // panel and clear it from all previous entries.
-        auto propertiesListPanel = getWidgetById<StackPanel>("propertiesListPanel");
-        propertiesListPanel->removeAllChildren();
-
-        // Add records of all basic properties
-        for (auto& prop : d_baseWidgetAdapter->getAvailableProperties()) {
-            auto propertyEntry = _createPropertyEntry(prop, true);
-            propertiesListPanel->addChildOffline(propertyEntry);
-        }
-
-        // Empty space acting as a divider
-        auto dividingSpace = MakeRef<Label>();
-        dividingSpace->text = " ";
-        propertiesListPanel->addChildOffline(dividingSpace);
-
-        // Add records of all custom widget properties
-        for (auto& prop : d_selectedWidgetAdapter->getAvailableProperties()) {
-            auto propertyEntry = _createPropertyEntry(prop, false);
-            propertiesListPanel->addChildOffline(propertyEntry);
-        }
-
-        // Since all the children have been added in the offline mode, a.k.a no
-        // layout change events firing, the layout needs to be re-calculated.
-        propertiesListPanel->signalLayoutChanged();
-    }
-
-    Shared<BaseWidget> Editor::_createPropertyEntry(
-        const std::string& name,
-        bool isBasicProperty
-    ) {
-        auto container = MakeRef<StackPanel>();
-        container->orientation = Horizontal;
-        container->backgroundColor = Color::transparent;
-
-        auto propertyNameLabel = MakeRef<Label>();
-        propertyNameLabel->text = name;
-        propertyNameLabel->fixedWidth = 110;
-        propertyNameLabel->marginLeft = 10;
-        propertyNameLabel->alignment = "left";
-        container->addChild(propertyNameLabel);
-
-        auto entry = MakeRef<Entry>();
-        entry->backgroundColor = Color::transparent;
-        entry->borderColor = Color::transparent;
-        entry->textColor = Color::white;
-        entry->cursorColor = Color::white;
-        entry->focusedBorderColor = Color(0, 240, 216);
-        entry->text = d_selectedWidgetNode->getAttribute(name);
-        entry->fixedWidth = 150;
-        entry->on("entered", [this, isBasicProperty](Shared<Event> e) {
-            auto target = static_cast<Entry*>(e->target);
-            auto parentContainer = static_cast<StackPanel*>(target->getParent());
-            auto propertyNameLabel = std::static_pointer_cast<Label>(parentContainer->getChild(0));
-
-            auto propName = propertyNameLabel->text.get();
-            auto propValue = target->text.get();
-            d_selectedWidgetNode->setAttribute(propName, propValue);
-
-            if (isBasicProperty) {
-                d_baseWidgetAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
-            } else {
-                d_selectedWidgetAdapter->applyProperties(d_selectedWidget, d_selectedWidgetNode);
-            }
-
-            // In case the size of the widget changed, the edit frame needs to be redrawn
-            d_editorCanvasController->clearCanvas();
-            d_editorCanvasController->drawWidgetEditFrame(d_selectedWidget);
-        });
-        container->addChild(entry);
-
-        return container;
     }
 
     Shared<BaseWidget> Editor::_spawnWidget(const std::string& widgetName) {
