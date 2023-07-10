@@ -1,6 +1,5 @@
 #pragma once
-#include <widgets/AllWidgets.h>
-#include <mcx/adapters/BaseWidgetMcxAdapter.h>
+#include "../user_widgets/BaseWidgetPropertiesPanel.h"
 
 namespace mc::mcstudio {
 class WidgetPropertyModifiedEvent : public Event {
@@ -35,22 +34,7 @@ public:
 
 private:
     Shared<StackPanel> d_propertiesPanel;
-    Shared<mcx::BaseWidgetMcxAdapter> d_baseWidgetAdapter;
-
-    // Creates a widget container consisting of a label and an entry
-    // which upon modification will modify the selected widget's property.
-    Shared<BaseWidget> _createRegularPropertyTextField(
-        const std::string& propName,
-        const std::string& propValue,
-        bool isBasicProperty
-    );
-
-    // Creates a widget container containing a boolean switch
-    Shared<BaseWidget> _createBooleanPropertyField(
-        const std::string& propName,
-        const std::string& propValue,
-        bool isBasicProperty
-    );
+    Shared<BaseWidgetPropertiesPanel> d_basePropertiesPanel;
 
     // Creates a widget container with visual controller buttons for dockAnchor property
     Shared<BaseWidget> _createDockAnchorPropertyField(
