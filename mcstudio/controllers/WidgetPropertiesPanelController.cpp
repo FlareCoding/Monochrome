@@ -1,6 +1,10 @@
 #include "WidgetPropertiesPanelController.h"
 
 namespace mc::mcstudio {
+    static bool isPropBoolean(std::string& value) {
+        return (value == "true" || value == "false");
+    }
+
     WidgetPropertiesPanelController::WidgetPropertiesPanelController(
         Shared<mcx::BaseWidgetMcxAdapter> baseWidgetAdapter
     ) {
@@ -25,14 +29,14 @@ namespace mc::mcstudio {
 
         // Add records of all basic properties
         for (auto& prop : d_baseWidgetAdapter->getAvailableProperties()) {
-            /*auto propertyEntry = _createPropertyEntry(prop, true, widget, mcxNode, baseAdapter, customAdapter);*/
             auto propValue = widgetNode->getAttribute(prop);
 
             Shared<BaseWidget> propertyField;
-            if (propValue == "true" || propValue == "false") {
+            if (isPropBoolean(propValue)) {
                 propertyField = _createBooleanPropertyField(prop, propValue, true);
-            }
-            else {
+            } else if (prop == "dockAnchor") {
+                propertyField = _createDockAnchorPropertyField(propValue);
+            } else {
                 propertyField = _createRegularPropertyTextField(prop, propValue, true);
             }
 
@@ -46,10 +50,15 @@ namespace mc::mcstudio {
 
         // Add records of all custom widget properties
         for (auto& prop : widgetAdapter->getAvailableProperties()) {
-            //auto propertyEntry = _createPropertyEntry(prop, false, widget, mcxNode, baseAdapter, customAdapter);
             auto propValue = widgetNode->getAttribute(prop);
 
-            auto propertyField = _createRegularPropertyTextField(prop, propValue, false);
+            Shared<BaseWidget> propertyField;
+            if (isPropBoolean(propValue)) {
+                propertyField = _createBooleanPropertyField(prop, propValue, true);
+            } else {
+                propertyField = _createRegularPropertyTextField(prop, propValue, true);
+            }
+
             propertiesListPanel->addChildOffline(propertyField);
         }
 
@@ -57,7 +66,7 @@ namespace mc::mcstudio {
         // layout change events firing, the layout needs to be re-calculated.
         propertiesListPanel->signalLayoutChanged();
     }
-    
+
     Shared<BaseWidget> WidgetPropertiesPanelController::_createRegularPropertyTextField(
         const std::string& propName,
         const std::string& propValue,
@@ -92,7 +101,7 @@ namespace mc::mcstudio {
 
             auto propName = propertyNameLabel->text.get();
             auto propValue = target->text.get();
-            
+
             fireEvent("widgetPropertyModified", {
                 { "propName", propName },
                 { "propValue", propValue },
@@ -109,7 +118,7 @@ namespace mc::mcstudio {
         const std::string& propValue,
         bool isBasicProperty
     ) {
-        static auto dimmedColor = Color(53, 54, 59);
+        static const auto dimmedColor = Color(53, 54, 59);
         bool propBoolVal = propValue == "true";
 
         auto container = MakeRef<StackPanel>();
@@ -191,7 +200,7 @@ namespace mc::mcstudio {
             auto propName = propertyNameLabel->text.get();
 
             // Highlight the "true" button
-            target->backgroundColor = Color(0, 100, 0); 
+            target->backgroundColor = Color(0, 100, 0);
 
             // Get the "false" button and dim it
             auto falseButton = std::static_pointer_cast<Button>(
@@ -207,6 +216,122 @@ namespace mc::mcstudio {
         });
 
         container->addChildOffline(switchStackPanel);
+
+        return container;
+    }
+    
+    Shared<BaseWidget> WidgetPropertiesPanelController::_createDockAnchorPropertyField(
+        const std::string& propValue
+    ) {
+        static const auto unselectedDockButtonColor = Color(70, 70, 70);
+        static const auto selectedDockButtonColor = Color(130, 130, 130);
+
+        auto container = MakeRef<StackPanel>();
+        container->backgroundColor = Color::transparent;
+        container->marginBottom = 4;
+        container->marginLeft = 10;
+
+        auto propertyNameLabel = MakeRef<Label>();
+        propertyNameLabel->text = "Dock Anchor";
+        propertyNameLabel->fixedWidth = 260;
+        propertyNameLabel->fixedHeight = 10;
+        propertyNameLabel->marginBottom = 6;
+        container->addChildOffline(propertyNameLabel);
+
+        auto dockAnchorTopButton = MakeRef<Button>();
+        dockAnchorTopButton->borderColor = Color(10, 10, 10);
+        dockAnchorTopButton->borderThickness = 1;
+        dockAnchorTopButton->cornerRadius = 0;
+        dockAnchorTopButton->label->color = Color::white;
+        dockAnchorTopButton->label->text = "";
+        dockAnchorTopButton->fixedHeight = 16;
+        dockAnchorTopButton->dockAnchor = DockAnchor::Top;
+
+        auto dockAnchorBottomButton = MakeRef<Button>();
+        dockAnchorBottomButton->borderColor = Color(10, 10, 10);
+        dockAnchorBottomButton->borderThickness = 1;
+        dockAnchorBottomButton->cornerRadius = 0;
+        dockAnchorBottomButton->label->color = Color::white;
+        dockAnchorBottomButton->label->text = "";
+        dockAnchorBottomButton->fixedHeight = 16;
+        dockAnchorBottomButton->dockAnchor = DockAnchor::Bottom;
+
+        auto dockAnchorLeftButton = MakeRef<Button>();
+        dockAnchorLeftButton->borderColor = Color(10, 10, 10);
+        dockAnchorLeftButton->borderThickness = 1;
+        dockAnchorLeftButton->cornerRadius = 0;
+        dockAnchorLeftButton->label->color = Color::white;
+        dockAnchorLeftButton->label->text = "";
+        dockAnchorLeftButton->fixedWidth = 20;
+        dockAnchorLeftButton->dockAnchor = DockAnchor::Left;
+
+        auto dockAnchorRightButton = MakeRef<Button>();
+        dockAnchorRightButton->borderColor = Color(10, 10, 10);
+        dockAnchorRightButton->borderThickness = 1;
+        dockAnchorRightButton->cornerRadius = 0;
+        dockAnchorRightButton->label->color = Color::white;
+        dockAnchorRightButton->label->text = "";
+        dockAnchorRightButton->fixedWidth = 20;
+        dockAnchorRightButton->dockAnchor = DockAnchor::Right;
+
+        auto dockAnchorFillButton = MakeRef<Button>();
+        dockAnchorFillButton->borderColor = Color(10, 10, 10);
+        dockAnchorFillButton->borderThickness = 1;
+        dockAnchorFillButton->cornerRadius = 0;
+        dockAnchorFillButton->label->color = Color::white;
+        dockAnchorFillButton->label->text = "";
+        dockAnchorFillButton->dockAnchor = DockAnchor::Fill;
+
+        auto controlDockPanel = MakeRef<DockPanel>();
+        controlDockPanel->horizontalAlignment = HACenter;
+        controlDockPanel->backgroundColor = Color::red;
+        controlDockPanel->fixedWidth = 160;
+        controlDockPanel->fixedHeight = 80;
+        controlDockPanel->backgroundColor = Color::transparent;
+        controlDockPanel->addChildOffline(dockAnchorTopButton);
+        controlDockPanel->addChildOffline(dockAnchorBottomButton);
+        controlDockPanel->addChildOffline(dockAnchorLeftButton);
+        controlDockPanel->addChildOffline(dockAnchorRightButton);
+        controlDockPanel->addChildOffline(dockAnchorFillButton);
+        container->addChildOffline(controlDockPanel);
+
+        // Apply appropriate coloring to the control buttons
+        if (propValue == "left") {
+            dockAnchorLeftButton->backgroundColor = selectedDockButtonColor;
+
+            dockAnchorTopButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorRightButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorBottomButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorFillButton->backgroundColor = unselectedDockButtonColor;
+        } else if (propValue == "top") {
+            dockAnchorTopButton->backgroundColor = selectedDockButtonColor;
+
+            dockAnchorLeftButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorRightButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorBottomButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorFillButton->backgroundColor = unselectedDockButtonColor;
+        } else if (propValue == "right") {
+            dockAnchorRightButton->backgroundColor = selectedDockButtonColor;
+
+            dockAnchorTopButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorLeftButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorBottomButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorFillButton->backgroundColor = unselectedDockButtonColor;
+        } else if (propValue == "bottom") {
+            dockAnchorBottomButton->backgroundColor = selectedDockButtonColor;
+
+            dockAnchorTopButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorLeftButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorRightButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorFillButton->backgroundColor = unselectedDockButtonColor;
+        } else {
+            dockAnchorFillButton->backgroundColor = selectedDockButtonColor;
+
+            dockAnchorTopButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorBottomButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorLeftButton->backgroundColor = unselectedDockButtonColor;
+            dockAnchorRightButton->backgroundColor = unselectedDockButtonColor;
+        }
 
         return container;
     }
