@@ -75,7 +75,7 @@ namespace mc::mcstudio {
 
         fireEvent("widgetPropertyModified", {
             { "propName", d_propName },
-            { "propValue", std::string("true") },
+            { "propValue",d_propValue },
         });
     }
 
@@ -90,7 +90,7 @@ namespace mc::mcstudio {
 
         fireEvent("widgetPropertyModified", {
             { "propName", d_propName },
-            { "propValue", std::string("false") },
+            { "propValue", d_propValue },
         });
     }
 } // namespace mc::mcstudio
