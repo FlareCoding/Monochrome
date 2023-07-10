@@ -1,4 +1,6 @@
 #include "WidgetPropertiesPanelController.h"
+#include "../user_widgets/RegularPropertyTextField.h"
+#include "../user_widgets/BooleanPropertyField.h"
 
 namespace mc::mcstudio {
     WidgetPropertiesPanelController::WidgetPropertiesPanelController(
@@ -28,19 +30,26 @@ namespace mc::mcstudio {
         // Add fields for all basic properties
         d_propertiesPanel->addChildOffline(d_basePropertiesPanel);
 
-        //// Add records of all custom widget properties
-        //for (auto& prop : widgetAdapter->getAvailableProperties()) {
-        //    auto propValue = widgetNode->getAttribute(prop);
+        // Add records of all custom widget properties
+        for (auto& prop : widgetAdapter->getAvailableProperties()) {
+            auto propValue = widgetNode->getAttribute(prop);
 
-        //    Shared<BaseWidget> propertyField;
-        //    if (isPropBoolean(propValue)) {
-        //        propertyField = _createBooleanPropertyField(prop, propValue, false);
-        //    } else {
-        //        propertyField = _createRegularPropertyTextField(prop, propValue, false);
-        //    }
+            Shared<BaseWidget> propertyField;
+            if (propValue == "true" || propValue == "false") {
+                propertyField = MakeRef<BooleanPropertyField>(prop, propValue);
+            } else {
+                propertyField = MakeRef<RegularPropertyTextField>(prop, propValue);
+            }
 
-        //    d_propertiesPanel->addChildOffline(propertyField);
-        //}
+            propertyField->on("widgetPropertyModified", [this](Shared<Event> e) {
+                e->store("isBasicProp", false);
+
+                // Forward the event with additional data
+                fireEvent("widgetPropertyModified", e);
+            });
+
+            d_propertiesPanel->addChildOffline(propertyField);
+        }
 
         // Since all the children have been added in the offline mode, a.k.a no
         // layout change events firing, the layout needs to be re-calculated.
