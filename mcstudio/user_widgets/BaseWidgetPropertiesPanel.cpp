@@ -1,6 +1,7 @@
 #include "BaseWidgetPropertiesPanel.h"
 #include "RegularPropertyTextField.h"
 #include "BooleanPropertyField.h"
+#include "DockAnchorPropertyField.h"
 
 namespace mc::mcstudio {
     static bool isPropBoolean(std::string& value) {
@@ -32,8 +33,7 @@ namespace mc::mcstudio {
                 propertyField = MakeRef<BooleanPropertyField>(prop, propValue);
             
             } else if (prop == "dockAnchor") {
-                //propertyField = _createDockAnchorPropertyField(propValue);
-                propertyField = MakeRef<RegularPropertyTextField>(prop, propValue);
+                propertyField = MakeRef<DockAnchorPropertyField>(prop, propValue);
 
             } else {
                 propertyField = MakeRef<RegularPropertyTextField>(prop, propValue);
