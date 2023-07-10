@@ -18,6 +18,13 @@ add_executable(
     controllers/WidgetPropertiesPanelController.h
     controllers/WidgetPropertiesPanelController.cpp
 
+    user_widgets/BaseWidgetPropertiesPanel.h
+    user_widgets/BaseWidgetPropertiesPanel.cpp
+    user_widgets/RegularPropertyTextField.h
+    user_widgets/RegularPropertyTextField.cpp
+    user_widgets/BooleanPropertyField.h
+    user_widgets/BooleanPropertyField.cpp
+
     mcx/main.mcx
     mcx/editor-panel.mcx
     mcx/widget-toolbox.mcx
