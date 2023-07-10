@@ -20,7 +20,9 @@ public:
 
 class WidgetPropertiesPanelController : public EventEmitter {
 public:
-    WidgetPropertiesPanelController(Shared<mcx::BaseWidgetMcxAdapter> baseWidgetAdapter);
+    explicit WidgetPropertiesPanelController(
+        Shared<mcx::BaseWidgetMcxAdapter> baseWidgetAdapter
+    );
 
     // Removes all property entries from the widget properties panel
     void clear();
@@ -48,6 +50,11 @@ private:
         const std::string& propName,
         const std::string& propValue,
         bool isBasicProperty
+    );
+
+    // Creates a widget container with visual controller buttons for dockAnchor property
+    Shared<BaseWidget> _createDockAnchorPropertyField(
+        const std::string& propValue
     );
 };
 } // namespace mc::mcstudio
