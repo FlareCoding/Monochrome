@@ -1,6 +1,7 @@
 #include "BaseWidgetPropertiesPanel.h"
 #include "RegularPropertyTextField.h"
 #include "BooleanPropertyField.h"
+#include "AlignmentPropertyField.h"
 #include "DockAnchorPropertyField.h"
 
 namespace mc::mcstudio {
@@ -34,6 +35,9 @@ namespace mc::mcstudio {
             
             } else if (prop == "dockAnchor") {
                 propertyField = MakeRef<DockAnchorPropertyField>(prop, propValue);
+
+            } else if (prop == "horizontalAlignment") {
+                propertyField = MakeRef<AlignmentPropertyField>(prop, propValue);
 
             } else {
                 propertyField = MakeRef<RegularPropertyTextField>(prop, propValue);
