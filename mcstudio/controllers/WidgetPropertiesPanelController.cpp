@@ -54,9 +54,9 @@ namespace mc::mcstudio {
 
             Shared<BaseWidget> propertyField;
             if (isPropBoolean(propValue)) {
-                propertyField = _createBooleanPropertyField(prop, propValue, true);
+                propertyField = _createBooleanPropertyField(prop, propValue, false);
             } else {
-                propertyField = _createRegularPropertyTextField(prop, propValue, true);
+                propertyField = _createRegularPropertyTextField(prop, propValue, false);
             }
 
             propertiesListPanel->addChildOffline(propertyField);
