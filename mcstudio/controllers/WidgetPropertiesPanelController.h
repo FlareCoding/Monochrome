@@ -35,10 +35,5 @@ public:
 private:
     Shared<StackPanel> d_propertiesPanel;
     Shared<BaseWidgetPropertiesPanel> d_basePropertiesPanel;
-
-    // Creates a widget container with visual controller buttons for dockAnchor property
-    Shared<BaseWidget> _createDockAnchorPropertyField(
-        const std::string& propValue
-    );
 };
 } // namespace mc::mcstudio

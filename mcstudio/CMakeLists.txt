@@ -24,6 +24,8 @@ add_executable(
     user_widgets/RegularPropertyTextField.cpp
     user_widgets/BooleanPropertyField.h
     user_widgets/BooleanPropertyField.cpp
+    user_widgets/DockAnchorPropertyField.h
+    user_widgets/DockAnchorPropertyField.cpp
 
     mcx/main.mcx
     mcx/editor-panel.mcx
