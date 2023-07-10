@@ -82,6 +82,13 @@ namespace mc {
         cursorType = CursorType::Hand;
 
         checked = false;
+        checked.on("propertyChanged", [this](Shared<Event> e) {
+            button->label->visible = checked.get();
+
+            fireEvent("valueChanged", {
+                { "checked", checked.get() }
+            });
+        });
         checked.forwardEmittedEvents(this);
 
         on("clicked", &Checkbox::_onClick, this);
