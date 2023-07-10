@@ -11,7 +11,7 @@ namespace mc::mcstudio {
 
     void EditorCanvasController::drawWidgetEditFrame(Shared<BaseWidget> widget) {
         auto widgetAbsPosition = widget->getPositionInWindow();
-        auto widgetSize = widget->getComputedSizeWithMargins();
+        auto widgetSize = widget->getComputedSize();
 
         // Draw the rectangular frame around the widget
         d_canvas->strokeRectangle(
