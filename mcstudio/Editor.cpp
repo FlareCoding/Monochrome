@@ -92,16 +92,17 @@ namespace mc::mcstudio {
         });
 
         d_appRootContainer->on("mouseMoved", [this](Shared<Event> e) {
+            d_editorCanvasController->clearCanvas();
+
             auto mme = std::static_pointer_cast<MouseMovedEvent>(e);
 
             auto hoveredWidget = _hitTestInnermostWidget(d_appRootContainer, mme->getLocation());
             if (hoveredWidget) {
-                d_editorCanvasController->clearCanvas();
                 d_editorCanvasController->drawWidgetEditFrame(hoveredWidget);
-                
-                if (d_selectedWidget) {
-                    d_editorCanvasController->drawWidgetEditFrame(d_selectedWidget);
-                }
+            }
+
+            if (d_selectedWidget) {
+                d_editorCanvasController->drawWidgetEditFrame(d_selectedWidget);
             }
         });
 
