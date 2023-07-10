@@ -26,6 +26,8 @@ add_executable(
     user_widgets/BooleanPropertyField.cpp
     user_widgets/DockAnchorPropertyField.h
     user_widgets/DockAnchorPropertyField.cpp
+    user_widgets/AlignmentPropertyField.h
+    user_widgets/AlignmentPropertyField.cpp
 
     mcx/main.mcx
     mcx/editor-panel.mcx
@@ -43,4 +45,12 @@ add_custom_command(
         ${CMAKE_SOURCE_DIR}/mcstudio/mcx
         $<TARGET_FILE_DIR:mcstudio>/mcx
     COMMENT "Copying .mcx files"
+)
+
+add_custom_command(
+    TARGET mcstudio POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/mcstudio/icons
+        $<TARGET_FILE_DIR:mcstudio>/icons
+    COMMENT "Copying icon files"
 )
