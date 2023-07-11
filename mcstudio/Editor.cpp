@@ -268,4 +268,12 @@ namespace mc::mcstudio {
 
         return nullptr;
     }
+
+    void Editor::_projectImportButton_OnClick(Shared<Event> e) {
+        // TO-DO
+    }
+
+    void Editor::_projectExportButton_OnClick(Shared<Event> e) {
+        // TO-DO
+    }
 } // namespace mc::mcstudio
