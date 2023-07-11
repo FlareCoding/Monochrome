@@ -1,0 +1,8 @@
+<root type="widget">
+	<StackPanel backgroundColor="transparent">
+		<StackPanel marginLeft="40" marginTop="40" backgroundColor="transparent">
+			<Button text="Import" marginBottom="10" clicked="projectImportButton_OnClick"/>
+			<Button text="Export" clicked="projectExportButton_OnClick"/>
+		</StackPanel>
+	</StackPanel>
+</root>
