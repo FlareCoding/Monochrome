@@ -36,7 +36,7 @@ namespace mc::mcstudio {
             } else if (prop == "dockAnchor") {
                 propertyField = MakeRef<DockAnchorPropertyField>(prop, propValue);
 
-            } else if (prop == "horizontalAlignment") {
+            } else if (prop == "horizontalAlignment" || prop == "verticalAlignment") {
                 propertyField = MakeRef<AlignmentPropertyField>(prop, propValue);
 
             } else {

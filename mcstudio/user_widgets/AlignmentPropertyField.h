@@ -13,6 +13,9 @@ private:
     std::string d_propName;
     std::string d_propValue;
 
+    const Color d_selectedControlButtonColor = Color(100, 100, 100);
+
+private:
     void _init();
 
     Shared<Button> _createAlignmentImgButton(
@@ -21,5 +24,7 @@ private:
     );
 
     void _alignmentControlButton_OnClick(Shared<Event> e);
+
+    void _dimAllControlButtons();
 };
 } // namespace mc::mcstudio
