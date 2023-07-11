@@ -7,11 +7,11 @@
 				</tab>
 				<tab name="User Widgets">
 					<StackPanel backgroundColor="Color(40, 50, 10)">
-						<Label text="PLACEHOLDER" />
+						<Label text="PLACEHOLDER"/>
 					</StackPanel>
 				</tab>
 			</TabView>
-			<UserWidget path="widget-tree-view.mcx" />
+			<UserWidget path="widget-tree-view.mcx"/>
 		</SplitterPanel>
 		<DockPanel backgroundColor="mcstudioBgColorPrimary">
 			<TabView dockAnchor="fill">
@@ -19,9 +19,7 @@
 					<UserWidget path="editor-panel.mcx"/>
 				</tab>
 				<tab name="Project">
-					<StackPanel backgroundColor="Color(100, 50, 0)">
-						<Label text="PLACEHOLDER"/>
-					</StackPanel>
+					<UserWidget path="project-properties-panel.mcx"/>
 				</tab>
 				<tab name="Settings">
 					<StackPanel backgroundColor="Color(0, 50, 100)">

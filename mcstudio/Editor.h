@@ -41,6 +41,12 @@ private:
         const Point& point
     );
 
+    // Event handler for project import action
+    void _projectImportButton_OnClick(Shared<Event> e);
+
+    // Event handler for project export action
+    void _projectExportButton_OnClick(Shared<Event> e);
+
 private:
     // Controller responsible for the widget tree panel
     Shared<WidgetTreeController> d_widgetTreeController;

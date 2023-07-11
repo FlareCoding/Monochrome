@@ -34,6 +34,7 @@ add_executable(
     mcx/widget-toolbox.mcx
     mcx/widget-tree-view.mcx
     mcx/widget-properties-panel.mcx
+    mcx/project-properties-panel.mcx
 
     mcx/stylesheet.mcx
 )
