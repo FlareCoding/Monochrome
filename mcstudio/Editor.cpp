@@ -11,6 +11,9 @@ namespace mc::mcstudio {
         registerNamedEventHandler("toolboxWidget_OnClick", &Editor::toolboxWidget_OnClick, this);
         registerNamedEventHandler("rootContainerSelection_OnClick",
                 &Editor::rootContainerSelection_OnClick, this);
+        
+        registerNamedEventHandler("projectImportButton_OnClick", &Editor::_projectImportButton_OnClick, this);
+        registerNamedEventHandler("projectExportButton_OnClick", &Editor::_projectExportButton_OnClick, this);
     }
 
     void Editor::toolboxWidget_OnClick(Shared<Event> e) {
