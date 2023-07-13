@@ -39,7 +39,7 @@ namespace mc::mcstudio {
         d_falseButton->label->text = "false";
         d_falseButton->label->color = Color::white;
         d_falseButton->backgroundColor = Color(100, 0, 0);
-        d_falseButton->borderColor = Color::transparent;
+        d_falseButton->borderThickness = 0;
         d_falseButton->cornerRadius = 0;
         d_falseButton->on("clicked", &BooleanPropertyField::_propChangedToFalse, this);
         switchStackPanel->addChildOffline(d_falseButton);
@@ -50,7 +50,7 @@ namespace mc::mcstudio {
         d_trueButton->label->text = "true";
         d_trueButton->label->color = Color::white;
         d_trueButton->backgroundColor = Color(0, 100, 0);
-        d_trueButton->borderColor = Color::transparent;
+        d_trueButton->borderThickness = 0;
         d_trueButton->cornerRadius = 0;
         d_trueButton->on("clicked", &BooleanPropertyField::_propChangedToTrue, this);
         switchStackPanel->addChildOffline(d_trueButton);

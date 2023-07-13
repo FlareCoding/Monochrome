@@ -1,6 +1,6 @@
 <root type="widget">
-	<StackPanel id="mcEditorPanel" backgroundColor="transparent" orientation="vertical">
-		<StackPanel orientation="horizontal" marginLeft="20" marginTop="20" backgroundColor="transparent">
+	<StackPanel id="mcEditorPanel" backgroundColor="mcstudioBgColorPrimary" orientation="vertical">
+		<StackPanel orientation="horizontal" marginLeft="20" marginTop="20" backgroundColor="mcstudioBgColorPrimary">
 			<Label text="Width" fontSize="16" fixedHeight="18" marginRight="4"/>
 			<Entry id="editorWindowWidthEntry" text="800" fixedHeight="18" fixedWidth="80" marginRight="20" style="mcstudio-entry"/>
 
@@ -11,10 +11,10 @@
 			<Entry id="editorWindowTitleEntry" text="App 1" fixedHeight="18" fixedWidth="80" marginRight="20" style="mcstudio-entry"/>
 		</StackPanel>
 		<Label id="initialRootContainerPromptLabel" marginTop="60" text="Please select root container" fontSize="20" horizontalAlignment="center"/>
-		<StackPanel id="initialRootContainerPromptPanel" backgroundColor="transparent" horizontalAlignment="center">
-			<StackPanel marginTop="30" orientation="horizontal" backgroundColor="transparent">
+		<StackPanel id="initialRootContainerPromptPanel" backgroundColor="mcstudioBgColorPrimary" horizontalAlignment="center">
+			<StackPanel marginTop="30" orientation="horizontal" backgroundColor="mcstudioBgColorPrimary">
 				<style name="selectionButton"
-					marginLeft="20" borderColor="transparent"
+					marginLeft="20" borderThickness="0"
 					fontSize="14" textColor="white"
 					cornerRadius="10"
 					clicked="rootContainerSelection_OnClick"/>

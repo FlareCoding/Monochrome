@@ -20,6 +20,14 @@ public:
         return (r != color.r || g != color.g || b != color.b || a != color.a);
     }
 
+    inline bool isTransparent() const {
+        return a == 0;
+    }
+
+    inline bool hasTransparency() const {
+        return a < 255;
+    }
+
     static Color transparent;
     static Color white;
     static Color black;

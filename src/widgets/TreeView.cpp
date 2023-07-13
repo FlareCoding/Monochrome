@@ -116,9 +116,6 @@ namespace mc {
     }
 
     void TreeViewNode::_setupProperties() {
-        itemText.forwardEmittedEvents(this);
-        key.forwardEmittedEvents(this);
-
         expanded = false;
         expanded.on("propertyChanged", [this](Shared<Event> e) {
             if (!hasChildren()) {
@@ -132,7 +129,6 @@ namespace mc {
                 fireEvent("nodeCollapsed", Event::empty);
             }
         });
-        expanded.forwardEmittedEvents(this);
     }
 
     void TreeViewNode::_invalidateKeyIndexMap() {
@@ -235,10 +231,10 @@ namespace mc {
 
     void TreeView::_setupProperties() {
         backgroundColor = Color::transparent;
-        backgroundColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(backgroundColor);
 
         itemHighlightedBorderColor = Color::white;
-        itemHighlightedBorderColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(itemHighlightedBorderColor);
 
         itemTextColor = Color::white;
         itemTextColor.on("propertyChanged", &TreeView::_onTreeChanged, this);
@@ -379,7 +375,7 @@ namespace mc {
         });
 
         _signalLayoutChanged();
-        fireEvent("propertyChanged", Event::empty);
+        requestRepaint();
     }
 
     void TreeView::_traverseTreeNodes(
@@ -438,7 +434,7 @@ namespace mc {
         });
 
         // Force a redraw
-        fireEvent("propertyChanged", Event::empty);
+        requestRepaint();
     }
 
     void TreeView::_selectNode(TreeViewNode* node) {

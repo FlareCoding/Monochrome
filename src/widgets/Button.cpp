@@ -83,16 +83,32 @@ namespace mc {
 
     void Button::_setupProperties() {
         d_secondaryLeftLabel = MakeRef<Label>();
+        d_secondaryLeftLabel->visible = false;
         d_secondaryLeftLabel->text = "";
         d_secondaryLeftLabel->alignment = "left";
         d_secondaryLeftLabel->position->x = d_secondaryTextPadding;
-        _addChild(d_secondaryLeftLabel);
+        d_secondaryLeftLabel->on("propertyChanged", [this](Shared<Event> e) {
+            if (d_secondaryLeftLabel->text->empty()) {
+                d_secondaryLeftLabel->visible = false;
+            } else {
+                d_secondaryLeftLabel->visible = true;
+            }
+        });
+        _addChildOffline(d_secondaryLeftLabel);
 
         d_secondaryRightLabel = MakeRef<Label>();
+        d_secondaryRightLabel->visible = false;
         d_secondaryRightLabel->text = "";
         d_secondaryRightLabel->alignment = "right";
         d_secondaryRightLabel->position->x = d_secondaryTextPadding;
-        _addChild(d_secondaryRightLabel);
+        d_secondaryRightLabel->on("propertyChanged", [this](Shared<Event> e) {
+            if (d_secondaryRightLabel->text->empty()) {
+                d_secondaryRightLabel->visible = false;
+            } else {
+                d_secondaryRightLabel->visible = true;
+            }
+        });
+        _addChildOffline(d_secondaryRightLabel);
 
         label = MakeRef<Label>();
         label->color.forwardAssignment(&d_secondaryLeftLabel->color);
@@ -107,34 +123,34 @@ namespace mc {
         label->color = Color(200, 200, 200);
         label->horizontalPadding = 30;
         label->verticalPadding = 10;
-        _addChild(label);
+        _addChildOffline(label);
 
         borderColor = Color::white;
-        borderColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(borderColor);
 
-        backgroundColor.forwardEmittedEvents(this);
         backgroundColor.forwardAssignment(&d_preservedBackgroundColor);
         backgroundColor = Color::gray;
+        handleWidgetVisiblePropertyChange(backgroundColor);
 
         cornerRadius = 2;
-        cornerRadius.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(cornerRadius);
 
         borderThickness = 2;
-        borderThickness.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(borderThickness);
 
         hoverOnColor = Color::transparent;
-        hoverOnColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(hoverOnColor);
 
         mousePressedColor = Color::transparent;
-        mousePressedColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(mousePressedColor);
 
         secondaryLeftText = "";
         secondaryLeftText.forwardAssignment(&d_secondaryLeftLabel->text);
-        secondaryLeftText.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(secondaryLeftText);
 
         secondaryRightText = "";
         secondaryRightText.forwardAssignment(&d_secondaryRightLabel->text);
-        secondaryRightText.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(secondaryRightText);
 
         cursorType.forwardAssignment(&label->cursorType);
         cursorType.forwardAssignment(&d_secondaryLeftLabel->cursorType);
@@ -142,7 +158,7 @@ namespace mc {
         cursorType = CursorType::Hand;
 
         imagePlacement = Cover;
-        imagePlacement.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(imagePlacement);
 
         on("hoveredOn", &Button::_onHoveredOn, this);
         on("hoveredOff", &Button::_onHoveredOff, this);
@@ -162,7 +178,7 @@ namespace mc {
             dimColor(d_bodyVisual->color);
         }
 
-        fireEvent("propertyChanged", Event::empty);
+        requestRepaint();
     }
 
     void Button::_onHoveredOff(Shared<Event> e) {
@@ -187,7 +203,8 @@ namespace mc {
         }
 
         e->stopPropagation();
-        fireEvent("propertyChanged", Event::empty);
+
+        requestRepaint();
     }
 
     void Button::_onMouseUp(Shared<Event> e) {
@@ -208,7 +225,8 @@ namespace mc {
         }
 
         e->stopPropagation();
-        fireEvent("propertyChanged", Event::empty);
+
+        requestRepaint();
     }
 
     void Button::setImage(Shared<Image> image) {
