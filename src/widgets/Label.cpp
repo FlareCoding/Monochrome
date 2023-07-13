@@ -36,39 +36,27 @@ namespace mc {
         fontStyle = "normal";
         alignment = "center";
         wordWrapMode = "none";
-
         text = "Text";
-        text.on("propertyChanged", [this](Shared<Event> e) {
-            // Since the text will be taking up a potentially different
-            // amount of space, the layout needs to be recalculated.
-            fireEvent("layoutChanged", Event::empty);
-        });
 
-        fontSize.on("propertyChanged", [this](Shared<Event> e) {
-            // Since the text will be taking up a potentially different
-            // amount of space, the layout needs to be recalculated.
-            fireEvent("layoutChanged", Event::empty);
-        });
-
-        fontStyle.on("propertyChanged", [this](Shared<Event> e) {
-            // Since the text will be taking up a potentially different
-            // amount of space, the layout needs to be recalculated.
-            fireEvent("layoutChanged", Event::empty);
-        });
+        handleWidgetLayoutPropertyChange(text);
+        handleWidgetLayoutPropertyChange(font);
+        handleWidgetLayoutPropertyChange(fontSize);
+        handleWidgetLayoutPropertyChange(fontStyle);
+        handleWidgetLayoutPropertyChange(wordWrapMode);
 
         color = Color::white;
-        color.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(color);
 
         horizontalPadding = 5;
-        horizontalPadding.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(horizontalPadding);
 
         verticalPadding = 5;
-        verticalPadding.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(verticalPadding);
 
-        font.forwardEmittedEvents(this);
-        fontSize.forwardEmittedEvents(this);
-        fontStyle.forwardEmittedEvents(this);
-        alignment.forwardEmittedEvents(this);
-        wordWrapMode.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(font);
+        handleWidgetVisiblePropertyChange(fontSize);
+        handleWidgetVisiblePropertyChange(fontStyle);
+        handleWidgetVisiblePropertyChange(alignment);
+        handleWidgetVisiblePropertyChange(wordWrapMode);
     }
 } // namespace mc

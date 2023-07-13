@@ -135,15 +135,13 @@ namespace mc {
 
     void StackPanel::_setupProperties() {
         backgroundColor = Color::lightGray;
-        backgroundColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(backgroundColor);
 
         cornerRadius = 2;
-        cornerRadius.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(cornerRadius);
 
         orientation = Vertical;
-        orientation.forwardEmittedEvents(this);
-        orientation.on("propertyChanged", [this](Shared<Event> e) {
-            signalLayoutChanged();
-        });
+        handleWidgetVisiblePropertyChange(orientation);
+        handleWidgetLayoutPropertyChange(orientation);
     }
 } // namespace mc

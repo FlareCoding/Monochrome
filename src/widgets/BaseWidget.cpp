@@ -36,45 +36,45 @@ namespace mc {
         });
 
         visible = true;
-        visible.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(visible);
 
         visible.on("propertyChanged", [this](auto e) {
             this->markLayoutDirty();
         });
 
         focused = true;
-        focused.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(focused);
 
         cursorType = CursorType::Arrow;
-        cursorType.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(cursorType);
 
         dockAnchor = DockAnchor::Left;
-        dockAnchor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(dockAnchor);
 
         dockAnchor.on("propertyChanged", [this](auto e) {
             this->fireEvent("layoutChanged", Event::empty);
         });
 
         position = { 0, 0 };
-        position.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(position);
 
         fixedWidth = NOT_SET;
-        fixedWidth.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(fixedWidth);
 
         minWidth = 0;
-        minWidth.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(minWidth);
 
         maxWidth = 65000;
-        maxWidth.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(maxWidth);
 
         fixedHeight = NOT_SET;
-        fixedHeight.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(fixedHeight);
 
         minHeight = 0;
-        minHeight.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(minHeight);
 
         maxHeight = 65000;
-        maxHeight.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(maxHeight);
 
         fixedWidth.on("propertyChanged", [this](auto e) {
             this->fireEvent("layoutChanged", Event::empty);
@@ -101,22 +101,22 @@ namespace mc {
         });
 
         marginTop = 0;
-        marginTop.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(marginTop);
 
         marginBottom = 0;
-        marginBottom.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(marginBottom);
 
         marginLeft = 0;
-        marginLeft.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(marginLeft);
 
         marginRight = 0;
-        marginRight.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(marginRight);
 
         horizontalAlignment = HorizontalAlignment::HALeft;
-        horizontalAlignment.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(horizontalAlignment);
 
         verticalAlignment = VerticalAlignment::VATop;
-        verticalAlignment.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(verticalAlignment);
 
         horizontalAlignment.on("propertyChanged", [this](auto e) {
             this->fireEvent("layoutChanged", Event::empty);
@@ -127,7 +127,8 @@ namespace mc {
         });
 
         on("layoutChanged", [this](auto e) {
-            d_isLayoutDirty = true;
+            markPaintDirty();
+            markLayoutDirty();
         });
     }
 
@@ -264,6 +265,14 @@ namespace mc {
         d_isLayoutDirty = true;
     }
 
+    void BaseWidget::markPaintDirty() {
+        d_isPaintDirty = true;
+
+        for (auto& child : _getChildren()) {
+            child->markPaintDirty();
+        }
+    }
+
     void BaseWidget::markMouseDraggable() {
         setInternalFlag(d_internalFlags, InternalWidgetFlag::IsMouseDraggable, true);
     }
@@ -274,6 +283,24 @@ namespace mc {
 
     void BaseWidget::addOverlayVisualElement(Shared<VisualElement> visual) {
         d_overlayVisualElements.push_back(visual);
+    }
+
+    void BaseWidget::handleWidgetVisiblePropertyChange(EventEmitter& prop) {
+        prop.on("propertyChanged", [this](Shared<Event> e) {
+            markPaintDirty();
+            fireEvent(e->name, e, this);
+        });
+    }
+
+    void BaseWidget::handleWidgetLayoutPropertyChange(EventEmitter& prop) {
+        prop.on("propertyChanged", [this](Shared<Event> e) {
+            fireEvent("layoutChanged", Event::empty);
+        });
+    }
+
+    void BaseWidget::requestRepaint() {
+        markPaintDirty();
+        fireEvent("propertyChanged", Event::empty);
     }
 
     void BaseContainerWidget::addChild(Shared<BaseWidget> child) {

@@ -27,38 +27,38 @@ namespace mc {
         d_overlay->setContent(d_contentPanel);
 
         // MenuList-specific properties
-        name.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(name);
 
-        borderColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(borderColor);
         borderColor.forwardAssignment(&d_contentPanel->backgroundColor);
         borderColor = Color::white;
 
-        spawnDirection.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(spawnDirection);
         spawnDirection.on("propertyChanged", [this](Shared<Event> e) {
             d_overlay->spawnDirection = spawnDirection;
         });
         spawnDirection = OverflowDirection::Right;
 
-        borderThickness = 1;
-        borderThickness.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(borderThickness);
         borderThickness.on("propertyChanged", [this](Shared<Event> e) {
             _recalculateGeometry();
         });
+        borderThickness = 1;
 
         itemSize = 12;
-        itemSize.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(itemSize);
         itemSize.on("propertyChanged", [this](Shared<Event> e) {
             _recalculateGeometry();
         });
 
         itemBackgroundColor = Color::darkGray;
-        itemBackgroundColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(itemBackgroundColor);
         itemBackgroundColor.on("propertyChanged", [this](Shared<Event> e) {
             _recalculateStyles();
         });
 
         itemTextColor = Color::white;
-        itemTextColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(itemTextColor);
         itemTextColor.on("propertyChanged", [this](Shared<Event> e) {
             _recalculateStyles();
         });
@@ -153,7 +153,7 @@ namespace mc {
         menuButton->label->text = menu->name;
         menuButton->label->fontSize = itemSize;
         menuButton->label->color = itemTextColor;
-        menuButton->borderColor = Color::transparent;
+        menuButton->borderThickness = 0;
         menuButton->horizontalAlignment = HAFill;
         menuButton->on("hoveredOff", [this, menuButton](Shared<Event> e) {
             auto mme = std::static_pointer_cast<MouseMovedEvent>(e);
@@ -196,7 +196,7 @@ namespace mc {
         menuItemButton->label->text = item;
         menuItemButton->label->fontSize = itemSize;
         menuItemButton->label->color = itemTextColor;
-        menuItemButton->borderColor = Color::transparent;
+        menuItemButton->borderThickness = 0;
         menuItemButton->horizontalAlignment = HAFill;
         menuItemButton->on("clicked", [this, item](auto e) {
             // Indicate to this MenuList and its potential

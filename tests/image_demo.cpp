@@ -42,7 +42,7 @@ int main() {
     imageButton->label->text = "";
     imageButton->fixedWidth = 90;
     imageButton->fixedHeight = 90;
-    imageButton->borderColor = Color::transparent;
+    imageButton->borderThickness = 0;
     rootPanel->addChild(imageButton);
 
     AppManager::startApplicationLoop();

@@ -344,7 +344,7 @@ std::string generateCppSource() {
     // Setting up public properties
     for (auto& [type, name] : s_widgetConfiguration.publicProperties) {
         source.append("\t\t" + name + " = " + type + "(); // default value\n");
-        source.append("\t\t" + name + ".forwardEmittedEvents(this);\n\n");
+        source.append("\t\thandleWidgetVisiblePropertyChange(" + name + ");\n\n");
     }
 
     // Setup default cursor type

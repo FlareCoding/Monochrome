@@ -101,22 +101,22 @@ namespace mc {
         });
 
         overlayBorderColor = Color::black;
-        overlayBorderColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(overlayBorderColor);
 
         overlayBorderThickness = 1;
-        overlayBorderThickness.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(overlayBorderThickness);
 
         itemSize = 12;
-        itemSize.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(itemSize);
 
         overlaySpawnDirection = OverflowDirection::Down;
-        overlaySpawnDirection.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(overlaySpawnDirection);
 
         itemColor = Color::white;
-        itemColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(itemColor);
 
         itemBackgroundColor = Color::black;
-        itemBackgroundColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(itemBackgroundColor);
 
         label->color = Color::black;
         label->text = "";

@@ -141,7 +141,7 @@ Shared<ScrollPanel> createVerticalScrollPanel() {
         button->marginBottom = 6;
         button->label->horizontalPadding = 80;
         button->label->text = "Test Button " + std::to_string(i + 1);
-        button->borderColor = Color::transparent;
+        button->borderThickness = 0;
 
         contentPanel->addChild(button);
     }
@@ -167,7 +167,7 @@ Shared<ScrollPanel> createHorizontalScrollPanel() {
         button->marginBottom = 6;
         button->label->horizontalPadding = 50;
         button->label->text = "Test Button " + std::to_string(i + 1);
-        button->borderColor = Color::transparent;
+        button->borderThickness = 0;
 
         contentPanel->addChild(button);
     }
