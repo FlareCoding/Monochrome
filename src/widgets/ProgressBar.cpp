@@ -29,28 +29,28 @@ namespace mc {
         fixedWidth = 220;
 
         minValue = 0;
-        minValue.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(minValue);
         minValue.on("propertyChanged", [this](Shared<Event> e) {
             _computeProgressVisualSize();
         });
 
         maxValue = 100;
-        maxValue.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(maxValue);
         maxValue.on("propertyChanged", [this](Shared<Event> e) {
             _computeProgressVisualSize();
         });
 
         value = 33;
-        value.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(value);
         value.on("propertyChanged", [this](Shared<Event> e) {
             _computeProgressVisualSize();
         });
 
         backgroundColor = Color::gray;
-        backgroundColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(backgroundColor);
 
         progressColor = Color::blue;
-        progressColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(progressColor);
     }
 
     void ProgressBar::_computeProgressVisualSize() {

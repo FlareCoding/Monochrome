@@ -66,10 +66,10 @@ namespace mc {
         button->label->color = Color::white;
         button->label->visible = false;
         button->marginRight = 2;
-        button->borderColor = Color::transparent;
+        button->borderThickness = 0;
         button->cornerRadius = 0;
         cursorType.forwardAssignment(&button->cursorType);
-        _addChild(button);
+        _addChildOffline(button);
 
         label = MakeRef<Label>();
         label->text = "Checkbox";
@@ -77,7 +77,7 @@ namespace mc {
         label->fontSize = 12;
         label->horizontalPadding = 10;
         cursorType.forwardAssignment(&label->cursorType);
-        _addChild(label);
+        _addChildOffline(label);
 
         cursorType = CursorType::Hand;
 
@@ -89,7 +89,7 @@ namespace mc {
                 { "checked", checked.get() }
             });
         });
-        checked.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(checked);
 
         on("clicked", &Checkbox::_onClick, this);
     }

@@ -42,7 +42,7 @@ namespace mc {
 
     void DockPanel::_setupProperties() {
         backgroundColor = Color::lightGray; // default value
-        backgroundColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(backgroundColor);
 
         cursorType = CursorType::Arrow;
     }

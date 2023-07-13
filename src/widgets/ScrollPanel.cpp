@@ -156,14 +156,14 @@ namespace mc {
         d_verticalScrollbarTrack->zIndex = std::numeric_limits<uint32_t>::max() - 1;
         d_verticalScrollbarTrack->fixedWidth = d_scrollbarTrackSize;
         scrollbarTracksColor.forwardAssignment(&d_verticalScrollbarTrack->backgroundColor);
-        _addChild(d_verticalScrollbarTrack);
+        _addChildOffline(d_verticalScrollbarTrack);
 
         // Vertical track UP button
         d_verticalTrackUpButton = MakeRef<Button>();
         d_verticalTrackUpButton->zIndex = std::numeric_limits<uint32_t>::max();
         d_verticalTrackUpButton->label->text = "▲";
         d_verticalTrackUpButton->cornerRadius = 0;
-        d_verticalTrackUpButton->borderColor = Color::transparent;
+        d_verticalTrackUpButton->borderThickness = 0;
         d_verticalTrackUpButton->setComputedSize(
             Size(d_scrollbarTrackSize, d_scrollbarTrackSize)
         );
@@ -173,14 +173,14 @@ namespace mc {
 
             scrollContentVertically(scrollAmount);
         });
-        _addChild(d_verticalTrackUpButton);
+        _addChildOffline(d_verticalTrackUpButton);
 
         // Vertical track DOWN button
         d_verticalTrackDownButton = MakeRef<Button>();
         d_verticalTrackDownButton->zIndex = std::numeric_limits<uint32_t>::max();
         d_verticalTrackDownButton->label->text = "▼";
         d_verticalTrackDownButton->cornerRadius = 0;
-        d_verticalTrackDownButton->borderColor = Color::transparent;
+        d_verticalTrackDownButton->borderThickness = 0;
         d_verticalTrackDownButton->setComputedSize(
             Size(d_scrollbarTrackSize, d_scrollbarTrackSize)
         );
@@ -190,7 +190,7 @@ namespace mc {
 
             scrollContentVertically(scrollAmount);
         });
-        _addChild(d_verticalTrackDownButton);
+        _addChildOffline(d_verticalTrackDownButton);
 
         // Vertical scrollbar
         d_verticalScrollbar = MakeRef<Button>();
@@ -203,12 +203,12 @@ namespace mc {
         d_verticalScrollbar->marginRight = 2;
         d_verticalScrollbar->marginTop = 2;
         d_verticalScrollbar->marginBottom = 2;
-        d_verticalScrollbar->borderColor = Color::transparent;
+        d_verticalScrollbar->borderThickness = 0;
         d_verticalScrollbar->on("mouseDown", &ScrollPanel::_verticalScrollbarOnMouseDown, this);
         d_verticalScrollbar->on("mouseUp", &ScrollPanel::_verticalScrollbarOnMouseUp, this);
         d_verticalScrollbar->on("mouseMoved", &ScrollPanel::_verticalScrollbarOnMouseMoved, this);
         d_verticalScrollbar->markMouseDraggable();
-        _addChild(d_verticalScrollbar);
+        _addChildOffline(d_verticalScrollbar);
 
         // Initially hide the vertical scroll elements
         _hideVerticalScrollElements();
@@ -218,14 +218,14 @@ namespace mc {
         d_horizontalScrollbarTrack->zIndex = std::numeric_limits<uint32_t>::max() - 1;
         d_horizontalScrollbarTrack->fixedHeight = d_scrollbarTrackSize;
         scrollbarTracksColor.forwardAssignment(&d_horizontalScrollbarTrack->backgroundColor);
-        _addChild(d_horizontalScrollbarTrack);
+        _addChildOffline(d_horizontalScrollbarTrack);
 
         // Horizontal track LEFT button
         d_horizontalTrackLeftButton = MakeRef<Button>();
         d_horizontalTrackLeftButton->zIndex = std::numeric_limits<uint32_t>::max();
         d_horizontalTrackLeftButton->label->text = "◀";
         d_horizontalTrackLeftButton->cornerRadius = 0;
-        d_horizontalTrackLeftButton->borderColor = Color::transparent;
+        d_horizontalTrackLeftButton->borderThickness = 0;
         d_horizontalTrackLeftButton->setComputedSize(
             Size(d_scrollbarTrackSize, d_scrollbarTrackSize)
         );
@@ -235,14 +235,14 @@ namespace mc {
 
             scrollContentHorizontally(scrollAmount);
         });
-        _addChild(d_horizontalTrackLeftButton);
+        _addChildOffline(d_horizontalTrackLeftButton);
 
         // Horizontal track RIGHT button
         d_horizontalTrackRightButton = MakeRef<Button>();
         d_horizontalTrackRightButton->zIndex = std::numeric_limits<uint32_t>::max();
         d_horizontalTrackRightButton->label->text = "►";
         d_horizontalTrackRightButton->cornerRadius = 0;
-        d_horizontalTrackRightButton->borderColor = Color::transparent;
+        d_horizontalTrackRightButton->borderThickness = 0;
         d_horizontalTrackRightButton->setComputedSize(
             Size(d_scrollbarTrackSize, d_scrollbarTrackSize)
         );
@@ -252,7 +252,7 @@ namespace mc {
 
             scrollContentHorizontally(scrollAmount);
         });
-        _addChild(d_horizontalTrackRightButton);
+        _addChildOffline(d_horizontalTrackRightButton);
 
         // Horizontal scrollbar
         d_horizontalScrollbar = MakeRef<Button>();
@@ -265,34 +265,33 @@ namespace mc {
         d_horizontalScrollbar->marginRight = 2;
         d_horizontalScrollbar->marginTop = 2;
         d_horizontalScrollbar->marginBottom = 2;
-        d_horizontalScrollbar->borderColor = Color::transparent;
+        d_horizontalScrollbar->borderThickness = 0;
         d_horizontalScrollbar->on("mouseDown", &ScrollPanel::_horizontalScrollbarOnMouseDown, this);
         d_horizontalScrollbar->on("mouseUp", &ScrollPanel::_horizontalScrollbarOnMouseUp, this);
         d_horizontalScrollbar->on(
             "mouseMoved", &ScrollPanel::_horizontalScrollbarOnMouseMoved, this
         );
         d_horizontalScrollbar->markMouseDraggable();
-        _addChild(d_horizontalScrollbar);
+        _addChildOffline(d_horizontalScrollbar);
 
         // Initially hide the horizontal scroll elements
         _hideHorizontalScrollElements();
 
         // Setting up ScrollPanel public properties
         cornerRadius = 2;
-        cornerRadius.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(cornerRadius);
 
         scrollbarTracksColor = Color::lightGray;
-        scrollbarTracksColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(scrollbarTracksColor);
 
         scrollbarColor.forwardAssignment(&d_verticalScrollbar->backgroundColor);
         scrollbarColor.forwardAssignment(&d_horizontalScrollbar->backgroundColor);
         scrollbarColor = Color::gray;
 
         scrollSensitivity = 20;
-        scrollSensitivity.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(scrollSensitivity);
 
         autoscroll = false;
-        autoscroll.forwardEmittedEvents(this);
 
         scrollbarTrackButtonBackground.forwardAssignment(
             &d_verticalTrackDownButton->backgroundColor);
@@ -479,6 +478,7 @@ namespace mc {
         _calculateVerticalScrollbarPosition();
 
         // Request a widget redraw
+        markPaintDirty();
         fireEvent("propertyChanged", Event::empty);
     }
 
@@ -538,6 +538,7 @@ namespace mc {
         _calculateHorizontalScrollbarPosition();
 
         // Request a widget redraw
+        markPaintDirty();
         fireEvent("propertyChanged", Event::empty);
     }
 
@@ -647,6 +648,10 @@ namespace mc {
 
         // Update the position of the vertical scrollbar
         _calculateVerticalScrollbarPosition();
+
+        // Request a widget redraw
+        markPaintDirty();
+        fireEvent("propertyChanged", Event::empty);
     }
 
     void ScrollPanel::scrollContentHorizontally(int32_t amount) {
@@ -660,5 +665,10 @@ namespace mc {
 
         // Update the position of the horizontal scrollbar
         _calculateHorizontalScrollbarPosition();
+
+        // Request a widget redraw
+        markPaintDirty();
+        fireEvent("propertyChanged", Event::empty);
+
     }
 } // namespace mc

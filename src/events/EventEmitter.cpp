@@ -76,7 +76,7 @@ namespace mc {
 
             // Register a forwarding callback handler
             this->on(eventName, [eventName, emitter](Shared<Event> event) {
-                emitter->fireEvent(eventName, event);
+                emitter->fireEvent(eventName, event, event->target);
             });
         }
     }
@@ -101,7 +101,7 @@ namespace mc {
 
         // Register a forwarding callback handler
         this->on(eventName, [eventName, emitter](Shared<Event> event) {
-            emitter->fireEvent(eventName, event);
+            emitter->fireEvent(eventName, event, event->target);
         });
     }
 

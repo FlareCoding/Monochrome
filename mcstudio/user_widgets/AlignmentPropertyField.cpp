@@ -76,7 +76,7 @@ namespace mc::mcstudio {
 
         auto button = MakeRef<Button>();
         button->zIndex = orderIdx;
-        button->borderColor = Color::transparent;
+        button->borderThickness = 0;
         button->backgroundColor = getCustomColor("mcstudioBgColorPrimary");
         button->marginLeft = 4;
         button->marginRight = 4;

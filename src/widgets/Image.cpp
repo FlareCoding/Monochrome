@@ -30,6 +30,6 @@ namespace mc {
 
     void Image::_setupProperties() {
         opacity = 255;
-        opacity.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(opacity);
     }
 } // namespace mc

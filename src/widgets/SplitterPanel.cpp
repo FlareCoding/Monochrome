@@ -221,25 +221,26 @@ namespace mc {
 
     void SplitterPanel::_setupProperties() {
         backgroundColor = Color::gray; // default value
-        backgroundColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(backgroundColor);
 
         dividerColor = Color(20, 20, 20); // default value
-        dividerColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(dividerColor);
 
         movableDividers = false; // default value
-        movableDividers.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(movableDividers);
 
         dividerSize = 2; // default value
-        dividerSize.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(dividerSize);
 
         orientation = Horizontal; // default value
-        orientation.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(orientation);
+        orientation.on("propertyChanged", [this](auto e) {
+            signalLayoutChanged();
+        });
 
         sectionWeights = "";
-        sectionWeights.on("propertyChanged", [this](auto e) {
-            fireEvent("layoutChanged", Event::empty);
-        });
-        sectionWeights.forwardEmittedEvents(this);
+        handleWidgetLayoutPropertyChange(sectionWeights);
+        handleWidgetVisiblePropertyChange(sectionWeights);
     }
 
     void SplitterPanel::_createNecessaryDividerVisuals() {

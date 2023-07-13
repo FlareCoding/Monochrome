@@ -1,6 +1,6 @@
 <root type="stylesheet">
     <style name="widget-toolbox-button"
-		borderColor="transparent"
+		borderThickness="0"
 		fixedWidth="200"
 		cornerRadius="0"
 		marginTop="2"
@@ -10,7 +10,7 @@
 		clicked="toolboxWidget_OnClick"/>
 	
 	<style name="mcstudio-entry"
-		backgroundColor="transparent"
+		backgroundColor="mcstudioBgColorPrimary"
 		borderColor="transparent"
 		textColor="white"
 		cursorColor="white"

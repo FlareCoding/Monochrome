@@ -1,8 +1,8 @@
 <root type="widget">
 	<DockPanel backgroundColor="mcstudioBgColorPrimary">
 		<Label dockAnchor="top" text="Properties" fontSize="18" color="white" marginTop="20"/>
-		<ScrollPanel dockAnchor="fill" backgroundColor="transparent" marginTop="20" marginLeft="10" marginRight="10">
-			<StackPanel id="propertiesListPanel" backgroundColor="transparent" />
+		<ScrollPanel dockAnchor="fill" backgroundColor="mcstudioBgColorPrimary" marginTop="20" marginLeft="10" marginRight="10">
+			<StackPanel id="propertiesListPanel" backgroundColor="mcstudioBgColorPrimary" />
 		</ScrollPanel>
 	</DockPanel>
 </root>
