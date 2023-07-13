@@ -98,58 +98,50 @@ namespace mc {
         text.on("propertyChanged", [this](Shared<Event> e) {
             _onTextAssigned();
         });
-        text.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(text);
 
         placeholder = "Type here...";
-        placeholder.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(placeholder);
 
-        fontSize.on("propertyChanged", [this](Shared<Event> e) {
-            // Since the text will be taking up a potentially different
-            // amount of space, the layout needs to be recalculated.
-            fireEvent("layoutChanged", Event::empty);
-        });
-        fontSize.forwardEmittedEvents(this);
+        handleWidgetLayoutPropertyChange(font);
+        handleWidgetVisiblePropertyChange(font);
 
-        font.on("propertyChanged", [this](Shared<Event> e) {
-            // Since the text will be taking up a potentially different
-            // amount of space, the layout needs to be recalculated.
-            fireEvent("layoutChanged", Event::empty);
-        });
-        font.forwardEmittedEvents(this);
+        handleWidgetLayoutPropertyChange(fontSize);
+        handleWidgetVisiblePropertyChange(fontSize);
 
         borderColor = Color::black;
-        borderColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(borderColor);
 
         focusedBorderColor = Color::blue;
-        focusedBorderColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(focusedBorderColor);
 
         backgroundColor = Color::white;
-        backgroundColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(backgroundColor);
 
         textColor = Color::black;
-        textColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(textColor);
 
         cornerRadius = 2;
-        cornerRadius.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(cornerRadius);
 
         borderThickness = 2;
-        borderThickness.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(borderThickness);
 
         readOnly = false;
-        readOnly.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(readOnly);
 
         cursorColor = Color::black;
-        cursorColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(cursorColor);
 
         selectionHighlightColor = Color(66, 135, 245);
-        selectionHighlightColor.forwardEmittedEvents(this);
+        handleWidgetVisiblePropertyChange(selectionHighlightColor);
+
+        handleWidgetVisiblePropertyChange(font);
+        handleWidgetVisiblePropertyChange(fontSize);
+        handleWidgetVisiblePropertyChange(fontStyle);
 
         // The following properties correspond
         // to default values in the text visual.
-        font.forwardEmittedEvents(this);
-        fontSize.forwardEmittedEvents(this);
-        fontStyle.forwardEmittedEvents(this);
-
         cursorType = CursorType::IBeam;
         cornerRadius = 2;
         fixedWidth = 160;
@@ -198,14 +190,15 @@ namespace mc {
         if (!readOnly) {
             d_cursorVisual->visible = true;
         }
-        fireEvent("propertyChanged", Event::empty);
+
+        requestRepaint();
     }
 
     void Entry::_lostFocus(Shared<Event> e) {
         d_borderVisual->color = borderColor;
         d_cursorVisual->visible = false;
 
-        fireEvent("propertyChanged", Event::empty);
+        requestRepaint();
     }
 
     void Entry::_onKeyDown(Shared<Event> e) {
@@ -263,7 +256,8 @@ namespace mc {
 
         clearSelection();
         _updateTextFrameSize();
-        fireEvent("propertyChanged", Event::empty);
+
+        requestRepaint();
     }
 
     void Entry::_onMouseUp(Shared<Event> e) {
@@ -285,7 +279,8 @@ namespace mc {
 
         // Update visuals and request a redraw
         _updateTextFrameSize();
-        fireEvent("propertyChanged", Event::empty);
+
+        requestRepaint();
     }
 
     void Entry::_onTextAssigned() {
@@ -437,7 +432,8 @@ namespace mc {
 
             if (shortcutHandled) {
                 _updateTextFrameSize();
-                fireEvent("propertyChanged", Event::empty);
+
+                requestRepaint();
                 return;
             }
         }
@@ -477,7 +473,8 @@ namespace mc {
 
         _handleEntryTextChanged();
         _updateTextFrameSize();
-        fireEvent("propertyChanged", Event::empty);
+
+        requestRepaint();
     }
 
     void Entry::_onBackspace(bool ctrlPressed) {
@@ -523,7 +520,8 @@ namespace mc {
 
         _handleEntryTextChanged();
         _updateTextFrameSize();
-        fireEvent("propertyChanged", Event::empty);
+
+        requestRepaint();
     }
 
     void Entry::_onLeftArrowKey(bool ctrlPressed, bool shiftPressed) {
@@ -553,7 +551,8 @@ namespace mc {
         }
 
         _updateTextFrameSize();
-        fireEvent("propertyChanged", Event::empty);
+
+        requestRepaint();
     }
 
     void Entry::_onRightArrowKey(bool ctrlPressed, bool shiftPressed) {
@@ -587,7 +586,8 @@ namespace mc {
         }
 
         _updateTextFrameSize();
-        fireEvent("propertyChanged", Event::empty);
+
+        requestRepaint();
     }
 
     void Entry::_eraseSelectedText() {

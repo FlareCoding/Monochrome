@@ -258,9 +258,10 @@ namespace mc {
         }
 
         if (layoutChange) {
+            markPaintDirty();
             fireEvent("layoutChanged", Event::empty);
         } else {
-            fireEvent("propertyChanged", Event::empty);
+            requestRepaint();
         }
     }
 
@@ -278,7 +279,7 @@ namespace mc {
         tabButton->backgroundColor = tabColor;
         tabButton->borderThickness = 1;
         tabButton->cornerRadius = 0;
-        tabButton->borderColor = Color::transparent;
+        tabButton->borderThickness = 0;
         tabButton->on("clicked", [this](Shared<Event> e) {
             auto tabName = static_cast<Button*>(e->target)->label->text;
             openTab(tabName);
@@ -296,7 +297,7 @@ namespace mc {
             tabCloseButton->backgroundColor = tabColor;
             tabCloseButton->borderThickness = 1;
             tabCloseButton->cornerRadius = 0;
-            tabCloseButton->borderColor = Color::transparent;
+            tabCloseButton->borderThickness = 0;
             tabCloseButton->on("clicked", [this](Shared<Event> e) {
                 auto parentContainer = static_cast<BaseContainerWidget*>(e->target->getParent());
                 CORE_ASSERT(parentContainer != nullptr,

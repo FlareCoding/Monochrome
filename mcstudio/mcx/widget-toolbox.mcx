@@ -1,7 +1,7 @@
 <root type="widget">
-	<DockPanel backgroundColor="transparent">
+	<DockPanel backgroundColor="mcstudioBgColorPrimary">
 		<Label dockAnchor="top" text="Widget Toolbox" fontSize="18" color="white" marginTop="20"/>
-		<StackPanel dockAnchor="fill" backgroundColor="transparent" marginTop="20" marginLeft="10" marginRight="10">
+		<StackPanel dockAnchor="fill" backgroundColor="mcstudioBgColorPrimary" marginTop="20" marginLeft="10" marginRight="10">
 			<Button text="Label" style="widget-toolbox-button"/>
 			<Button text="Button" style="widget-toolbox-button"/>
 			<Button text="Entry" style="widget-toolbox-button"/>

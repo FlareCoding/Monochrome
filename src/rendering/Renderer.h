@@ -22,6 +22,16 @@ private:
         Position parentOffset
     );
 
+    // Used when a widget that is dirty and needs redrawing
+    // has newly added transparency, so only the visual elements
+    // (background color specifically) of the parent have to be
+    // drawn and only the child widget's clip region.
+    static void redrawParentVisualForChildClippedRegion(
+        Shared<RenderTarget>& renderTarget,
+        BaseWidget* childWidget,
+        Position parentOffset
+    );
+
     static void drawVisualElementList(
         Shared<RenderTarget>& renderTarget,
         std::vector<Shared<VisualElement>>& visualElements,
@@ -70,5 +80,8 @@ private:
         Position& parentOffset,
         const Size& visualSize
     );
+
+private:
+    static bool hasTransparentVisual(BaseWidget* widget);
 };
 } // namespace mc

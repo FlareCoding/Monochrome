@@ -115,6 +115,10 @@ public:
     // as dirty, forcing a redraw with a layout recalculation.
     void markLayoutDirty();
 
+    inline bool isPaintDirty() const { return d_isPaintDirty; }
+
+    void markPaintDirty();
+
     // Sets the internal IsDraggable flag on.
     // Use only when you need to process mouseUp
     // events when mouse is outside of the widget.
@@ -125,6 +129,15 @@ protected:
 
     void addCoreVisualElement(Shared<VisualElement> visual);
     void addOverlayVisualElement(Shared<VisualElement> visual);
+
+    // Special function that should be used when creating a widget
+    // to ensure that whenever a property changes, it not only sends
+    // the "propertyChanged" event up the widget tree, but also marks the
+    // widget's paint as dirty, causing it and its children to be redrawn.
+    void handleWidgetVisiblePropertyChange(EventEmitter& prop);
+    void handleWidgetLayoutPropertyChange(EventEmitter& prop);
+
+    void requestRepaint();
 
     virtual void _onSetComputedSize(const Size& size) {}
 
@@ -142,6 +155,7 @@ private:
     Size d_desiredSize = Size(0, 0);
     Size d_computedSize = Size(0, 0);
 
+    bool d_isPaintDirty = true;
     bool d_isLayoutDirty = true;
 
 private:

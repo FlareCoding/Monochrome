@@ -17,12 +17,16 @@ namespace mc {
         Shared<BaseWidget> rootContainer,
         Shared<RenderTarget>& renderTarget
     ) {
-        renderTarget->clearScreen(
-            backgroundColor.r,
-            backgroundColor.g,
-            backgroundColor.b,
-            backgroundColor.a
-        );
+        // Clear the screen only if the root container is dirty and
+        // needs redrawing, or if there is no root container at all.
+        if (!rootContainer.get() || rootContainer->isPaintDirty()) {
+            renderTarget->clearScreen(
+                backgroundColor.r,
+                backgroundColor.g,
+                backgroundColor.b,
+                backgroundColor.a
+            );
+        }
 
         if (rootContainer.get()) {
             renderWidget(renderTarget, rootContainer, { 0, 0 });
@@ -52,8 +56,15 @@ namespace mc {
 
         // First draw the core visual elements
         // that the widget is comprised from.
-        drawVisualElementList(renderTarget,
-            widget->d_coreVisualElements, widgetPosition, widgetSize);
+        if (widget->isPaintDirty()) {
+            if (hasTransparentVisual(widget.get())) {
+                redrawParentVisualForChildClippedRegion(renderTarget,
+                    widget.get(), parentOffset);
+            }
+
+            drawVisualElementList(renderTarget,
+                widget->d_coreVisualElements, widgetPosition, widgetSize);
+        }
 
         // Render all child elements
         for (auto& child : cloneWidgetList(widget->_getChildren())) {
@@ -62,8 +73,12 @@ namespace mc {
 
         // Lastly draw the overlay visual
         // elements that the widget has.
-        drawVisualElementList(renderTarget,
-            widget->d_overlayVisualElements, widgetPosition, widgetSize);
+        if (widget->isPaintDirty()) {
+            drawVisualElementList(renderTarget,
+                widget->d_overlayVisualElements, widgetPosition, widgetSize);
+
+            widget->d_isPaintDirty = false;
+        }
 
         // Restore the clipping layer
         renderTarget->popClipLayer();
@@ -78,6 +93,32 @@ namespace mc {
                 0, false, 2
             );
         }
+    }
+
+    void Renderer::redrawParentVisualForChildClippedRegion(
+        Shared<RenderTarget>& renderTarget,
+        BaseWidget* childWidget,
+        Position parentOffset
+    ) {
+        auto parent = childWidget->getParent();
+        if (!parent) {
+            return;
+        }
+
+        auto parentSize = parent->getComputedSize();
+
+        // If the parent also has transparency, redraw the 
+        if (hasTransparentVisual(parent)) {
+            auto ancestorOffset = parentOffset - parent->position;
+
+            redrawParentVisualForChildClippedRegion(renderTarget, parent, ancestorOffset);
+        }
+
+        drawVisualElementList(renderTarget,
+            parent->d_coreVisualElements, parentOffset, parentSize);
+
+        drawVisualElementList(renderTarget,
+            parent->d_overlayVisualElements, parentOffset, parentSize);
     }
 
     void Renderer::drawVisualElementList(
@@ -135,6 +176,10 @@ namespace mc {
         Position& parentOffset,
         const Size& visualSize
     ) {
+        if (visual->color->isTransparent()) {
+            return;
+        }
+
         switch (visual->type()) {
         case VisualType::VisualTypeRect: {
             drawRectVisual(
@@ -224,6 +269,10 @@ namespace mc {
         Position& parentOffset,
         const Size& visualSize
     ) {
+        if (visual->text->empty()) {
+            return;
+        }
+
         renderTarget->drawText(
             parentOffset.x + visual->position->x,
             parentOffset.y + visual->position->y,
@@ -258,5 +307,36 @@ namespace mc {
             visual->imageBitmap,
             visual->opacity
         );
+    }
+    
+    bool Renderer::hasTransparentVisual(BaseWidget* widget) {
+        // First check if the widget has core visuals at all
+        if (widget->d_coreVisualElements.empty()) {
+            return true;
+        }
+
+        // Check core visual elements
+        for (auto& visualElement : widget->d_coreVisualElements) {
+            if (!visualElement->visible.get()) {
+                continue;
+            }
+
+            if (visualElement->color->hasTransparency()) {
+                return true;
+            }
+        }
+
+        // Check overlay visual elements
+        for (auto& visualElement : widget->d_overlayVisualElements) {
+            if (!visualElement->visible.get()) {
+                continue;
+            }
+
+            if (visualElement->color->hasTransparency()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 } // namespace mc
