@@ -251,6 +251,11 @@ namespace mc {
         Position& parentOffset,
         const Size& visualSize
     ) {
+        // Ignore the draw call if the thickness is 0
+        if (visual->thickness == 0) {
+            return;
+        }
+
         renderTarget->drawRectangle(
             parentOffset.x + visual->position->x,
             parentOffset.y + visual->position->y,
