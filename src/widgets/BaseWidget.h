@@ -115,8 +115,12 @@ public:
     // as dirty, forcing a redraw with a layout recalculation.
     void markLayoutDirty();
 
+    // Returns whether or not the widget should
+    // get redrawn on the next scene render cycle.
     inline bool isPaintDirty() const { return d_isPaintDirty; }
 
+    // Marks the current widget and all of its
+    // children as needed to be re-rendered.
     void markPaintDirty();
 
     // Sets the internal IsDraggable flag on.
@@ -135,8 +139,14 @@ protected:
     // the "propertyChanged" event up the widget tree, but also marks the
     // widget's paint as dirty, causing it and its children to be redrawn.
     void handleWidgetVisiblePropertyChange(EventEmitter& prop);
+
+    // Special function that should be used when creating
+    // a widget to ensure that whenever a property changes,
+    // it also sends a "layoutChanged" even tup the widget tree.
     void handleWidgetLayoutPropertyChange(EventEmitter& prop);
 
+    // Helper function that marks the dirty flag on current widget's paint layer
+    // and sends the "propertyChanged" event up the widget tree causing a redraw.
     void requestRepaint();
 
     virtual void _onSetComputedSize(const Size& size) {}
