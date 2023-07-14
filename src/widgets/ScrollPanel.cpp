@@ -478,8 +478,7 @@ namespace mc {
         _calculateVerticalScrollbarPosition();
 
         // Request a widget redraw
-        markPaintDirty();
-        fireEvent("propertyChanged", Event::empty);
+        requestRepaint();
     }
 
     void ScrollPanel::_horizontalScrollbarOnMouseDown(Shared<Event> e) {
@@ -538,8 +537,7 @@ namespace mc {
         _calculateHorizontalScrollbarPosition();
 
         // Request a widget redraw
-        markPaintDirty();
-        fireEvent("propertyChanged", Event::empty);
+        requestRepaint();
     }
 
     void ScrollPanel::_showVerticalScrollElements() {
@@ -650,8 +648,7 @@ namespace mc {
         _calculateVerticalScrollbarPosition();
 
         // Request a widget redraw
-        markPaintDirty();
-        fireEvent("propertyChanged", Event::empty);
+        requestRepaint();
     }
 
     void ScrollPanel::scrollContentHorizontally(int32_t amount) {
@@ -667,8 +664,6 @@ namespace mc {
         _calculateHorizontalScrollbarPosition();
 
         // Request a widget redraw
-        markPaintDirty();
-        fireEvent("propertyChanged", Event::empty);
-
+        requestRepaint();
     }
 } // namespace mc
