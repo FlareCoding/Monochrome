@@ -107,7 +107,7 @@ namespace mc {
 
         auto parentSize = parent->getComputedSize();
 
-        // If the parent also has transparency, redraw the 
+        // If the parent also has transparency, redraw its parent first
         if (hasTransparentVisual(parent)) {
             auto ancestorOffset = parentOffset - parent->position;
 
@@ -308,7 +308,7 @@ namespace mc {
             visual->opacity
         );
     }
-    
+
     bool Renderer::hasTransparentVisual(BaseWidget* widget) {
         // First check if the widget has core visuals at all
         if (widget->d_coreVisualElements.empty()) {
