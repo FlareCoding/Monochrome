@@ -75,8 +75,14 @@ private:
     std::atomic_bool d_shouldRedrawScene = true;
     std::atomic_bool d_onDemandBufferSwapRequested = false;
 
+    std::mutex d_renderingSyncMutex;
+
     void _backgroundRenderingTask();
     void _renderScene(Shared<RenderTarget>& renderTarget);
+    void _processRenderingCycle(
+        Shared<RenderTarget>& renderTarget,
+        bool renderOverlayCanvas = true
+    );
 
     inline void _requestOnDemandBufferSwap() { d_onDemandBufferSwapRequested = true; }
     inline void _completeOnDemandBufferSwap() { d_onDemandBufferSwapRequested = false; }
