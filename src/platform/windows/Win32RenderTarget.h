@@ -16,8 +16,14 @@ public:
     void swapBuffers();
     void* getFrontBuffer() { return d_frontRenderBuffer.Get(); }
 
-    void beginFrame();
-    void endFrame();
+    void beginFrame() override;
+    void endFrame() override;
+
+    void beginOffscreenSceneFrame() override;
+    void endOffscreenSceneFrame() override;
+    
+    void drawOffscreenSceneBitmap() override;
+    
     void clearScreen(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
     void pushClipLayer(int32_t x, int32_t y, uint32_t width, uint32_t height);
@@ -88,7 +94,14 @@ public:
 
 private:
     HWND d_windowHandle;
-    ComPtr<ID2D1HwndRenderTarget> d_nativeWindowRenderTarget;
+    ComPtr<ID2D1HwndRenderTarget>   d_nativeWindowRenderTarget;
+
+    ComPtr<ID2D1BitmapRenderTarget> d_offscreenSceneRenderTarget;
+    ComPtr<ID2D1Bitmap>             d_offscreenSceneBitmap;
+
+    // The active render target can either hold the reference
+    // to the native HWND or the offscreen bitmap render target.
+    ID2D1RenderTarget*              d_activeRenderTarget;
 
     uint32_t    d_width;
     uint32_t    d_height;

@@ -183,21 +183,28 @@ namespace mc {
         d_nativeWindow->minimize();
     }
 
-    void UIWindow::update() {
+    void UIWindow::update() {        
         // Due to the way Cocoa and Direct2D rendering systems don't let you
         // reliably control the timing of content rendering being called
         // preventing you from properly synchronizing buffer swapping,
         // while resizing, the scene has to be re-rendered manually
         // to the front buffer directly.
         if (d_nativeWindow->isFrontBufferRenderRequested()) {
+            // When an update happens due to a window manipulation event
+            // such as resizing, the background rendering thread and the
+            // forced render here should be synchronized.
+            d_renderingSyncMutex.lock();
+
             auto renderTarget = d_nativeWindow->getRenderTarget();
-            renderTarget->lockBackBuffer();
-            renderTarget->beginFrame();
 
-            _renderScene(renderTarget);
+            // When the window is being resized, due to the constantly changing size
+            // of the render target, it's better to not draw the canvas overlay.
+            _processRenderingCycle(renderTarget, false);
 
-            renderTarget->endFrame();
-            renderTarget->unlockBackBuffer();
+            // Release the synchornization lock
+            d_renderingSyncMutex.unlock();
+
+            // Update the displayed frame
             renderTarget->swapBuffers();
 
             // Complete the request
@@ -278,14 +285,16 @@ namespace mc {
             }
 
             if (shouldRedraw()) {
+                // When an update happens due to a window manipulation event
+                // such as resizing, the background rendering thread and the
+                // window update thread should get synchronized.
+                d_renderingSyncMutex.lock();
+
                 auto renderTarget = d_nativeWindow->getRenderTarget();
-                renderTarget->lockBackBuffer();
-                renderTarget->beginFrame();
+                _processRenderingCycle(renderTarget);
 
-                _renderScene(renderTarget);
-
-                renderTarget->endFrame();
-                renderTarget->unlockBackBuffer();
+                // Release the synchronization lock
+                d_renderingSyncMutex.unlock();
 
                 if (_shouldSwapBuffersOnDemand()) {
                     renderTarget->swapBuffers();
@@ -311,15 +320,46 @@ namespace mc {
 
         Renderer::renderScene(d_backgroundColor, d_rootWidget, renderTarget);
 
-        if (d_overlayCanvas) {
-            d_overlayCanvas->__render();
-        }
-
 #ifdef MC_ENABLE_PERF_PROFILING_OVERLAY
         profiler_309.endProfiling();
 
         _displayProfilingOverlay(renderTarget);
 #endif
+    }
+
+    void UIWindow::_processRenderingCycle(
+        Shared<RenderTarget>& renderTarget,
+        bool renderOverlayCanvas
+    ) {
+        // Prepare the back buffer for rendering
+        renderTarget->lockBackBuffer();
+
+        // The scene should first get rendered onto the offscreen bitmap
+        renderTarget->beginOffscreenSceneFrame();
+
+        // Render the scene to the offscreen render target
+        _renderScene(renderTarget);
+
+        // End the frame and capture the rendered scene bitmap
+        renderTarget->endOffscreenSceneFrame();
+
+        // Begin the actual frame on the main render target
+        renderTarget->beginFrame();
+
+        // First draw the rendered scene bitmap
+        renderTarget->drawOffscreenSceneBitmap();
+
+        // Then if necessary, render the overlay canvas elements
+        if (renderOverlayCanvas && d_overlayCanvas) {
+            d_overlayCanvas->__render();
+        }
+
+        // End the main render target frame and
+        // commit the rendered data to the main window.
+        renderTarget->endFrame();
+
+        // Mark the end of the rendering cycle
+        renderTarget->unlockBackBuffer();
     }
 
 #ifdef MC_ENABLE_PERF_PROFILING_OVERLAY
