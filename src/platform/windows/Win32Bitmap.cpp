@@ -88,6 +88,8 @@ namespace mc {
         return _createD2D1Bitmap(wicDecoder, Win32RenderTarget::getSharedRenderTarget());
     }
 
+    Bitmap::~Bitmap() {}
+
     Shared<Bitmap> Bitmap::loadFromFile(const std::string& path) {
         IWICBitmapDecoder* wicDecoder;
         HRESULT hr = D2DGraphics::getWICImagingFactory()->CreateDecoderFromFilename(
