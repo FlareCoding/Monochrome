@@ -27,6 +27,24 @@ namespace mc {
         }
     }
 
+    OSXRenderTarget::~OSXRenderTarget() {
+        if (d_frontRenderBuffer) {
+            [d_frontRenderBuffer release];
+        }
+
+        if (d_backRenderBuffer) {
+            [d_backRenderBuffer release];
+        }
+
+        if (d_offscreenSceneBitmap) {
+            [d_offscreenSceneBitmap release];
+        }
+
+        if (d_offscreenSceneImage) {
+            [d_offscreenSceneImage release];
+        }
+    }
+
     void OSXRenderTarget::_adjustPositionAndSizeForDPIScaling(
         int32_t& xPos,
         int32_t& yPos,
@@ -57,6 +75,15 @@ namespace mc {
     void OSXRenderTarget::resize(uint32_t width, uint32_t height) {
         d_width = width ? width : 1;
         d_height = height ? height : 1;
+
+        // Release previously held resources
+        if (d_backRenderBuffer) {
+            [d_backRenderBuffer release];
+        }
+
+        if (d_offscreenSceneBitmap) {
+            [d_offscreenSceneBitmap release];
+        }
 
         d_backRenderBuffer = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
                                 pixelsWide:d_width * d_scalingFactor
@@ -94,6 +121,10 @@ namespace mc {
     }
 
     void OSXRenderTarget::swapBuffers() {
+        if (d_frontRenderBuffer) {
+            [d_frontRenderBuffer release];
+        }
+
         d_frontRenderBuffer = [[NSImage alloc] initWithCGImage:[d_backRenderBuffer CGImage] size:CGSizeMake(d_width, d_height)];
         d_frontRenderBuffer.name = @"d_frontRenderBuffer";
     }
@@ -110,6 +141,10 @@ namespace mc {
 
     void OSXRenderTarget::endOffscreenSceneFrame() {
         [NSGraphicsContext restoreGraphicsState];
+
+        if (d_offscreenSceneImage) {
+            [d_offscreenSceneImage release];
+        }
 
         d_offscreenSceneImage = [[NSImage alloc] initWithCGImage:[d_offscreenSceneBitmap CGImage] size:CGSizeMake(d_width, d_height)];
     }
@@ -303,6 +338,10 @@ namespace mc {
         yPos = static_cast<float>(yPosInt);
 
 		[str drawInRect:NSMakeRect(xPos, yPos, width, height) withAttributes:attribs];
+
+        // Release the resources
+        [paragraphStyle release];
+        [str release];
     }
 
     void OSXRenderTarget::drawBitmap(
