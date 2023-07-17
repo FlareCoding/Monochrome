@@ -6,7 +6,7 @@ namespace mc {
     OSXRenderTarget::OSXRenderTarget(NSView* contentView, float dpiScalingFactor) {
         d_contentView = contentView;
         d_scalingFactor = dpiScalingFactor;
-        
+
         // Set the application context runtime
         // function for calculating text metrics.
         auto& runtimeUtilityFunctions =
@@ -69,6 +69,18 @@ namespace mc {
                                 bitmapFormat:0
                                 bytesPerRow:(4 * d_width * d_scalingFactor)
                                 bitsPerPixel:32];
+
+        d_offscreenSceneBitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
+                                pixelsWide:d_width * d_scalingFactor
+                                pixelsHigh:d_height * d_scalingFactor
+                                bitsPerSample:8
+                                samplesPerPixel:4
+                                hasAlpha:YES
+                                isPlanar:NO
+                                colorSpaceName:NSCalibratedRGBColorSpace
+                                bitmapFormat:0
+                                bytesPerRow:(4 * d_width * d_scalingFactor)
+                                bitsPerPixel:32];
     }
 
     void OSXRenderTarget::lockBackBuffer() {
@@ -88,6 +100,28 @@ namespace mc {
 
     void OSXRenderTarget::beginFrame() {}
     void OSXRenderTarget::endFrame() {}
+
+    void OSXRenderTarget::beginOffscreenSceneFrame() {
+        NSGraphicsContext* ctx = [NSGraphicsContext graphicsContextWithBitmapImageRep:d_offscreenSceneBitmap];
+
+        [NSGraphicsContext saveGraphicsState];
+        [NSGraphicsContext setCurrentContext:ctx];
+    }
+
+    void OSXRenderTarget::endOffscreenSceneFrame() {
+        [NSGraphicsContext restoreGraphicsState];
+
+        d_offscreenSceneImage = [[NSImage alloc] initWithCGImage:[d_offscreenSceneBitmap CGImage] size:CGSizeMake(d_width, d_height)];
+    }
+
+    void OSXRenderTarget::drawOffscreenSceneBitmap() {
+        NSRect windowRect = NSMakeRect(0, 0, d_width * d_scalingFactor, d_height * d_scalingFactor);
+
+        [d_offscreenSceneImage  drawInRect:windowRect
+                                fromRect:NSZeroRect
+                                operation:NSCompositingOperationCopy
+                                fraction:1.0];
+    }
 
     void OSXRenderTarget::clearScreen(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
         [[NSColor   colorWithCalibratedRed: r / 255.0f
