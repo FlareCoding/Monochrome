@@ -183,7 +183,7 @@ namespace mc {
         d_nativeWindow->minimize();
     }
 
-    void UIWindow::update() {        
+    void UIWindow::update() {
         // Due to the way Cocoa and Direct2D rendering systems don't let you
         // reliably control the timing of content rendering being called
         // preventing you from properly synchronizing buffer swapping,

@@ -85,8 +85,10 @@ namespace mc {
         }
 
         ComPtr<ID2D1BitmapRenderTarget> renderTarget;
-        HRESULT result =
-            hwndRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(3840, 2160), renderTarget.GetAddressOf());
+        HRESULT result = hwndRenderTarget->CreateCompatibleRenderTarget(
+            D2D1::SizeF(3840, 2160),
+            renderTarget.GetAddressOf()
+        );
 
         CORE_ASSERT(result == S_OK, "Failed to create Direct2D bitmap render target");
         return renderTarget;
