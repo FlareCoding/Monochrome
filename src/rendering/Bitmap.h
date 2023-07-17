@@ -8,6 +8,8 @@ public:
     Bitmap(uint32_t width, uint32_t height, void* data)
         : d_width(width), d_height(height), d_data(data) {}
 
+    ~Bitmap();
+
     inline uint32_t getWidth() const { return d_width; }
     inline uint32_t getHeight() const { return d_height; }
     inline void* getData() const { return d_data; }
