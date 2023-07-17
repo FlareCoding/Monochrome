@@ -30,6 +30,13 @@
 @end
 
 namespace mc {
+    Bitmap::~Bitmap() {
+        if (d_data) {
+            NSImage* nsImage = static_cast<NSImage*>(d_data);
+            [nsImage release];
+        }
+    }
+
     Shared<Bitmap> Bitmap::loadFromFile(const std::string& path) {
         NSString* nsPath = [NSString stringWithCString:path.c_str() 
                                    encoding:[NSString defaultCStringEncoding]];

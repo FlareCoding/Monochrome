@@ -6,6 +6,7 @@ namespace mc {
 class OSXRenderTarget : public RenderTarget {
 public:
     OSXRenderTarget(NSView* contentView, float dpiScalingFactor);
+    ~OSXRenderTarget();
 
     uint32_t getWidth() const override { return d_width; }
     uint32_t getHeight() const override { return d_height; }
