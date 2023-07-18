@@ -14,7 +14,7 @@
 			<UserWidget path="widget-tree-view.mcx"/>
 		</SplitterPanel>
 		<DockPanel backgroundColor="mcstudioBgColorPrimary">
-			<TabView dockAnchor="fill">
+			<TabView dockAnchor="fill" id="mcStudioTabView">
 				<tab name="Editor">
 					<UserWidget path="editor-panel.mcx"/>
 				</tab>

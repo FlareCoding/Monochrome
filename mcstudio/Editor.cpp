@@ -1,4 +1,6 @@
 #include "Editor.h"
+#include <utils/FileDialog.h>
+#include <filesystem>
 
 namespace mc::mcstudio {
     Editor::Editor() {
@@ -49,36 +51,80 @@ namespace mc::mcstudio {
     }
 
     void Editor::rootContainerSelection_OnClick(Shared<Event> e) {
-        // Initialize controllers
-        d_widgetTreeController = MakeRef<WidgetTreeController>();
-        d_editorCanvasController = MakeRef<EditorCanvasController>(d_overlayCanvasReference);
-        d_widgetPropertiesPanelController =
-            MakeRef<WidgetPropertiesPanelController>(d_baseWidgetAdapter);
-
-        d_widgetPropertiesPanelController->on(
-            "widgetPropertyModified",
-            &Editor::_onWidgetPropertyModified,
-            this
-        );
-
-        getWidgetById("initialRootContainerPromptLabel")->hide();
-        getWidgetById("initialRootContainerPromptPanel")->hide();
-
         // Create the root container with the appropriate type
         auto target = static_cast<Button*>(e->target);
         auto widgetName = target->label->text.get();
         auto mcxAdapter = mcx::McxEngine::getMcxAdapter(widgetName);
 
         Shared<mcx::McxNode> limboNode = nullptr;
-        d_appRootContainer = std::static_pointer_cast<BaseContainerWidget>(
+        auto rootContainer = std::static_pointer_cast<BaseContainerWidget>(
             mcxAdapter->createWidgetInstance(limboNode));
+
+        _setRootContainer(rootContainer);
+    }
+
+    void Editor::_appRootContainer_OnClick(Shared<Event> e) {
+        auto& children = d_appRootContainer->getChildren();
+        if (children.empty()) {
+            return;
+        }
+
+        auto mbe = std::static_pointer_cast<MouseButtonEvent>(e);
+        auto mousePos = mbe->getLocation();
+
+        auto clickedWidget = _hitTestInnermostWidget(d_appRootContainer, mousePos);
+        setSelectedWidget(clickedWidget);
+    }
+
+    void Editor::_appRootContainer_OnKeyDown(Shared<Event> e) {
+        auto kde = std::static_pointer_cast<KeyDownEvent>(e);
+        
+        // Deleting the selected widget
+        if (kde->getKeyCode() == KeyCode::KEY_BACKSPACE) {
+            if (!d_selectedWidget) {
+                return;
+            }
+
+            _removeWidget(d_selectedWidget);
+        }
+    }
+
+    void Editor::_setRootContainer(Shared<BaseContainerWidget> container) {
+        if (!d_controllersInitialized) {
+            // Initialize controllers
+            d_widgetTreeController = MakeRef<WidgetTreeController>();
+            d_editorCanvasController = MakeRef<EditorCanvasController>(d_overlayCanvasReference);
+            d_widgetPropertiesPanelController =
+                MakeRef<WidgetPropertiesPanelController>(d_baseWidgetAdapter);
+
+            d_widgetPropertiesPanelController->on(
+                "widgetPropertyModified",
+                &Editor::_onWidgetPropertyModified,
+                this
+            );
+
+            getWidgetById("initialRootContainerPromptLabel")->hide();
+            getWidgetById("initialRootContainerPromptPanel")->hide();
+
+            d_controllersInitialized = true;
+        }
+
+        // Clear the canvas just in case it had a leftover frame being drawn
+        d_editorCanvasController->clearCanvas();
+
+        // Remove the current app root container if such exists
+        auto editorPanel = getWidgetById<StackPanel>("mcEditorPanel");
+        if (d_appRootContainer) {
+            editorPanel->removeChildOffline(d_appRootContainer);
+        }
+        
+        d_appRootContainer = container;
 
         d_appRootContainer->fixedWidth = 800;
         d_appRootContainer->fixedHeight = 800;
-        d_appRootContainer->marginLeft = 20;
+        d_appRootContainer->horizontalAlignment = HACenter;
 
         // Add the root container to the editor panel
-        auto editorPanel = getWidgetById<StackPanel>("mcEditorPanel");
         editorPanel->addChild(d_appRootContainer);
 
         // Register the root container ID
@@ -120,32 +166,6 @@ namespace mc::mcstudio {
             auto widget = d_appRootContainer->deepSearchWidgetByUuid(selectedWidgetId);
             setSelectedWidget(widget);
         });
-    }
-
-    void Editor::_appRootContainer_OnClick(Shared<Event> e) {
-        auto& children = d_appRootContainer->getChildren();
-        if (children.empty()) {
-            return;
-        }
-
-        auto mbe = std::static_pointer_cast<MouseButtonEvent>(e);
-        auto mousePos = mbe->getLocation();
-
-        auto clickedWidget = _hitTestInnermostWidget(d_appRootContainer, mousePos);
-        setSelectedWidget(clickedWidget);
-    }
-
-    void Editor::_appRootContainer_OnKeyDown(Shared<Event> e) {
-        auto kde = std::static_pointer_cast<KeyDownEvent>(e);
-        
-        // Deleting the selected widget
-        if (kde->getKeyCode() == KeyCode::KEY_BACKSPACE) {
-            if (!d_selectedWidget) {
-                return;
-            }
-
-            _removeWidget(d_selectedWidget);
-        }
     }
 
     void Editor::_onWidgetPropertyModified(Shared<Event> e) {
@@ -273,7 +293,32 @@ namespace mc::mcstudio {
     }
 
     void Editor::_projectImportButton_OnClick(Shared<Event> e) {
-        // TO-DO
+        auto filter = utils::FileDialogFilter();
+        filter.addFilter("Mcx", { "mcx" });
+        
+        auto fd = utils::FileDialog::create();
+        fd->setFilter(filter);
+        std::string path = fd->openFileDialog();
+
+        // Make sure the path is valid
+        if (path.empty() || !std::filesystem::is_regular_file(path)) {
+            return;
+        }
+
+        // Parse the mcx file
+        auto oldMcxRootDirectory = mcx::McxEngine::getRootMcxDirectory();
+        mcx::McxEngine::setRootMcxDirectory("");
+        
+        auto newRootContainer = mcx::McxEngine::parseUserWidgetFileAsContainer(path);
+        mcx::McxEngine::setRootMcxDirectory(oldMcxRootDirectory);
+
+        if (!newRootContainer) {
+            return;
+        }
+
+        _setRootContainer(newRootContainer);
+
+        getWidgetById<TabView>("mcStudioTabView")->openTab("Editor");
     }
 
     void Editor::_projectExportButton_OnClick(Shared<Event> e) {

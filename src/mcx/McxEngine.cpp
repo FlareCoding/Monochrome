@@ -37,8 +37,12 @@ namespace mc::mcx {
     static Shared<BaseWidgetMcxAdapter> s_baseWidgetMcxAdapter = MakeRef<BaseWidgetMcxAdapter>();
 
     void McxEngine::setRootMcxDirectory(const std::string& path) {
-        CORE_ASSERT(std::filesystem::is_directory(path), "Invalid mcx root directory provided");
+        CORE_ASSERT(path.empty() || std::filesystem::is_directory(path), "Invalid mcx root directory provided");
         s_mcxRootDirectory = path;
+
+        if (path.empty()) {
+            return;
+        }
 
         if (s_mcxRootDirectory.at(s_mcxRootDirectory.size() - 1) != '/') {
             s_mcxRootDirectory += '/';
@@ -94,6 +98,11 @@ namespace mc::mcx {
 
         auto rootWidgetInstance = parseWidget(rootWidgetNode);
 
+        if (!rootWidgetInstance) {
+            printf("Failed to parse mcx window source\n");
+            return nullptr;
+        }
+
         if (!rootWidgetInstance->isContainer()) {
             printf("Root widget instance must be a BaseContainerWidget\n");
             return window;
@@ -127,6 +136,11 @@ namespace mc::mcx {
 
         rapidxml::file<> xmlFile(fullPath.c_str());
         auto widgetInstance = parseUserWidgetSource(xmlFile.data());
+
+        if (!widgetInstance) {
+            printf("Failed to parse user widget file '%s'\n", fullPath.c_str());
+            return nullptr;
+        }
 
         if (!widgetInstance->isContainer()) {
             return nullptr;
