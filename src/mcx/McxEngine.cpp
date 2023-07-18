@@ -37,7 +37,9 @@ namespace mc::mcx {
     static Shared<BaseWidgetMcxAdapter> s_baseWidgetMcxAdapter = MakeRef<BaseWidgetMcxAdapter>();
 
     void McxEngine::setRootMcxDirectory(const std::string& path) {
-        CORE_ASSERT(path.empty() || std::filesystem::is_directory(path), "Invalid mcx root directory provided");
+        CORE_ASSERT(path.empty() || std::filesystem::is_directory(path),
+            "Invalid mcx root directory provided");
+
         s_mcxRootDirectory = path;
 
         if (path.empty()) {
