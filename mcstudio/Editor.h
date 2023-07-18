@@ -25,6 +25,9 @@ private:
     // Logic pertaining to whenever a key is pressed in the editor
     void _appRootContainer_OnKeyDown(Shared<Event> e);
 
+    // Set the root container for the user application
+    void _setRootContainer(Shared<BaseContainerWidget> container);
+
     // Event handler for whenever a widget's property
     // gets modified through the properties list panel.
     void _onWidgetPropertyModified(Shared<Event> e);
@@ -48,6 +51,8 @@ private:
     void _projectExportButton_OnClick(Shared<Event> e);
 
 private:
+    bool d_controllersInitialized = false;
+
     // Controller responsible for the widget tree panel
     Shared<WidgetTreeController> d_widgetTreeController;
 
