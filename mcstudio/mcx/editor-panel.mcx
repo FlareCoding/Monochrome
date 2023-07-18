@@ -1,5 +1,5 @@
 <root type="widget">
-	<StackPanel id="mcEditorPanel" backgroundColor="mcstudioBgColorPrimary" orientation="vertical">
+	<StackPanel id="mcEditorPanel" backgroundColor="mcstudioBgColorPrimary" orientation="vertical" horizontalAlignment="fill">
 		<StackPanel orientation="horizontal" marginLeft="20" marginTop="20" backgroundColor="mcstudioBgColorPrimary">
 			<Label text="Width" fontSize="16" fixedHeight="18" marginRight="4"/>
 			<Entry id="editorWindowWidthEntry" text="800" fixedHeight="18" fixedWidth="80" marginRight="20" style="mcstudio-entry"/>

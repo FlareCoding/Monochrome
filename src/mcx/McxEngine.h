@@ -68,6 +68,9 @@ public:
     /// @brief Sets the root directory for all mcx files that will be loaded
     static void setRootMcxDirectory(const std::string& path);
 
+    /// @brief Returns the root directory for all mcx files that will be loaded
+    static std::string getRootMcxDirectory() { return s_mcxRootDirectory; }
+
 private:
     static bool s_mcxEngineInitialized;
 
