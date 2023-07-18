@@ -322,6 +322,16 @@ namespace mc::mcstudio {
     }
 
     void Editor::_projectExportButton_OnClick(Shared<Event> e) {
-        // TO-DO
+        auto filter = utils::FileDialogFilter();
+        filter.addFilter("Mcx", { "mcx" });
+
+        auto fd = utils::FileDialog::create();
+        fd->setFilter(filter);
+        std::string path = fd->saveFileDialog();
+
+        // Make sure the path is valid
+        if (path.empty() || !std::filesystem::is_regular_file(path)) {
+            return;
+        }
     }
 } // namespace mc::mcstudio
