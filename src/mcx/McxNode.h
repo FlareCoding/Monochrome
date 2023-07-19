@@ -32,7 +32,7 @@ public:
     /// @param name Name of the attribute
     ///
     /// @param defaultValue If the attribute doesn't exist or has an
-    // invalid value, the default value will be substituted as a return value.
+    /// invalid value, the default value will be substituted as a return value.
     ///
     /// @returns The value of the node's attribute or empty string otherwise
     std::string getAttribute(const std::string& name, const std::string& defaultValue = "");
@@ -40,7 +40,7 @@ public:
     /// @param name Name of the attribute
     ///
     /// @param defaultValue If the attribute doesn't exist or has an
-    // invalid value, the default value will be substituted as a return value.
+    /// invalid value, the default value will be substituted as a return value.
     ///
     /// @returns The value of the node's attribute or provided default value otherwise
     int32_t getIntAttribute(const std::string& name, int32_t defaultValue = 0);
@@ -48,7 +48,7 @@ public:
     /// @param name Name of the attribute
     ///
     /// @param defaultValue If the attribute doesn't exist or has an
-    // invalid value, the default value will be substituted as a return value.
+    /// invalid value, the default value will be substituted as a return value.
     ///
     /// @returns The value of the node's attribute or provided default value otherwise
     uint32_t getUIntAttribute(const std::string& name, uint32_t defaultValue = 0);
@@ -56,7 +56,7 @@ public:
     /// @param name Name of the attribute
     ///
     /// @param defaultValue If the attribute doesn't exist or has an
-    // invalid value, the default value will be substituted as a return value.
+    /// invalid value, the default value will be substituted as a return value.
     ///
     /// @returns The value of the node's attribute or provided default value otherwise
     Color getColorAttribute(
@@ -67,7 +67,7 @@ public:
     /// @param name Name of the attribute
     ///
     /// @param defaultValue If the attribute doesn't exist or has an
-    // invalid value, the default value will be substituted as a return value.
+    /// invalid value, the default value will be substituted as a return value.
     ///
     /// @returns The value of the node's attribute or provided default value otherwise
     bool getBoolAttribute(
