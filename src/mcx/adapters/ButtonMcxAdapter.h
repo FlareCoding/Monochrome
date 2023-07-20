@@ -21,5 +21,9 @@ public:
 
     /// @brief Returns a list of available properties for the current widget class
     std::vector<std::string> getAvailableProperties() override;
+
+protected:
+    /// @brief Callback function that runs whenever _createMcxNodeFromWidget_ is called.
+    void _onCreateMcxNodeFromWidget(Shared<BaseWidget>& widget, Shared<McxNode>& node) override;
 };
 } //namespace mc::mcx

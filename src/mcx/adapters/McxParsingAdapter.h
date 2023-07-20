@@ -32,7 +32,7 @@ public:
     /// information neccessary to export the widget to an mcx file.
     /// @param widget Reference to an existing valid widget
     /// @return Brand new mcx node instance
-    Shared<McxNode> createMcxNodeFromWidget(Shared<BaseWidget>& widget);
+    Shared<McxNode> createMcxNodeFromWidget(Shared<BaseWidget> widget);
 
 protected:
     /// @brief Callback function that runs whenever _createMcxNodeFromWidget_ is called.

@@ -39,6 +39,8 @@ public:
 
     void setImage(Shared<Image> image);
 
+    inline Shared<Image> getImage() { return d_image; }
+
 protected:
     Size _measureSize() override;
     void _onSetComputedSize(const Size& size) override;
