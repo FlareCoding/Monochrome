@@ -132,21 +132,21 @@ namespace mc::mcx {
 
         return props;
     }
-    
+
     void ButtonMcxAdapter::_onCreateMcxNodeFromWidget(
         Shared<BaseWidget>& widget,
         Shared<McxNode>& node
     ) {
         auto button = std::static_pointer_cast<Button>(widget);
         auto buttonImage = button->getImage();
-        
+
         if (!buttonImage) {
             return;
         }
-        
+
         // Get the image's path/url source
         auto imgSource = buttonImage->getOriginSrc();
-        
+
         // Create the image node
         auto imageAdapter = McxEngine::getMcxAdapter("Image");
         auto imageNode = imageAdapter->createMcxNodeFromWidget(buttonImage);

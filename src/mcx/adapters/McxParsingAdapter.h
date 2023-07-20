@@ -37,7 +37,7 @@ public:
 protected:
     /// @brief Callback function that runs whenever _createMcxNodeFromWidget_ is called.
     virtual void _onCreateMcxNodeFromWidget(Shared<BaseWidget>& widget, Shared<McxNode>& node) {}
-    
+
     /// @brief Checks if there is an attribute specifying an event handler name
     /// and if so, attemps to retrieve it and add it to the widget instance.
     /// @param eventName Name of the event to check if there is a handler for

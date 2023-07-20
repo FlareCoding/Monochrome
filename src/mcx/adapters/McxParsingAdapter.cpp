@@ -6,25 +6,30 @@ namespace mc::mcx {
     static void __diffPropertiesToExport(Shared<BaseWidget>& widget, Shared<McxNode>& node) {
         static auto s_baseWidgetMcxAdapter = MakeRef<BaseWidgetMcxAdapter>();
 
+        // Find the right adapter for the widget and extract its properties onto the current node
         auto widgetAdapter = McxEngine::getMcxAdapter(widget->getWidgetName());
         widgetAdapter->extractProperties(widget, node);
         s_baseWidgetMcxAdapter->extractProperties(widget, node);
 
+        // Construct a "pure" default widget instance to compare give widget's properties to
         auto pureInstance = widgetAdapter->createWidgetInstance(node);
         auto pureInstanceNode = MakeRef<McxNode>();
         widgetAdapter->extractProperties(pureInstance, pureInstanceNode);
         s_baseWidgetMcxAdapter->extractProperties(pureInstance, pureInstanceNode);
 
+        // Keep track of identical properties that should be removed from the node
         std::vector<std::string> attribsToRemove;
 
         for (auto& [attribName, attribValue] : node->getAttribs()) {
             auto pureInstanceAttribValue = pureInstanceNode->getAttribute(attribName);
-            
+
             if (attribValue == pureInstanceAttribValue) {
                 attribsToRemove.push_back(attribName);
             }
         }
 
+        // Remove unnecessary identical properties from the
+        // mcx node to prevent redundant property exporting.
         for (auto& attrib : attribsToRemove) {
             node->deleteAttribute(attrib);
         }
@@ -32,11 +37,11 @@ namespace mc::mcx {
 
     Shared<McxNode> McxParsingAdapter::createMcxNodeFromWidget(Shared<BaseWidget> widget) {
         auto node = MakeRef<McxNode>(widget->getWidgetName());
-        
+
         // Call the virtual callback function
         _onCreateMcxNodeFromWidget(widget, node);
 
-        // Extract the widget properties and place them onto the node
+        // Extract only the necessary widget properties and place them onto the node
         __diffPropertiesToExport(widget, node);
 
         // If a widget is a container and its children
