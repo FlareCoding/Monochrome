@@ -9,7 +9,7 @@ namespace mc {
 
     Shared<Image> Image::loadFromWebUrl(const std::string& url) {
         auto bitmap = Bitmap::loadFromWebUrl(url);
-        
+
         auto img = MakeRef<Image>(bitmap, url);
         img->d_loadedFromWeb = true;
 

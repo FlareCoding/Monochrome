@@ -196,7 +196,7 @@ namespace mc::mcx {
 
         // Declare a new xml document
         rapidxml::xml_document<> doc;
-        
+
         // Create a root node specifying the type "widget"
         auto rootNode = doc.allocate_node(rapidxml::node_element, "root");
         rootNode->append_attribute(doc.allocate_attribute("type", "widget"));
