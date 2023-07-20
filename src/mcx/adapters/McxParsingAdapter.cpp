@@ -52,7 +52,7 @@ namespace mc::mcx {
             // Traverse every child widget and create an mcx node for it
             for (auto& childWidget : container->getChildren()) {
                 // Get the mcx adapter for the child widget
-                auto& childWidgetAdapter = McxEngine::getMcxAdapter(childWidget->getWidgetName());
+                auto childWidgetAdapter = McxEngine::getMcxAdapter(childWidget->getWidgetName());
 
                 // Create the child mcx node
                 auto childNode = childWidgetAdapter->createMcxNodeFromWidget(childWidget);
