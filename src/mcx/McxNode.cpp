@@ -7,6 +7,7 @@
     #define _CRT_SECURE_NO_WARNINGS
 #endif
 
+using xml_doc = rapidxml::xml_document<char>;
 using xml_node = rapidxml::xml_node<char>;
 using xml_attrib = rapidxml::xml_attribute<char>;
 
@@ -16,12 +17,20 @@ namespace mc::mcx {
         _readChildren();
     }
 
+    McxNode::McxNode(const std::string& name) : d_node(nullptr), d_nodeName(name) {}
+
     bool McxNode::hasAttribute(const std::string& name) {
         return (d_attribs.find(name) != d_attribs.end());
     }
 
     void McxNode::setAttribute(const std::string& name, const std::string& value) {
         d_attribs[name] = value;
+    }
+
+    void McxNode::deleteAttribute(const std::string& name) {
+        if (hasAttribute(name)) {
+            d_attribs.erase(name);
+        }
     }
 
     std::string McxNode::getAttribute(
@@ -111,6 +120,28 @@ namespace mc::mcx {
         return (d_attribs.at(name) == "true");
     }
 
+    void McxNode::exportToXmlDoc(void* doc, McxNode* parentMcxNode) {
+        auto xmlDoc = static_cast<xml_doc*>(doc);
+        d_node = xmlDoc->allocate_node(rapidxml::node_element, d_nodeName.c_str());
+
+        // Apply attributes and construct the children tree
+        _writeAttribs(doc);
+        _exportChildrenToXmlDoc(doc);
+
+        // Get the non-const version of the current node as native xml object
+        auto thisConstXmlNode = static_cast<const xml_node*>(d_node);
+        auto thisXmlNode = const_cast<xml_node*>(thisConstXmlNode);
+
+        // Add this node to the parent if necessary
+        if (parentMcxNode) {
+            // Working around the const cast
+            auto constParentXmlNode = static_cast<const xml_node*>(parentMcxNode->d_node);
+            auto parentXmlNode = const_cast<xml_node*>(constParentXmlNode);
+
+            parentXmlNode->append_node(thisXmlNode);
+        }
+    }
+
     void McxNode::_readAttribs() {
         auto xmlNode = static_cast<const xml_node*>(d_node);
         d_nodeName = std::string(xmlNode->name());
@@ -135,6 +166,32 @@ namespace mc::mcx {
         ) {
             auto childMcxNode = MakeRef<McxNode>(childNode);
             d_children.push_back(childMcxNode);
+        }
+    }
+
+    void McxNode::_writeAttribs(void* doc) {
+        auto xmlDoc = static_cast<xml_doc*>(doc);
+
+        // Get the non-const version of the current node as native xml object
+        auto thisConstXmlNode = static_cast<const xml_node*>(d_node);
+        auto thisXmlNode = const_cast<xml_node*>(thisConstXmlNode);
+
+        for (auto& [attribName, attribValue] : d_attribs) {
+            // Allocate an xml attribute
+            auto xmlAttrib = xmlDoc->allocate_attribute(attribName.c_str(), attribValue.c_str());
+
+            // Append the xml attribute to the xml node
+            thisXmlNode->append_attribute(xmlAttrib);
+        }
+    }
+
+    void McxNode::_exportChildrenToXmlDoc(void* doc) {
+        // Get the non-const version of the current node as native xml object
+        auto thisConstXmlNode = static_cast<const xml_node*>(d_node);
+        auto thisXmlNode = const_cast<xml_node*>(thisConstXmlNode);
+
+        for (auto& childMcxNode : d_children) {
+            childMcxNode->exportToXmlDoc(doc, this);
         }
     }
 } // namespace mc::mcx
