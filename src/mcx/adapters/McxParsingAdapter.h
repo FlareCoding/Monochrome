@@ -28,7 +28,16 @@ public:
     /// @brief Returns a list of available properties for the current widget class
     virtual std::vector<std::string> getAvailableProperties() = 0;
 
+    /// @brief Creates a brand new McxNode instance that will contain
+    /// information neccessary to export the widget to an mcx file.
+    /// @param widget Reference to an existing valid widget
+    /// @return Brand new mcx node instance
+    Shared<McxNode> createMcxNodeFromWidget(Shared<BaseWidget>& widget);
+
 protected:
+    /// @brief Callback function that runs whenever _createMcxNodeFromWidget_ is called.
+    virtual void _onCreateMcxNodeFromWidget(Shared<BaseWidget>& widget, Shared<McxNode>& node) {}
+    
     /// @brief Checks if there is an attribute specifying an event handler name
     /// and if so, attemps to retrieve it and add it to the widget instance.
     /// @param eventName Name of the event to check if there is a handler for

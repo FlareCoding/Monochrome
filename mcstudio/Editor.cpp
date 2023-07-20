@@ -329,9 +329,26 @@ namespace mc::mcstudio {
         fd->setFilter(filter);
         std::string path = fd->saveFileDialog();
 
+        // Make sure the target path contains the .mcx extension
+        if (path.length() < 4 || path.substr(path.length() - 4) != ".mcx") {
+            path += ".mcx";
+        }
+
         // Make sure the path is valid
-        if (path.empty() || !std::filesystem::is_regular_file(path)) {
+        if (path.empty()) {
             return;
         }
+
+        Shared<BaseWidget>& rootWidget = std::static_pointer_cast<BaseWidget>(d_appRootContainer);
+
+        auto oldMcxRootDirectory = mcx::McxEngine::getRootMcxDirectory();
+        mcx::McxEngine::setRootMcxDirectory("");
+
+        if (!mcx::McxEngine::exportUserWidgetTree(path, rootWidget)) {
+            printf("[*] mcstudio> failed to export widget tree to '%s'\n", path.c_str());
+        }
+
+        // Reset the root mcx directory
+        mcx::McxEngine::setRootMcxDirectory(oldMcxRootDirectory);
     }
 } // namespace mc::mcstudio
