@@ -339,7 +339,7 @@ namespace mc::mcstudio {
             return;
         }
 
-        Shared<BaseWidget>& rootWidget = std::static_pointer_cast<BaseWidget>(d_appRootContainer);
+        Shared<BaseWidget> rootWidget = std::static_pointer_cast<BaseWidget>(d_appRootContainer);
 
         auto oldMcxRootDirectory = mcx::McxEngine::getRootMcxDirectory();
         mcx::McxEngine::setRootMcxDirectory("");
