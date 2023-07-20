@@ -3,8 +3,9 @@
 #include <filesystem>
 #include <sstream>
 #include <iterator>
-#include "rapidxml/rapidxml_utils.hpp"
 #include "rapidxml/rapidxml.hpp"
+#include "rapidxml/rapidxml_print.hpp"
+#include "rapidxml/rapidxml_utils.hpp"
 
 // Widget adapters
 #include "adapters/BaseWidgetMcxAdapter.h"
@@ -181,6 +182,51 @@ namespace mc::mcx {
 
         Shared<BaseWidget> widgetInstance = parseWidget(rootWidgetNode);
         return widgetInstance;
+    }
+
+    bool McxEngine::exportUserWidgetTree(const std::string& path, Shared<BaseWidget>& root) {
+        auto fullPath = s_mcxRootDirectory + path;
+        auto parentDir = std::filesystem::path(fullPath).parent_path();
+
+        bool validPath = std::filesystem::is_directory(parentDir);
+        if (!validPath) {
+            printf("Invalid path provided: '%s'\n", fullPath.c_str());
+            return false;
+        }
+
+        // Declare a new xml document
+        rapidxml::xml_document<> doc;
+        
+        // Create a root node specifying the type "widget"
+        auto rootNode = doc.allocate_node(rapidxml::node_element, "root");
+        rootNode->append_attribute(doc.allocate_attribute("type", "widget"));
+        doc.append_node(rootNode);
+
+        // Parse the widget tree and get a top level mcx node
+        auto rootMcxNodeAdapter = McxEngine::getMcxAdapter(root->getWidgetName());
+        auto rootMcxNode = rootMcxNodeAdapter->createMcxNodeFromWidget(root);
+
+        // Export the top level mcx node to the xml document
+        rootMcxNode->exportToXmlDoc(&doc, nullptr);
+
+        // Get the root mcx node's native xml node and append it to the root xml node
+        auto rootWidgetXmlNode =
+            static_cast<const rapidxml::xml_node<>*>(rootMcxNode->__getNativeXmlNodeHandle());
+
+        rootNode->append_node(const_cast<rapidxml::xml_node<>*>(rootWidgetXmlNode));
+
+        // Write the resulting xml document to the output filepath
+        std::string xmlString;
+        rapidxml::print(std::back_inserter(xmlString), doc, 0);
+
+        std::ofstream outputFile(fullPath);
+        outputFile << xmlString;
+
+        // Releasing the resources
+        outputFile.close();
+        doc.clear();
+
+        return true;
     }
 
     void McxEngine::loadStylesheetFile(const std::string& path) {

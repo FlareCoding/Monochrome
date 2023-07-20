@@ -1,6 +1,65 @@
 #include "McxParsingAdapter.h"
+#include "BaseWidgetMcxAdapter.h"
+#include <mcx/McxEngine.h>
 
 namespace mc::mcx {
+    static void __diffPropertiesToExport(Shared<BaseWidget>& widget, Shared<McxNode>& node) {
+        static auto s_baseWidgetMcxAdapter = MakeRef<BaseWidgetMcxAdapter>();
+
+        auto widgetAdapter = McxEngine::getMcxAdapter(widget->getWidgetName());
+        widgetAdapter->extractProperties(widget, node);
+        s_baseWidgetMcxAdapter->extractProperties(widget, node);
+
+        auto pureInstance = widgetAdapter->createWidgetInstance(node);
+        auto pureInstanceNode = MakeRef<McxNode>();
+        widgetAdapter->extractProperties(pureInstance, pureInstanceNode);
+        s_baseWidgetMcxAdapter->extractProperties(pureInstance, pureInstanceNode);
+
+        std::vector<std::string> attribsToRemove;
+
+        for (auto& [attribName, attribValue] : node->getAttribs()) {
+            auto pureInstanceAttribValue = pureInstanceNode->getAttribute(attribName);
+            
+            if (attribValue == pureInstanceAttribValue) {
+                attribsToRemove.push_back(attribName);
+            }
+        }
+
+        for (auto& attrib : attribsToRemove) {
+            node->deleteAttribute(attrib);
+        }
+    }
+
+    Shared<McxNode> McxParsingAdapter::createMcxNodeFromWidget(Shared<BaseWidget>& widget) {
+        auto node = MakeRef<McxNode>(widget->getWidgetName());
+        
+        // Call the virtual callback function
+        _onCreateMcxNodeFromWidget(widget, node);
+
+        // Extract the widget properties and place them onto the node
+        __diffPropertiesToExport(widget, node);
+
+        // If a widget is a container and its children
+        // need to be processed, create children mcx nodes.
+        if (!node->childrenHandled && widget->isContainer()) {
+            auto& container = std::static_pointer_cast<BaseContainerWidget>(widget);
+
+            // Traverse every child widget and create an mcx node for it
+            for (auto& childWidget : container->getChildren()) {
+                // Get the mcx adapter for the child widget
+                auto& childWidgetAdapter = McxEngine::getMcxAdapter(childWidget->getWidgetName());
+
+                // Create the child mcx node
+                auto childNode = childWidgetAdapter->createMcxNodeFromWidget(childWidget);
+
+                // Add the child mcx node to the current children list
+                node->getChildren().push_back(childNode);
+            }
+        }
+
+        return node;
+    }
+
     void McxParsingAdapter::_checkAndApplyEventHandler(
         const std::string& eventName,
         Shared<McxNode>& mcxNode,

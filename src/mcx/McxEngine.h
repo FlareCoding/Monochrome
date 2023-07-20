@@ -30,6 +30,12 @@ public:
     /// @returns Shared pointer to the native widget instance from the mcx source
     static Shared<BaseWidget> parseUserWidgetSource(char* source);
 
+    /// @brief Takes an existing widget tree and exports it to a UserWidget mcx file
+    /// @param path Target path for the mcx file to export the widget tree to
+    /// @param root Root widget to start parsing the widget tree from
+    /// @return Returns true if the widget tree was successfully exported, false otherwise
+    static bool exportUserWidgetTree(const std::string& path, Shared<BaseWidget>& root);
+
     /// @brief Parses an xml-based .mcx file containing properties of a custom style
     /// that can be reused by other widgets as their property, similar to CSS classes.
     /// @param path Path to the .mcx file containing the source
