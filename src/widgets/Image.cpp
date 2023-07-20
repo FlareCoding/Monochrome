@@ -3,15 +3,22 @@
 namespace mc {
     Shared<Image> Image::loadFromFile(const std::string& path) {
         auto bitmap = Bitmap::loadFromFile(path);
-        return MakeRef<Image>(bitmap);
+
+        return MakeRef<Image>(bitmap, path);
     }
 
     Shared<Image> Image::loadFromWebUrl(const std::string& url) {
         auto bitmap = Bitmap::loadFromWebUrl(url);
-        return MakeRef<Image>(bitmap);
+        
+        auto img = MakeRef<Image>(bitmap, url);
+        img->d_loadedFromWeb = true;
+
+        return img;
     }
 
-    Image::Image(Shared<Bitmap> bitmap) {
+    Image::Image(Shared<Bitmap> bitmap, const std::string& source) {
+        d_originSource = source;
+
         _createVisuals();
         _setupProperties();
 
