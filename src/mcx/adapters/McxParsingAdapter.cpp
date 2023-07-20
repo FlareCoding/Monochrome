@@ -30,7 +30,7 @@ namespace mc::mcx {
         }
     }
 
-    Shared<McxNode> McxParsingAdapter::createMcxNodeFromWidget(Shared<BaseWidget>& widget) {
+    Shared<McxNode> McxParsingAdapter::createMcxNodeFromWidget(Shared<BaseWidget> widget) {
         auto node = MakeRef<McxNode>(widget->getWidgetName());
         
         // Call the virtual callback function
