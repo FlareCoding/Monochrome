@@ -47,7 +47,7 @@ namespace mc::mcx {
         // If a widget is a container and its children
         // need to be processed, create children mcx nodes.
         if (!node->childrenHandled && widget->isContainer()) {
-            auto& container = std::static_pointer_cast<BaseContainerWidget>(widget);
+            auto container = std::static_pointer_cast<BaseContainerWidget>(widget);
 
             // Traverse every child widget and create an mcx node for it
             for (auto& childWidget : container->getChildren()) {
