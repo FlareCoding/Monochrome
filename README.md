@@ -1,6 +1,6 @@
 # Monochrome
 
-![Build Status]((https://github.com/FlareCoding/Monochrome/actions/workflows/build.yml/badge.svg)
+![Build Status](https://github.com/FlareCoding/Monochrome/actions/workflows/build.yml/badge.svg)
 
 Geared towards C++ developers, Monochrome is an open-source cross-platform GUI library and framework that simplifies desktop GUI development. Embracing modern design aesthetics, it offers a range of stylish window and UI elements. For optimal efficiency, the windowing and graphics systems leverage platform-dependent native APIs.
 
