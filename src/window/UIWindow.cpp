@@ -2,7 +2,6 @@
 #include <rendering/Renderer.h>
 #include <chrono>
 #include <widgets/BaseWidget.h>
-#include <widgets/StackPanel.h>
 
 #ifdef MC_PLATFORM_MACOS
 #include <platform/macos/OSXNativeWindow.h>

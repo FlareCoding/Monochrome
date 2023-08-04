@@ -20,20 +20,6 @@ set(
     ${cwd}/AllWidgets.h
 
     ${cwd}/Label.h
-    ${cwd}/Button.h
-    ${cwd}/Checkbox.h
-    ${cwd}/Entry.h
-    ${cwd}/ProgressBar.h
-    ${cwd}/MenuList.h
-    ${cwd}/DropdownButton.h
-    ${cwd}/Combobox.h
-    ${cwd}/TreeView.h
-    ${cwd}/Image.h
-    ${cwd}/StackPanel.h
-    ${cwd}/ScrollPanel.h
-    ${cwd}/DockPanel.h
-    ${cwd}/SplitterPanel.h
-    ${cwd}/TabView.h
 
     PARENT_SCOPE
 )
@@ -47,20 +33,6 @@ set(
     ${cwd}/BaseWidget.cpp
 
     ${cwd}/Label.cpp
-    ${cwd}/Button.cpp
-    ${cwd}/Checkbox.cpp
-    ${cwd}/Entry.cpp
-    ${cwd}/ProgressBar.cpp
-    ${cwd}/MenuList.cpp
-    ${cwd}/DropdownButton.cpp
-    ${cwd}/Combobox.cpp
-    ${cwd}/TreeView.cpp
-    ${cwd}/Image.cpp
-    ${cwd}/StackPanel.cpp
-    ${cwd}/ScrollPanel.cpp
-    ${cwd}/DockPanel.cpp
-    ${cwd}/SplitterPanel.cpp
-    ${cwd}/TabView.cpp
 
     PARENT_SCOPE
 )
