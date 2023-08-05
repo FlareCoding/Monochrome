@@ -210,6 +210,17 @@ public:
     // @param child Child element to be added
     void addChildOffline(Shared<BaseWidget> child);
 
+    // Adds a child to the list of widgets at a given index
+    // @param child Child element to be added
+    // @param idx Index at which to insert the child
+    void insertChild(Shared<BaseWidget> child, size_t idx);
+
+    // Inserts a child to the list of widgets at a given index without
+    // causing expensive events such as "layoutChanged" event firing.
+    // @param child Child element to be added
+    // @param idx Index at which to insert the child
+    void insertChildOffline(Shared<BaseWidget> child, size_t idx);
+
     // Removes a child from the list of children
     // @param child Child element to be removed
     // @returns Status of whether a child has been removed successfully

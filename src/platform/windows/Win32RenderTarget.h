@@ -74,7 +74,8 @@ public:
         int32_t x, int32_t y,
         uint32_t width, uint32_t height,
         Shared<Bitmap> bitmap,
-        uint32_t opacity = 255
+        uint32_t opacity = 255,
+        bool tiled = false
     );
 
     std::pair<float, float> runtimeCalculateTextSize(

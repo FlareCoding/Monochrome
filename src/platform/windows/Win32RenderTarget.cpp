@@ -366,7 +366,8 @@ namespace mc {
         uint32_t width,
         uint32_t height,
         Shared<Bitmap> bitmap,
-        uint32_t opacity
+        uint32_t opacity,
+        bool tiled
     ) {
         _adjustPositionAndSizeForDPIScaling(x, y, width, height);
 
@@ -384,13 +385,47 @@ namespace mc {
             static_cast<float>(y + height)
         );
 
-        d_activeRenderTarget->DrawBitmap(
-            static_cast<ID2D1Bitmap*>(bitmap->getData()),
-            destRect,
-            static_cast<float>(opacity) / 255.0f,
-            D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
-            srcRect
-        );
+        if (tiled) {
+            // Tiling the bitmap
+            float tileWidth = static_cast<float>(bitmap->getWidth());
+            float tileHeight = static_cast<float>(bitmap->getHeight());
+
+            // Determine the number of tiles needed in both dimensions
+            int tilesX = static_cast<int>(ceil((destRect.right - destRect.left) / tileWidth)) + 1;
+            int tilesY = static_cast<int>(ceil((destRect.bottom - destRect.top) / tileHeight)) + 1;
+
+            // Loop over the grid and draw the bitmap repeatedly
+            for (int y = 0; y < tilesY; ++y)
+            {
+                for (int x = 0; x < tilesX; ++x)
+                {
+                    D2D1_RECT_F tileRect = D2D1::RectF(
+                        destRect.left + x * tileWidth,
+                        destRect.top + y * tileHeight,
+                        destRect.left + (x + 1) * tileWidth,
+                        destRect.top + (y + 1) * tileHeight
+                    );
+
+                    // Draw the bitmap at the current tile position
+                    d_activeRenderTarget->DrawBitmap(
+                        static_cast<ID2D1Bitmap*>(bitmap->getData()),
+                        tileRect,
+                        static_cast<float>(opacity) / 255.0f,
+                        D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+                        srcRect
+                    );
+                }
+            }
+        } else {
+            // Non-tiled approach
+            d_activeRenderTarget->DrawBitmap(
+                static_cast<ID2D1Bitmap*>(bitmap->getData()),
+                destRect,
+                static_cast<float>(opacity) / 255.0f,
+                D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+                srcRect
+            );
+        }
     }
 
     std::pair<float, float> Win32RenderTarget::runtimeCalculateTextSize(

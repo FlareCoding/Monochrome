@@ -56,6 +56,47 @@ protected:
         });
     }
 
+    // Adds a child to the list of widgets at a given index
+    // @param child Child element to be added
+    // @param idx Index at which to insert the child
+    void _insertChild(Shared<T> child, size_t idx) {
+        _insertChildOffline(child, idx);
+
+        fireEvent("childAdded", {
+            { "child", child.get() }
+        });
+
+        fireEvent("layoutChanged", Event::empty);
+    }
+
+    // Inserts a child to the list of widgets at a given index without
+    // causing expensive events such as "layoutChanged" event firing.
+    // @param child Child element to be added
+    // @param idx Index at which to insert the child
+    void _insertChildOffline(Shared<T> child, size_t idx) {
+        CORE_ASSERT((child.get() != this), "Cannot add widget as its own child");
+        CORE_ASSERT(!child->getParent(), "Cannot add child, child widget already has a parent");
+        CORE_ASSERT(
+            !_findChild(child->getID()),
+            "Cannot add widget, widget with the given UUID already exists"
+        );
+
+        d_children.insert(d_children.begin() + idx, child);
+        _orderChildrenByZIndex();
+
+        child->setParent(static_cast<T*>(this));
+        child->forwardEmittedEvent(this, "propertyChanged");
+        child->forwardEmittedEvent(this, "requestedFocusGain");
+        child->forwardEmittedEvent(this, "requestedFocusLoss");
+        child->forwardEmittedEvent(this, "layoutChanged");
+
+        // If the child's z-index changes, the container
+        // should reorder all children in ascending order.
+        child->on("zIndexChanged", [this](auto e) {
+            _orderChildrenByZIndex();
+        });
+    }
+
     // Removes a child from the list of children
     // @param child Child element to be removed
     // @returns Status of whether a child has been removed successfully

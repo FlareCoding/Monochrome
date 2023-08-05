@@ -310,7 +310,8 @@ namespace mc {
             visualSize.width,
             visualSize.height,
             visual->imageBitmap,
-            visual->opacity
+            visual->opacity,
+            visual->tilingEnabled
         );
     }
 

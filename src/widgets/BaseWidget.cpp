@@ -300,6 +300,14 @@ namespace mc {
         _addChildOffline(child);
     }
 
+    void BaseContainerWidget::insertChild(Shared<BaseWidget> child, size_t idx) {
+        _insertChild(child, idx);
+    }
+
+    void BaseContainerWidget::insertChildOffline(Shared<BaseWidget> child, size_t idx) {
+        _insertChildOffline(child, idx);
+    }
+
     bool BaseContainerWidget::removeChild(Shared<BaseWidget> child) {
         return _removeChild(child);
     }

@@ -16,5 +16,6 @@ public:
 
     Shared<Bitmap> imageBitmap;
     PropertyObserver<uint32_t> opacity = PropertyObserver<uint32_t>(255);
+    PropertyObserver<bool> tilingEnabled = PropertyObserver<bool>(false);
 };
 } // namespace mc

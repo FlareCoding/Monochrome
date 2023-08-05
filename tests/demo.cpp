@@ -14,32 +14,21 @@ using namespace mc;
 
 int main() {
     AppManager::registerApplication("appId-041587");
-    Renderer::enableDebugBoundingBoxes = true;
+    //Renderer::enableDebugBoundingBoxes = true;
 
     auto window = MakeRef<ClassicWindow>(1180, 860, "Monochrome Demo");
     BaseWidget::setUniversalBackgroundColor(window->getBackgroundColor());
 
+    auto backgroundImage = Image::loadFromWebUrl("https://img.freepik.com/free-photo/black-stones-tiled-floor_1194-6238.jpg?w=1060&t=st=1691277958~exp=1691278558~hmac=6b59888ae62120bee0ce146bda02cfb7cd8af31783b772133ab33ffc89c05a7c");
+    backgroundImage->tilingEnabled = true;
+
     auto root = MakeRef<StackPanel>();
+    root->setBackgroundImage(backgroundImage);
     window->setRootWidget(root);
 
     auto label = MakeRef<Label>("Label 1");
-    label->marginLeft = 10;
-    label->marginRight = 10;
     root->addChild(label);
 
-    auto label2 = MakeRef<Label>("Label 2");
-    label2->marginLeft = 10;
-    label2->marginRight = 10;
-    root->addChild(label2);
-
-    auto label3 = MakeRef<Label>("Label 3");
-    label3->marginLeft = 10;
-    label3->marginRight = 10;
-    root->addChild(label3);
-
-    label->layoutWeight = 2;
-    label3->layoutWeight = 1;
-    
     AppManager::startApplicationLoop();
     return 0;
 }

@@ -20,6 +20,8 @@ set(
     ${cwd}/AllWidgets.h
 
     ${cwd}/Label.h
+    ${cwd}/Button.h
+    ${cwd}/Image.h
     ${cwd}/StackPanel.h
 
     PARENT_SCOPE
@@ -34,6 +36,8 @@ set(
     ${cwd}/BaseWidget.cpp
 
     ${cwd}/Label.cpp
+    ${cwd}/Button.cpp
+    ${cwd}/Image.cpp
     ${cwd}/StackPanel.cpp
 
     PARENT_SCOPE

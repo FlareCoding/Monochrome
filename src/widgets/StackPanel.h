@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseWidget.h"
+#include "Image.h"
 
 namespace mc {
 class StackPanel : public BaseContainerWidget {
@@ -18,6 +19,12 @@ public:
     // will be layed out inside the panel.
     PropertyObserver<Orientation>    orientation;
 
+    // Sets the background image covering the panel
+    void setBackgroundImage(Shared<Image> image);
+
+    // Returns the background image covering the panel
+    Shared<Image> getBackgroundImage() const { return d_backgroundImage; }
+
 protected:
     Size _measureSize() override;
     void _onArrangeChildren() override;
@@ -34,6 +41,8 @@ private:
     void _setupProperties();
 
 private:
-    uint32_t totalLayoutWeight = 0;
+    uint32_t                d_totalLayoutWeight = 0;
+    Shared<Image>           d_backgroundImage;
+    Shared<ImageVisual>     d_backgroundImageVisual;
 };
 } // namespace mc

@@ -10,10 +10,10 @@ namespace mc {
     Size StackPanel::_measureSize() {
         Position availablePos = Position(0, 0);
         Size contentSize = Size(0, 0);
-        totalLayoutWeight = 0;
+        d_totalLayoutWeight = 0;
 
         for (auto& child : _getChildren()) {
-            totalLayoutWeight += child->layoutWeight;
+            d_totalLayoutWeight += child->layoutWeight;
 
             auto childSizeWithMargins = child->getDesiredSizeWithMargins();
 
@@ -82,7 +82,7 @@ namespace mc {
         auto growthAmount = 0;
         if (child->layoutWeight.get() > 0) {
             float growthPercentage =
-                static_cast<float>(child->layoutWeight.get()) / totalLayoutWeight;
+                static_cast<float>(child->layoutWeight.get()) / d_totalLayoutWeight;
 
             growthAmount = static_cast<uint32_t>(
                 static_cast<float>(growableSpace) * growthPercentage
@@ -162,6 +162,9 @@ namespace mc {
         cornerRadius.forwardAssignment(&bodyRect->cornerRadius);
         backgroundColor.forwardAssignment(&bodyRect->color);
         addCoreVisualElement(bodyRect);
+
+        d_backgroundImageVisual = MakeRef<ImageVisual>();
+        addCoreVisualElement(d_backgroundImageVisual);
     }
 
     void StackPanel::_setupProperties() {
@@ -174,5 +177,25 @@ namespace mc {
         orientation = Vertical;
         handleWidgetVisiblePropertyChange(orientation);
         handleWidgetLayoutPropertyChange(orientation);
+    }
+
+    void StackPanel::setBackgroundImage(Shared<Image> image) {
+        if (!image) {
+            d_backgroundImageVisual = nullptr;
+            d_backgroundImage = nullptr;
+            return;
+        }
+
+        d_backgroundImage = image;
+        d_backgroundImageVisual->imageBitmap = image->getBitmap();
+
+        d_backgroundImageVisual->opacity.off("propertyChanged");
+        d_backgroundImageVisual->tilingEnabled.off("propertyChanged");
+
+        d_backgroundImageVisual->opacity = image->opacity;
+        d_backgroundImageVisual->tilingEnabled = image->tilingEnabled;
+
+        image->opacity.forwardAssignment(&d_backgroundImageVisual->opacity);
+        image->tilingEnabled.forwardAssignment(&d_backgroundImageVisual->tilingEnabled);
     }
 } // namespace mc
