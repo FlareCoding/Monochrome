@@ -11,12 +11,17 @@ namespace mc {
         // minimum required size for the text in pixels.
         auto getTextPixelSizeFn = runtimeFunctions.getTextPixelSizeFn;
 
+        // If there is not size limit, word wrap shouldn't
+        // affect the size of the desired text block size.
+        uint32_t sizeLimit = widthLimit.get();
+        std::string computedWrapMode = sizeLimit ? wordWrapMode.get() : "none";
+
         // Determine the minimum required width for the text in pixels
         auto [textPixelWidth, textPixelHeight] = getTextPixelSizeFn(
-            std::numeric_limits<uint64_t>::max(),
+            sizeLimit ? sizeLimit : std::numeric_limits<uint64_t>::max(),
             std::numeric_limits<uint64_t>::max(),
             text, font, fontSize, fontStyle,
-            "left", "none"
+            "left", computedWrapMode
         );
 
         return {

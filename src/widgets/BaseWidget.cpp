@@ -5,6 +5,17 @@ namespace mc {
     // Special widget-id dictionary that maps user-defined IDs to widget instances
     static std::map<std::string, Shared<BaseWidget>> s_widgetUserIdRegistry;
 
+    // For usage of this color object, see setApplicationStyleColor docs
+    static Color s_universalBackgroundColor = Color::transparent;
+
+    void BaseWidget::setUniversalBackgroundColor(const Color& color) {
+        s_universalBackgroundColor = color;
+    }
+
+    Color BaseWidget::getUniversalBackgroundColor() {
+        return s_universalBackgroundColor;
+    }
+
     BaseWidget::BaseWidget() {
         d_uuid = utils::generateUUID();
 
@@ -49,11 +60,10 @@ namespace mc {
         handleWidgetVisiblePropertyChange(cursorType);
 
         dockAnchor = DockAnchor::Left;
-        handleWidgetVisiblePropertyChange(dockAnchor);
+        handleWidgetLayoutPropertyChange(dockAnchor);
 
-        dockAnchor.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
+        layoutWeight = 0;
+        handleWidgetLayoutPropertyChange(layoutWeight);
 
         position = { 0, 0 };
         handleWidgetVisiblePropertyChange(position);
@@ -76,29 +86,13 @@ namespace mc {
         maxHeight = 65000;
         handleWidgetVisiblePropertyChange(maxHeight);
 
-        fixedWidth.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
+        handleWidgetLayoutPropertyChange(fixedWidth);
+        handleWidgetLayoutPropertyChange(minWidth);
+        handleWidgetLayoutPropertyChange(maxWidth);
 
-        minWidth.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
-
-        maxWidth.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
-
-        fixedHeight.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
-
-        minHeight.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
-
-        maxHeight.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
+        handleWidgetLayoutPropertyChange(fixedHeight);
+        handleWidgetLayoutPropertyChange(minHeight);
+        handleWidgetLayoutPropertyChange(maxHeight);
 
         marginTop = 0;
         handleWidgetVisiblePropertyChange(marginTop);
@@ -112,19 +106,14 @@ namespace mc {
         marginRight = 0;
         handleWidgetVisiblePropertyChange(marginRight);
 
-        horizontalAlignment = HorizontalAlignment::HALeft;
+        horizontalAlignment = HorizontalAlignment::HAFill;
         handleWidgetVisiblePropertyChange(horizontalAlignment);
 
-        verticalAlignment = VerticalAlignment::VATop;
+        verticalAlignment = VerticalAlignment::VAFill;
         handleWidgetVisiblePropertyChange(verticalAlignment);
 
-        horizontalAlignment.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
-
-        verticalAlignment.on("propertyChanged", [this](auto e) {
-            this->fireEvent("layoutChanged", Event::empty);
-        });
+        handleWidgetLayoutPropertyChange(horizontalAlignment);
+        handleWidgetLayoutPropertyChange(verticalAlignment);
 
         on("layoutChanged", [this](auto e) {
             markPaintDirty();

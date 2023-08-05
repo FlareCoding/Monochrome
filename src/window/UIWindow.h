@@ -68,7 +68,7 @@ private:
 
     uuid_t d_uuid = 0;
     std::atomic_bool d_isDestroyed = false;
-    Color d_backgroundColor = Color::darkGray;
+    Color d_backgroundColor = Color(36, 35, 38);
 
     std::thread d_renderingThread;
 

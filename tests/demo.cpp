@@ -14,18 +14,27 @@ using namespace mc;
 
 int main() {
     AppManager::registerApplication("appId-041587");
-    //Renderer::enableDebugBoundingBoxes = true;
+    Renderer::enableDebugBoundingBoxes = true;
 
-    auto window = MakeRef<ClassicWindow>(1180, 860, "New Widget System Demo");
-    window->setBackgroundColor(Color(18, 22, 28));
-    window->on("keyDown", [window](Shared<Event> e) {
-        auto pressedChar = std::static_pointer_cast<KeyDownEvent>(e)->getChar();
+    auto window = MakeRef<ClassicWindow>(1180, 860, "Monochrome Demo");
+    BaseWidget::setUniversalBackgroundColor(window->getBackgroundColor());
 
-        if (pressedChar == 'x') {
-            Renderer::enableDebugBoundingBoxes = !Renderer::enableDebugBoundingBoxes;
-            window->setShouldRedraw();
-        }
-    });
+    auto root = MakeRef<StackPanel>();
+    root->orientation = Horizontal;
+    window->setRootWidget(root);
+
+    auto label = MakeRef<Label>("Label 1");
+    label->marginLeft = 10;
+    label->marginRight = 10;
+    root->addChild(label);
+
+    auto label2 = MakeRef<Label>("Label 2");
+    label2->marginLeft = 10;
+    label2->marginRight = 10;
+    root->addChild(label2);
+
+    label->layoutWeight = 2;
+    label2->layoutWeight = 1;
     
     AppManager::startApplicationLoop();
     return 0;

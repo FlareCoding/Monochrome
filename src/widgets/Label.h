@@ -6,6 +6,7 @@ namespace mc {
 class Label : public BaseWidget {
 public:
     Label();
+    explicit Label(const std::string& text);
 
     std::string getWidgetName() const override { return "Label"; }
 

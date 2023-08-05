@@ -7,6 +7,9 @@ public:
     inline const VisualType type() const override { return VisualTypeText; }
     Size measureSize() const override;
 
+    // Limit on the width of the text block
+    PropertyObserver<uint32_t> widthLimit;
+
     // Text to be displayed on the label
     PropertyObserver<std::string> text;
 

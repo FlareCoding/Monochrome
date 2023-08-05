@@ -6,6 +6,10 @@ namespace mc {
         _setupProperties();
     }
 
+    Label::Label(const std::string& text) : Label() {
+        this->text = text;
+    }
+
     Size Label::_measureSize() {
         auto textSize = d_visualElement->measureSize();
 
@@ -19,6 +23,8 @@ namespace mc {
         // Text visual
         d_visualElement = MakeRef<TextVisual>();
 
+        fixedWidth.forwardAssignment(&d_visualElement->widthLimit);
+        maxWidth.forwardAssignment(&d_visualElement->widthLimit);
         color.forwardAssignment(&d_visualElement->color);
         text.forwardAssignment(&d_visualElement->text);
         font.forwardAssignment(&d_visualElement->font);
@@ -32,11 +38,11 @@ namespace mc {
 
     void Label::_setupProperties() {
         font = "Arial";
-        fontSize = 12;
+        fontSize = 14;
         fontStyle = "normal";
         alignment = "center";
         wordWrapMode = "none";
-        text = "Text";
+        text = "Label";
 
         handleWidgetLayoutPropertyChange(text);
         handleWidgetLayoutPropertyChange(font);
