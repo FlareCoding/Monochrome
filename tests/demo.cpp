@@ -20,7 +20,6 @@ int main() {
     BaseWidget::setUniversalBackgroundColor(window->getBackgroundColor());
 
     auto root = MakeRef<StackPanel>();
-    root->orientation = Horizontal;
     window->setRootWidget(root);
 
     auto label = MakeRef<Label>("Label 1");
@@ -33,8 +32,13 @@ int main() {
     label2->marginRight = 10;
     root->addChild(label2);
 
+    auto label3 = MakeRef<Label>("Label 3");
+    label3->marginLeft = 10;
+    label3->marginRight = 10;
+    root->addChild(label3);
+
     label->layoutWeight = 2;
-    label2->layoutWeight = 1;
+    label3->layoutWeight = 1;
     
     AppManager::startApplicationLoop();
     return 0;

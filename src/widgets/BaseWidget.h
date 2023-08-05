@@ -29,9 +29,10 @@ public:
     BaseWidget();
     virtual ~BaseWidget() = default;
 
-    // This is used to set a universal background color for panels and certain widgets like Entry
-    // instead of using Color::transparent. Using a solid color leads to optimization improvements and
-    // having a universal color scheme for widgets with a background color causes a transparency effect.
+    // This is used to set a universal background color for panels and certain widgets like
+    // Entry instead of using Color::transparent. Using a solid color leads to optimization
+    // improvements and having a universal color scheme for widgets with a background color
+    // causes a transparency effect.
     static void setUniversalBackgroundColor(const Color& color);
 
     // Returns the application's universal background color
