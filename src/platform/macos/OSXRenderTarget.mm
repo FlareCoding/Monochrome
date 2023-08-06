@@ -227,7 +227,7 @@ namespace mc {
         _adjustPositionAndSizeForDPIScaling(x, y, size, size);
         _convertPositionToCartesianCoordinates(y, size);
 
-        [[NSColor colorWithCalibratedRed:(float)color.r / 255.0f 
+        [[NSColor colorWithCalibratedRed:(float)color.r / 255.0f
             green:(float)color.g / 255.0f 
             blue:(float)color.b / 255.0f 
             alpha:(float)color.a / 255.0f] 
@@ -348,7 +348,8 @@ namespace mc {
         int32_t x, int32_t y,
         uint32_t width, uint32_t height,
         Shared<Bitmap> bitmap,
-        uint32_t opacity
+        uint32_t opacity,
+        bool tiled
     ) {
         _adjustPositionAndSizeForDPIScaling(x, y, width, height);
         _convertPositionToCartesianCoordinates(y, height);
@@ -358,7 +359,35 @@ namespace mc {
 		NSRect rect = NSMakeRect(x, y, width, height);
         float opacityFraction = static_cast<float>(opacity) / 255.0f;
 
-		[img drawInRect:rect fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:opacityFraction];
+		if (tiled) {
+            // Tiling the bitmap
+            float tileWidth = static_cast<float>(bitmap->getWidth());
+            float tileHeight = static_cast<float>(bitmap->getHeight());
+
+            // Determine the number of tiles needed in both dimensions
+            int tilesX = static_cast<int>(ceil(width / tileWidth)) + 1;
+            int tilesY = static_cast<int>(ceil(height / tileHeight)) + 1;
+
+            // Loop over the grid and draw the bitmap repeatedly
+            for (int y = 0; y < tilesY; ++y) {
+                for (int x = 0; x < tilesX; ++x) {
+                    int32_t tileOriginY = rect.origin.y + y * tileHeight;
+                    _convertPositionToCartesianCoordinates(tileOriginY, tileHeight);
+
+                    NSRect tileRect = NSMakeRect(
+                        rect.origin.x + x * tileWidth,
+                        tileOriginY,
+                        tileWidth,
+                        tileHeight
+                    );
+
+                    // Draw the bitmap at the current tile position
+                    [img drawInRect:tileRect fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:opacityFraction];
+                }
+            }
+        } else {
+            [img drawInRect:rect fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:opacityFraction];
+        }
     }
 
     std::pair<float, float> OSXRenderTarget::runtimeCalculateTextSize(

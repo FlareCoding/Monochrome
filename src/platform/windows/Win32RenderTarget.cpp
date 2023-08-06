@@ -395,10 +395,8 @@ namespace mc {
             int tilesY = static_cast<int>(ceil((destRect.bottom - destRect.top) / tileHeight)) + 1;
 
             // Loop over the grid and draw the bitmap repeatedly
-            for (int y = 0; y < tilesY; ++y)
-            {
-                for (int x = 0; x < tilesX; ++x)
-                {
+            for (int y = 0; y < tilesY; ++y) {
+                for (int x = 0; x < tilesX; ++x) {
                     D2D1_RECT_F tileRect = D2D1::RectF(
                         destRect.left + x * tileWidth,
                         destRect.top + y * tileHeight,
