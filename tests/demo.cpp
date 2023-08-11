@@ -93,6 +93,10 @@ int main() {
     defaultButton->marginLeft = 40;
     defaultButton->marginRight = 6;
 
+    auto menuList = createMenuList();
+    menuList->setActivatorWidget(defaultButton.get(), OnClick);
+    menuList->spawnDirection = OverflowDirection::Down;
+
     auto disabledButton = MakeRef<Button>("Disabled");
     disabledButton->marginRight = 10;
     disabledButton->fixedWidth = 150;
@@ -127,10 +131,6 @@ int main() {
     buttonsGroupContainer->backgroundColor = Color(30, 30, 31);
     buttonsGroupContainer->addChild(buttonsGroup);
     buttonsGroupExpander->setContent(buttonsGroupContainer);
-
-    auto menuList = createMenuList();
-    menuList->setActivatorWidget(defaultButton.get(), OnClick);
-    menuList->spawnDirection = OverflowDirection::Down;
 
     AppManager::startApplicationLoop();
     return 0;
