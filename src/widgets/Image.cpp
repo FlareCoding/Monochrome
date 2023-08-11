@@ -40,7 +40,7 @@ namespace mc {
     void Image::_setupProperties() {
         opacity = 255;
         handleWidgetVisiblePropertyChange(opacity);
-        
+
         tilingEnabled = false;
         handleWidgetVisiblePropertyChange(tilingEnabled);
     }

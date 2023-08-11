@@ -247,7 +247,6 @@ namespace mc {
             auto labelColor = label->color;
             labelColor->undim(4);
             label->color = labelColor;
-            
         } else {
             _onHoveredOff(e);
             disablePointerEvents();
