@@ -51,7 +51,7 @@ namespace mc {
     void Expander::_setExpandedState(bool expandedState) {
         header->secondaryLeftText =
             expandedState ? d_downArrowUtf8Prefix : d_rightArrowUtf8Prefix;
-        
+
         if (!d_content) {
             return;
         }

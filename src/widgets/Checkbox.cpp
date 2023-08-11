@@ -121,8 +121,7 @@ namespace mc {
             auto labelColor = label->color;
             labelColor->undim(4);
             label->color = labelColor;
-        }
-        else {
+        } else {
             disablePointerEvents();
             label->disablePointerEvents();
 
