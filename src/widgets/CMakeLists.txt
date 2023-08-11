@@ -24,6 +24,7 @@ set(
     ${cwd}/Checkbox.h
     ${cwd}/Expander.h
     ${cwd}/Image.h
+    ${cwd}/MenuList.h
     ${cwd}/StackPanel.h
 
     PARENT_SCOPE
@@ -42,6 +43,7 @@ set(
     ${cwd}/Checkbox.cpp
     ${cwd}/Expander.cpp
     ${cwd}/Image.cpp
+    ${cwd}/MenuList.cpp
     ${cwd}/StackPanel.cpp
 
     PARENT_SCOPE

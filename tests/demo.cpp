@@ -13,6 +13,57 @@ using namespace mc;
 #include <events/KeyboardEvents.h>
 #include <utils/FileDialog.h>
 
+Shared<MenuList> createMenuList() {
+    auto extraMenu = MakeRef<MenuList>("Actions...");
+    extraMenu->addMenuItem("Like");
+    extraMenu->addMenuItem("Notify");
+    extraMenu->addMenuItem("Subscribe");
+    extraMenu->on("itemSelected", [](Shared<Event> e) {
+        auto item = e->get<MenuItem>("item");
+        printf("Item Selected: %s\n", item.c_str());
+        });
+    extraMenu->borderColor = Color::red;
+    extraMenu->itemTextColor = Color::yellow;
+
+    auto moreMenu = MakeRef<MenuList>("More...");
+    moreMenu->addMenuItem("Save");
+    moreMenu->addMenuItem("Save As");
+    moreMenu->addMenuItem("Open");
+    moreMenu->addSubMenu(extraMenu);
+    moreMenu->on("itemSelected", [](Shared<Event> e) {
+        auto item = e->get<MenuItem>("item");
+        printf("Item Selected: %s\n", item.c_str());
+        });
+    moreMenu->borderColor = Color::yellow;
+    moreMenu->itemTextColor = Color::white;
+
+    auto zoomMenu = MakeRef<MenuList>("Zoom...");
+    zoomMenu->addMenuItem("200%");
+    zoomMenu->addMenuItem("150%");
+    zoomMenu->addMenuItem("100%");
+    zoomMenu->addMenuItem("75%");
+    zoomMenu->on("itemSelected", [](Shared<Event> e) {
+        auto item = e->get<MenuItem>("item");
+        printf("Item Selected: %s\n", item.c_str());
+        });
+    zoomMenu->borderColor = Color::white;
+
+    auto mainMenuList = MakeRef<MenuList>();
+    mainMenuList->on("itemSelected", [](Shared<Event> e) {
+        auto item = e->get<MenuItem>("item");
+        printf("Item Selected: %s\n", item.c_str());
+        });
+    mainMenuList->addMenuItem("New Project");
+    mainMenuList->addSubMenu(moreMenu);
+    mainMenuList->addSubMenu(zoomMenu);
+    mainMenuList->addMenuItem("Exit");
+    mainMenuList->borderColor = Color::blue;
+    mainMenuList->itemTextColor = Color::green;
+    mainMenuList->borderThickness = 2;
+
+    return mainMenuList;
+}
+
 int main() {
     AppManager::registerApplication("appId-041587");
     //Renderer::enableDebugBoundingBoxes = true;
@@ -33,12 +84,13 @@ int main() {
     demoGroupsPanel->marginRight = 40;
     root->addChild(demoGroupsPanel);
 
-    auto buttonsGroupExpander = MakeRef<Expander>("Buttons");
+    auto buttonsGroupExpander = MakeRef<Expander>("Buttons Group");
     buttonsGroupExpander->header->label->fontSize = 12;
     buttonsGroupExpander->expanded = true;
     demoGroupsPanel->addChild(buttonsGroupExpander);
 
     auto defaultButton = MakeRef<Button>("Click Me");
+    defaultButton->marginLeft = 40;
     defaultButton->marginRight = 6;
 
     auto disabledButton = MakeRef<Button>("Disabled");
@@ -75,6 +127,10 @@ int main() {
     buttonsGroupContainer->backgroundColor = Color(30, 30, 31);
     buttonsGroupContainer->addChild(buttonsGroup);
     buttonsGroupExpander->setContent(buttonsGroupContainer);
+
+    auto menuList = createMenuList();
+    menuList->setActivatorWidget(defaultButton.get(), OnClick);
+    menuList->spawnDirection = OverflowDirection::Down;
 
     AppManager::startApplicationLoop();
     return 0;
