@@ -88,8 +88,7 @@ namespace mc {
 
             if (itemIndex == 0) {
                 menuButton->marginTop = borderThickness;
-            }
-            else if (itemIndex == d_menuItems.size() - 1) {
+            } else if (itemIndex == d_menuItems.size() - 1) {
                 menuButton->marginBottom = borderThickness;
             }
 
