@@ -21,6 +21,7 @@ set(
 
     ${cwd}/Label.h
     ${cwd}/Button.h
+    ${cwd}/Checkbox.h
     ${cwd}/Expander.h
     ${cwd}/Image.h
     ${cwd}/StackPanel.h
@@ -38,6 +39,7 @@ set(
 
     ${cwd}/Label.cpp
     ${cwd}/Button.cpp
+    ${cwd}/Checkbox.cpp
     ${cwd}/Expander.cpp
     ${cwd}/Image.cpp
     ${cwd}/StackPanel.cpp
