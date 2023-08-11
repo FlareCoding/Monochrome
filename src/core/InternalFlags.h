@@ -7,7 +7,8 @@ enum InternalWidgetFlag : uint64_t {
     WidgetHoveredOn,
     MouseDownOnWidget,
     IsFocused,
-    IsMouseDraggable
+    IsMouseDraggable,
+    PointerEventsEnabled
 };
 
 enum InternalWindowFlag : uint64_t {

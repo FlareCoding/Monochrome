@@ -19,15 +19,40 @@ int main() {
     auto window = MakeRef<ClassicWindow>(1180, 860, "Monochrome Demo");
     BaseWidget::setUniversalBackgroundColor(window->getBackgroundColor());
 
-    auto backgroundImage = Image::loadFromWebUrl("https://img.freepik.com/free-photo/black-stones-tiled-floor_1194-6238.jpg?w=1060&t=st=1691277958~exp=1691278558~hmac=6b59888ae62120bee0ce146bda02cfb7cd8af31783b772133ab33ffc89c05a7c");
-    backgroundImage->tilingEnabled = true;
-
     auto root = MakeRef<StackPanel>();
-    root->setBackgroundImage(backgroundImage);
     window->setRootWidget(root);
 
-    auto label = MakeRef<Label>("Label 1");
+    auto label = MakeRef<Label>("Monochrome Widgets Demo");
+    label->marginTop = 6;
+    label->marginBottom = 12;
     root->addChild(label);
+
+    auto buttonsGroupExpander = MakeRef<Expander>("Buttons");
+    buttonsGroupExpander->horizontalAlignment = HACenter;
+    buttonsGroupExpander->header->label->fontSize = 12;
+    root->addChild(buttonsGroupExpander);
+
+    auto defaultButton = MakeRef<Button>("Click Me");
+    defaultButton->marginRight = 6;
+
+    auto disabledButton = MakeRef<Button>("Disabled");
+    disabledButton->enabled = false;
+
+    defaultButton->on("clicked", [disabledButton](Shared<Event> e) {
+        disabledButton->enabled = !disabledButton->enabled.get();
+    });
+
+    auto buttonsGroup = MakeRef<StackPanel>();
+    buttonsGroup->marginTop = 6;
+    buttonsGroup->marginBottom = 6;
+    buttonsGroup->orientation = Horizontal;
+    buttonsGroup->addChild(defaultButton);
+    buttonsGroup->addChild(disabledButton);
+
+    auto buttonsGroupContainer = MakeRef<StackPanel>();
+    buttonsGroupContainer->backgroundColor = Color(30, 30, 31);
+    buttonsGroupContainer->addChild(buttonsGroup);
+    buttonsGroupExpander->setContent(buttonsGroupContainer);
 
     AppManager::startApplicationLoop();
     return 0;

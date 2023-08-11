@@ -21,6 +21,7 @@ set(
 
     ${cwd}/Label.h
     ${cwd}/Button.h
+    ${cwd}/Expander.h
     ${cwd}/Image.h
     ${cwd}/StackPanel.h
 
@@ -37,6 +38,7 @@ set(
 
     ${cwd}/Label.cpp
     ${cwd}/Button.cpp
+    ${cwd}/Expander.cpp
     ${cwd}/Image.cpp
     ${cwd}/StackPanel.cpp
 

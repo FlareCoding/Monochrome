@@ -168,6 +168,8 @@ namespace mc {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
+            auto pointerEventsEnabled =
+                getInternalFlag(widgetFlags, InternalWidgetFlag::PointerEventsEnabled);
 
             // Ignore invisible widgets
             if (!widget->visible) {
@@ -191,7 +193,9 @@ namespace mc {
                 focusChangeCandidate = widget;
 
                 // Fire the event
-                widget->fireEvent("mouseDown", event, widget.get());
+                if (pointerEventsEnabled) {
+                    widget->fireEvent("mouseDown", event, widget.get());
+                }
 
                 // If the event is handled, return
                 if (event->isHandled()) {
@@ -222,6 +226,8 @@ namespace mc {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
+            auto pointerEventsEnabled =
+                getInternalFlag(widgetFlags, InternalWidgetFlag::PointerEventsEnabled);
 
             // Ignore invisible widgets
             if (!widget->visible) {
@@ -245,8 +251,10 @@ namespace mc {
                 getInternalFlag(widgetFlags, InternalWidgetFlag::IsMouseDraggable);
 
             if (isMouseInFrame || wasMousePressed) {
-                widget->fireEvent("mouseUp", event, widget.get());
-                widget->fireEvent("clicked", event, widget.get());
+                if (pointerEventsEnabled) {
+                    widget->fireEvent("mouseUp", event, widget.get());
+                    widget->fireEvent("clicked", event, widget.get());
+                }
 
                 // Set the internal widget flags
                 setInternalFlag(widgetFlags, InternalWidgetFlag::MouseDownOnWidget, false);
@@ -279,6 +287,8 @@ namespace mc {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
+            auto pointerEventsEnabled =
+                getInternalFlag(widgetFlags, InternalWidgetFlag::PointerEventsEnabled);
 
             // Ignore invisible widgets
             if (!widget->visible) {
@@ -286,7 +296,9 @@ namespace mc {
             }
 
             // Immediately fire the mouse moved event
-            widget->fireEvent("mouseMoved", event, widget.get());
+            if (pointerEventsEnabled) {
+                widget->fireEvent("mouseMoved", event, widget.get());
+            }
 
             // Determine if the mouse was previously in the widget's frame
             bool wasMouseInFrame =
@@ -309,13 +321,15 @@ namespace mc {
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, true);
 
-                widget->fireEvent("hoveredOn", event, widget.get());
+                if (pointerEventsEnabled) {
+                    widget->fireEvent("hoveredOn", event, widget.get());
 
-                // Set the widget-specific cursor type
-                utils::Cursor::setActiveCursor(widget->cursorType);
+                    // Set the widget-specific cursor type
+                    utils::Cursor::setActiveCursor(widget->cursorType);
 
-                // Tell the window to redraw
-                fireEvent("widgetTreeChanged", Event::empty);
+                    // Tell the window to redraw
+                    fireEvent("widgetTreeChanged", Event::empty);
+                }
             }
 
             // Mouse just left the frame
@@ -326,13 +340,15 @@ namespace mc {
                 setInternalFlag(
                     widgetFlags, InternalWidgetFlag::WidgetHoveredOn, false);
 
-                widget->fireEvent("hoveredOff", event, widget.get());
+                if (pointerEventsEnabled) {
+                    widget->fireEvent("hoveredOff", event, widget.get());
 
-                // Reset the cursor icon
-                utils::Cursor::setActiveCursor(DEFAULT_CURSOR_TYPE);
+                    // Reset the cursor icon
+                    utils::Cursor::setActiveCursor(DEFAULT_CURSOR_TYPE);
 
-                // Tell the window to redraw
-                fireEvent("widgetTreeChanged", Event::empty);
+                    // Tell the window to redraw
+                    fireEvent("widgetTreeChanged", Event::empty);
+                }
             }
 
             // If the event is handled, return
@@ -353,6 +369,8 @@ namespace mc {
         for (auto it = widgets.rbegin(); it != widgets.rend(); ++it) {
             auto& widget = *it;
             auto& widgetFlags = widget->getInternalFlags();
+            auto pointerEventsEnabled =
+                getInternalFlag(widgetFlags, InternalWidgetFlag::PointerEventsEnabled);
 
             // Ignore invisible widgets
             if (!widget->visible) {
@@ -371,7 +389,7 @@ namespace mc {
 
             bool isMouseInFrame = widgetFrame.containsPoint(event->getLocation());
 
-            if (isMouseInFrame) {
+            if (isMouseInFrame && pointerEventsEnabled) {
                 // Tell the widget that the mouse has been scrolled
                 widget->fireEvent("mouseScrolled", event, widget.get());
 

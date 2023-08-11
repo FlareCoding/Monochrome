@@ -17,6 +17,27 @@ namespace mc {
         return Color(r, g, b);
     }
 
+    void Color::dim(uint8_t factor) {
+        constexpr int baseAmount = 8;
+
+        if (r > (baseAmount * (factor + 1))) r -= (baseAmount * factor);
+        if (g > (baseAmount * (factor + 1))) g -= (baseAmount * factor);
+        if (b > (baseAmount * (factor + 1))) b -= (baseAmount * factor);
+    }
+
+    void Color::undim(uint8_t factor) {
+        constexpr int baseAmount = 8;
+
+        if (r >= (baseAmount * factor) && r + (baseAmount * factor) <= 255)
+            r += (baseAmount * factor);
+
+        if (g >= (baseAmount * factor) && g + (baseAmount * factor) <= 255)
+            g += (baseAmount * factor);
+
+        if (b >= (baseAmount * factor) && b + (baseAmount * factor) <= 255)
+            b += (baseAmount * factor);
+    }
+
     Color Color::transparent    = Color(0, 0, 0, 0);
     Color Color::white          = Color(255, 255, 255);
     Color Color::black          = Color(0, 0, 0);

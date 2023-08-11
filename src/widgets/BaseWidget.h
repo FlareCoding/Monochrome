@@ -138,6 +138,12 @@ public:
     // events when mouse is outside of the widget.
     void markMouseDraggable();
 
+    // Disable mouse interaction events from firing on the widget
+    void disablePointerEvents();
+
+    // Enable mouse interaction events from firing on the widget
+    void enablePointerEvents();
+
 protected:
     BaseWidget* d_parent = nullptr;
 

@@ -12,6 +12,9 @@ public:
 
     static Color randomColor();
 
+    void dim(uint8_t factor = 1);
+    void undim(uint8_t factor = 1);
+
     bool operator==(const Color& color) const {
         return (r == color.r && g == color.g && b == color.b && a == color.a);
     }

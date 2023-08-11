@@ -47,11 +47,7 @@ namespace mc {
         });
 
         visible = true;
-        handleWidgetVisiblePropertyChange(visible);
-
-        visible.on("propertyChanged", [this](auto e) {
-            this->markLayoutDirty();
-        });
+        handleWidgetLayoutPropertyChange(visible);
 
         focused = true;
         handleWidgetVisiblePropertyChange(focused);
@@ -69,22 +65,11 @@ namespace mc {
         handleWidgetVisiblePropertyChange(position);
 
         fixedWidth = NOT_SET;
-        handleWidgetVisiblePropertyChange(fixedWidth);
-
         minWidth = 0;
-        handleWidgetVisiblePropertyChange(minWidth);
-
         maxWidth = 65000;
-        handleWidgetVisiblePropertyChange(maxWidth);
-
         fixedHeight = NOT_SET;
-        handleWidgetVisiblePropertyChange(fixedHeight);
-
         minHeight = 0;
-        handleWidgetVisiblePropertyChange(minHeight);
-
         maxHeight = 65000;
-        handleWidgetVisiblePropertyChange(maxHeight);
 
         handleWidgetLayoutPropertyChange(fixedWidth);
         handleWidgetLayoutPropertyChange(minWidth);
@@ -95,22 +80,19 @@ namespace mc {
         handleWidgetLayoutPropertyChange(maxHeight);
 
         marginTop = 0;
-        handleWidgetVisiblePropertyChange(marginTop);
+        handleWidgetLayoutPropertyChange(marginTop);
 
         marginBottom = 0;
-        handleWidgetVisiblePropertyChange(marginBottom);
+        handleWidgetLayoutPropertyChange(marginBottom);
 
         marginLeft = 0;
-        handleWidgetVisiblePropertyChange(marginLeft);
+        handleWidgetLayoutPropertyChange(marginLeft);
 
         marginRight = 0;
-        handleWidgetVisiblePropertyChange(marginRight);
+        handleWidgetLayoutPropertyChange(marginRight);
 
         horizontalAlignment = HorizontalAlignment::HAFill;
-        handleWidgetVisiblePropertyChange(horizontalAlignment);
-
         verticalAlignment = VerticalAlignment::VAFill;
-        handleWidgetVisiblePropertyChange(verticalAlignment);
 
         handleWidgetLayoutPropertyChange(horizontalAlignment);
         handleWidgetLayoutPropertyChange(verticalAlignment);
@@ -119,6 +101,8 @@ namespace mc {
             markPaintDirty();
             markLayoutDirty();
         });
+
+        enablePointerEvents();
     }
 
     Size BaseWidget::getDesiredSize() {
@@ -264,6 +248,14 @@ namespace mc {
 
     void BaseWidget::markMouseDraggable() {
         setInternalFlag(d_internalFlags, InternalWidgetFlag::IsMouseDraggable, true);
+    }
+
+    void BaseWidget::disablePointerEvents() {
+        setInternalFlag(d_internalFlags, InternalWidgetFlag::PointerEventsEnabled, false);
+    }
+
+    void BaseWidget::enablePointerEvents() {
+        setInternalFlag(d_internalFlags, InternalWidgetFlag::PointerEventsEnabled, true);
     }
 
     void BaseWidget::addCoreVisualElement(Shared<VisualElement> visual) {
