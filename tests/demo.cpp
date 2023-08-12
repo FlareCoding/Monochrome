@@ -69,7 +69,6 @@ int main() {
     //Renderer::enableDebugBoundingBoxes = true;
 
     auto window = MakeRef<ClassicWindow>(1180, 860, "Monochrome Demo");
-    BaseWidget::setUniversalBackgroundColor(window->getBackgroundColor());
 
     auto root = MakeRef<StackPanel>();
     window->setRootWidget(root);

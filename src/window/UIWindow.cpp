@@ -82,6 +82,11 @@ namespace mc {
 
         // Pass the update callback to the native window
         d_nativeWindow->setUpdateCallback([this]() { this->update(); });
+
+        // Update global UI color style scheme
+        if (d_nativeWindow->isRoot()) {
+            BaseWidget::setUniversalBackgroundColor(d_backgroundColor);
+        }
     }
 
     UIWindow::~UIWindow() {
