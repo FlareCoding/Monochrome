@@ -21,7 +21,7 @@ Shared<MenuList> createMenuList() {
     extraMenu->on("itemSelected", [](Shared<Event> e) {
         auto item = e->get<MenuItem>("item");
         printf("Item Selected: %s\n", item.c_str());
-        });
+    });
     extraMenu->borderColor = Color::red;
     extraMenu->itemTextColor = Color::yellow;
 
@@ -33,7 +33,7 @@ Shared<MenuList> createMenuList() {
     moreMenu->on("itemSelected", [](Shared<Event> e) {
         auto item = e->get<MenuItem>("item");
         printf("Item Selected: %s\n", item.c_str());
-        });
+    });
     moreMenu->borderColor = Color::yellow;
     moreMenu->itemTextColor = Color::white;
 
@@ -45,14 +45,14 @@ Shared<MenuList> createMenuList() {
     zoomMenu->on("itemSelected", [](Shared<Event> e) {
         auto item = e->get<MenuItem>("item");
         printf("Item Selected: %s\n", item.c_str());
-        });
+    });
     zoomMenu->borderColor = Color::white;
 
     auto mainMenuList = MakeRef<MenuList>();
     mainMenuList->on("itemSelected", [](Shared<Event> e) {
         auto item = e->get<MenuItem>("item");
         printf("Item Selected: %s\n", item.c_str());
-        });
+    });
     mainMenuList->addMenuItem("New Project");
     mainMenuList->addSubMenu(moreMenu);
     mainMenuList->addSubMenu(zoomMenu);
@@ -93,10 +93,6 @@ int main() {
     defaultButton->marginLeft = 40;
     defaultButton->marginRight = 6;
 
-    auto menuList = createMenuList();
-    menuList->setActivatorWidget(defaultButton.get(), OnClick);
-    menuList->spawnDirection = OverflowDirection::Down;
-
     auto disabledButton = MakeRef<Button>("Disabled");
     disabledButton->marginRight = 10;
     disabledButton->fixedWidth = 150;
@@ -118,6 +114,18 @@ int main() {
         dialog->chooseFolderDialog();
     });
 
+    auto dropdownButton = MakeRef<DropdownButton>("Dropdown");
+    dropdownButton->marginRight = 6;
+    dropdownButton->secondaryRightText = {
+        static_cast<char>(0x20),
+        static_cast<char>(0xe2),
+        static_cast<char>(0x96),
+        static_cast<char>(0xbc),
+        static_cast<char>(0x20),
+        0
+    };
+    dropdownButton->setMenuList(createMenuList());
+
     auto buttonsGroup = MakeRef<StackPanel>();
     buttonsGroup->marginTop = 6;
     buttonsGroup->marginBottom = 6;
@@ -126,6 +134,7 @@ int main() {
     buttonsGroup->addChild(disabledButton);
     buttonsGroup->addChild(checkbox);
     buttonsGroup->addChild(iconButton);
+    buttonsGroup->addChild(dropdownButton);
 
     auto buttonsGroupContainer = MakeRef<StackPanel>();
     buttonsGroupContainer->backgroundColor = Color(30, 30, 31);
