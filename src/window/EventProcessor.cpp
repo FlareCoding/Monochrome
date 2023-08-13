@@ -57,11 +57,21 @@ namespace mc {
 
         Position positionOffset = Position(0, 0);
 
+        // If a widget was previously getting dragged, it's flags
+        // should be updated and it should be considered clicked.
+        if (d_draggedWidget && d_draggedWidget != d_rootWidget.get()) {
+            d_draggedWidget->fireEvent("mouseUp", event, d_draggedWidget);
+            d_draggedWidget->fireEvent("clicked", event, d_draggedWidget);
+        }
+
         _processMouseUpEvent(
             std::static_pointer_cast<MouseButtonEvent>(event),
             cloneWidgetList(d_rootWidget->_getChildren()),
             positionOffset
         );
+
+        // Once the mouse is released, the dragging gesture stops
+        d_draggedWidget = nullptr;
     }
 
     void EventProcessor::processMouseMovedEvent(Shared<Event> event) {
@@ -195,6 +205,11 @@ namespace mc {
                 // Fire the event
                 if (pointerEventsEnabled) {
                     widget->fireEvent("mouseDown", event, widget.get());
+
+                    // If the widget is draggable, it should get marked/saved
+                    if (getInternalFlag(widgetFlags, InternalWidgetFlag::IsMouseDraggable)) {
+                        d_draggedWidget = widget.get();
+                    }
                 }
 
                 // If the event is handled, return
@@ -251,7 +266,7 @@ namespace mc {
                 getInternalFlag(widgetFlags, InternalWidgetFlag::IsMouseDraggable);
 
             if (isMouseInFrame || wasMousePressed) {
-                if (pointerEventsEnabled) {
+                if (pointerEventsEnabled && widget.get() != d_draggedWidget) {
                     widget->fireEvent("mouseUp", event, widget.get());
                     widget->fireEvent("clicked", event, widget.get());
                 }

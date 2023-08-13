@@ -137,8 +137,36 @@ int main() {
 
     auto buttonsGroupContainer = MakeRef<StackPanel>();
     buttonsGroupContainer->backgroundColor = Color(30, 30, 31);
+    buttonsGroupContainer->marginBottom = 20;
     buttonsGroupContainer->addChild(buttonsGroup);
     buttonsGroupExpander->setContent(buttonsGroupContainer);
+
+    auto entriesGroupExpander = MakeRef<Expander>("Entries Group");
+    entriesGroupExpander->header->label->fontSize = 12;
+    entriesGroupExpander->expanded = true;
+    demoGroupsPanel->addChild(entriesGroupExpander);
+
+    auto defaultEntry = MakeRef<Entry>();
+    defaultEntry->marginLeft = 40;
+    defaultEntry->marginRight = 12;
+
+    auto readOnlyEntry = MakeRef<Entry>("Sample text is here");
+    readOnlyEntry->marginRight = 12;
+    readOnlyEntry->readOnly = true;
+    readOnlyEntry->borderThickness = 1;
+    readOnlyEntry->borderColor = Color::white;
+
+    auto entriesGroup = MakeRef<StackPanel>();
+    entriesGroup->marginTop = 6;
+    entriesGroup->marginBottom = 6;
+    entriesGroup->orientation = Horizontal;
+    entriesGroup->addChild(defaultEntry);
+    entriesGroup->addChild(readOnlyEntry);
+
+    auto entriesGroupContainer = MakeRef<StackPanel>();
+    entriesGroupContainer->backgroundColor = Color(30, 30, 31);
+    entriesGroupContainer->addChild(entriesGroup);
+    entriesGroupExpander->setContent(entriesGroupContainer);
 
     AppManager::startApplicationLoop();
     return 0;

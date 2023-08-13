@@ -23,6 +23,7 @@ public:
 private:
     Shared<BaseWidget> d_rootWidget = nullptr;
     BaseWidget* d_focusedWidget = nullptr;
+    BaseWidget* d_draggedWidget = nullptr;
 
     void _processMouseDownEvent(
         Shared<MouseButtonEvent> event,

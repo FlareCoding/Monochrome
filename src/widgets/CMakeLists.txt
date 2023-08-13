@@ -23,6 +23,7 @@ set(
     ${cwd}/Button.h
     ${cwd}/DropdownButton.h
     ${cwd}/Checkbox.h
+    ${cwd}/Entry.h
     ${cwd}/Expander.h
     ${cwd}/Image.h
     ${cwd}/MenuList.h
@@ -43,6 +44,7 @@ set(
     ${cwd}/Button.cpp
     ${cwd}/DropdownButton.cpp
     ${cwd}/Checkbox.cpp
+    ${cwd}/Entry.cpp
     ${cwd}/Expander.cpp
     ${cwd}/Image.cpp
     ${cwd}/MenuList.cpp
