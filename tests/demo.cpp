@@ -70,111 +70,143 @@ int main() {
 
     auto window = MakeRef<ClassicWindow>(1180, 860, "Monochrome Demo");
 
-    auto root = MakeRef<StackPanel>();
-    window->setRootWidget(root);
-
-    auto label = MakeRef<Label>("Monochrome Widgets Demo");
-    label->marginTop = 6;
-    label->marginBottom = 12;
-    root->addChild(label);
-
-    auto demoGroupsPanel = MakeRef<StackPanel>();
-    demoGroupsPanel->marginLeft = 40;
-    demoGroupsPanel->marginRight = 40;
-    root->addChild(demoGroupsPanel);
-
-    auto buttonsGroupExpander = MakeRef<Expander>("Buttons Group");
-    buttonsGroupExpander->header->label->fontSize = 12;
-    buttonsGroupExpander->expanded = true;
-    demoGroupsPanel->addChild(buttonsGroupExpander);
-
-    auto defaultButton = MakeRef<Button>("Click Me");
-    defaultButton->marginLeft = 40;
-    defaultButton->marginRight = 6;
-
-    auto disabledButton = MakeRef<Button>("Disabled");
-    disabledButton->marginRight = 10;
-    disabledButton->fixedWidth = 150;
-    disabledButton->enabled = false;
-
-    auto checkbox = MakeRef<Checkbox>("Enabled State");
-    checkbox->marginRight = 10;
-    checkbox->on("valueChanged", [disabledButton](Shared<Event> e) {
-        auto checked = e->get<bool>("checked");
-        disabledButton->enabled = checked;
-        disabledButton->label->text = checked ? "Enabled" : "Disabled";
-    });
-
-    auto iconButton = MakeRef<Button>("Open Folder");
-    iconButton->marginRight = 6;
-    iconButton->setImage(Image::loadFromWebUrl("https://img.icons8.com/?size=512&id=c2AXPLZ3iVEU&format=png"));
-    iconButton->on("clicked", [](Shared<Event> e) {
-        auto dialog = utils::FileDialog::create();
-        dialog->chooseFolderDialog();
-    });
-
-    auto dropdownButton = MakeRef<DropdownButton>("Dropdown");
-    dropdownButton->marginRight = 6;
-    dropdownButton->secondaryRightText = {
-        static_cast<char>(0x20),
-        static_cast<char>(0xe2),
-        static_cast<char>(0x96),
-        static_cast<char>(0xbc),
-        static_cast<char>(0x20),
-        0
-    };
-    dropdownButton->setMenuList(createMenuList());
-
-    auto buttonsGroup = MakeRef<StackPanel>();
-    buttonsGroup->marginTop = 6;
-    buttonsGroup->marginBottom = 6;
-    buttonsGroup->orientation = Horizontal;
-    buttonsGroup->addChild(defaultButton);
-    buttonsGroup->addChild(disabledButton);
-    buttonsGroup->addChild(checkbox);
-    buttonsGroup->addChild(iconButton);
-    buttonsGroup->addChild(dropdownButton);
-
-    auto buttonsGroupContainer = MakeRef<StackPanel>();
-    buttonsGroupContainer->backgroundColor = Color(30, 30, 31);
-    buttonsGroupContainer->marginBottom = 20;
-    buttonsGroupContainer->addChild(buttonsGroup);
-    buttonsGroupExpander->setContent(buttonsGroupContainer);
-
-    auto entriesGroupExpander = MakeRef<Expander>("Entries Group");
-    entriesGroupExpander->header->label->fontSize = 12;
-    entriesGroupExpander->expanded = true;
-    demoGroupsPanel->addChild(entriesGroupExpander);
-
-    //
-    // TO-DO:
-    //     1) Implement GridPanel
-    //     2) Default entry and readOnly entry --> first row
-    //     3) Security entry (plus label) and number increment entry --> second row
-    //
     auto entriesGrid = MakeRef<GridPanel>();
-    entriesGrid->backgroundColor = Color::purple;
+    entriesGrid->backgroundColor = Color::brown;
+    entriesGrid->addColumnDefinition();
+    entriesGrid->addColumnDefinition();
+    entriesGrid->addColumnDefinition();
+    entriesGrid->addRowDefinition();
+    entriesGrid->addRowDefinition();
+    entriesGrid->addRowDefinition();
 
-    auto defaultEntry = MakeRef<Entry>();
-    defaultEntry->marginLeft = 40;
-    defaultEntry->marginRight = 12;
+    auto btn = MakeRef<Button>("(2, 1)");
+    btn->fixedWidth = 400;
 
-    auto readOnlyEntry = MakeRef<Entry>("Sample text is here");
-    readOnlyEntry->marginRight = 12;
-    readOnlyEntry->readOnly = true;
-    readOnlyEntry->borderThickness = 1;
-    readOnlyEntry->borderColor = Color::white;
+    entriesGrid->setContent(MakeRef<Button>("(0, 0)"), 0, 0);
+    entriesGrid->setContent(MakeRef<Button>("(0, 1)"), 0, 1);
+    entriesGrid->setContent(MakeRef<Button>("(0, 2)"), 0, 2);
+    entriesGrid->setContent(MakeRef<Button>("(1, 0)"), 1, 0);
+    entriesGrid->setContent(MakeRef<Button>("(1, 1)"), 1, 1);
+    entriesGrid->setContent(MakeRef<Button>("(1, 2)"), 1, 2);
+    entriesGrid->setContent(MakeRef<Button>("(2, 0)"), 2, 0);
+    entriesGrid->setContent(btn, 2, 1);
+    entriesGrid->setContent(MakeRef<Button>("(2, 2)"), 2, 2);
 
-    auto entriesGroup = MakeRef<StackPanel>();
-    entriesGroup->marginTop = 6;
-    entriesGroup->marginBottom = 6;
-    entriesGroup->orientation = Horizontal;
-    entriesGroup->addChild(entriesGrid);
+    window->setRootWidget(entriesGrid);
 
-    auto entriesGroupContainer = MakeRef<StackPanel>();
-    entriesGroupContainer->backgroundColor = Color(30, 30, 31);
-    entriesGroupContainer->addChild(entriesGroup);
-    entriesGroupExpander->setContent(entriesGroupContainer);
+    //auto root = MakeRef<StackPanel>();
+    //window->setRootWidget(root);
+
+    //auto label = MakeRef<Label>("Monochrome Widgets Demo");
+    //label->marginTop = 6;
+    //label->marginBottom = 12;
+    //root->addChild(label);
+
+    //auto demoGroupsPanel = MakeRef<StackPanel>();
+    //demoGroupsPanel->marginLeft = 40;
+    //demoGroupsPanel->marginRight = 40;
+    //root->addChild(demoGroupsPanel);
+
+    //auto buttonsGroupExpander = MakeRef<Expander>("Buttons Group");
+    //buttonsGroupExpander->header->label->fontSize = 12;
+    //buttonsGroupExpander->expanded = true;
+    //demoGroupsPanel->addChild(buttonsGroupExpander);
+
+    //auto defaultButton = MakeRef<Button>("Click Me");
+    //defaultButton->marginLeft = 40;
+    //defaultButton->marginRight = 6;
+
+    //auto disabledButton = MakeRef<Button>("Disabled");
+    //disabledButton->marginRight = 10;
+    //disabledButton->fixedWidth = 150;
+    //disabledButton->enabled = false;
+
+    //auto checkbox = MakeRef<Checkbox>("Enabled State");
+    //checkbox->marginRight = 10;
+    //checkbox->on("valueChanged", [disabledButton](Shared<Event> e) {
+    //    auto checked = e->get<bool>("checked");
+    //    disabledButton->enabled = checked;
+    //    disabledButton->label->text = checked ? "Enabled" : "Disabled";
+    //});
+
+    //auto iconButton = MakeRef<Button>("Open Folder");
+    //iconButton->marginRight = 6;
+    //iconButton->setImage(Image::loadFromWebUrl("https://img.icons8.com/?size=512&id=c2AXPLZ3iVEU&format=png"));
+    //iconButton->on("clicked", [](Shared<Event> e) {
+    //    auto dialog = utils::FileDialog::create();
+    //    dialog->chooseFolderDialog();
+    //});
+
+    //auto dropdownButton = MakeRef<DropdownButton>("Dropdown");
+    //dropdownButton->marginRight = 6;
+    //dropdownButton->secondaryRightText = {
+    //    static_cast<char>(0x20),
+    //    static_cast<char>(0xe2),
+    //    static_cast<char>(0x96),
+    //    static_cast<char>(0xbc),
+    //    static_cast<char>(0x20),
+    //    0
+    //};
+    //dropdownButton->setMenuList(createMenuList());
+
+    //auto buttonsGroup = MakeRef<StackPanel>();
+    //buttonsGroup->marginTop = 6;
+    //buttonsGroup->marginBottom = 6;
+    //buttonsGroup->orientation = Horizontal;
+    //buttonsGroup->addChild(defaultButton);
+    //buttonsGroup->addChild(disabledButton);
+    //buttonsGroup->addChild(checkbox);
+    //buttonsGroup->addChild(iconButton);
+    //buttonsGroup->addChild(dropdownButton);
+
+    //auto buttonsGroupContainer = MakeRef<StackPanel>();
+    //buttonsGroupContainer->backgroundColor = Color(30, 30, 31);
+    //buttonsGroupContainer->marginBottom = 20;
+    //buttonsGroupContainer->addChild(buttonsGroup);
+    //buttonsGroupExpander->setContent(buttonsGroupContainer);
+
+    //auto entriesGroupExpander = MakeRef<Expander>("Entries Group");
+    //entriesGroupExpander->header->label->fontSize = 12;
+    //entriesGroupExpander->expanded = true;
+    //demoGroupsPanel->addChild(entriesGroupExpander);
+
+    ////
+    //// TO-DO:
+    ////     1) Implement GridPanel
+    ////     2) Default entry and readOnly entry --> first row
+    ////     3) Security entry (plus label) and number increment entry --> second row
+    ////
+    ////
+    //auto defaultEntry = MakeRef<Entry>();
+    //defaultEntry->marginLeft = 40;
+    //defaultEntry->marginRight = 12;
+
+    //auto readOnlyEntry = MakeRef<Entry>("Sample text is here");
+    //readOnlyEntry->marginRight = 12;
+    //readOnlyEntry->readOnly = true;
+    //readOnlyEntry->borderThickness = 1;
+    //readOnlyEntry->borderColor = Color::white;
+
+    //auto entriesGrid = MakeRef<GridPanel>();
+    //entriesGrid->backgroundColor = Color::purple;
+    //entriesGrid->addColumnDefinition(); // Column for default entry and security entry
+    //entriesGrid->addColumnDefinition(); // Empty column
+    //entriesGrid->addColumnDefinition(); // Column for readonly entry and number increment entry
+    //entriesGrid->addRowDefinition();    // First row
+    //entriesGrid->addRowDefinition();    // Second row
+    //entriesGrid->setContent(defaultEntry, 0, 0);
+    //entriesGrid->setContent(readOnlyEntry, 1, 2);
+
+    //auto entriesGroup = MakeRef<StackPanel>();
+    //entriesGroup->marginTop = 6;
+    //entriesGroup->marginBottom = 6;
+    //entriesGroup->orientation = Horizontal;
+    //entriesGroup->addChild(entriesGrid);
+
+    //auto entriesGroupContainer = MakeRef<StackPanel>();
+    //entriesGroupContainer->backgroundColor = Color(30, 30, 31);
+    //entriesGroupContainer->addChild(entriesGroup);
+    //entriesGroupExpander->setContent(entriesGroupContainer);
 
     AppManager::startApplicationLoop();
     return 0;
