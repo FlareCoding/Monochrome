@@ -28,6 +28,7 @@ set(
     ${cwd}/Image.h
     ${cwd}/MenuList.h
     ${cwd}/StackPanel.h
+    ${cwd}/GridPanel.h
 
     PARENT_SCOPE
 )
@@ -49,6 +50,7 @@ set(
     ${cwd}/Image.cpp
     ${cwd}/MenuList.cpp
     ${cwd}/StackPanel.cpp
+    ${cwd}/GridPanel.cpp
 
     PARENT_SCOPE
 )

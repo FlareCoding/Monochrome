@@ -146,6 +146,15 @@ int main() {
     entriesGroupExpander->expanded = true;
     demoGroupsPanel->addChild(entriesGroupExpander);
 
+    //
+    // TO-DO:
+    //     1) Implement GridPanel
+    //     2) Default entry and readOnly entry --> first row
+    //     3) Security entry (plus label) and number increment entry --> second row
+    //
+    auto entriesGrid = MakeRef<GridPanel>();
+    entriesGrid->backgroundColor = Color::purple;
+
     auto defaultEntry = MakeRef<Entry>();
     defaultEntry->marginLeft = 40;
     defaultEntry->marginRight = 12;
@@ -160,8 +169,7 @@ int main() {
     entriesGroup->marginTop = 6;
     entriesGroup->marginBottom = 6;
     entriesGroup->orientation = Horizontal;
-    entriesGroup->addChild(defaultEntry);
-    entriesGroup->addChild(readOnlyEntry);
+    entriesGroup->addChild(entriesGrid);
 
     auto entriesGroupContainer = MakeRef<StackPanel>();
     entriesGroupContainer->backgroundColor = Color(30, 30, 31);
